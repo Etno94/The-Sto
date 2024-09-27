@@ -339,16 +339,16 @@ function generatorOnAction(generatorName) {
  */
 async function setStoragePoints(points, orderedPoints) {
 
-    // #region Guards
+    // Guards
     for (let [key, value] of Object.entries(points.collection)) {
         if (value === null || value === undefined) return;
         if (!pointProps.includes(key)) return;
     }
     if (!Array.isArray(orderedPoints) || !orderedPoints || !orderedPoints.length) return;
     if (!pointsContainer) return;
-    // #endregion Guards
+    // -Guards
 
-    // #region Sanitize Points
+    // Sanitize Points
     if (orderedPoints.length > proxySave.maxStorage) orderedPoints.length = proxySave.maxStorage;
 
     const childrenArray = Array.from(pointsContainer.children);
@@ -375,7 +375,7 @@ async function setStoragePoints(points, orderedPoints) {
         else currentBasicPoints++;
     });
 
-    // #endregion Sanitize Points
+    // -Sanitize Points
 
     // Render points as necessary
     let currentBasicPoints = 0;
