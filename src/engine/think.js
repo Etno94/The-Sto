@@ -122,7 +122,7 @@ function addPoints(generatorName) {
  * @param {PointCollection.collection} pointsToMeet
  * @returns {Boolean}
  */
-function hasEnoughPoints(pointsToMeet) {
+export function hasEnoughPoints(pointsToMeet) {
   let hasEnoughPoints = true;
   if (pointsToMeet) {
     for (const [key, value] of Object.entries(pointsToMeet)) {

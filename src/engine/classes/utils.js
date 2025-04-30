@@ -2,6 +2,9 @@ export default class Utils {
     constructor() {}
 
     getNumberFromMSValue (value) {
+        if (typeof value !== 'string') {
+            throw new Error(`Invalid value: ${value}. Expected a string with 'ms' suffix.`);
+        }
         return Number(value.split('ms')[0]);
     }
 
