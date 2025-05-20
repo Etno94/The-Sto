@@ -36,6 +36,7 @@ export default class Render {
     renderBasicPoint(...args) {
         const point = document.createElement("div");
         point.classList.add("point", ...args);
+        point.dataset.type = POINT_TYPES.point;
 
         return point;
     }
@@ -48,6 +49,7 @@ export default class Render {
     renderSolidPoint(...args) {
         const point = document.createElement("div");
         point.classList.add("point", "solid", ...args);
+        point.dataset.type = POINT_TYPES.solid_point;
 
         const innerPoint = document.createElement("div");
         innerPoint.classList.add("inner-point");
@@ -64,46 +66,22 @@ export default class Render {
     renderEnergyPoint(...args) {
         const point = document.createElement("div");
         point.classList.add("point", "energy", ...args);
+        point.dataset.type = POINT_TYPES.energy_point;
 
         return point;
     }
 
-    async removePoint(parent, className) {
+    async removePoint(parent, pointType) {
         for (let child of Array.from(parent.children)) {
-            if ((!className &&
-                !child.classList.contains(POINT_CLASSES['solid_points']) &&
-                !child.classList.contains(POINT_CLASSES['energy_points'])) ||
-                child.classList.contains(className)) {
 
-                // Debugging: Log before animation
-                console.log('Before animation:', child);
+            if (child.parentNode !== parent) continue;
+            if (child.dataset.type !== pointType) continue;
 
-                // Ensure the child is still a part of the parent
-                if (child.parentNode !== parent) {
-                    console.error('Child is no longer a part of the parent before animation:', child);
-                    return;
-                }
+            this.animate.widthOut(child);
+            await this.utils.delay(ANIMATIONS.width.timer);
+            parent.removeChild(child);
 
-                // Apply animation
-                this.animate.widthOut(child);
-
-                // Wait for animation to complete
-                await this.utils.delay(ANIMATIONS.width.timer);
-
-                // Debugging: Log before removal
-                console.log('Before removal:', child);
-
-                // Double-check the parent-child relationship before removal
-                if (child.parentNode === parent) {
-                    parent.removeChild(child);
-                    // Debugging: Log successful removal
-                    console.log('Child removed successfully:', child);
-                } else {
-                    console.error('Child is no longer a part of the parent before removal:', child);
-                }
-
-                return;
-            }
+            return;
         }
     }
 

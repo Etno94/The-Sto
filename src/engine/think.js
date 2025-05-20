@@ -364,7 +364,7 @@ function generatorOnAction(generatorName) {
  * @param {PointCollection} points
  * @param {string[]} orderedPoints
  */
-async function setStoragePoints(points, orderedPoints) {
+function setStoragePoints(points, orderedPoints) {
   // Guards
   for (let [key, value] of Object.entries(points.collection)) {
     if (value === null || value === undefined) return;
@@ -376,7 +376,7 @@ async function setStoragePoints(points, orderedPoints) {
   // -Guards
 
   // Sanitize Points
-  sanitizePoints(orderedPoints);
+  // sanitizePoints(orderedPoints);
   // -Sanitize Points
 
   // Render points as necessary
@@ -390,18 +390,9 @@ async function setStoragePoints(points, orderedPoints) {
     else currentBasicPoints++;
   });
 
-  while (currentBasicPoints > points.collection.point) {
-    await render.removePoint(pointsContainer, POINT_CLASSES["point"]);
-    currentBasicPoints--;
-  }
-  while (currentSolidPoints > points.collection.solid_point) {
-    await render.removePoint(pointsContainer, POINT_CLASSES["solid_point"]);
-    currentSolidPoints--;
-  }
-  while (currentEnergyPoints > points.collection.energy_point) {
-    await render.removePoint(pointsContainer, POINT_CLASSES["energy_point"]);
-    currentEnergyPoints--;
-  }
+  removePoints(currentBasicPoints, points.collection.point, POINT_TYPES.point);
+  removePoints(currentSolidPoints, points.collection.solid_point, POINT_TYPES.solid_point);
+  removePoints(currentEnergyPoints, points.collection.energy_point, POINT_TYPES.energy_point);
 
   while (currentBasicPoints < points.collection.point) {
     renderPoints();
@@ -461,6 +452,15 @@ function renderPoints(type) {
   pointsContainer.appendChild(point);
 
   animate.widthIn(point);
+}
+
+async function removePoints(currentPoints, pointsToMatch, pointType) {
+  if (currentPoints <= pointsToMatch) return;
+
+  while (currentPoints > pointsToMatch) {
+      await render.removePoint(pointsContainer, pointType);
+      currentPoints--;
+  }
 }
 
 // #endregion Render
