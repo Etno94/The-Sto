@@ -299,8 +299,9 @@ function buildGenerator(generatorName) {
     (value) => value.name === generator.name
   );
 
-  if (!currentGenerator || currentGenerator.built || !currentGenerator.canBuild)
-    return;
+  if (!currentGenerator) return;
+
+  if (currentGenerator.built || !currentGenerator.canBuild) return;
 
   const buildStep = generator.buildRequires.step;
 
@@ -394,18 +395,9 @@ function setStoragePoints(points, orderedPoints) {
   removePoints(currentSolidPoints, points.collection.solid_point, POINT_TYPES.solid_point);
   removePoints(currentEnergyPoints, points.collection.energy_point, POINT_TYPES.energy_point);
 
-  while (currentBasicPoints < points.collection.point) {
-    renderPoints();
-    currentBasicPoints++;
-  }
-  while (currentSolidPoints < points.collection.solid_point) {
-    renderPoints("solid");
-    currentSolidPoints++;
-  }
-  while (currentEnergyPoints < points.collection.energy_point) {
-    renderPoints("energy");
-    currentEnergyPoints++;
-  }
+  renderPoints(currentBasicPoints, points.collection.point, POINT_TYPES.point);
+  renderPoints(currentSolidPoints, points.collection.solid_point, POINT_TYPES.solid_point);
+  renderPoints(currentEnergyPoints, points.collection.energy_point, POINT_TYPES.energy_point);
 }
 
 /**
@@ -435,23 +427,14 @@ function sanitizePoints(orderedPoints) {
   });
 }
 
-function renderPoints(type) {
-  let point = null;
-  switch (type) {
-    case "solid":
-      point = render.renderSolidPoint("no-width");
-      break;
-    case "energy":
-      point = render.renderEnergyPoint("no-width");
-      break;
-    default:
-      point = render.renderBasicPoint("no-width");
-      break;
-  }
-  if (!point) return;
-  pointsContainer.appendChild(point);
 
-  animate.widthIn(point);
+function renderPoints(currentPoints, pointsToMatch, pointType){
+  if (currentPoints >= pointsToMatch) return;
+
+  while (currentPoints < pointsToMatch) {
+      render.renderPoint(pointType);
+      currentPoints++;
+  }
 }
 
 async function removePoints(currentPoints, pointsToMatch, pointType) {

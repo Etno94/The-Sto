@@ -13,14 +13,14 @@ export default class Animate {
         element.classList.toggle(...animation.classes);
     }
 
-    widthIn(element, classes = ['no-width']) {
+    widthIn(element) {
         element.offsetWidth;
         requestAnimationFrame(() => {
-            element.classList.remove(...classes);
+            element.classList.remove('no-width');
         });
     }
 
-    widthOut(element, classes = ['no-width']) {
-        element.classList.add(...classes);
+    widthOut(element) {
+        element.classList.add('no-width');
     }
 }
