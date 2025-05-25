@@ -1,5 +1,5 @@
 Tareas:
 
-en point.collection.js:20 => la funcion set podria ser integrada al constructor
+- abstraer tareas de Generator en think.js y pasarlas a generator.js
 
 Bugs:
