@@ -102,8 +102,10 @@ function addPoints(generatorName) {
   if (!hasEnoughPoints(pointsToConsumeCollection)) return;
 
   let pointsToGenerate = new PointCollection();
-  pointsToGenerate.set(generator.generates);
-  if (doesOvercap(pointsToGenerate.total)) return;
+  if (generator.generates) {
+    pointsToGenerate.set(generator.generates);
+  }
+  if (doesOvercap(pointsToGenerate.total, pointsToConsumeCollection)) return;
 
   // Consume
   if (pointsToConsume.total) {
@@ -134,13 +136,14 @@ export function hasEnoughPoints(pointsToMeet) {
 
 /**
  * @param {Number} totalToGenerate
+ * @param {PointCollection.collection} pointsToConsume
  * @returns {Boolean}
  */
-function doesOvercap(totalToGenerate) {
+function doesOvercap(totalToGenerate, pointsToConsume) {
   let doesOvercap = false;
   let pointsSum = 0;
   for (const type of pointProps) {
-    pointsSum += proxySave.points[type];
+    pointsSum += proxySave.points[type] - pointsToConsume[type];
   }
   if (pointsSum + totalToGenerate > proxySave.maxStorage) {
     animate.timedOut(pointsContainer, animations.tilt);
