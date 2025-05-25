@@ -432,7 +432,9 @@ function renderPoints(currentPoints, pointsToMatch, pointType){
   if (currentPoints >= pointsToMatch) return;
 
   while (currentPoints < pointsToMatch) {
-      render.renderPoint(pointType);
+      let pointToAppend = render.renderPoint(pointType, "no-width");
+      pointsContainer.appendChild(pointToAppend);
+      animate.widthIn(pointToAppend);
       currentPoints++;
   }
 }
