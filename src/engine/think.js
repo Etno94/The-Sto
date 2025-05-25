@@ -93,18 +93,12 @@ function addPoints(generatorName) {
   );
   if (!generator) return;
 
-  let pointsToConsume = new PointCollection();
-  if (generator.consumes) {
-    pointsToConsume.set(generator.consumes);
-  }
+  let pointsToConsume = new PointCollection(generator.consumes);
   let pointsToConsumeCollection = pointsToConsume.collection;
 
   if (!hasEnoughPoints(pointsToConsumeCollection)) return;
 
-  let pointsToGenerate = new PointCollection();
-  if (generator.generates) {
-    pointsToGenerate.set(generator.generates);
-  }
+  let pointsToGenerate = new PointCollection(generator.generates);
   if (doesOvercap(pointsToGenerate.total, pointsToConsumeCollection)) return;
 
   // Consume
@@ -469,8 +463,8 @@ function startGame() {
 }
 
 function gameLoop(timestamp) {
-  let points = new PointCollection();
-  points.set(proxySave.points);
+  let points = new PointCollection(proxySave.points);
+  // points.set(proxySave.points);
 
   setStoragePoints(points, proxySave.points_order);
   checkUnlocks();

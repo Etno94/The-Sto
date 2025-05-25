@@ -6,12 +6,11 @@ export default class PointCollection {
     totalValue = 0;
 
     /**
-     * @param {String[]} newCollection 
+     * @param { {[key: string]: number} } newCollection 
      */
-    constructor(newCollection = POINT_PROPS) {
-        for (const point of newCollection) {
-            this.collection[point] = 0;
-        }
+    constructor(newCollection) {
+        for (const point of POINT_PROPS) this.collection[point] = 0;
+        if (newCollection) this.set(newCollection);
     }
 
     /**
