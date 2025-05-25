@@ -1,20 +1,22 @@
 import { GENERATOR_IDS } from './generators.data.js';
 import {POINT_PROPS} from './points.data.js';
 
-const points = POINT_PROPS.reduce((acc, key) => {
+export const FRESH_POINTS = POINT_PROPS.reduce((acc, key) => {
     acc[key] = 0;
     return acc;
 }, {});
 
 
 export const FRESH_SAVE = {
-    points,
+    points: FRESH_POINTS,
     points_order: [],
     maxStorageUpgradeCurrentLevel: 0,
     maxStorage: 3,
     generators: [
         {
             name: GENERATOR_IDS.CLICK,
+            hinted: true,
+            canBuild: true,
             built: true
         },
         {
@@ -28,7 +30,7 @@ export const FRESH_SAVE = {
 }
 
 export const TEST_SAVE = {
-    points,
+    points: FRESH_POINTS,
     points_order: [],
     maxStorageUpgradeCurrentLevel: 0,
     maxStorage: 3,

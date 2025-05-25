@@ -8,13 +8,13 @@ import { POINT_CLASSES, POINT_TYPES, POINT_PROPS } from "./data/points.data.js";
 
 import Save from "./modules/save.js";
 import PointCollection from "./modules/point.collection.js";
+import Generator from "./modules/generator.js";
 
 import SaveProxy from "./classes/proxy.js";
 import Render from "./classes/render.js";
 import Animate from "./classes/animate.js";
 import Utils from "./classes/utils.js";
 
-let localSave = localStorage.getItem("save");
 
 let lastUpdate = 0;
 const updateInterval = 1600;
@@ -24,9 +24,12 @@ const render = new Render();
 const animate = new Animate();
 const utils = new Utils();
 
+const generator = new Generator();
+
 const saveProxy = new SaveProxy(FRESH_SAVE);
 // const saveProxy = new SaveProxy(TEST_SAVE);
 let proxySave = saveProxy.proxy;
+
 
 const animations = ANIMATIONS;
 const pointTypes = POINT_TYPES;
@@ -70,17 +73,14 @@ clickGenerator.addEventListener("click", () =>
 
 function addPoints(generatorName) {
   // Guards
-  const generator = GENERATORS.find(
-    (generator) => generator.name == generatorName
-  );
-  if (!generator) return;
+  if (!generator.findGenerator(generatorName)) return;
 
-  let pointsToConsume = new PointCollection(generator.consumes);
+  let pointsToConsume = new PointCollection(generator.whatConsumes(generatorName));
   let pointsToConsumeCollection = pointsToConsume.collection;
 
   if (!hasEnoughPoints(pointsToConsumeCollection)) return;
 
-  let pointsToGenerate = new PointCollection(generator.generates);
+  let pointsToGenerate = new PointCollection(generator.whatGenerates(generatorName));
   if (doesOvercap(pointsToGenerate.total, pointsToConsumeCollection)) return;
 
   // Consume
@@ -231,6 +231,18 @@ function checkUnlocks() {
     }
   });
 }
+
+function checkGeneratorUnlocks() {
+  generator.lockedGenerators.forEach(generatorName => {
+    if (!validateGeneratorInProxySave(generatorName)) return;
+  })
+}
+
+function validateGeneratorInProxySave(generatorName) {
+  return proxySave.generators.find(generator=> generator.name === generatorName) || null;
+}
+
+
 
 function showHint(generatorElement) {
   if (!generatorElement.classList.contains("hint"))
@@ -436,6 +448,7 @@ async function removePoints(currentPoints, pointsToMatch, pointType) {
 function startGame() {
   let loadedSave = save.loadSave();
   setProxySave(loadedSave);
+  setGeneratorsFromSave(proxySave.generators);
 
   saveProxy.subscribe((updatedSave) => {
     save.saveGame(updatedSave);
@@ -464,6 +477,10 @@ function gameLoop(timestamp) {
 function setProxySave(save) {
   if(typeof save !== 'object') return;
   Object.assign(proxySave, save);
+}
+
+function setGeneratorsFromSave(generators) {
+  generator.newGenerator(generators);
 }
 
 startGame();
