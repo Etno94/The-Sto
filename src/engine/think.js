@@ -6,6 +6,7 @@ import { GENERATOR_IDS, GENERATORS } from "./data/generators.data.js";
 import { ANIMATIONS } from "./data/animations.data.js";
 import { POINT_CLASSES, POINT_TYPES, POINT_PROPS } from "./data/points.data.js";
 
+import Save from "./modules/save.js";
 import PointCollection from "./modules/point.collection.js";
 
 import SaveProxy from "./classes/proxy.js";
@@ -18,6 +19,7 @@ let localSave = localStorage.getItem("save");
 let lastUpdate = 0;
 const updateInterval = 1600;
 
+const save = new Save();
 const render = new Render();
 const animate = new Animate();
 const utils = new Utils();
@@ -53,8 +55,8 @@ let cooldownGenerator = null;
 // #region Event Listeners
 
 // Save
-saveButton.addEventListener("click", () => saveGame());
-resetButton.addEventListener("click", () => resetGame());
+saveButton.addEventListener("click", () => save.saveGame(proxySave));
+resetButton.addEventListener("click", () => save.resetGame());
 dump.addEventListener("click", () => dumpAllPoints());
 
 // Generators
@@ -63,26 +65,6 @@ clickGenerator.addEventListener("click", () =>
 );
 
 // #endregion Event Listeners
-
-// #region Save
-
-function loadSave() {
-  if (localSave) {
-    const loadedSave = JSON.parse(localSave);
-    Object.assign(proxySave, loadedSave);
-  }
-}
-
-function saveGame() {
-  localStorage.setItem("save", JSON.stringify(proxySave));
-}
-
-function resetGame() {
-  localStorage.removeItem("save");
-  location.reload();
-}
-
-// #endregion Save
 
 // #region Points
 
@@ -452,10 +434,11 @@ async function removePoints(currentPoints, pointsToMatch, pointType) {
 // SetUp
 
 function startGame() {
-  loadSave();
+  let loadedSave = save.loadSave();
+  setProxySave(loadedSave);
 
   saveProxy.subscribe((updatedSave) => {
-    saveGame();
+    save.saveGame(updatedSave);
     gameLoop();
   });
 
@@ -464,7 +447,6 @@ function startGame() {
 
 function gameLoop(timestamp) {
   let points = new PointCollection(proxySave.points);
-  // points.set(proxySave.points);
 
   setStoragePoints(points, proxySave.points_order);
   checkUnlocks();
@@ -477,6 +459,11 @@ function gameLoop(timestamp) {
   //     lastUpdate = timestamp;
   // }
   // requestAnimationFrame(gameLoop);
+}
+
+function setProxySave(save) {
+  if(typeof save !== 'object') return;
+  Object.assign(proxySave, save);
 }
 
 startGame();
