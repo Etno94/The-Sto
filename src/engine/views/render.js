@@ -1,10 +1,11 @@
 import Animate from './animate.js';
-import Utils from './utils.js';
+import Utils from '../utils/utils.js';
 
 import { ANIMATIONS } from '../data/animations.data.js';
 import { POINT_CLASSES, POINT_TYPES } from '../data/points.data.js';
 
 export default class Render {
+
     constructor() {
         this.animate = new Animate();
         this.utils = new Utils();
@@ -18,14 +19,13 @@ export default class Render {
      */
     renderPoint(pointType, ...args) {
 
-        switch (pointType) {
-            case POINT_TYPES.point:
-                return this.renderBasicPoint(...args);
-            case POINT_TYPES.solid_point:
-                return this.renderSolidPoint(...args);
-            case POINT_TYPES.energy_point:
-                return this.renderEnergyPoint(...args);
-        }
+        // If functions use 'this' context, we need to bind them.
+        // In this case, we don't rely on 'this' context
+        return ({
+            [POINT_TYPES.point]: this.renderBasicPoint,
+            [POINT_TYPES.solid_point]: this.renderSolidPoint,
+            [POINT_TYPES.energy_point]: this.renderEnergyPoint
+        })[pointType](...args);
     }
 
     /**

@@ -1,19 +1,16 @@
-// Note: cooldown measured in MS. 1000 MS = 1 second.
+import { FRESH_SAVE, TEST_SAVE } from "../data/fresh-save.data.js";
+import { STORAGE_UPGRADES } from "../data/storage.data.js";
+import { ANIMATIONS } from "../data/animations.data.js";
+import { POINT_CLASSES, POINT_TYPES, POINT_PROPS } from "../data/points.data.js";
 
-import { FRESH_SAVE, TEST_SAVE } from "./data/fresh-save.data.js";
-import { STORAGE_UPGRADES } from "./data/storage.data.js";
-import { GENERATOR_IDS, GENERATORS } from "./data/generators.data.js";
-import { ANIMATIONS } from "./data/animations.data.js";
-import { POINT_CLASSES, POINT_TYPES, POINT_PROPS } from "./data/points.data.js";
+import Save from "./save.js";
+import PointCollection from "../systems/point.collection.js";
+import Generator from "../systems/generator.js";
 
-import Save from "./modules/save.js";
-import PointCollection from "./modules/point.collection.js";
-import Generator from "./modules/generator.js";
-
-import SaveProxy from "./classes/proxy.js";
-import Render from "./classes/render.js";
-import Animate from "./classes/animate.js";
-import Utils from "./classes/utils.js";
+import SaveProxy from "./proxy.js";
+import Render from "../views/render.js";
+import Animate from "../views/animate.js";
+import Utils from "../utils/utils.js";
 
 
 let lastUpdate = 0;
@@ -32,7 +29,6 @@ let proxySave = saveProxy.proxy;
 
 
 const animations = ANIMATIONS;
-const pointTypes = POINT_TYPES;
 const pointProps = POINT_PROPS;
 
 // #region Elements
@@ -49,10 +45,6 @@ const dump = document.getElementById("dump");
 const storageUpgrade = document.getElementById("storage-upgrade");
 const pointsContainer = document.getElementById("points");
 
-// Generators
-const clickGenerator = document.getElementById(GENERATOR_IDS.CLICK);
-let cooldownGenerator = null;
-
 // #endregion Elements
 
 // #region Event Listeners
@@ -61,11 +53,6 @@ let cooldownGenerator = null;
 saveButton.addEventListener("click", () => save.saveGame(proxySave));
 resetButton.addEventListener("click", () => save.resetGame());
 dump.addEventListener("click", () => dumpAllPoints());
-
-// Generators
-// clickGenerator.addEventListener("click", () =>
-//   generatorOnAction(GENERATOR_IDS.CLICK)
-// );
 
 // #endregion Event Listeners
 
@@ -132,10 +119,10 @@ function doesOvercap(totalToGenerate, pointsToConsume) {
  * @param {PointCollection.collection} pointsToConsume
  */
 function consumePoints(pointsToConsume) {
-  if (!pointsToConsume) return;
+  if (!pointsToConsume || typeof pointsToConsume !== 'object') return;
 
   for (const [key, valueToConsume] of Object.entries(pointsToConsume)) {
-    proxySave.points[key] -= valueToConsume;
+    if (valueToConsume) proxySave.points[key] -= valueToConsume;
 
     let pointsOrderItemsToRemove = valueToConsume;
     for (
@@ -164,50 +151,9 @@ function dumpAllPoints() {
 
 function checkUnlocks() {
   checkGeneratorUnlocks();
-  return;
-
-  GENERATORS.forEach((generator) => {
-    if (!generator.unlockRequires) return;
-
-    let currentGenerator = proxySave.generators.find(
-      (value) => value.name === generator.name
-    );
-    if (!currentGenerator) return;
-
-    const generatorElement = getGeneratorElement(currentGenerator.name);
-
-    if (currentGenerator.built) {
-      showGeneratorElement(generatorElement);
-      registerGeneratorAction(generatorElement, currentGenerator.name);
-      return;
-    }
-
-    if (
-      currentGenerator.progress ||
-      (generator.unlockRequires.build &&
-        hasEnoughPoints(generator.unlockRequires.build))
-    ) {
-      if (!currentGenerator.canBuild) currentGenerator.canBuild = true;
-
-      showBuild(generatorElement, generator);
-      registerGeneratorAction(generatorElement, currentGenerator.name);
-      return;
-    }
-
-    if (
-      generator.unlockRequires.hint &&
-      hasEnoughPoints(generator.unlockRequires.hint)
-    ) {
-      if (!currentGenerator.hinted) currentGenerator.hinted = true;
-
-      showHint(generatorElement);
-      registerGeneratorAction(generatorElement, currentGenerator.name);
-    }
-  });
 }
 
 function checkGeneratorUnlocks() {
-
   checkLockedGenerators([...generator.lockedGens]);
   checkHintedGenerators([...generator.hintedGens]);
   checkCanBeBuiltGenerators([...generator.canBuildGens]);
@@ -220,7 +166,7 @@ function checkGeneratorUnlocks() {
 function checkLockedGenerators(generators) {
 
   generators.forEach(generatorName => {
-    let proxyGenerator = validateGeneratorInProxySave(generatorName);
+    let proxyGenerator = getProxySaveGenerator(generatorName);
     let dataGenerator = getGeneratorData(generatorName);
     if (!proxyGenerator) return;
 
@@ -239,7 +185,7 @@ function checkLockedGenerators(generators) {
 function checkHintedGenerators(generators) {
 
   generators.forEach(generatorName => {
-    let proxyGenerator = validateGeneratorInProxySave(generatorName);
+    let proxyGenerator = getProxySaveGenerator(generatorName);
     let dataGenerator = getGeneratorData(generatorName);
     if (!proxyGenerator) return;
 
@@ -261,7 +207,7 @@ function checkHintedGenerators(generators) {
 function checkCanBeBuiltGenerators(generators) {
 
   generators.forEach(generatorName => {
-    let proxyGenerator = validateGeneratorInProxySave(generatorName);
+    let proxyGenerator = getProxySaveGenerator(generatorName);
     let dataGenerator = getGeneratorData(generatorName);
     if (!proxyGenerator) return;
 
@@ -277,7 +223,7 @@ function checkCanBeBuiltGenerators(generators) {
 function checkBuiltGenerators(generators) {
 
   generators.forEach(generatorName => {
-    let proxyGenerator = validateGeneratorInProxySave(generatorName);
+    let proxyGenerator = getProxySaveGenerator(generatorName);
     if (!proxyGenerator) return;
 
     const generatorElement = getGeneratorElement(generatorName);
@@ -290,7 +236,7 @@ function checkBuiltGenerators(generators) {
  * @param {string} generatorName 
  * @returns {Object | null}
  */
-function validateGeneratorInProxySave(generatorName) {
+function getProxySaveGenerator(generatorName) {
   return proxySave.generators.find(generator=> generator.name === generatorName);
 }
 
@@ -359,7 +305,7 @@ function registerGeneratorAction(generatorElement, generatorName) {
   utils.addEventListenerWithFlag(
     generatorElement,
     "click",
-    generatorOnAction,
+    generatorOnClick,
     generatorName
   );
 }
@@ -379,32 +325,22 @@ function showGeneratorElement(generatorElement) {
 // #region Build
 
 function buildGenerator(generatorName) {
-  const dataGenerator = GENERATORS.find(
-    (generator) => generator.name === generatorName
-  );
+  let proxyGenerator = getProxySaveGenerator(generatorName);
+  if (!proxyGenerator || proxyGenerator.built || !proxyGenerator.canBuild) return;
 
+  let dataGenerator = getGeneratorData(generatorName);
   if (!dataGenerator) return;
 
-  const currentGenerator = proxySave.generators.find(
-    (value) => value.name === dataGenerator.name
-  );
-
-  if (!currentGenerator) return;
-
-  if (currentGenerator.built || !currentGenerator.canBuild) return;
-
   const buildStep = dataGenerator.buildRequires.step;
-
   if (!hasEnoughPoints(buildStep)) return;
 
   consumePoints(buildStep);
 
-  currentGenerator.progress = currentGenerator.progress ?? 0;
+  proxyGenerator.progress = proxyGenerator.progress ?? 0;
+  proxyGenerator.progress += 1;
 
-  currentGenerator.progress += 1;
-
-  if (currentGenerator.progress >= dataGenerator.buildRequires.totalSteps) {
-    currentGenerator.built = true;
+  if (proxyGenerator.progress >= dataGenerator.buildRequires.totalSteps) {
+    proxyGenerator.built = true;
     generator.isBuilt(generatorName);
     checkGeneratorBuilt(generatorName);
   }
@@ -424,23 +360,19 @@ function checkGeneratorBuilt(generatorName) {
 
 // #region Generator
 
-function generatorOnAction(generatorName) {
-  const generator = proxySave.generators.find(
-    (generator) => generator.name == generatorName
-  );
-  if (!generator) return;
+function generatorOnClick(generatorName) {
+  let proxyGenerator = getProxySaveGenerator(generatorName);
+  if (!proxyGenerator) return;
 
-  if (generator.built) {
+  if (proxyGenerator.built) {
     addPoints(generatorName);
     return;
   }
-
-  if (generator.canBuild) {
+  if (proxyGenerator.canBuild) {
     buildGenerator(generatorName);
     return;
   }
-
-  if (generator.hinted) {
+  if (proxyGenerator.hinted) {
     console.log("You see a new thing...");
   }
 }
@@ -486,33 +418,6 @@ function setStoragePoints(points, orderedPoints) {
   renderPoints(currentBasicPoints, points.collection.point, POINT_TYPES.point);
   renderPoints(currentSolidPoints, points.collection.solid_point, POINT_TYPES.solid_point);
   renderPoints(currentEnergyPoints, points.collection.energy_point, POINT_TYPES.energy_point);
-}
-
-/**
- * @param {string []} orderedPoints
- */
-function sanitizePoints(orderedPoints) {
-
-  if (!orderedPoints || !orderedPoints.length) return; 
-
-  const pointsContainerChildrenArray = Array.from(pointsContainer.children);
-  if (!pointsContainerChildrenArray || !pointsContainerChildrenArray.length) return;
-
-  if (orderedPoints.length > proxySave.maxStorage)
-    orderedPoints.length = proxySave.maxStorage;
-
-  pointsContainerChildrenArray.forEach((child, index) => {
-
-    // Determine the correct class for the point type
-    let expectedClasses = POINT_CLASSES[orderedPoints[index]];
-
-    if (!expectedClasses || !expectedClasses.length) return;
-
-    const newChild = document.createElement("div");
-    expectedClasses.forEach(expectedClass => newChild.classList.add(expectedClass));
-    // Replace the child in pointsContainer
-    pointsContainer.replaceChild(newChild, child);
-  });
 }
 
 

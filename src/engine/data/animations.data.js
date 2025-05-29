@@ -1,4 +1,4 @@
-import Utils from '../classes/utils.js';
+import Utils from '../utils/utils.js';
 
 let utils = new Utils();
 let cssVars = getComputedStyle(document.body);
