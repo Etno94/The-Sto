@@ -3,7 +3,7 @@ import { GENERATORS } from "../data/generators.data.js";
 
 export default class Generator {
 
-    hashGenerators = {};
+    #hashGenerators = {};
 
     lockedGenerators = [];
     hintedGenerators = [];
@@ -21,7 +21,7 @@ export default class Generator {
      * @param {Object[]} generators 
      */
     newGenerator(generators) {
-        this.hashGenerators = this.sanitizeGenerators(generators);
+        this.#hashGenerators = this.sanitizeGenerators(generators);
         this.setGenerators();
     }
 
@@ -45,7 +45,7 @@ export default class Generator {
     }
 
     setGenerators() {
-        Object.values(this.hashGenerators).forEach(generator => {
+        Object.values(this.#hashGenerators).forEach(generator => {
             if (!generator.hinted && !generator.canBuild && !generator.built) {
                 this.lockedGenerators.push(generator.name);
                 return;
