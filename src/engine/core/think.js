@@ -1,9 +1,10 @@
-import { FRESH_SAVE, TEST_SAVE } from "../data/fresh-save.data.js";
+import { FRESH_SAVE } from "../data/fresh-save.data.js";
 import { STORAGE_UPGRADES } from "../data/storage.data.js";
 import { ANIMATIONS } from "../data/animations.data.js";
 import { POINT_CLASSES, POINT_TYPES, POINT_PROPS } from "../data/points.data.js";
 
-import Save from "./save.js";
+import Global from "./global.js";
+import GameSave from "./save.js";
 import PointCollection from "../systems/point.collection.js";
 import Generator from "../systems/generator.js";
 
@@ -12,11 +13,9 @@ import Render from "../views/render.js";
 import Animate from "../views/animate.js";
 import Utils from "../utils/utils.js";
 
-
 let lastUpdate = 0;
 const updateInterval = 1600;
 
-const save = new Save();
 const render = new Render();
 const animate = new Animate();
 const utils = new Utils();
@@ -25,7 +24,7 @@ const generator = new Generator();
 
 const saveProxy = new SaveProxy(FRESH_SAVE);
 // const saveProxy = new SaveProxy(TEST_SAVE);
-let proxySave = saveProxy.proxy;
+let proxySave = Global.proxy;// saveProxy.proxy;
 
 
 const animations = ANIMATIONS;
@@ -50,8 +49,8 @@ const pointsContainer = document.getElementById("points");
 // #region Event Listeners
 
 // Save
-saveButton.addEventListener("click", () => save.saveGame(proxySave));
-resetButton.addEventListener("click", () => save.resetGame());
+saveButton.addEventListener("click", () => GameSave.save(Global.proxy));
+resetButton.addEventListener("click", () => GameSave.reset());
 dump.addEventListener("click", () => dumpAllPoints());
 
 // #endregion Event Listeners
@@ -78,8 +77,8 @@ function addPoints(generatorName) {
   // Generate
   let collection = pointsToGenerate.collection;
   for (const type of pointProps) {
-    proxySave.points[type] += collection[type];
-    proxySave.points_order.push(...new Array(collection[type]).fill(type));
+    Global.proxy.points[type] += collection[type];
+    Global.proxy.points_order.push(...new Array(collection[type]).fill(type));
   }
 }
 
@@ -91,7 +90,7 @@ export function hasEnoughPoints(pointsToMeet) {
   let hasEnoughPoints = true;
   if (pointsToMeet) {
     for (const [key, value] of Object.entries(pointsToMeet)) {
-      if (value > proxySave.points[key]) hasEnoughPoints = false;
+      if (value > Global.proxy.points[key]) hasEnoughPoints = false;
     }
   }
   return hasEnoughPoints;
@@ -106,9 +105,9 @@ function doesOvercap(totalToGenerate, pointsToConsume) {
   let doesOvercap = false;
   let pointsSum = 0;
   for (const type of pointProps) {
-    pointsSum += proxySave.points[type] - pointsToConsume[type];
+    pointsSum += Global.proxy.points[type] - pointsToConsume[type];
   }
-  if (pointsSum + totalToGenerate > proxySave.maxStorage) {
+  if (pointsSum + totalToGenerate > Global.proxy.maxStorage) {
     animate.timedOut(pointsContainer, animations.tilt);
     doesOvercap = true;
   }
@@ -122,16 +121,16 @@ function consumePoints(pointsToConsume) {
   if (!pointsToConsume || typeof pointsToConsume !== 'object') return;
 
   for (const [key, valueToConsume] of Object.entries(pointsToConsume)) {
-    if (valueToConsume) proxySave.points[key] -= valueToConsume;
+    if (valueToConsume) Global.proxy.points[key] -= valueToConsume;
 
     let pointsOrderItemsToRemove = valueToConsume;
     for (
-      let i = proxySave.points_order.length - 1;
+      let i = Global.proxy.points_order.length - 1;
       i >= 0 && pointsOrderItemsToRemove > 0;
       i--
     ) {
-      if (proxySave.points_order[i] === key) {
-        proxySave.points_order.splice(i, 1);
+      if (Global.proxy.points_order[i] === key) {
+        Global.proxy.points_order.splice(i, 1);
         pointsOrderItemsToRemove--;
       }
     }
@@ -140,9 +139,9 @@ function consumePoints(pointsToConsume) {
 
 function dumpAllPoints() {
   for (const type of pointProps) {
-    proxySave.points[type] = 0;
+    Global.proxy.points[type] = 0;
   }
-  proxySave.points_order = [];
+  Global.proxy.points_order = [];
 }
 
 // #endregion Points
@@ -237,7 +236,7 @@ function checkBuiltGenerators(generators) {
  * @returns {Object | null}
  */
 function getProxySaveGenerator(generatorName) {
-  return proxySave.generators.find(generator=> generator.name === generatorName);
+  return Global.proxy.generators.find(generator=> generator.name === generatorName);
 }
 
 /**
@@ -448,12 +447,12 @@ async function removePoints(currentPoints, pointsToMatch, pointType) {
 // SetUp
 
 function startGame() {
-  let loadedSave = save.loadSave();
+  let loadedSave = GameSave.load();
   setProxySave(loadedSave);
-  setGeneratorsFromSave(proxySave.generators);
+  setGeneratorsFromSave(Global.proxy.generators);
 
-  saveProxy.subscribe((updatedSave) => {
-    save.saveGame(updatedSave);
+  Global.saveProxy.subscribe((updatedSave) => {
+    GameSave.save(updatedSave);
     gameLoop();
   });
 
@@ -461,9 +460,9 @@ function startGame() {
 }
 
 function gameLoop(timestamp) {
-  let points = new PointCollection(proxySave.points);
+  let points = new PointCollection(Global.proxy.points);
 
-  setStoragePoints(points, proxySave.points_order);
+  setStoragePoints(points, Global.proxy.points_order);
   checkUnlocks();
 
   // requestAnimationFrame(gameLoop);
@@ -478,7 +477,7 @@ function gameLoop(timestamp) {
 
 function setProxySave(save) {
   if(typeof save !== 'object') return;
-  Object.assign(proxySave, save);
+  Object.assign(Global.proxy, save);
 }
 
 function setGeneratorsFromSave(generators) {

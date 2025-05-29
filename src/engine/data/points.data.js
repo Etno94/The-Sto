@@ -22,3 +22,11 @@ export const POINT_TYPES = {
 export const POINT_PROPS = [
     ...Object.values(POINT_TYPES)
 ]
+
+/**
+ * @returns {{[key: string]: number}}
+ */
+export const FRESH_POINTS = POINT_PROPS.reduce((acc, key) => {
+    acc[key] = 0;
+    return acc;
+}, {});

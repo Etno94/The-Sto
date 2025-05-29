@@ -1,26 +1,20 @@
-export default class Save {
-
-    localSave = null;
+export default class GameSave {
 
     constructor() {
-        this.localSave = localStorage.getItem("save");
     }
 
     /**
-     * @returns {boolean | null}
+     * @returns {Object|null}
      */
-    loadSave() {
-        if (this.localSave) {
-            return JSON.parse(this.localSave);
-        }
-        return null;
+    static load() {
+        return JSON.parse(localStorage.getItem("save")) || null;
     }
     
-    saveGame(save) {
+    static save(save) {
         localStorage.setItem('save', JSON.stringify(save));
     }
     
-    resetGame() {
+    static reset() {
         localStorage.removeItem('save');
         location.reload();
     }

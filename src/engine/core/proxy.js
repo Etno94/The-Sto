@@ -2,11 +2,15 @@ import debounce from '../utils/debounce.js';
 
 class SaveProxy {
     constructor(initialSave) {
+        if (initialSave) this.setSaveProxy(initialSave);
+    }
+
+    setSaveProxy(save) {
         this.subscribers = [];
         this.notifyDebounced = debounce(() => {
             this.subscribers.forEach(callback => callback(this.proxySave));
         }, 200);
-        this.proxySave = this.createProxy(initialSave);
+        this.proxySave = this.createProxy(save);
     }
 
     createProxy(save) {
