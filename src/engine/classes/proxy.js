@@ -12,6 +12,7 @@ class SaveProxy {
     createProxy(save) {
         return new Proxy(save, {
             set: (target, property, value) => {
+                if (target[property] === value && typeof value !== 'object') return true;
                 target[property] = value;
                 this.notifyDebounced();
                 return true;
