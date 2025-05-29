@@ -63,9 +63,9 @@ resetButton.addEventListener("click", () => save.resetGame());
 dump.addEventListener("click", () => dumpAllPoints());
 
 // Generators
-clickGenerator.addEventListener("click", () =>
-  generatorOnAction(GENERATOR_IDS.CLICK)
-);
+// clickGenerator.addEventListener("click", () =>
+//   generatorOnAction(GENERATOR_IDS.CLICK)
+// );
 
 // #endregion Event Listeners
 
@@ -73,7 +73,7 @@ clickGenerator.addEventListener("click", () =>
 
 function addPoints(generatorName) {
   // Guards
-  if (!generator.findGenerator(generatorName)) return;
+  if (!generator.getGeneratorData(generatorName)) return;
 
   let pointsToConsume = new PointCollection(generator.whatConsumes(generatorName));
   let pointsToConsumeCollection = pointsToConsume.collection;
@@ -163,93 +163,162 @@ function dumpAllPoints() {
 // #region Unlocks
 
 function checkUnlocks() {
+  checkGeneratorUnlocks();
+  return;
+
   GENERATORS.forEach((generator) => {
-    if (!generator["unlockRequires"]) return;
+    if (!generator.unlockRequires) return;
 
     let currentGenerator = proxySave.generators.find(
       (value) => value.name === generator.name
     );
     if (!currentGenerator) return;
 
+    const generatorElement = getGeneratorElement(currentGenerator.name);
+
     if (currentGenerator.built) {
-      let generatorElement = document.getElementById(currentGenerator.name);
-      if (!generatorElement) {
-        generatorElement = render.renderGenerator(currentGenerator.name);
-        central.appendChild(generatorElement);
-        animate.widthIn(generatorElement);
-      }
-
-      utils.addEventListenerWithFlag(
-        generatorElement,
-        "click",
-        generatorOnAction,
-        currentGenerator.name
-      );
-
+      showGeneratorElement(generatorElement);
+      registerGeneratorAction(generatorElement, currentGenerator.name);
       return;
     }
 
     if (
       currentGenerator.progress ||
-      (generator["unlockRequires"]["build"] &&
-        hasEnoughPoints(generator["unlockRequires"]["build"]))
+      (generator.unlockRequires.build &&
+        hasEnoughPoints(generator.unlockRequires.build))
     ) {
       if (!currentGenerator.canBuild) currentGenerator.canBuild = true;
 
-      const generatorElement =
-        document.getElementById(generator.name) ??
-        render.renderGenerator(generator.name);
       showBuild(generatorElement, generator);
-
-      utils.addEventListenerWithFlag(
-        generatorElement,
-        "click",
-        generatorOnAction,
-        currentGenerator.name
-      );
-
+      registerGeneratorAction(generatorElement, currentGenerator.name);
       return;
     }
 
     if (
-      generator["unlockRequires"]["hint"] &&
-      hasEnoughPoints(generator["unlockRequires"]["hint"])
+      generator.unlockRequires.hint &&
+      hasEnoughPoints(generator.unlockRequires.hint)
     ) {
       if (!currentGenerator.hinted) currentGenerator.hinted = true;
 
-      const generatorElement =
-        document.getElementById(generator.name) ??
-        render.renderGenerator(generator.name);
       showHint(generatorElement);
-
-      utils.addEventListenerWithFlag(
-        generatorElement,
-        "click",
-        generatorOnAction,
-        currentGenerator.name
-      );
+      registerGeneratorAction(generatorElement, currentGenerator.name);
     }
   });
 }
 
 function checkGeneratorUnlocks() {
-  generator.lockedGenerators.forEach(generatorName => {
-    if (!validateGeneratorInProxySave(generatorName)) return;
-  })
+
+  checkLockedGenerators([...generator.lockedGens]);
+  checkHintedGenerators([...generator.hintedGens]);
+  checkCanBeBuiltGenerators([...generator.canBuildGens]);
+  checkBuiltGenerators([...generator.builtGens]);
 }
 
+/**
+ * @param {string[]} generators
+ */
+function checkLockedGenerators(generators) {
+
+  generators.forEach(generatorName => {
+    let proxyGenerator = validateGeneratorInProxySave(generatorName);
+    let dataGenerator = getGeneratorData(generatorName);
+    if (!proxyGenerator) return;
+
+    if (hasEnoughPoints(dataGenerator.unlockRequires.hint)) {
+      if (!proxyGenerator.hinted) proxyGenerator.hinted = true;
+      generator.canBeHinted(generatorName);
+    } else {
+      if (proxyGenerator.hinted) proxyGenerator.hinted = false;
+    }
+  });
+}
+
+/**
+ * @param {string[]} generators
+ */
+function checkHintedGenerators(generators) {
+
+  generators.forEach(generatorName => {
+    let proxyGenerator = validateGeneratorInProxySave(generatorName);
+    let dataGenerator = getGeneratorData(generatorName);
+    if (!proxyGenerator) return;
+
+    if (hasEnoughPoints(dataGenerator.unlockRequires.build)) {
+      proxyGenerator.canBuild = true;
+      generator.canBeBuilt(generatorName);
+    } 
+    else {
+      const generatorElement = getGeneratorElement(generatorName);
+      showHint(generatorElement);
+      registerGeneratorAction(generatorElement, generatorName);
+    }
+  });
+}
+
+/**
+ * @param {string[]} generators
+ */
+function checkCanBeBuiltGenerators(generators) {
+
+  generators.forEach(generatorName => {
+    let proxyGenerator = validateGeneratorInProxySave(generatorName);
+    let dataGenerator = getGeneratorData(generatorName);
+    if (!proxyGenerator) return;
+
+    const generatorElement = getGeneratorElement(generatorName);
+    showBuild(generatorElement, dataGenerator.buildRequires.step);
+    registerGeneratorAction(generatorElement, generatorName);
+  });
+}
+
+/**
+ * @param {string[]} generators
+ */
+function checkBuiltGenerators(generators) {
+
+  generators.forEach(generatorName => {
+    let proxyGenerator = validateGeneratorInProxySave(generatorName);
+    if (!proxyGenerator) return;
+
+    const generatorElement = getGeneratorElement(generatorName);
+    showGeneratorElement(generatorElement);
+    registerGeneratorAction(generatorElement, generatorName);
+  });
+}
+
+/**
+ * @param {string} generatorName 
+ * @returns {Object | null}
+ */
 function validateGeneratorInProxySave(generatorName) {
-  return proxySave.generators.find(generator=> generator.name === generatorName) || null;
+  return proxySave.generators.find(generator=> generator.name === generatorName);
+}
+
+/**
+ * @param {string} generatorName 
+ * @returns {Object | null}
+ */
+function getGeneratorData(generatorName) {
+  return generator.getGeneratorData(generatorName);
 }
 
 
+/**
+ * @param {string} generatorName 
+ * @returns {HTMLElement}
+ */
+function getGeneratorElement(generatorName) {
+  return document.getElementById(generatorName) ?? render.renderGenerator(generatorName);
+}
 
+/**
+ * @param {HTMLElement} generatorElement 
+ */
 function showHint(generatorElement) {
   if (!generatorElement.classList.contains("hint"))
     generatorElement.classList.add("hint");
 
-  central.appendChild(generatorElement);
-  animate.widthIn(generatorElement);
+  showGeneratorElement(generatorElement);
 }
 
 function showBuild(generatorElement, generatorData) {
@@ -258,21 +327,51 @@ function showBuild(generatorElement, generatorData) {
   if (generatorElement.classList.contains("hint"))
     generatorElement.classList.remove("hint");
 
-  central.appendChild(generatorElement);
+  showGeneratorElement(generatorElement);
 
-  if (generatorElement.classList.contains("no-width")) {
-    animate.widthIn(generatorElement);
-  }
+  showCostPreview(generatorElement, generatorData);
+}
 
+/**
+ * 
+ * @param {HTMLElement} generatorElement 
+ * @param {Object} buildCosts 
+ * @returns 
+ */
+function showCostPreview(generatorElement, buildCosts) {
   if (render.hasCostPreview(generatorElement)) return;
 
   const costPreviewElement = render.renderCostPreview();
-
-  for (let p in generatorData.buildRequires.step) {
-    costPreviewElement.appendChild(render.renderPoint(p));
+  for (let pointType in buildCosts) {
+    costPreviewElement.appendChild(render.renderPoint(pointType));
   }
-
   generatorElement.appendChild(costPreviewElement);
+}
+
+/**
+ * 
+ * @param {HTMLElement} generatorElement 
+ * @param {string} generatorName 
+ */
+function registerGeneratorAction(generatorElement, generatorName) {
+  if (!generatorElement || !generatorName) return;
+  
+  utils.addEventListenerWithFlag(
+    generatorElement,
+    "click",
+    generatorOnAction,
+    generatorName
+  );
+}
+
+/**
+ * @param {HTMLElement} generatorElement 
+ */
+function showGeneratorElement(generatorElement) {
+  if (central.contains(generatorElement)) return;
+
+  central.appendChild(generatorElement);
+  animate.widthIn(generatorElement);
 }
 
 // #endregion Unlocks
@@ -280,43 +379,41 @@ function showBuild(generatorElement, generatorData) {
 // #region Build
 
 function buildGenerator(generatorName) {
-  const generator = GENERATORS.find(
+  const dataGenerator = GENERATORS.find(
     (generator) => generator.name === generatorName
   );
 
-  if (!generator) return;
+  if (!dataGenerator) return;
 
   const currentGenerator = proxySave.generators.find(
-    (value) => value.name === generator.name
+    (value) => value.name === dataGenerator.name
   );
 
   if (!currentGenerator) return;
 
   if (currentGenerator.built || !currentGenerator.canBuild) return;
 
-  const buildStep = generator.buildRequires.step;
+  const buildStep = dataGenerator.buildRequires.step;
 
   if (!hasEnoughPoints(buildStep)) return;
 
   consumePoints(buildStep);
 
-  if (!currentGenerator.progress) currentGenerator.progress = 0;
+  currentGenerator.progress = currentGenerator.progress ?? 0;
 
   currentGenerator.progress += 1;
 
-  if (currentGenerator.progress >= generator.buildRequires.totalSteps) {
+  if (currentGenerator.progress >= dataGenerator.buildRequires.totalSteps) {
     currentGenerator.built = true;
+    generator.isBuilt(generatorName);
     checkGeneratorBuilt(generatorName);
   }
 }
 
 function checkGeneratorBuilt(generatorName) {
-  let generatorElement = document.getElementById(generatorName);
-  if (!generatorElement) {
-    generatorElement = render.renderGenerator(generatorName);
-    central.appendChild(generatorElement);
-    animate.widthIn(generatorElement);
-  }
+  let generatorElement = getGeneratorElement(generatorName);
+  showGeneratorElement(generatorElement);
+
   if (generatorElement.classList.contains("blank"))
     generatorElement.classList.remove("blank");
 

@@ -3,22 +3,32 @@ import { GENERATORS } from "../data/generators.data.js";
 
 export default class Generator {
 
-    saveGenerators = [];
+    hashGenerators = {};
 
     lockedGenerators = [];
     hintedGenerators = [];
     canBuildGenerators = [];
     builtGenerators = [];
 
+    /**
+     * @param {Object[]} generators 
+     */
     constructor (generators) {
         if (generators) this.newGenerator(generators);
     }
 
+    /**
+     * @param {Object[]} generators 
+     */
     newGenerator(generators) {
-        this.saveGenerators = this.sanitizeGenerators(generators);
+        this.hashGenerators = this.sanitizeGenerators(generators);
         this.setGenerators();
     }
 
+    /**
+     * @param {Object[]} generators
+     * @returns {Object}
+     */
     sanitizeGenerators(generators) {
         let sanitizedGenerators = [];
         // Passed generators must exist in the code base
@@ -28,11 +38,14 @@ export default class Generator {
             if (generator.built && !generator.canBuild) generator.built = false;
             if (generator.canBuild && !generator.hinted) generator.canBuild = false;
         });
-        return sanitizedGenerators;
+        return sanitizedGenerators.reduce((acc, generator) => {
+            acc[generator.name] = generator;
+            return acc;
+        }, {});
     }
 
     setGenerators() {
-        this.saveGenerators.forEach(generator => {
+        Object.values(this.hashGenerators).forEach(generator => {
             if (!generator.hinted && !generator.canBuild && !generator.built) {
                 this.lockedGenerators.push(generator.name);
                 return;
@@ -41,7 +54,7 @@ export default class Generator {
                 this.hintedGenerators.push(generator.name);
                 return;
             }
-            if (!generator.hinted && generator.canBuild && !generator.built) {
+            if (generator.hinted && generator.canBuild && !generator.built) {
                 this.canBuildGenerators.push(generator.name);
                 return;
             }
@@ -53,63 +66,105 @@ export default class Generator {
     }
 
     /**
-     * @param { PointCollection.collection } points 
+     * @param { string } generatorName 
      */
-    canBeHinted(points) {
-        // let hinted = true;
-        // for (const [key, value] of Object.entries(points)) {
-        //     if (this.generator.unlockRequires.hint[key] > value)
-        //         hinted = false;
-        // }
-        // return hinted;
-
-        // for (const [key, value] of Object.entries(this.generator.unlockRequires.hint)) {
-        //     if (points[key] && points[key] < value) {
-
-        //     }
-
-        // }
-        // return this.isHinted;
+    canBeHinted(generatorName) {
+        let generatorIndexToRemove = this.lockedGenerators.indexOf(generatorName);
+        let [generatorToBeHinted] = this.lockedGenerators.splice(generatorIndexToRemove, 1);
+        this.hintedGenerators.push(generatorToBeHinted);
     }
 
-    canBuild(points) {
-        // let canBuild = true;
-        // for (const [key, value] of Object.entries(points)) {
-        //     if (this.generator.unlockRequires.build[key] > value)
-        //         canBuild = false;
-        // }
-        // return canBuild;
+    /**
+     * @param { string } generatorName 
+     */
+    canBeBuilt(generatorName) {
+        let generatorIndexToRemove = this.hintedGenerators.indexOf(generatorName);
+        let [generatorToBeBuildable] = this.hintedGenerators.splice(generatorIndexToRemove, 1);
+        this.canBuildGenerators.push(generatorToBeBuildable);
     }
 
-    build () {
-        
+    /**
+     * @param { string } generatorName 
+     */
+    isBuilt (generatorName) {
+        let generatorIndexToRemove = this.canBuildGenerators.indexOf(generatorName);
+        let [generatorBuilt] = this.canBuildGenerators.splice(generatorIndexToRemove, 1);
+        this.builtGenerators.push(generatorBuilt);
     }
 
-    findGenerator(generatorName) {
+    /**
+     * @param { string } generatorName 
+     * @return {Object|null}
+     */
+    getGeneratorData(generatorName) {
         return GENERATORS.find(generator => generator.name === generatorName) || null;
     }
 
+    /**
+     * @param { string } generatorName
+     * @return {Object|null}
+     */
     whatConsumes(generatorName) {
-        return this.findGenerator(generatorName)?.consumes || null;
+        return this.getGeneratorData(generatorName)?.consumes || null;
     }
 
+    /**
+     * @param { string } generatorName 
+     * @return {Object|null}
+     */
     whatGenerates(generatorName) {
-        return this.findGenerator(generatorName)?.generates || null;
+        return this.getGeneratorData(generatorName)?.generates || null;
     }
 
-    get lockedGenerators() {
+    /**
+     * @param { string } generatorName 
+     * @return {Object|null}
+     */
+    whatUnlockRequires(generatorName) {
+        return this.getGeneratorData(generatorName)?.unlockRequires || null;
+    }
+
+    /**
+     * @param { string } generatorName 
+     * @return {Object|null}
+     */
+    whatUnlockHintRequires(generatorName) {
+        return this.whatUnlockRequires(generatorName)?.hint || null;
+    }
+
+    /**
+     * @param { string } generatorName 
+     * @return {Object|null}
+     */
+    whatUnlockBuildRequires(generatorName) {
+        return this.whatUnlockRequires(generatorName)?.build || null;
+    }
+
+    /**
+     * @returns {string[]}
+     */
+    get lockedGens() {
         return this.lockedGenerators;
     }
 
-    get hintedGenerators() {
+    /**
+     * @returns {string[]}
+     */
+    get hintedGens() {
         return this.hintedGenerators;
     }
 
-    get canBuildGenerators() {
+    /**
+     * @returns {string[]}
+     */
+    get canBuildGens() {
         return this.canBuildGenerators;
     }
 
-    get builtGenerators() {
+    /**
+     * @returns {string[]}
+     */
+    get builtGens() {
         return this.builtGenerators;
     }
 }
