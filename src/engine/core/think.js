@@ -1,4 +1,3 @@
-import { FRESH_SAVE } from "../data/fresh-save.data.js";
 import { STORAGE_UPGRADES } from "../data/storage.data.js";
 import { ANIMATIONS } from "../data/animations.data.js";
 import { POINT_CLASSES, POINT_TYPES, POINT_PROPS } from "../data/points.data.js";
@@ -6,9 +5,8 @@ import { POINT_CLASSES, POINT_TYPES, POINT_PROPS } from "../data/points.data.js"
 import Global from "./global.js";
 import GameSave from "./save.js";
 import PointCollection from "../systems/point.collection.js";
-import Generator from "../systems/generator.js";
+import Generator from "../systems/generator.manager.js";
 
-import SaveProxy from "./proxy.js";
 import Render from "../views/render.js";
 import Animate from "../views/animate.js";
 import Utils from "../utils/utils.js";
@@ -19,13 +17,7 @@ const updateInterval = 1600;
 const render = new Render();
 const animate = new Animate();
 const utils = new Utils();
-
 const generator = new Generator();
-
-const saveProxy = new SaveProxy(FRESH_SAVE);
-// const saveProxy = new SaveProxy(TEST_SAVE);
-let proxySave = Global.proxy;// saveProxy.proxy;
-
 
 const animations = ANIMATIONS;
 const pointProps = POINT_PROPS;
@@ -390,14 +382,9 @@ function setStoragePoints(points, orderedPoints) {
     if (value === null || value === undefined) return;
     if (!pointProps.includes(key)) return;
   }
-  if (!Array.isArray(orderedPoints) || !orderedPoints)
-    return;
+  if (!Array.isArray(orderedPoints) || !orderedPoints) return;
   if (!pointsContainer) return;
   // -Guards
-
-  // Sanitize Points
-  // sanitizePoints(orderedPoints);
-  // -Sanitize Points
 
   // Render points as necessary
   let currentBasicPoints = 0;
@@ -405,9 +392,20 @@ function setStoragePoints(points, orderedPoints) {
   let currentEnergyPoints = 0;
 
   Array.from(pointsContainer.children).forEach((child) => {
-    if (child.classList.contains("solid")) currentSolidPoints++;
-    else if (child.classList.contains("energy")) currentEnergyPoints++;
-    else currentBasicPoints++;
+    switch(child.dataset.type) {
+      case POINT_TYPES.energy_point:
+        currentEnergyPoints++;
+        break;
+      case POINT_TYPES.solid_point:
+        currentSolidPoints++;
+        break;
+      case POINT_TYPES.point:
+        currentBasicPoints++
+        break;
+    }
+    // if (child.classList.contains("solid")) currentSolidPoints++;
+    // else if (child.classList.contains("energy")) currentEnergyPoints++;
+    // else currentBasicPoints++;
   });
 
   removePoints(currentBasicPoints, points.collection.point, POINT_TYPES.point);
@@ -447,9 +445,11 @@ async function removePoints(currentPoints, pointsToMatch, pointType) {
 // SetUp
 
 function startGame() {
-  let loadedSave = GameSave.load();
-  setProxySave(loadedSave);
-  setGeneratorsFromSave(Global.proxy.generators);
+  const save = GameSave.load();
+  if(save && typeof save === 'object') {
+    Object.assign(Global.proxy, save);
+  }
+  generator.newGenerator(Global.proxy.generators);
 
   Global.saveProxy.subscribe((updatedSave) => {
     GameSave.save(updatedSave);
@@ -460,9 +460,10 @@ function startGame() {
 }
 
 function gameLoop(timestamp) {
-  let points = new PointCollection(Global.proxy.points);
+  setStoragePoints(
+    new PointCollection(Global.proxy.points), 
+    Global.proxy.points_order);
 
-  setStoragePoints(points, Global.proxy.points_order);
   checkUnlocks();
 
   // requestAnimationFrame(gameLoop);
@@ -473,15 +474,6 @@ function gameLoop(timestamp) {
   //     lastUpdate = timestamp;
   // }
   // requestAnimationFrame(gameLoop);
-}
-
-function setProxySave(save) {
-  if(typeof save !== 'object') return;
-  Object.assign(Global.proxy, save);
-}
-
-function setGeneratorsFromSave(generators) {
-  generator.newGenerator(generators);
 }
 
 startGame();

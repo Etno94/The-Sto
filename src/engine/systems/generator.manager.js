@@ -3,12 +3,10 @@ import { GENERATORS } from "../data/generators.data.js";
 
 export default class Generator {
 
-    #hashGenerators = {};
-
-    lockedGenerators = [];
-    hintedGenerators = [];
-    canBuildGenerators = [];
-    builtGenerators = [];
+    #lockedGenerators = [];
+    #hintedGenerators = [];
+    #canBuildGenerators = [];
+    #builtGenerators = [];
 
     /**
      * @param {Object[]} generators 
@@ -21,8 +19,7 @@ export default class Generator {
      * @param {Object[]} generators 
      */
     newGenerator(generators) {
-        this.#hashGenerators = this.sanitizeGenerators(generators);
-        this.setGenerators();
+        this.setGenerators(this.sanitizeGenerators(generators));
     }
 
     /**
@@ -38,28 +35,25 @@ export default class Generator {
             if (generator.built && !generator.canBuild) generator.built = false;
             if (generator.canBuild && !generator.hinted) generator.canBuild = false;
         });
-        return sanitizedGenerators.reduce((acc, generator) => {
-            acc[generator.name] = generator;
-            return acc;
-        }, {});
+        return sanitizedGenerators;
     }
 
-    setGenerators() {
-        Object.values(this.#hashGenerators).forEach(generator => {
+    setGenerators(generators) {
+        generators.forEach(generator => {
             if (!generator.hinted && !generator.canBuild && !generator.built) {
-                this.lockedGenerators.push(generator.name);
+                this.#lockedGenerators.push(generator.name);
                 return;
             }
             if (generator.hinted && !generator.canBuild && !generator.built) {
-                this.hintedGenerators.push(generator.name);
+                this.#hintedGenerators.push(generator.name);
                 return;
             }
             if (generator.hinted && generator.canBuild && !generator.built) {
-                this.canBuildGenerators.push(generator.name);
+                this.#canBuildGenerators.push(generator.name);
                 return;
             }
             if (generator.hinted && generator.canBuild && generator.built) {
-                this.builtGenerators.push(generator.name);
+                this.#builtGenerators.push(generator.name);
                 return;
             }
         });
@@ -69,27 +63,27 @@ export default class Generator {
      * @param { string } generatorName 
      */
     canBeHinted(generatorName) {
-        let generatorIndexToRemove = this.lockedGenerators.indexOf(generatorName);
-        let [generatorToBeHinted] = this.lockedGenerators.splice(generatorIndexToRemove, 1);
-        this.hintedGenerators.push(generatorToBeHinted);
+        let generatorIndexToRemove = this.#lockedGenerators.indexOf(generatorName);
+        let [generatorToBeHinted] = this.#lockedGenerators.splice(generatorIndexToRemove, 1);
+        this.#hintedGenerators.push(generatorToBeHinted);
     }
 
     /**
      * @param { string } generatorName 
      */
     canBeBuilt(generatorName) {
-        let generatorIndexToRemove = this.hintedGenerators.indexOf(generatorName);
-        let [generatorToBeBuildable] = this.hintedGenerators.splice(generatorIndexToRemove, 1);
-        this.canBuildGenerators.push(generatorToBeBuildable);
+        let generatorIndexToRemove = this.#hintedGenerators.indexOf(generatorName);
+        let [generatorToBeBuildable] = this.#hintedGenerators.splice(generatorIndexToRemove, 1);
+        this.#canBuildGenerators.push(generatorToBeBuildable);
     }
 
     /**
      * @param { string } generatorName 
      */
     isBuilt (generatorName) {
-        let generatorIndexToRemove = this.canBuildGenerators.indexOf(generatorName);
-        let [generatorBuilt] = this.canBuildGenerators.splice(generatorIndexToRemove, 1);
-        this.builtGenerators.push(generatorBuilt);
+        let generatorIndexToRemove = this.#canBuildGenerators.indexOf(generatorName);
+        let [generatorBuilt] = this.#canBuildGenerators.splice(generatorIndexToRemove, 1);
+        this.#builtGenerators.push(generatorBuilt);
     }
 
     /**
@@ -144,27 +138,27 @@ export default class Generator {
      * @returns {string[]}
      */
     get lockedGens() {
-        return this.lockedGenerators;
+        return this.#lockedGenerators;
     }
 
     /**
      * @returns {string[]}
      */
     get hintedGens() {
-        return this.hintedGenerators;
+        return this.#hintedGenerators;
     }
 
     /**
      * @returns {string[]}
      */
     get canBuildGens() {
-        return this.canBuildGenerators;
+        return this.#canBuildGenerators;
     }
 
     /**
      * @returns {string[]}
      */
     get builtGens() {
-        return this.builtGenerators;
+        return this.#builtGenerators;
     }
 }
