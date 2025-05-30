@@ -4,12 +4,18 @@ import Utils from '../utils/utils.js';
 import { ANIMATIONS } from '../data/animations.data.js';
 import { POINT_CLASSES, POINT_TYPES } from '../data/points.data.js';
 
+import ElFtry from './element.factory.js';
+
 export default class Render {
 
     constructor() {
         this.animate = new Animate();
         this.utils = new Utils();
+        this.element = new ElFtry('div').addClass('point').addClass('hint').finish();
+        console.log(this.element);
     }
+
+    // #region Points
 
     /**
      * 
@@ -85,6 +91,11 @@ export default class Render {
         }
     }
 
+    // #endregion Points
+
+    // #region Generators
+
+
     /**
      * @param {string} generatorName
      * @returns {HTMLDivElement}
@@ -133,4 +144,7 @@ export default class Render {
             }
         }
     }
+
+    // #endregion Points
+
 }
