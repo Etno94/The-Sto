@@ -2,13 +2,12 @@ import Utils from '../utils/utils.js';
 
 export default class Animate {
     constructor(){
-        this.utils = new Utils();
     }
 
     async timedOut(element, animation) {
         element.classList.toggle(...animation.classes);
 
-        await this.utils.delay(animation.timer);
+        await Utils.delay(animation.timer);
 
         element.classList.toggle(...animation.classes);
     }

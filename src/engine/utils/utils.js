@@ -1,7 +1,7 @@
 export default class Utils {
     constructor() {}
 
-    getNumberFromMSValue (value) {
+    static getNumberFromMSValue (value) {
         if (typeof value !== 'string') {
             throw new Error(`Invalid value: ${value}. Expected a string with 'ms' suffix.`);
         }
@@ -15,7 +15,7 @@ export default class Utils {
         }
     }
 
-    delay(ms) {
+    static delay(ms) {
         return new Promise(resolve => {
             const start = performance.now();
             function frame(time) {

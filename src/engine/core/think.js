@@ -16,7 +16,6 @@ const updateInterval = 1600;
 
 const render = new Render();
 const animate = new Animate();
-const utils = new Utils();
 const generator = new Generator();
 
 const animations = ANIMATIONS;
@@ -293,7 +292,7 @@ function showCostPreview(generatorElement, buildCosts) {
 function registerGeneratorAction(generatorElement, generatorName) {
   if (!generatorElement || !generatorName) return;
   
-  utils.addEventListenerWithFlag(
+  Utils.addEventListenerWithFlag(
     generatorElement,
     "click",
     generatorOnClick,

@@ -10,7 +10,6 @@ export default class Render {
 
     constructor() {
         this.animate = new Animate();
-        this.utils = new Utils();
         this.element = new ElFtry('div').addClass('point').addClass('hint').finish();
         console.log(this.element);
     }
@@ -84,7 +83,7 @@ export default class Render {
             if (child.dataset.type !== pointType) continue;
 
             this.animate.widthOut(child);
-            await this.utils.delay(ANIMATIONS.width.timer);
+            await Utils.delay(ANIMATIONS.width.timer);
             parent.removeChild(child);
 
             return;
