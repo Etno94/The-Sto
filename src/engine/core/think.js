@@ -7,7 +7,7 @@ import GameSave from "./save.js";
 import PointCollection from "../systems/point.collection.js";
 import Generator from "../systems/generator.manager.js";
 
-import Render from "../views/render.js";
+import Render from "../views/render.factory.js";
 import Animate from "../views/animate.js";
 import Utils from "../utils/utils.js";
 

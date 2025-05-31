@@ -2,16 +2,14 @@ import Animate from './animate.js';
 import Utils from '../utils/utils.js';
 
 import { ANIMATIONS } from '../data/animations.data.js';
-import { POINT_CLASSES, POINT_TYPES } from '../data/points.data.js';
+import { POINT_TYPES } from '../data/points.data.js';
 
-import ElFtry from './element.factory.js';
+import PointDirector from './builder-directors/point.director.js';
 
 export default class Render {
 
     constructor() {
         this.animate = new Animate();
-        this.element = new ElFtry('div').addClass('point').addClass('hint').finish();
-        console.log(this.element);
     }
 
     // #region Points
@@ -27,53 +25,10 @@ export default class Render {
         // If functions use 'this' context, we need to bind them.
         // In this case, we don't rely on 'this' context
         return ({
-            [POINT_TYPES.point]: this.renderBasicPoint,
-            [POINT_TYPES.solid_point]: this.renderSolidPoint,
-            [POINT_TYPES.energy_point]: this.renderEnergyPoint
-        })[pointType](...args);
-    }
-
-    /**
-     * 
-     * @param {args} args
-     * @returns {HTMLDivElement}
-     */
-    renderBasicPoint(...args) {
-        const point = document.createElement("div");
-        point.classList.add("point", ...args);
-        point.dataset.type = POINT_TYPES.point;
-
-        return point;
-    }
-
-    /**
-     * 
-     * @param {args} args
-     * @returns {HTMLDivElement}
-     */
-    renderSolidPoint(...args) {
-        const point = document.createElement("div");
-        point.classList.add("point", "solid", ...args);
-        point.dataset.type = POINT_TYPES.solid_point;
-
-        const innerPoint = document.createElement("div");
-        innerPoint.classList.add("inner-point");
-        point.appendChild(innerPoint);
-
-        return point;
-    }
-
-    /**
-     * 
-     * @param {args} args
-     * @returns {HTMLDivElement}
-     */
-    renderEnergyPoint(...args) {
-        const point = document.createElement("div");
-        point.classList.add("point", "energy", ...args);
-        point.dataset.type = POINT_TYPES.energy_point;
-
-        return point;
+            [POINT_TYPES.point]: PointDirector.createBasicPoint,
+            [POINT_TYPES.solid_point]: PointDirector.createSolidPoint,
+            [POINT_TYPES.energy_point]: PointDirector.createEnergyPoint
+        })[pointType](args);
     }
 
     async removePoint(parent, pointType) {
