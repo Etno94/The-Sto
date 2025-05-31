@@ -8,7 +8,7 @@ export default class Utils {
         return Number(value.split('ms')[0]);
     }
 
-    addEventListenerWithFlag(element, type, listener, ...args) {
+    static addEventListenerWithFlag(element, type, listener, ...args) {
         if (!element.eventListenerActive) {
             element.addEventListener(type, () => listener(...args));
             element.eventListenerActive = true;
