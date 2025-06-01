@@ -391,7 +391,7 @@ function setStoragePoints(points, orderedPoints) {
   let currentEnergyPoints = 0;
 
   Array.from(pointsContainer.children).forEach((child) => {
-    switch(child.dataset.type) {
+    switch(child.dataset.pointType) {
       case POINT_TYPES.energy_point:
         currentEnergyPoints++;
         break;
@@ -402,9 +402,6 @@ function setStoragePoints(points, orderedPoints) {
         currentBasicPoints++
         break;
     }
-    // if (child.classList.contains("solid")) currentSolidPoints++;
-    // else if (child.classList.contains("energy")) currentEnergyPoints++;
-    // else currentBasicPoints++;
   });
 
   removePoints(currentBasicPoints, points.collection.point, POINT_TYPES.point);

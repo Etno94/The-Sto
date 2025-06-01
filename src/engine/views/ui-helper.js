@@ -15,14 +15,44 @@ export default class UIHelper {
     }
 
     /**
+     * @param {HTMLElement} element
+     * @param {string} attribute
+     * @returns {boolean}
+     */
+    static hasAttribute(element, attribute) {
+        if (!Utils.isValidString(attribute)) return false;
+        return element.hasAttribute(attribute);
+    }
+
+    /**
+     * @param {HTMLElement} element
+     * @param {string} datasetName 
+     * @returns {boolean}
+     */
+    static hasDataSet(element, datasetName) {
+        if (!Utils.isValidString(datasetName)) return false;
+        return element.hasAttribute(`data-${datasetName}`);
+    }
+
+    /**
+     * @param {HTMLElement} element
+     * @param {string} datasetName 
+     * @param {string} value 
+     * @returns {boolean}
+     */
+    static isDataSetValue(element, datasetName, value) {
+        if (!Utils.isValidString(datasetName) || !Utils.isValidString(value)) return false;
+        return element.dataset[`data-${datasetName}`] === value;
+    }
+
+    /**
      * @param {HTMLElement} parent 
      * @param {HTMLElement} child
      * @return {boolean}
      */
     static areParentAndChildValid(parent, child) {
         if (!Utils.isValidHTMLElement(parent) || !Utils.isValidHTMLElement(child)) return false;
-        if (parent === child) return false;
-        return true;
+        return (parent !== child && UIHelper.isParentNode(parent, child));
     }
 
     /**

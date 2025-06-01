@@ -37,12 +37,11 @@ export default class Render {
     async removePoint(parent, pointType) {
         for (let child of Array.from(parent.children)) {
 
-            if (!UIHelper.isParentNode(parent, child)) continue;
-            if (child.dataset.type !== pointType) continue;
+            if (!UIHelper.areParentAndChildValid(parent, child)) continue;
+            if (child.dataset.pointType !== pointType) continue;
 
             this.animate.widthOut(child);
             await Utils.delay(ANIMATIONS.width.timer);
-
             UIHelper.removeChild(parent, child);
 
             return;
@@ -66,11 +65,7 @@ export default class Render {
      * @returns {HTMLDivElement}
      */
     renderCostPreview() {
-
-        const costPreviewElement = document.createElement("div");
-        costPreviewElement.classList.add("cost-preview");
-
-        return costPreviewElement;
+        return GeneratorDirector.createCostPreview();
     }
 
     /**

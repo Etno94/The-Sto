@@ -12,7 +12,7 @@ export default class PointDirector {
         return new ElBuilder('div')
             .addClass(POINT_CLASSES.point)
             .addClass(classes)
-            .addDataSet(DATA_SET_ATTRs.type, POINT_TYPES.point)
+            .addDataSet(DATA_SET_ATTRs.pointType, POINT_TYPES.point)
             .finish();
     }
 
@@ -24,7 +24,7 @@ export default class PointDirector {
         return new ElBuilder('div')
             .addClass(POINT_CLASSES.solid_point)
             .addClass(classes)
-            .addDataSet(DATA_SET_ATTRs.type, POINT_TYPES.solid_point)
+            .addDataSet(DATA_SET_ATTRs.pointType, POINT_TYPES.solid_point)
             .appendChild(
                 new ElBuilder('div')
                     .addClass('inner-point')
@@ -41,7 +41,7 @@ export default class PointDirector {
         return new ElBuilder('div')
             .addClass(POINT_CLASSES.energy_point)
             .addClass(classes)
-            .addDataSet(DATA_SET_ATTRs.type, POINT_TYPES.energy_point)
+            .addDataSet(DATA_SET_ATTRs.pointType, POINT_TYPES.energy_point)
             .finish();
     }
 }
