@@ -244,7 +244,7 @@ function getGeneratorData(generatorName) {
  * @returns {HTMLElement}
  */
 function getGeneratorElement(generatorName) {
-  return document.getElementById(generatorName) ?? render.renderGenerator(generatorName);
+  return document.getElementById(generatorName) ?? render.renderGenerator(generatorName, 'no-width');
 }
 
 /**

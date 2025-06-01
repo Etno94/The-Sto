@@ -60,12 +60,6 @@ export default class Render {
      */
     renderGenerator(generatorName, ...classes) {
         return GeneratorDirector.createGenerator(generatorName, classes);
-
-        const generator = document.createElement("div");
-        generator.setAttribute('id', generatorName);
-        generator.classList.add("cell", "m-24", "no-width");
-
-        return generator;
     }
 
     /**
