@@ -5,6 +5,16 @@ export default class UIHelper {
     // #region Validations
 
     /**
+     * @param {HTMLElement} element
+     * @param {string} className
+     * @returns {boolean}
+     */
+    static containsClass(element, className) {
+        if (!Utils.isValidString(className)) return false;
+        return element.classList.contains(className);
+    }
+
+    /**
      * @param {HTMLElement} parent 
      * @param {HTMLElement} child
      * @return {boolean}
@@ -45,7 +55,7 @@ export default class UIHelper {
      * @param {string} action
      * @returns {HTMLElement}
      */
-    static actionOnClass(element, classNames, action) {
+    static actionOnClass(element, action, classNames ) {
         switch(typeof classNames) {
             case 'string':
                 if (Utils.isValidString(classNames)) 
@@ -65,7 +75,7 @@ export default class UIHelper {
      * @returns {HTMLElement}
      */
     static addClass(element, classNames) {
-        return UIHelper.actionOnClass(element, classNames, 'add');
+        return UIHelper.actionOnClass(element,'add', classNames);
     }
 
     /**
@@ -74,7 +84,16 @@ export default class UIHelper {
      * @returns {HTMLElement}
      */
     static removeClass(element, classNames) {
-        return UIHelper.actionOnClass(element, classNames, 'remove');
+        return UIHelper.actionOnClass(element, 'remove', classNames);
+    }
+
+    /**
+     * @param {HTMLElement} element
+     * @param {string[]} classNames
+     * @returns {HTMLElement}
+     */
+    static toggleClass(element, classNames) {
+        UIHelper.actionOnClass(element, 'toggle', classNames);
     }
 
     // #endregion Class

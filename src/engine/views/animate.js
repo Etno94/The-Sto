@@ -1,27 +1,36 @@
 import Utils from '../utils/utils.js';
+import UIHelper from './ui-helper.js';
 
 export default class Animate {
     constructor(){
     }
 
+    /**
+     * @param {HTMLElement} element 
+     * @param {AnimationItem} animation 
+     */
     async timedOut(element, animation) {
-        element.classList.toggle(...animation.classes);
-
+        UIHelper.toggleClass(element, animation.classes);
         await Utils.delay(animation.timer);
-
-        element.classList.toggle(...animation.classes);
+        UIHelper.toggleClass(element, animation.classes);
     }
 
+    /**
+     * @param {HTMLElement} element 
+     */
     widthIn(element) {
-        if (!element.classList.contains('no-width')) return;
+        if (!UIHelper.containsClass(element, 'no-width')) return;
         element.offsetWidth; // We force a layout calculation to ensure the class is applied before the next frame
         requestAnimationFrame(() => {
-            element.classList.remove('no-width');
+            UIHelper.removeClass(element, 'no-width');
         });
     }
 
+    /**
+     * @param {HTMLElement} element 
+     */
     widthOut(element) {
-        if (element.classList.contains('no-width')) return;
-        element.classList.add('no-width');
+        if (UIHelper.containsClass(element, 'no-width')) return;
+        UIHelper.addClass(element, 'no-width');
     }
 }

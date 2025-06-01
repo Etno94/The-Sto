@@ -2,6 +2,9 @@ import Utils from '../utils/utils.js';
 
 let cssVars = getComputedStyle(document.body);
 
+/**
+ * @type {Animations}
+ */
 export const ANIMATIONS = {
     width: {
         name: 'width',
