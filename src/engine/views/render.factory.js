@@ -1,5 +1,6 @@
 import Animate from './animate.js';
 import Utils from '../utils/utils.js';
+import UIHelper from './ui-helper.js';
 
 import { ANIMATIONS } from '../data/animations.data.js';
 import { POINT_TYPES } from '../data/points.data.js';
@@ -31,15 +32,17 @@ export default class Render {
         })[pointType](args);
     }
 
+    // TODO: move it to UI Manager future class
     async removePoint(parent, pointType) {
         for (let child of Array.from(parent.children)) {
 
-            if (child.parentNode !== parent) continue;
+            if (!UIHelper.isParentNode(parent, child)) continue;
             if (child.dataset.type !== pointType) continue;
 
             this.animate.widthOut(child);
             await Utils.delay(ANIMATIONS.width.timer);
-            parent.removeChild(child);
+
+            UIHelper.removeChild(parent, child);
 
             return;
         }
