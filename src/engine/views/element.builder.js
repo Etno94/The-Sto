@@ -1,4 +1,5 @@
 import Utils from '../utils/utils.js';
+import UIHelper from './ui-helper.js';
 
  class ElementBuilder {
 
@@ -11,95 +12,72 @@ import Utils from '../utils/utils.js';
      * @param {string} tag 
      */
     constructor(tag) {
-        if (Utils.isValidString(tag)) {
-            this.#element = document.createElement(tag);
-        }
+        this.#element = UIHelper.create(tag);
     }
 
-    /**
-     * Creates a new HTML element with the specified tag.
-     * @param {string} tag
-     * @returns {ElementBuilder}
-     */
-    create(tag) {
-        this.#element = Utils.isValidString(tag) ? document.createElement(tag) : null;
-        return this;
-    }
 
     /**
-     * @param {HTMLElement} element
      * @param {string[]} classNames
      * @returns {ElementBuilder}
      */
     addClass(classNames) {
-        switch(typeof classNames) {
-            case 'string':
-                if (Utils.isValidString(classNames)) 
-                    this.#element.classList.add(classNames);
-                break;
-            case 'object':
-                if (Utils.isStringArray(classNames)) 
-                    this.#element.classList.add(...classNames);
-                break;
-        }
+        this.#element = UIHelper.addClass(this.#element, classNames);
         return this;
     }
 
     /**
-     * @param {HTMLElement} element
      * @param {string[]} classNames
      * @returns {ElementBuilder}
      */
     removeClass(classNames) {
-        switch(typeof classNames) {
-            case 'string':
-                if (Utils.isValidString(classNames)) 
-                    this.#element.classList.remove(classNames);
-                break;
-            case 'object':
-                if (Utils.isStringArray(classNames)) 
-                    this.#element.classList.remove(...classNames);
-                break;
-        }
+        this.#element = UIHelper.removeClass(this.#element, classNames);
         return this;
     }
 
     /**
-     * 
      * @param {string} name 
      * @param {string} value 
      * @returns {ElementBuilder}
      */
     addAttribute(name, value) {
-        if (Utils.isValidString(name) && Utils.isValidString(value)) {
-            this.#element.setAttribute(name, value);
-        }
+        this.#element = UIHelper.addAttribute(this.#element, name, value);
         return this;
     }
 
     /**
-     * 
+     * @param {string} name 
+     * @returns {ElementBuilder}
+     */
+    removeAttribute(name) {
+        this.#element = UIHelper.removeAttribute(this.#element, name);
+        return this;
+    }
+
+     /**
      * @param {string} name 
      * @param {string} value 
      * @returns {ElementBuilder}
      */
-    removeAttribute(name, value) {
-        if (Utils.isValidString(name) && Utils.isValidString(value)) {
-            this.#element.removeAttribute(name, value);
-        }
+    addDataSet(name, value) {
+        this.#element = UIHelper.addDataSet(this.#element, name, value);
         return this;
     }
 
     /**
-     * 
+     * @param {string} name 
+     * @returns {ElementBuilder}
+     */
+    removeDataSet(name) {
+        this.#element = UIHelper.removeDataSet(this.#element, name);
+        return this;
+    }
+
+    /**
      * @param {HTMLElement} child 
      * @returns {ElementBuilder}
      */
     appendChild(child) {
-        if (Utils.isValidHTMLElement(child) &&
-            !this.#element.contains(child)) {
-            this.#element.appendChild(child);
-        }
+        UIHelper.appendChild(this.#element, child);
         return this;
     }
 
@@ -109,10 +87,7 @@ import Utils from '../utils/utils.js';
      * @returns {ElementBuilder}
      */
     removeChild(child) {
-        if (Utils.isValidHTMLElement(child) &&
-            this.#element.contains(child)) {
-            this.#element.removeChild(child);
-        }
+        UIHelper.removeChild(this.#element, child);
         return this;
     }
 

@@ -6,6 +6,7 @@ import { ANIMATIONS } from '../data/animations.data.js';
 import { POINT_TYPES } from '../data/points.data.js';
 
 import PointDirector from './builder-directors/point.director.js';
+import GeneratorDirector from './builder-directors/generator.director.js';
 
 export default class Render {
 
@@ -18,10 +19,10 @@ export default class Render {
     /**
      * 
      * @param {string} pointType
-     * @param {args} args
+     * @param {args} classes
      * @returns {HTMLDivElement}
      */
-    renderPoint(pointType, ...args) {
+    renderPoint(pointType, ...classes) {
 
         // If functions use 'this' context, we need to bind them.
         // In this case, we don't rely on 'this' context
@@ -29,7 +30,7 @@ export default class Render {
             [POINT_TYPES.point]: PointDirector.createBasicPoint,
             [POINT_TYPES.solid_point]: PointDirector.createSolidPoint,
             [POINT_TYPES.energy_point]: PointDirector.createEnergyPoint
-        })[pointType](args);
+        })[pointType](classes);
     }
 
     // TODO: move it to UI Manager future class
@@ -57,7 +58,9 @@ export default class Render {
      * @param {string} generatorName
      * @returns {HTMLDivElement}
      */
-    renderGenerator(generatorName) {
+    renderGenerator(generatorName, ...classes) {
+        return GeneratorDirector.createGenerator(generatorName, classes);
+
         const generator = document.createElement("div");
         generator.setAttribute('id', generatorName);
         generator.classList.add("cell", "m-24", "no-width");

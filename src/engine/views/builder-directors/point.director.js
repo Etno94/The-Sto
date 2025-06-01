@@ -1,5 +1,6 @@
 import ElBuilder from "../element.builder.js";
 import { POINT_TYPES, POINT_CLASSES } from "../../data/points.data.js";
+import { DATA_SET_ATTRs } from "../../data/data-set-attr.data.js";
 
 export default class PointDirector {
 
@@ -9,10 +10,10 @@ export default class PointDirector {
      */
     static createBasicPoint(classes = []) {
         return new ElBuilder('div')
-                .addClass(POINT_CLASSES.point)
-                .addClass(classes)
-                .addAttribute('data-type', POINT_TYPES.point)
-                .finish();
+            .addClass(POINT_CLASSES.point)
+            .addClass(classes)
+            .addDataSet(DATA_SET_ATTRs.type, POINT_TYPES.point)
+            .finish();
     }
 
     /**
@@ -21,15 +22,15 @@ export default class PointDirector {
      */
     static createSolidPoint(classes = []) {
         return new ElBuilder('div')
-                .addClass(POINT_CLASSES.solid_point)
-                .addClass(classes)
-                .addAttribute('data-type', POINT_TYPES.solid_point)
-                .appendChild(
-                    new ElBuilder('div')
-                        .addClass('inner-point')
-                        .finish()
-                )
-                .finish();
+            .addClass(POINT_CLASSES.solid_point)
+            .addClass(classes)
+            .addDataSet(DATA_SET_ATTRs.type, POINT_TYPES.solid_point)
+            .appendChild(
+                new ElBuilder('div')
+                    .addClass('inner-point')
+                    .finish()
+            )
+            .finish();
     }
 
     /**
@@ -38,9 +39,9 @@ export default class PointDirector {
      */
     static createEnergyPoint(classes = []) {
         return new ElBuilder('div')
-                .addClass(POINT_CLASSES.energy_point)
-                .addClass(classes)
-                .addAttribute('data-type', POINT_TYPES.energy_point)
-                .finish();
+            .addClass(POINT_CLASSES.energy_point)
+            .addClass(classes)
+            .addDataSet(DATA_SET_ATTRs.type, POINT_TYPES.energy_point)
+            .finish();
     }
 }
