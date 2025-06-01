@@ -1,5 +1,5 @@
-import PointCollection from "./point.collection.js";
 import { GENERATORS } from "../data/generators.data.js";
+import DataManager from "./data.manager.js";
 
 export default class Generator {
 
@@ -91,7 +91,7 @@ export default class Generator {
      * @return {Object|null}
      */
     getGeneratorData(generatorName) {
-        return GENERATORS.find(generator => generator.name === generatorName) || null;
+        return DataManager.getGeneratorData(generatorName);
     }
 
     /**
