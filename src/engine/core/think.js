@@ -1,6 +1,6 @@
 import { STORAGE_UPGRADES } from "../data/storage.data.js";
 import { ANIMATIONS } from "../data/animations.data.js";
-import { POINT_CLASSES, POINT_TYPES, POINT_PROPS } from "../data/points.data.js";
+import { POINT_TYPES, POINT_PROPS } from "../data/points.data.js";
 
 import Global from "./global.js";
 import GameSave from "./save.js";
@@ -306,7 +306,9 @@ function registerGeneratorAction(generatorElement, generatorName) {
 function showGeneratorElement(generatorElement) {
   if (central.contains(generatorElement)) return;
 
-  central.appendChild(generatorElement);
+  central.insertBefore(
+    generatorElement, 
+    central.children[generator.orderedGens.indexOf(generatorElement.id)]);
   animate.widthIn(generatorElement);
 }
 

@@ -1,4 +1,4 @@
-import {FRESH_SAVE, TEST_SAVES} from '../data/fresh-save.data.js';
+import {FRESH_SAVE, TEST_SAVES} from '../data/save.data.js';
 import SaveProxy from './proxy.js';
 import EventBus from './event-bus.js';
 
