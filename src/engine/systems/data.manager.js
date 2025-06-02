@@ -10,4 +10,11 @@ export default class DataManager {
         return GENERATORS.find(generator => generator.name === generatorName) || null;
     }
 
+    /**
+     * @return {Array}
+     */
+    static getAllGeneratorsData() {
+        return GENERATORS || [];
+    }
+
 }

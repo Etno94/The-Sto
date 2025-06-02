@@ -3,9 +3,26 @@ import DataManager from "./data.manager.js";
 
 export default class Generator {
 
+    /**
+     * @type {string[]}
+     */
+    #orderedGenerators = [];
+
+    /**
+     * @type {string[]}
+     */
     #lockedGenerators = [];
+    /**
+     * @type {string[]}
+     */
     #hintedGenerators = [];
+    /**
+     * @type {string[]}
+     */
     #canBuildGenerators = [];
+    /**
+     * @type {string[]}
+     */
     #builtGenerators = [];
 
     /**
@@ -13,6 +30,7 @@ export default class Generator {
      */
     constructor (generators) {
         if (generators) this.newGenerator(generators);
+        this.setOrderedGenerators();
     }
 
     /**
@@ -59,6 +77,10 @@ export default class Generator {
         });
     }
 
+    setOrderedGenerators() {
+        this.#orderedGenerators = this.getAllGeneratorsData().map(generator => generator.name);
+    }
+
     /**
      * @param { string } generatorName 
      */
@@ -92,6 +114,13 @@ export default class Generator {
      */
     getGeneratorData(generatorName) {
         return DataManager.getGeneratorData(generatorName);
+    }
+
+    /**
+     * @return {Array}
+     */
+    getAllGeneratorsData() {
+        return DataManager.getAllGeneratorsData();
     }
 
     /**
@@ -132,6 +161,13 @@ export default class Generator {
      */
     whatUnlockBuildRequires(generatorName) {
         return this.whatUnlockRequires(generatorName)?.build || null;
+    }
+
+    /**
+     * @returns {string[]}
+     */
+    get orderedGens() {
+        return this.#orderedGenerators;
     }
 
     /**
