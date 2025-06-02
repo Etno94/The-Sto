@@ -163,8 +163,9 @@
 /* Storage */
 
 #storage {
-    flex: 0 1 15%;
+    flex: 1 1 25%;
     width: 100%;
+    max-width: 80%;
     min-height: 68px;
 
     display: flex;
@@ -176,6 +177,7 @@
 #storage #storage-upgrade {
     width: 48px;
     height: 48px;
+    aspect-ratio: 1 / 1;
     background-color: unset;
     border: 1px dashed grey;
     border-radius: 50%;
@@ -186,9 +188,8 @@
     width: auto;
 
     display: flex;
-    align-items: center;
-    align-content: center;
-    justify-content: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
 }
 
 #storage #points div.point {

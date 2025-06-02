@@ -6,7 +6,7 @@ export const FRESH_SAVE = {
     points: FRESH_POINTS,
     points_order: [],
     maxStorageUpgradeCurrentLevel: 0,
-    maxStorage: 3,
+    maxStorage: 30,
     generators: [
         {
             name: GENERATOR_IDS.CLICK,
