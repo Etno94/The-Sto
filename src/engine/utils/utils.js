@@ -29,23 +29,4 @@ export default class Utils {
         });
     }
 
-    // #region Validators
-    static isValidArray(array) {
-        return Array.isArray(array) && array.length > 0 && array.every(item => item !== null && item !== undefined);
-    }
-
-    static isStringArray(array) {
-        return Array.isArray(array) && array.length > 0 && array.every(item => item !== null && item !== undefined && typeof item === 'string');
-    }
-
-    static isValidString(string) {
-        return typeof string === 'string' && string.trim() !== '';
-    }
-
-    static isValidHTMLElement(element) {
-        return element instanceof HTMLElement && element !== null && element !== undefined;
-    }
-
-    // #endregion Validators
-
 }
