@@ -4,6 +4,7 @@ import UIHelper from './ui-helper.js';
 
 import { ANIMATIONS } from '../data/animations.data.js';
 import { POINT_TYPES } from '../data/points.data.js';
+import { DATA_SET_ATTRs, DATA_SET_TYPES } from '../data/data-set-attr.data.js';
 
 import PointDirector from './builder-directors/point.director.js';
 import GeneratorDirector from './builder-directors/generator.director.js';
@@ -68,32 +69,33 @@ export default class Render {
         return GeneratorDirector.createCostPreview();
     }
 
+    // TODO: move it to UI Manager future class
+
     /**
      * @param {HTMLDivElement} parentElement
      * @returns {boolean}
      */
     hasCostPreview(parentElement) {
-        if (parentElement.children) {
-            for (let child of parentElement.children) {
-                if (child.classList.contains('cost-preview'))
-                    return true;
-            }
+        if (!UIHelper.hasChildrens(parentElement)) return false;
+        for (let child of parentElement.children) {
+            if (UIHelper.isDataSetValue(child, DATA_SET_ATTRs.type, DATA_SET_TYPES.costPreview)) return true;
         }
         return false;
     }
 
+    // TODO: move it to UI Manager future class
     /**
      * @param {HTMLDivElement} parentElement
      */
     removeCostPreview(element) {
-        if (element.children) {
-            for (let child of element.children) {
-                if (child.classList.contains('cost-preview'))
-                    element.removeChild(child);
+        UIHelper.applyToChildren(element, (child) => {
+            if (UIHelper.containsClass(child, 'cost-preview') ||
+                UIHelper.hasDataSet(child, DATA_SET_ATTRs.type, DATA_SET_TYPES.costPreview)) {
+                UIHelper.removeChild(element, child);
             }
-        }
+        });
     }
 
-    // #endregion Points
+    // #endregion Generators
 
 }

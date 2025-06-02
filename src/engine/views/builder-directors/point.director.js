@@ -1,6 +1,6 @@
 import ElBuilder from "../element.builder.js";
 import { POINT_TYPES, POINT_CLASSES } from "../../data/points.data.js";
-import { DATA_SET_ATTRs } from "../../data/data-set-attr.data.js";
+import { DATA_SET_ATTRs, DATA_SET_TYPES } from "../../data/data-set-attr.data.js";
 
 export default class PointDirector {
 
@@ -10,8 +10,9 @@ export default class PointDirector {
      */
     static createBasicPoint(classes = []) {
         return new ElBuilder('div')
-            .addClass(POINT_CLASSES.point)
+            .addClass(POINT_CLASSES.point.layer_0)
             .addClass(classes)
+            .addDataSet(DATA_SET_ATTRs.type, DATA_SET_TYPES.point)
             .addDataSet(DATA_SET_ATTRs.pointType, POINT_TYPES.point)
             .finish();
     }
@@ -22,12 +23,13 @@ export default class PointDirector {
      */
     static createSolidPoint(classes = []) {
         return new ElBuilder('div')
-            .addClass(POINT_CLASSES.solid_point)
+            .addClass(POINT_CLASSES.solid_point.layer_0)
             .addClass(classes)
+            .addDataSet(DATA_SET_ATTRs.type, DATA_SET_TYPES.point)
             .addDataSet(DATA_SET_ATTRs.pointType, POINT_TYPES.solid_point)
             .appendChild(
                 new ElBuilder('div')
-                    .addClass('inner-point')
+                    .addClass(POINT_CLASSES.solid_point.layer_1)
                     .finish()
             )
             .finish();
@@ -39,8 +41,9 @@ export default class PointDirector {
      */
     static createEnergyPoint(classes = []) {
         return new ElBuilder('div')
-            .addClass(POINT_CLASSES.energy_point)
+            .addClass(POINT_CLASSES.energy_point.layer_0)
             .addClass(classes)
+            .addDataSet(DATA_SET_ATTRs.type, DATA_SET_TYPES.point)
             .addDataSet(DATA_SET_ATTRs.pointType, POINT_TYPES.energy_point)
             .finish();
     }
