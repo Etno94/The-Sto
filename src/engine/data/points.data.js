@@ -2,9 +2,16 @@
  * @returns {{[key: string]: string[]}}
  */
 export const POINT_CLASSES = {
-    point: ['point'],
-    solid_point: ['point', 'solid'],
-    energy_point: ['point', 'energy']
+    point: {
+        layer_0: ['point']
+    },
+    solid_point: {
+        layer_0: ['point', 'solid'],
+        layer_1: ['inner-point']
+    },
+    energy_point: {
+        layer_0: ['point', 'energy']
+    } 
 }
 
 /**
