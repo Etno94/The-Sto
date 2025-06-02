@@ -2,11 +2,14 @@ import {POINT_PROPS, POINT_TYPES} from '../data/points.data.js';
 
 export default class PointCollection {
 
+    /**
+     * @type { Collection }
+     */
     collection = {};
     totalValue = 0;
 
     /**
-     * @param { {[key: string]: number} } newCollection 
+     * @param { Collection } newCollection 
      */
     constructor(newCollection) {
         for (const point of POINT_PROPS) this.collection[point] = 0;
@@ -14,7 +17,7 @@ export default class PointCollection {
     }
 
     /**
-     * @param {{[key: string]: number}} collectionValues 
+     * @param { Collection } collectionValues 
      */
     set(collectionValues) {
         if (!collectionValues || 
@@ -30,7 +33,7 @@ export default class PointCollection {
     }
 
     /**
-     * @returns {{[key: string]: number}} POINT_PROPS from points.data.js
+     * @returns { Collection } POINT_PROPS from points.data.js
      */
     get collection() {
         return this.collection;
