@@ -1,4 +1,5 @@
-import Utils from '../utils/utils.js';
+// import Utils from '../utils/utils.js';
+import Validators from '../utils/validators.js';
 
 export default class UIHelper {
 
@@ -10,7 +11,7 @@ export default class UIHelper {
      * @returns {boolean}
      */
     static containsClass(element, className) {
-        if (!Utils.isValidString(className)) return false;
+        if (!Validators.isString(className)) return false;
         return element.classList.contains(className);
     }
 
@@ -20,7 +21,7 @@ export default class UIHelper {
      * @returns {boolean}
      */
     static hasAttribute(element, attribute) {
-        if (!Utils.isValidString(attribute)) return false;
+        if (!Validators.isString(attribute)) return false;
         return element.hasAttribute(attribute);
     }
 
@@ -30,7 +31,7 @@ export default class UIHelper {
      * @returns {boolean}
      */
     static hasDataSet(element, datasetName) {
-        if (!Utils.isValidString(datasetName)) return false;
+        if (!Validators.isString(datasetName)) return false;
         return element.hasAttribute(`data-${datasetName}`);
     }
 
@@ -41,8 +42,17 @@ export default class UIHelper {
      * @returns {boolean}
      */
     static isDataSetValue(element, datasetName, value) {
-        if (!Utils.isValidString(datasetName) || !Utils.isValidString(value)) return false;
-        return element.dataset[`data-${datasetName}`] === value;
+        if (!Validators.isString(datasetName) || !Validators.isString(value)) return false;
+        return element.dataset[datasetName] === value;
+    }
+
+    /**
+     * @param {HTMLElement} parent 
+     * @return {boolean}
+     */
+    static hasChildrens(parent) {
+        if (!Validators.isHTMLElement(parent)) return false;
+        return parent.children && parent.children.length > 0;
     }
 
     /**
@@ -51,7 +61,7 @@ export default class UIHelper {
      * @return {boolean}
      */
     static areParentAndChildValid(parent, child) {
-        if (!Utils.isValidHTMLElement(parent) || !Utils.isValidHTMLElement(child)) return false;
+        if (!Validators.isHTMLElement(parent) || !Validators.isHTMLElement(child)) return false;
         return (parent !== child && UIHelper.isParentNode(parent, child));
     }
 
@@ -74,7 +84,7 @@ export default class UIHelper {
      * @returns {HTMLElement}
      */
     static create(tag) {
-        return Utils.isValidString(tag) ? document.createElement(tag) : null;
+        return Validators.isString(tag) ? document.createElement(tag) : null;
     }
 
     // #region Class
@@ -88,11 +98,11 @@ export default class UIHelper {
     static actionOnClass(element, action, classNames ) {
         switch(typeof classNames) {
             case 'string':
-                if (Utils.isValidString(classNames)) 
+                if (Validators.isString(classNames)) 
                     element.classList[action](classNames);
                 break;
             case 'object':
-                if (Utils.isStringArray(classNames)) 
+                if (Validators.isStringArray(classNames)) 
                     element.classList[action](...classNames);
                 break;
         }
@@ -135,7 +145,7 @@ export default class UIHelper {
      * @returns {HTMLElement}
      */
     static addAttribute(element, name, value) {
-        if (Utils.isValidString(name) && Utils.isValidString(value)) {
+        if (Validators.isString(name) && Validators.isString(value)) {
             element.setAttribute(name, value);
         }
         return element;
@@ -147,7 +157,7 @@ export default class UIHelper {
      * @returns {HTMLElement}
      */
     static removeAttribute(name) {
-        if (Utils.isValidString(name)) {
+        if (Validators.isString(name)) {
             element.removeAttribute(name);
         }
         return element;
@@ -160,7 +170,7 @@ export default class UIHelper {
      * @returns {HTMLElement}
      */
     static addDataSet(element, name, value) {
-        if (Utils.isValidString(name) && Utils.isValidString(value)) {
+        if (Validators.isString(name) && Validators.isString(value)) {
             element.setAttribute(`data-${name}`, value);
         }
         return element;
@@ -172,7 +182,7 @@ export default class UIHelper {
      * @returns {HTMLElement}
      */
     static removeDataSet(element, name) {
-        if (Utils.isValidString(name)) {
+        if (Validators.isString(name)) {
             element.removeAttribute(`data-${name}`);
         }
         return element;
@@ -184,7 +194,7 @@ export default class UIHelper {
      * @returns {HTMLElement}
      */
     static appendChild(parent, child) {
-        if (Utils.isValidHTMLElement(child) &&
+        if (Validators.isHTMLElement(child) &&
             !parent.contains(child)) {
             parent.appendChild(child);
         }
@@ -201,4 +211,21 @@ export default class UIHelper {
     }
 
     // #endregion Actions
+
+    // #region Iterators
+
+    static applyToChildren(parent, callback)  {
+
+        if (!Validators.isHTMLElement(parent) || !Validators.isFunction(callback)) return;
+
+        if (!UIHelper.hasChildrens(parent)) return;
+
+        for (let child of parent.children) {
+            if (Validators.isHTMLElement(child)) {
+                callback(child);
+            }
+        }
+    }
+
+    // #endregion Iterators
 }
