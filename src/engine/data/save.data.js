@@ -2,11 +2,16 @@ import { GENERATOR_IDS } from './generators.data.js';
 import { FRESH_POINTS } from './points.data.js';
 
 
+/**
+ * @type { SaveType }
+ */
 export const FRESH_SAVE = {
     points: FRESH_POINTS,
     points_order: [],
-    maxStorageUpgradeCurrentLevel: 0,
-    maxStorage: 30,
+    storage: {
+        maxStorageUpgradeCurrentLevel: 0,
+        maxStorage: 3,
+    },
     generators: [
         {
             name: GENERATOR_IDS.CLICK,
@@ -24,12 +29,17 @@ export const FRESH_SAVE = {
     ]
 }
 
+/**
+ * @type { SaveType[] }
+ */
 export const TEST_SAVES = [
     {
         points: FRESH_POINTS,
         points_order: [],
-        maxStorageUpgradeCurrentLevel: 0,
-        maxStorage: 3,
+        storage: {
+            maxStorageUpgradeCurrentLevel: 0,
+            maxStorage: 3,
+        },
         generators: [
             {
                 name: GENERATOR_IDS.CLICK,

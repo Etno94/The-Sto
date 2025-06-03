@@ -1,11 +1,12 @@
-import { STORAGE_UPGRADES } from "../data/storage.data.js";
 import { ANIMATIONS } from "../data/animations.data.js";
 import { POINT_TYPES, POINT_PROPS } from "../data/points.data.js";
 
 import Global from "./global.js";
 import GameSave from "./save.js";
+
 import PointCollection from "../systems/point.collection.js";
 import Generator from "../systems/generator.manager.js";
+import StorageManager from "../systems/storage.manager.js";
 
 import Render from "../views/render.factory.js";
 import Animate from "../views/animate.js";
@@ -17,6 +18,7 @@ const updateInterval = 1600;
 const render = new Render();
 const animate = new Animate();
 const generator = new Generator();
+const storageManager = new StorageManager();
 
 const animations = ANIMATIONS;
 const pointProps = POINT_PROPS;
@@ -58,7 +60,12 @@ function addPoints(generatorName) {
   if (!hasEnoughPoints(pointsToConsumeCollection)) return;
 
   let pointsToGenerate = new PointCollection(generator.whatGenerates(generatorName));
-  if (doesOvercap(pointsToGenerate.total, pointsToConsumeCollection)) return;
+  let totalPoints = new PointCollection(Global.proxy.points).total;
+
+  if (storageManager.doesOvercap(totalPoints, pointsToGenerate.total, pointsToConsume.total)) {
+    animate.timedOut(pointsContainer, animations.tilt);
+    return;
+  }
 
   // Consume
   if (pointsToConsume.total) {
@@ -92,18 +99,18 @@ export function hasEnoughPoints(pointsToMeet) {
  * @param {PointCollection.collection} pointsToConsume
  * @returns {Boolean}
  */
-function doesOvercap(totalToGenerate, pointsToConsume) {
-  let doesOvercap = false;
-  let pointsSum = 0;
-  for (const type of pointProps) {
-    pointsSum += Global.proxy.points[type] - pointsToConsume[type];
-  }
-  if (pointsSum + totalToGenerate > Global.proxy.maxStorage) {
-    animate.timedOut(pointsContainer, animations.tilt);
-    doesOvercap = true;
-  }
-  return doesOvercap;
-}
+// function doesOvercap(totalToGenerate, pointsToConsume) {
+//   let doesOvercap = false;
+//   let pointsSum = 0;
+//   for (const type of pointProps) {
+//     pointsSum += Global.proxy.points[type] - pointsToConsume[type];
+//   }
+//   if (pointsSum + totalToGenerate > Global.proxy.maxStorage) {
+//     animate.timedOut(pointsContainer, animations.tilt);
+//     doesOvercap = true;
+//   }
+//   return doesOvercap;
+// }
 
 /**
  * @param {PointCollection.collection} pointsToConsume
@@ -448,6 +455,7 @@ function startGame() {
     Object.assign(Global.proxy, save);
   }
   generator.newGenerator(Global.proxy.generators);
+  storageManager.setCurrentStorage(Global.proxy.storage.maxStorageUpgradeCurrentLevel);
 
   Global.saveProxy.subscribe((updatedSave) => {
     GameSave.save(updatedSave);

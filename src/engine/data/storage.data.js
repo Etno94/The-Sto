@@ -1,9 +1,11 @@
 export const STORAGE_UPGRADES = {
-    maxStorageUpgradeCurrentLevel: 0,
-    initialMaxStorage: 3,
-    maxStorageUpgrade: 1,
-    maxStorageUpgradeMaxLevel: 7,
-    maxStorageUpgradeCostFormula: (maxStorageUpgradeCurrentLevel) => 2 ^ maxStorageUpgradeCurrentLevel,
-    currentMaxStorage: (initialMaxStorage, maxStorageUpgradeCurrentLevel, maxStorageUpgrade) => initialMaxStorage + (maxStorageUpgradeCurrentLevel * maxStorageUpgrade),
-}
-
+    baseMaxStorage: 3,
+    maxStorageUpgrade: {
+        interval: 1,
+        maxLevel: 7,
+        costFormula: (currentMaxStorageLevel) => 2 ** currentMaxStorageLevel
+    },
+    getCurrentMaxStorage: (currentMaxStorageLevel) => {
+        return STORAGE_UPGRADES.baseMaxStorage + ( currentMaxStorageLevel * STORAGE_UPGRADES.maxStorageUpgrade.interval);
+    }
+};
