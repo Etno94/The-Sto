@@ -19,7 +19,7 @@ export default class StorageManager {
     }
 
     /**
-     * @param { number } currentUpgradeLevel 
+     * @param { number } [currentUpgradeLevel] 
      */
     setCurrentStorage(currentUpgradeLevel) {
         this.#currentUpgradeLevel = currentUpgradeLevel;

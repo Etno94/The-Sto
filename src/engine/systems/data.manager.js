@@ -2,20 +2,22 @@ import { GENERATORS } from '../data/generators.data.js';
 import { STORAGE_UPGRADES } from '../data/storage.data.js';
 import Utils from '../utils/utils.js';
 
+/// <reference path="../types/data-generator.type.js" />
+
 export default class DataManager {
 
     // #region Generators
 
     /**
      * @param { string } generatorName 
-     * @return {Object|null}
+     * @return { DataGenerator | null }
      */
     static getGeneratorData(generatorName) {
         return Utils.deepCopy(GENERATORS.find(generator => generator.name === generatorName)) || null;
     }
 
     /**
-     * @return {Array}
+     * @return { DataGenerator[] }
      */
     static getAllGeneratorsData() {
         return Utils.arrCopy(GENERATORS) || [];

@@ -5,6 +5,9 @@ export const GENERATOR_IDS = {
     COOLDOWN: 'cooldownGenerator'
 }
 
+/**
+ * @type {DataGenerator}
+ */
 const CLICK_GENERATOR = {
     name: GENERATOR_IDS.CLICK,
     generates: {
@@ -12,6 +15,9 @@ const CLICK_GENERATOR = {
     }
 }
 
+/**
+ * @type {DataGenerator}
+ */
 const COOLDOWN_GENERATOR = {
     name: GENERATOR_IDS.COOLDOWN,
     generates: {
@@ -36,6 +42,9 @@ const COOLDOWN_GENERATOR = {
     }
 }
 
+/**
+ * @type {DataGenerator[]}
+ */
 export const GENERATORS = [
     CLICK_GENERATOR,
     COOLDOWN_GENERATOR
