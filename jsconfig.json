@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    // "checkJs": true,
+    "baseUrl": ".",
+    "noEmit": true,
+    "strict": false,
+    "allowJs": true,
+    "maxNodeModuleJsDepth": 2
+  },
+  "include": ["src", "types"]
+}
