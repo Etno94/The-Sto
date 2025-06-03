@@ -1,9 +1,12 @@
+import Validators from './validators.js';
+import Errors from './errors.js';
+
 export default class Utils {
     constructor() {}
 
     static getNumberFromMSValue (value) {
         if (typeof value !== 'string') {
-            throw new Error(`Invalid value: ${value}. Expected a string with 'ms' suffix.`);
+            Errors.throwError(`Invalid value: ${value}. Expected a string with 'ms' suffix.`);
         }
         return Number(value.split('ms')[0]);
     }
@@ -27,6 +30,27 @@ export default class Utils {
             }
             requestAnimationFrame(frame);
         });
+    }
+
+    static shallowCopy(obj) {
+        if (!Validators.isObject(obj)) {
+            Errors.throwError(`Invalid object: ${obj}. Expected a non-null object.`);
+        }
+        return { ...obj };
+    }
+
+    static deepCopy(obj) {
+        if (!Validators.isObject(obj)) {
+            Errors.throwError(`Invalid object: ${obj}. Expected a non-null object.`);
+        }
+        return JSON.parse(JSON.stringify(obj));
+    }
+
+    static arrCopy(arr) {
+        if (!Validators.isArray(arr)) {
+            Errors.throwError(`Invalid array: ${arr}. Expected a non-empty array.`);
+        }
+        return arr.slice();
     }
 
 }

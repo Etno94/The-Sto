@@ -1,7 +1,11 @@
 import { GENERATORS } from "../data/generators.data.js";
 import DataManager from "./data.manager.js";
+import Global from "../core/global.js";
+import Utils from "../utils/utils.js";
+import Validators from '../utils/validators.js';
+import Errors from '../utils/errors.js';
 
-export default class Generator {
+export default class GeneratorManager {
 
     /**
      * @type {string[]}
@@ -25,26 +29,34 @@ export default class Generator {
      */
     #builtGenerators = [];
 
-    /**
-     * @param {Object[]} generators 
-     */
-    constructor (generators) {
-        if (generators) this.newGenerator(generators);
-        this.setOrderedGenerators();
+
+    constructor () {
+        this.#setOrderedGenerators();
     }
 
-    /**
-     * @param {Object[]} generators 
-     */
-    newGenerator(generators) {
-        this.setGenerators(this.sanitizeGenerators(generators));
+    // #region Setup
+
+    #setOrderedGenerators() {
+        this.#orderedGenerators = this.getAllGeneratorsData().map(generator => generator.name);
+    }
+
+    setNewGeneratorManager() {
+        this.#resetGenerators();
+        this.#setGenerators(this.#sanitizeGenerators(Global.proxy.generators));
+    }
+
+    #resetGenerators() {
+        this.#lockedGenerators = [];
+        this.#hintedGenerators = [];
+        this.#canBuildGenerators = [];
+        this.#builtGenerators = [];
     }
 
     /**
      * @param {Object[]} generators
      * @returns {Object}
      */
-    sanitizeGenerators(generators) {
+    #sanitizeGenerators(generators) {
         let sanitizedGenerators = [];
         // Passed generators must exist in the code base
         sanitizedGenerators = generators.filter(generator => generator.name && GENERATORS.find(gen => gen.name === generator.name));
@@ -56,7 +68,7 @@ export default class Generator {
         return sanitizedGenerators;
     }
 
-    setGenerators(generators) {
+    #setGenerators(generators) {
         generators.forEach(generator => {
             if (!generator.hinted && !generator.canBuild && !generator.built) {
                 this.#lockedGenerators.push(generator.name);
@@ -77,37 +89,17 @@ export default class Generator {
         });
     }
 
-    setOrderedGenerators() {
-        this.#orderedGenerators = this.getAllGeneratorsData().map(generator => generator.name);
-    }
+    // #endregion Setup
+
+    // #region Get Data
 
     /**
-     * @param { string } generatorName 
+     * @return {Array}
      */
-    canBeHinted(generatorName) {
-        let generatorIndexToRemove = this.#lockedGenerators.indexOf(generatorName);
-        let [generatorToBeHinted] = this.#lockedGenerators.splice(generatorIndexToRemove, 1);
-        this.#hintedGenerators.push(generatorToBeHinted);
+    getAllGeneratorsData() {
+        return DataManager.getAllGeneratorsData();
     }
-
-    /**
-     * @param { string } generatorName 
-     */
-    canBeBuilt(generatorName) {
-        let generatorIndexToRemove = this.#hintedGenerators.indexOf(generatorName);
-        let [generatorToBeBuildable] = this.#hintedGenerators.splice(generatorIndexToRemove, 1);
-        this.#canBuildGenerators.push(generatorToBeBuildable);
-    }
-
-    /**
-     * @param { string } generatorName 
-     */
-    isBuilt (generatorName) {
-        let generatorIndexToRemove = this.#canBuildGenerators.indexOf(generatorName);
-        let [generatorBuilt] = this.#canBuildGenerators.splice(generatorIndexToRemove, 1);
-        this.#builtGenerators.push(generatorBuilt);
-    }
-
+    
     /**
      * @param { string } generatorName 
      * @return {Object|null}
@@ -117,10 +109,12 @@ export default class Generator {
     }
 
     /**
-     * @return {Array}
+     * @param {string} generatorName 
+     * @returns {Object | null}
      */
-    getAllGeneratorsData() {
-        return DataManager.getAllGeneratorsData();
+    getProxySaveGenerator(generatorName) {
+        const generator = Global.proxy.generators.find(generator=> generator.name === generatorName);
+        return Utils.deepCopy(generator);
     }
 
     /**
@@ -163,38 +157,89 @@ export default class Generator {
         return this.whatUnlockRequires(generatorName)?.build || null;
     }
 
+    // #endregion Get Data
+
+    // #region Manage
+
+    /**
+     * @param { string } generatorName 
+     */
+    canBeHinted(generatorName) {
+        let generatorIndexToRemove = this.#lockedGenerators.indexOf(generatorName);
+        let [generatorToBeHinted] = this.#lockedGenerators.splice(generatorIndexToRemove, 1);
+        this.#hintedGenerators.push(generatorToBeHinted);
+    }
+
+    /**
+     * @param { string } generatorName 
+     */
+    canBeBuilt(generatorName) {
+        let generatorIndexToRemove = this.#hintedGenerators.indexOf(generatorName);
+        let [generatorToBeBuildable] = this.#hintedGenerators.splice(generatorIndexToRemove, 1);
+        this.#canBuildGenerators.push(generatorToBeBuildable);
+    }
+
+    /**
+     * @param { string } generatorName 
+     */
+    isBuilt (generatorName) {
+        let generatorIndexToRemove = this.#canBuildGenerators.indexOf(generatorName);
+        let [generatorBuilt] = this.#canBuildGenerators.splice(generatorIndexToRemove, 1);
+        this.#builtGenerators.push(generatorBuilt);
+    }
+    
+    // #endregion Manage
+
+    // #region Access
+
+
+    getOrderedGeneratorIndex(generatorName) {
+        if (!Validators.isString(generatorName)) {
+            Errors.logError(new Error(`GeneratorName ${generatorName} is not a valid string.`));
+            return 0;
+        }
+        const index = this.#orderedGenerators.indexOf(generatorName);
+        if (index === -1) {
+            Errors.logError(new Error(`Generator ${generatorName} not found in ordered generators.`));
+            return 0;
+        }
+        return index;
+    }
+
     /**
      * @returns {string[]}
      */
     get orderedGens() {
-        return this.#orderedGenerators;
+        return Utils.arrCopy(this.#orderedGenerators);
     }
 
     /**
      * @returns {string[]}
      */
     get lockedGens() {
-        return this.#lockedGenerators;
+        return Utils.arrCopy(this.#lockedGenerators);
     }
 
     /**
      * @returns {string[]}
      */
     get hintedGens() {
-        return this.#hintedGenerators;
+        return Utils.arrCopy(this.#hintedGenerators);
     }
 
     /**
      * @returns {string[]}
      */
     get canBuildGens() {
-        return this.#canBuildGenerators;
+        return Utils.arrCopy(this.#canBuildGenerators);
     }
 
     /**
      * @returns {string[]}
      */
     get builtGens() {
-        return this.#builtGenerators;
+        return Utils.arrCopy(this.#builtGenerators);
     }
+
+    // #endregion Access
 }

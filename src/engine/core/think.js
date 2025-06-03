@@ -5,7 +5,7 @@ import Global from "./global.js";
 import GameSave from "./save.js";
 
 import PointCollection from "../systems/point.collection.js";
-import Generator from "../systems/generator.manager.js";
+import GeneratorManager from "../systems/generator.manager.js";
 import StorageManager from "../systems/storage.manager.js";
 
 import Render from "../views/render.factory.js";
@@ -17,8 +17,8 @@ const updateInterval = 1600;
 
 const render = new Render();
 const animate = new Animate();
-const generator = new Generator();
-const storageManager = new StorageManager();
+const generatorM = new GeneratorManager();
+const storageM = new StorageManager();
 
 const animations = ANIMATIONS;
 const pointProps = POINT_PROPS;
@@ -52,24 +52,23 @@ dump.addEventListener("click", () => dumpAllPoints());
 
 function addPoints(generatorName) {
   // Guards
-  if (!generator.getGeneratorData(generatorName)) return;
+  if (!generatorM.getGeneratorData(generatorName)) return;
 
-  let pointsToConsume = new PointCollection(generator.whatConsumes(generatorName));
-  let pointsToConsumeCollection = pointsToConsume.collection;
+  let pointsToConsume = new PointCollection(generatorM.whatConsumes(generatorName));
 
-  if (!hasEnoughPoints(pointsToConsumeCollection)) return;
+  if (!hasEnoughPoints(pointsToConsume.collection)) return;
 
-  let pointsToGenerate = new PointCollection(generator.whatGenerates(generatorName));
+  let pointsToGenerate = new PointCollection(generatorM.whatGenerates(generatorName));
   let totalPoints = new PointCollection(Global.proxy.points).total;
 
-  if (storageManager.doesOvercap(totalPoints, pointsToGenerate.total, pointsToConsume.total)) {
+  if (storageM.doesOvercap(totalPoints, pointsToGenerate.total, pointsToConsume.total)) {
     animate.timedOut(pointsContainer, animations.tilt);
     return;
   }
 
   // Consume
   if (pointsToConsume.total) {
-    consumePoints(pointsToConsumeCollection);
+    consumePoints(pointsToConsume.collection);
   }
 
   // Generate
@@ -93,24 +92,6 @@ export function hasEnoughPoints(pointsToMeet) {
   }
   return hasEnoughPoints;
 }
-
-/**
- * @param {Number} totalToGenerate
- * @param {PointCollection.collection} pointsToConsume
- * @returns {Boolean}
- */
-// function doesOvercap(totalToGenerate, pointsToConsume) {
-//   let doesOvercap = false;
-//   let pointsSum = 0;
-//   for (const type of pointProps) {
-//     pointsSum += Global.proxy.points[type] - pointsToConsume[type];
-//   }
-//   if (pointsSum + totalToGenerate > Global.proxy.maxStorage) {
-//     animate.timedOut(pointsContainer, animations.tilt);
-//     doesOvercap = true;
-//   }
-//   return doesOvercap;
-// }
 
 /**
  * @param {PointCollection.collection} pointsToConsume
@@ -151,10 +132,10 @@ function checkUnlocks() {
 }
 
 function checkGeneratorUnlocks() {
-  checkLockedGenerators([...generator.lockedGens]);
-  checkHintedGenerators([...generator.hintedGens]);
-  checkCanBeBuiltGenerators([...generator.canBuildGens]);
-  checkBuiltGenerators([...generator.builtGens]);
+  checkLockedGenerators([...generatorM.lockedGens]);
+  checkHintedGenerators([...generatorM.hintedGens]);
+  checkCanBeBuiltGenerators([...generatorM.canBuildGens]);
+  checkBuiltGenerators([...generatorM.builtGens]);
 }
 
 /**
@@ -169,7 +150,7 @@ function checkLockedGenerators(generators) {
 
     if (hasEnoughPoints(dataGenerator.unlockRequires.hint)) {
       if (!proxyGenerator.hinted) proxyGenerator.hinted = true;
-      generator.canBeHinted(generatorName);
+      generatorM.canBeHinted(generatorName);
     } else {
       if (proxyGenerator.hinted) proxyGenerator.hinted = false;
     }
@@ -188,7 +169,7 @@ function checkHintedGenerators(generators) {
 
     if (hasEnoughPoints(dataGenerator.unlockRequires.build)) {
       proxyGenerator.canBuild = true;
-      generator.canBeBuilt(generatorName);
+      generatorM.canBeBuilt(generatorName);
     } 
     else {
       const generatorElement = getGeneratorElement(generatorName);
@@ -242,7 +223,7 @@ function getProxySaveGenerator(generatorName) {
  * @returns {Object | null}
  */
 function getGeneratorData(generatorName) {
-  return generator.getGeneratorData(generatorName);
+  return generatorM.getGeneratorData(generatorName);
 }
 
 
@@ -315,7 +296,9 @@ function showGeneratorElement(generatorElement) {
 
   central.insertBefore(
     generatorElement, 
-    central.children[generator.orderedGens.indexOf(generatorElement.id)]);
+    central.children[
+      generatorM.getOrderedGeneratorIndex(generatorElement.id)
+    ]);
   animate.widthIn(generatorElement);
 }
 
@@ -340,7 +323,7 @@ function buildGenerator(generatorName) {
 
   if (proxyGenerator.progress >= dataGenerator.buildRequires.totalSteps) {
     proxyGenerator.built = true;
-    generator.isBuilt(generatorName);
+    generatorM.isBuilt(generatorName);
     checkGeneratorBuilt(generatorName);
   }
 }
@@ -381,7 +364,7 @@ function generatorOnClick(generatorName) {
 // #region Render
 
 /**
- * @param {PointCollection} points
+ * @param {Collection} points
  * @param {string[]} orderedPoints
  */
 function setStoragePoints(points, orderedPoints) {
@@ -454,8 +437,8 @@ function startGame() {
   if(save && typeof save === 'object') {
     Object.assign(Global.proxy, save);
   }
-  generator.newGenerator(Global.proxy.generators);
-  storageManager.setCurrentStorage(Global.proxy.storage.maxStorageUpgradeCurrentLevel);
+  generatorM.setNewGeneratorManager();
+  storageM.setCurrentStorage(Global.proxy.storage.maxStorageUpgradeCurrentLevel);
 
   Global.saveProxy.subscribe((updatedSave) => {
     GameSave.save(updatedSave);

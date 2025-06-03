@@ -1,10 +1,23 @@
 export default class Validators {
+
+    static isNotNullNorUndefined(value) {
+        return value !== null && value !== undefined;
+    }
+
+    static isObject(obj) {
+        return obj !== null && typeof obj === 'object' && !Array.isArray(obj);
+    }
+
     static isArray(array) {
-        return Array.isArray(array) && array.length > 0 && array.every(item => item !== null && item !== undefined);
+        return Array.isArray(array) && array.every(item => Validators.isNotNullNorUndefined(item));
+    }
+
+    static isNonEmptyArray(array) {
+        return Validators.isArray(array) && array.length > 0;
     }
 
     static isStringArray(array) {
-        return Array.isArray(array) && array.length > 0 && array.every(item => item !== null && item !== undefined && typeof item === 'string');
+        return Validators.isArray(array) && array.every(item => typeof item === 'string');
     }
 
     static isString(string) {
@@ -12,10 +25,14 @@ export default class Validators {
     }
 
     static isHTMLElement(element) {
-        return element instanceof HTMLElement && element !== null && element !== undefined;
+        return element instanceof HTMLElement && Validators.isNotNullNorUndefined(element);
     }
 
     static isFunction(func) {
-        return typeof func === 'function' && func !== null && func !== undefined;
+        return typeof func === 'function' && Validators.isNotNullNorUndefined(func);
+    }
+
+    static isProxy(proxy) {
+        return proxy instanceof Proxy && Validators.isNotNullNorUndefined(proxy);
     }
 }

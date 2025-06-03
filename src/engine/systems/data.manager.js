@@ -1,5 +1,6 @@
 import { GENERATORS } from '../data/generators.data.js';
 import { STORAGE_UPGRADES } from '../data/storage.data.js';
+import Utils from '../utils/utils.js';
 
 export default class DataManager {
 
@@ -10,14 +11,14 @@ export default class DataManager {
      * @return {Object|null}
      */
     static getGeneratorData(generatorName) {
-        return GENERATORS.find(generator => generator.name === generatorName) || null;
+        return Utils.deepCopy(GENERATORS.find(generator => generator.name === generatorName)) || null;
     }
 
     /**
      * @return {Array}
      */
     static getAllGeneratorsData() {
-        return GENERATORS || [];
+        return Utils.arrCopy(GENERATORS) || [];
     }
 
     // #endregion Generators
@@ -25,15 +26,15 @@ export default class DataManager {
     // #region Storage
 
     static getMaxStorageData() {
-        return STORAGE_UPGRADES;
+        return Utils.deepCopy(STORAGE_UPGRADES);
     }
 
     static getBaseMaxStorage() {
-        return STORAGE_UPGRADES.baseMaxStorage;
+        return Utils.deepCopy(STORAGE_UPGRADES.baseMaxStorage);
     }
 
     static getMaxStorageUpgrade() {
-        return STORAGE_UPGRADES.maxStorageUpgrade;
+        return Utils.deepCopy(STORAGE_UPGRADES.maxStorageUpgrade);
     }
 
     static getCurrentMaxStorageCalc(currentMaxStorageLevel) {
