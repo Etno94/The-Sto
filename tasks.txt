@@ -1,6 +1,11 @@
 Tareas:
 
 - desacoplar elementos de generadores del id, plasmar estilos a traves de clases
+- implementar event bus en conjunto con Proxy
+
+Nice to have:
+
+- tipar todos los parametros y obj
 
 Bugs:
 
