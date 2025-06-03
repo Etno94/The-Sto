@@ -52,7 +52,7 @@ dump.addEventListener("click", () => dumpAllPoints());
 
 function addPoints(generatorName) {
   // Guards
-  if (!generatorM.getGeneratorData(generatorName)) return;
+  if (!generatorM.isValidGenerator(generatorName)) return;
 
   let pointsToConsume = new PointCollection(generatorM.whatConsumes(generatorName));
 
@@ -80,7 +80,7 @@ function addPoints(generatorName) {
 }
 
 /**
- * @param {PointCollection.collection} pointsToMeet
+ * @param {PointSet} pointsToMeet
  * @returns {Boolean}
  */
 export function hasEnoughPoints(pointsToMeet) {
@@ -94,7 +94,7 @@ export function hasEnoughPoints(pointsToMeet) {
 }
 
 /**
- * @param {PointCollection.collection} pointsToConsume
+ * @param {PointSet} pointsToConsume
  */
 function consumePoints(pointsToConsume) {
   if (!pointsToConsume || typeof pointsToConsume !== 'object') return;

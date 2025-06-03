@@ -118,6 +118,14 @@ export default class GeneratorManager {
     }
 
     /**
+     * @param {string} generatorName 
+     * @returns {boolean}
+     */
+    isValidGenerator(generatorName) {
+        return Validators.isNotNullNorUndefined(this.getGeneratorData(generatorName));
+    }
+
+    /**
      * @param { string } generatorName
      * @return {Object|null}
      */
