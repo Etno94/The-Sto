@@ -182,12 +182,10 @@ function checkHintedGenerators(generators) {
 function checkCanBeBuiltGenerators(generators) {
 
   generators.forEach(generatorName => {
-    let proxyGenerator = getProxySaveGenerator(generatorName);
-    let dataGenerator = generatorM.getGeneratorData(generatorName);
-    if (!proxyGenerator) return;
+    if (!generatorM.isValidGenerator(generatorName)) return;
 
     const generatorElement = getGeneratorElement(generatorName);
-    showBuild(generatorElement, dataGenerator.buildRequires.step);
+    showBuild(generatorElement, generatorM.whatBuildStepRequires(generatorName));
     registerGeneratorAction(generatorElement, generatorName);
   });
 }
@@ -198,8 +196,7 @@ function checkCanBeBuiltGenerators(generators) {
 function checkBuiltGenerators(generators) {
 
   generators.forEach(generatorName => {
-    let proxyGenerator = getProxySaveGenerator(generatorName);
-    if (!proxyGenerator) return;
+    if (!generatorM.isValidGenerator(generatorName)) return;
 
     const generatorElement = getGeneratorElement(generatorName);
     showGeneratorElement(generatorElement);

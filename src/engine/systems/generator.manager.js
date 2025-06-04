@@ -149,7 +149,7 @@ export default class GeneratorManager {
      * @return { PointSet | null}
      */
     whatConsumes(generatorName) {
-        return this.getGeneratorData(generatorName)?.consumes || null;
+        return Utils.deepCopy(this.getGeneratorData(generatorName))?.consumes || null;
     }
 
     /**
@@ -157,14 +157,14 @@ export default class GeneratorManager {
      * @return { PointSet | null}
      */
     whatGenerates(generatorName) {
-        return this.getGeneratorData(generatorName)?.generates || null;
+        return Utils.deepCopy(this.getGeneratorData(generatorName))?.generates || null;
     }
 
     /**
      * @param { string } generatorName 
      * @return { UnlockRequires | null}
      */
-    whatUnlockRequires(generatorName) {
+    #whatUnlockRequires(generatorName) {
         return this.getGeneratorData(generatorName)?.unlockRequires || null;
     }
 
@@ -173,7 +173,7 @@ export default class GeneratorManager {
      * @return { PointSet | null}
      */
     whatUnlockHintRequires(generatorName) {
-        return this.whatUnlockRequires(generatorName)?.hint || null;
+        return Utils.deepCopy(this.#whatUnlockRequires(generatorName))?.hint || null;
     }
 
     /**
@@ -181,10 +181,32 @@ export default class GeneratorManager {
      * @return { PointSet | null}
      */
     whatUnlockBuildRequires(generatorName) {
-        return this.whatUnlockRequires(generatorName)?.build || null;
+        return Utils.deepCopy(this.#whatUnlockRequires(generatorName))?.build || null;
     }
 
-    // TODO: What Build Requires
+    /**
+     * @param { string } generatorName 
+     * @return { BuildRequires | null}
+     */
+    #whatBuildRequires(generatorName) {
+        return this.getGeneratorData(generatorName)?.buildRequires || null;
+    }
+
+    /**
+     * @param { string } generatorName 
+     * @return { PointSet | null}
+     */
+    whatBuildStepRequires(generatorName) {
+        return Utils.deepCopy(this.#whatBuildRequires(generatorName))?.step || null;
+    }
+
+    /**
+     * @param { string } generatorName 
+     * @return { PointSet | null}
+     */
+    whatBuildTotalStepsRequires(generatorName) {
+        return Utils.deepCopy(this.#whatBuildRequires(generatorName))?.totalSteps || null;
+    }
 
 
     /**
