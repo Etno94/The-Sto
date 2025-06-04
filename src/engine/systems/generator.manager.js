@@ -94,6 +94,24 @@ export default class GeneratorManager {
     // #region Get Data
 
     /**
+     * @param {string} generatorName 
+     * @returns {number}
+     */
+    getOrderedGeneratorIndex(generatorName) {
+        if (!Validators.isString(generatorName)) {
+            Errors.logError(new Error(`GeneratorName ${generatorName} is not a valid string.`));
+            return 0;
+        }
+        const index = this.#orderedGenerators.indexOf(generatorName);
+        if (index === -1) {
+            Errors.logError(new Error(`Generator ${generatorName} not found in ordered generators.`));
+            return 0;
+        }
+        return index;
+    }
+
+
+    /**
      * @return {Array}
      */
     getAllGeneratorsData() {
@@ -102,7 +120,7 @@ export default class GeneratorManager {
     
     /**
      * @param { string } generatorName 
-     * @return {Object|null}
+     * @return { DataGenerator | null }
      */
     getGeneratorData(generatorName) {
         return DataManager.getGeneratorData(generatorName);
@@ -112,10 +130,10 @@ export default class GeneratorManager {
      * @param {string} generatorName 
      * @returns {Object | null}
      */
-    getProxySaveGenerator(generatorName) {
-        const generator = Global.proxy.generators.find(generator=> generator.name === generatorName);
-        return Utils.deepCopy(generator);
+    #getProxySaveGenerator(generatorName) {
+        return Global.proxy.generators.find(generator=> generator.name === generatorName);
     }
+
 
     /**
      * @param {string} generatorName 
@@ -125,9 +143,10 @@ export default class GeneratorManager {
         return Validators.isNotNullNorUndefined(this.getGeneratorData(generatorName));
     }
 
+
     /**
      * @param { string } generatorName
-     * @return {Object|null}
+     * @return { PointSet | null}
      */
     whatConsumes(generatorName) {
         return this.getGeneratorData(generatorName)?.consumes || null;
@@ -135,7 +154,7 @@ export default class GeneratorManager {
 
     /**
      * @param { string } generatorName 
-     * @return {Object|null}
+     * @return { PointSet | null}
      */
     whatGenerates(generatorName) {
         return this.getGeneratorData(generatorName)?.generates || null;
@@ -143,7 +162,7 @@ export default class GeneratorManager {
 
     /**
      * @param { string } generatorName 
-     * @return {Object|null}
+     * @return { UnlockRequires | null}
      */
     whatUnlockRequires(generatorName) {
         return this.getGeneratorData(generatorName)?.unlockRequires || null;
@@ -151,7 +170,7 @@ export default class GeneratorManager {
 
     /**
      * @param { string } generatorName 
-     * @return {Object|null}
+     * @return { PointSet | null}
      */
     whatUnlockHintRequires(generatorName) {
         return this.whatUnlockRequires(generatorName)?.hint || null;
@@ -159,15 +178,88 @@ export default class GeneratorManager {
 
     /**
      * @param { string } generatorName 
-     * @return {Object|null}
+     * @return { PointSet | null}
      */
     whatUnlockBuildRequires(generatorName) {
         return this.whatUnlockRequires(generatorName)?.build || null;
     }
 
+    // TODO: What Build Requires
+
+
+    /**
+     * @param {string} generatorName
+     * @param {string} prop
+     * @returns {boolean}
+     */
+    #isProp(generatorName, prop) {
+        if (!Validators.isString(generatorName)) return false;
+        return this.#getProxySaveGenerator(generatorName)[prop] ?? false;
+    }
+
+    /**
+     * @param {string} generatorName 
+     * @returns {boolean}
+     */
+    isHinted(generatorName) {
+        return this.#isProp(generatorName, 'hinted');
+    }
+
+    /**
+     * @param {string} generatorName 
+     * @returns {boolean}
+     */
+    isBuildable(generatorName) {
+        return this.#isProp(generatorName, 'canBuild');
+    }
+
+    /**
+     * @param {string} generatorName 
+     * @returns {boolean}
+     */
+    isBuilt(generatorName) {
+        return this.#isProp(generatorName, 'built');
+    }
+
     // #endregion Get Data
 
     // #region Manage
+
+    /**
+     * @param { string } generatorName
+     * @param { string } prop
+     * @param {boolean} value
+     * @return {boolean}
+     */
+    #setProp(generatorName, prop, value) {
+        if (!Validators.isString(generatorName)) return false;
+        this.#getProxySaveGenerator(generatorName)[prop] = value;
+    }
+
+    /**
+     * @param { string } generatorName
+     * @param { boolean } value
+     */
+    setHinted(generatorName, value = true) {
+        this.#setProp(generatorName, 'hinted', value);
+    }
+
+    /**
+     * @param { string } generatorName
+     * @param { boolean } value
+     */
+    setBuildable(generatorName, value = true) {
+        this.#setProp(generatorName, 'canBuild', value);
+    }
+
+    /**
+     * @param { string } generatorName
+     * @param { boolean } value
+     */
+    setBuilt(generatorName, value = true) {
+        this.#setProp(generatorName, 'built', value);
+    }
+
 
     /**
      * @param { string } generatorName 
@@ -190,7 +282,7 @@ export default class GeneratorManager {
     /**
      * @param { string } generatorName 
      */
-    isBuilt (generatorName) {
+    hasBeenBuilt (generatorName) {
         let generatorIndexToRemove = this.#canBuildGenerators.indexOf(generatorName);
         let [generatorBuilt] = this.#canBuildGenerators.splice(generatorIndexToRemove, 1);
         this.#builtGenerators.push(generatorBuilt);
@@ -199,20 +291,6 @@ export default class GeneratorManager {
     // #endregion Manage
 
     // #region Access
-
-
-    getOrderedGeneratorIndex(generatorName) {
-        if (!Validators.isString(generatorName)) {
-            Errors.logError(new Error(`GeneratorName ${generatorName} is not a valid string.`));
-            return 0;
-        }
-        const index = this.#orderedGenerators.indexOf(generatorName);
-        if (index === -1) {
-            Errors.logError(new Error(`Generator ${generatorName} not found in ordered generators.`));
-            return 0;
-        }
-        return index;
-    }
 
     /**
      * @returns {string[]}

@@ -144,15 +144,13 @@ function checkGeneratorUnlocks() {
 function checkLockedGenerators(generators) {
 
   generators.forEach(generatorName => {
-    let proxyGenerator = getProxySaveGenerator(generatorName);
-    let dataGenerator = getGeneratorData(generatorName);
-    if (!proxyGenerator) return;
+    if (!generatorM.isValidGenerator(generatorName)) return;
 
-    if (hasEnoughPoints(dataGenerator.unlockRequires.hint)) {
-      if (!proxyGenerator.hinted) proxyGenerator.hinted = true;
+    if (hasEnoughPoints(generatorM.whatUnlockHintRequires(generatorName))) {
+      if (!generatorM.isHinted(generatorName)) generatorM.setHinted(generatorName);
       generatorM.canBeHinted(generatorName);
     } else {
-      if (proxyGenerator.hinted) proxyGenerator.hinted = false;
+      if (generatorM.isHinted(generatorName)) generatorM.setHinted(generatorName, false);
     }
   });
 }
@@ -163,15 +161,14 @@ function checkLockedGenerators(generators) {
 function checkHintedGenerators(generators) {
 
   generators.forEach(generatorName => {
-    let proxyGenerator = getProxySaveGenerator(generatorName);
-    let dataGenerator = getGeneratorData(generatorName);
-    if (!proxyGenerator) return;
+    if (!generatorM.isValidGenerator(generatorName)) return;
 
-    if (hasEnoughPoints(dataGenerator.unlockRequires.build)) {
-      proxyGenerator.canBuild = true;
+    if (hasEnoughPoints(generatorM.whatUnlockBuildRequires(generatorName))) {
+      if (!generatorM.isBuildable(generatorName)) generatorM.setBuildable(generatorName);
       generatorM.canBeBuilt(generatorName);
     } 
     else {
+      if (generatorM.isBuildable(generatorName)) generatorM.setBuildable(generatorName, false);
       const generatorElement = getGeneratorElement(generatorName);
       showHint(generatorElement);
       registerGeneratorAction(generatorElement, generatorName);
@@ -186,7 +183,7 @@ function checkCanBeBuiltGenerators(generators) {
 
   generators.forEach(generatorName => {
     let proxyGenerator = getProxySaveGenerator(generatorName);
-    let dataGenerator = getGeneratorData(generatorName);
+    let dataGenerator = generatorM.getGeneratorData(generatorName);
     if (!proxyGenerator) return;
 
     const generatorElement = getGeneratorElement(generatorName);
@@ -216,14 +213,6 @@ function checkBuiltGenerators(generators) {
  */
 function getProxySaveGenerator(generatorName) {
   return Global.proxy.generators.find(generator=> generator.name === generatorName);
-}
-
-/**
- * @param {string} generatorName 
- * @returns {Object | null}
- */
-function getGeneratorData(generatorName) {
-  return generatorM.getGeneratorData(generatorName);
 }
 
 
@@ -310,7 +299,7 @@ function buildGenerator(generatorName) {
   let proxyGenerator = getProxySaveGenerator(generatorName);
   if (!proxyGenerator || proxyGenerator.built || !proxyGenerator.canBuild) return;
 
-  let dataGenerator = getGeneratorData(generatorName);
+  let dataGenerator = generatorM.getGeneratorData(generatorName);
   if (!dataGenerator) return;
 
   const buildStep = dataGenerator.buildRequires.step;
@@ -323,7 +312,7 @@ function buildGenerator(generatorName) {
 
   if (proxyGenerator.progress >= dataGenerator.buildRequires.totalSteps) {
     proxyGenerator.built = true;
-    generatorM.isBuilt(generatorName);
+    generatorM.hasBeenBuilt(generatorName);
     checkGeneratorBuilt(generatorName);
   }
 }
