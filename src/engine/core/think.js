@@ -4,6 +4,7 @@ import { POINT_TYPES, POINT_PROPS } from "../data/points.data.js";
 import Global from "./global.js";
 import GameSave from "./save.js";
 
+import DataManager from "../systems/data.manager.js";
 import PointCollection from "../systems/point.collection.js";
 import GeneratorManager from "../systems/generator.manager.js";
 import StorageManager from "../systems/storage.manager.js";
@@ -293,22 +294,16 @@ function showGeneratorElement(generatorElement) {
 // #region Build
 
 function buildGenerator(generatorName) {
-  let proxyGenerator = getProxySaveGenerator(generatorName);
-  if (!proxyGenerator || proxyGenerator.built || !proxyGenerator.canBuild) return;
+  if (!generatorM.isValidGenerator(generatorName) || generatorM.isBuilt(generatorName) || !generatorM.isBuildable(generatorName)) return;
 
-  let dataGenerator = generatorM.getGeneratorData(generatorName);
-  if (!dataGenerator) return;
-
-  const buildStep = dataGenerator.buildRequires.step;
+  const buildStep = generatorM.whatBuildStepRequires(generatorName);
   if (!hasEnoughPoints(buildStep)) return;
-
   consumePoints(buildStep);
 
-  proxyGenerator.progress = proxyGenerator.progress ?? 0;
-  proxyGenerator.progress += 1;
+  generatorM.buildProgress(generatorName, DataManager.getDefaultStepProgress());
 
-  if (proxyGenerator.progress >= dataGenerator.buildRequires.totalSteps) {
-    proxyGenerator.built = true;
+  if (generatorM.isBuildProgressComplete(generatorName)) {
+    generatorM.setBuilt(generatorName);
     generatorM.hasBeenBuilt(generatorName);
     checkGeneratorBuilt(generatorName);
   }
@@ -329,18 +324,17 @@ function checkGeneratorBuilt(generatorName) {
 // #region Generator
 
 function generatorOnClick(generatorName) {
-  let proxyGenerator = getProxySaveGenerator(generatorName);
-  if (!proxyGenerator) return;
+  if (!generatorM.isValidGenerator(generatorName)) return;
 
-  if (proxyGenerator.built) {
+  if (generatorM.isBuilt(generatorName)) {
     addPoints(generatorName);
     return;
   }
-  if (proxyGenerator.canBuild) {
+  if (generatorM.isBuildable(generatorName)) {
     buildGenerator(generatorName);
     return;
   }
-  if (proxyGenerator.hinted) {
+  if (generatorM.isHinted(generatorName)) {
     console.log("You see a new thing...");
   }
 }

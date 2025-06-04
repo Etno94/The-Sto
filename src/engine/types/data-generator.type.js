@@ -18,3 +18,8 @@
  * @property {PointSet} step
  * @property {number} totalSteps
  */
+
+/**
+ * @typedef {Object} BuildGeneratorData
+ * @property {number} defaultStepProgress
+ */

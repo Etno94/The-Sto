@@ -128,7 +128,7 @@ export default class GeneratorManager {
 
     /**
      * @param {string} generatorName 
-     * @returns {Object | null}
+     * @returns { SaveGenerator | null}
      */
     #getProxySaveGenerator(generatorName) {
         return Global.proxy.generators.find(generator=> generator.name === generatorName);
@@ -280,6 +280,26 @@ export default class GeneratorManager {
      */
     setBuilt(generatorName, value = true) {
         this.#setProp(generatorName, 'built', value);
+    }
+
+    /**
+     * @param {string} generatorName
+     * @param {number} progress 
+     */
+    buildProgress(generatorName, progress) {
+        if (!Validators.isString(generatorName) || !Validators.isNumber(progress)) return;
+        if (progress === 0) return;
+
+        this.#getProxySaveGenerator(generatorName).progress += progress;
+    }
+
+    /**
+     * @param {string} generatorName 
+     * @returns {boolean}
+     */
+    isBuildProgressComplete(generatorName) {
+        if (!Validators.isString(generatorName)) return;
+        return this.#getProxySaveGenerator(generatorName).progress >= this.whatBuildTotalStepsRequires(generatorName);
     }
 
 

@@ -5,7 +5,7 @@ export default class Validators {
     }
 
     static isObject(obj) {
-        return obj !== null && typeof obj === 'object' && !Array.isArray(obj);
+        return typeof obj === 'object' && !Array.isArray(obj) && Validators.isNotNullNorUndefined(obj);
     }
 
     static isArray(array) {
@@ -21,7 +21,11 @@ export default class Validators {
     }
 
     static isString(string) {
-        return typeof string === 'string' && string.trim() !== '';
+        return typeof string === 'string' && string.trim() !== '' && Validators.isNotNullNorUndefined(string);
+    }
+
+    static isNumber(number) {
+        return typeof number === 'number' && Validators.isNotNullNorUndefined(number);
     }
 
     static isHTMLElement(element) {

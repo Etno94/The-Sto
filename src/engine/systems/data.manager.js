@@ -1,4 +1,4 @@
-import { GENERATORS } from '../data/generators.data.js';
+import { GENERATORS, BUILD_GENERATOR } from '../data/generators.data.js';
 import { STORAGE_UPGRADES } from '../data/storage.data.js';
 import Utils from '../utils/utils.js';
 
@@ -17,10 +17,24 @@ export default class DataManager {
     }
 
     /**
-     * @return { DataGenerator[] }
+     * @return { DataGenerator[] | [] }
      */
     static getAllGeneratorsData() {
         return Utils.arrCopy(GENERATORS) || [];
+    }
+
+    /**
+     * @returns { BuildGeneratorData | null }
+     */
+    static getBuildGeneratorData() {
+        return Utils.deepCopy(BUILD_GENERATOR) || null;
+    }
+
+    /**
+     * @returns { number | null }
+     */
+    static getDefaultStepProgress() {
+        return DataManager.getBuildGeneratorData()?.defaultStepProgress || null;
     }
 
     // #endregion Generators

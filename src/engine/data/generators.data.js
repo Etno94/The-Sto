@@ -49,3 +49,10 @@ export const GENERATORS = [
     CLICK_GENERATOR,
     COOLDOWN_GENERATOR
 ]
+
+/**
+ * @type { BuildGeneratorData }
+ */
+export const BUILD_GENERATOR = {
+    defaultStepProgress: 1
+}
