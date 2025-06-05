@@ -10,4 +10,8 @@ export default class Errors {
     static invalidTypeError(type, expectedType) {
         Errors.throwError(`Invalid type: ${type}. Expected type: ${expectedType}.`)
     }
+
+    static invalidObjectPropError(expectedProp) {
+        Errors.throwError(`Invalid obj - missing prop: ${expectedProp}.`)
+    }
 }

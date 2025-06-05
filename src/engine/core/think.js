@@ -6,6 +6,7 @@ import GameSave from "./save.js";
 
 import DataManager from "../systems/data.manager.js";
 import PointCollection from "../systems/point.collection.js";
+import PointManager from '../systems/point.manager.js';
 import GeneratorManager from "../systems/generator.manager.js";
 import StorageManager from "../systems/storage.manager.js";
 
@@ -18,6 +19,8 @@ const updateInterval = 1600;
 
 const render = new Render();
 const animate = new Animate();
+
+const pointM = new PointManager();
 const generatorM = new GeneratorManager();
 const storageM = new StorageManager();
 
@@ -57,7 +60,7 @@ function addPoints(generatorName) {
 
   let pointsToConsume = new PointCollection(generatorM.whatConsumes(generatorName));
 
-  if (!hasEnoughPoints(pointsToConsume.collection)) return;
+  if (!pointM.hasEnoughPoints(pointsToConsume.collection)) return;
 
   let pointsToGenerate = new PointCollection(generatorM.whatGenerates(generatorName));
   let totalPoints = new PointCollection(Global.proxy.points).total;
@@ -78,20 +81,6 @@ function addPoints(generatorName) {
     Global.proxy.points[type] += collection[type];
     Global.proxy.points_order.push(...new Array(collection[type]).fill(type));
   }
-}
-
-/**
- * @param {PointSet} pointsToMeet
- * @returns {Boolean}
- */
-function hasEnoughPoints(pointsToMeet) {
-  let hasEnoughPoints = true;
-  if (pointsToMeet) {
-    for (const [key, value] of Object.entries(pointsToMeet)) {
-      if (value > Global.proxy.points[key]) hasEnoughPoints = false;
-    }
-  }
-  return hasEnoughPoints;
 }
 
 /**
@@ -147,9 +136,8 @@ function checkLockedGenerators(generators) {
   generators.forEach(generator => {
     if (!generatorM.isValidGenerator(generator.name)) return;
 
-    if (hasEnoughPoints(generatorM.whatUnlockHintRequires(generator.name))) {
+    if (pointM.hasEnoughPoints(generatorM.whatUnlockHintRequires(generator.name))) {
       if (!generatorM.isHinted(generator.name)) generatorM.setHinted(generator.name);
-      // generatorM.canBeHinted(generator);
     } else {
       if (generatorM.isHinted(generator.name)) generatorM.setHinted(generator.name, false);
     }
@@ -164,9 +152,8 @@ function checkHintedGenerators(generators) {
   generators.forEach(generator => {
     if (!generatorM.isValidGenerator(generator.name)) return;
 
-    if (hasEnoughPoints(generatorM.whatUnlockBuildRequires(generator.name))) {
+    if (pointM.hasEnoughPoints(generatorM.whatUnlockBuildRequires(generator.name))) {
       if (!generatorM.isBuildable(generator.name)) generatorM.setBuildable(generator.name);
-      // generatorM.canBeBuilt(generatorName);
     } 
     else {
       if (generatorM.isBuildable(generator.name)) generatorM.setBuildable(generator.name, false);
@@ -289,7 +276,7 @@ function buildGenerator(generatorName) {
   if (!generatorM.isValidGenerator(generatorName) || generatorM.isBuilt(generatorName) || !generatorM.isBuildable(generatorName)) return;
 
   const buildStep = generatorM.whatBuildStepRequires(generatorName);
-  if (!hasEnoughPoints(buildStep)) return;
+  if (!pointM.hasEnoughPoints(buildStep)) return;
   consumePoints(buildStep);
 
   generatorM.buildProgress(generatorName, DataManager.getDefaultStepProgress());

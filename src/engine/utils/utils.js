@@ -42,6 +42,34 @@ export default class Utils {
         });
     }
 
+    /**
+     * 
+     * @param { Array } arr 
+     * @param { Function } criteria
+     * @param { number } n 
+     * @returns { Array }
+     */
+    static removeInitialNItems(arr, criteria, n) {
+        if (!Validators.isArray(arr)) {
+            Errors.invalidTypeError(typeof arr, 'array');
+        }
+        if (!Validators.isFunction(criteria)) {
+            Errors.invalidTypeError(typeof criteria, 'function');
+        }
+        if (!Validators.isNumber(n)) {
+            Errors.invalidTypeError(typeof n, 'number');
+        }
+
+        let count = 0;
+        return arr.filter((item) => {
+            if (criteria(item) && count < n) {
+                count++;
+                return false;
+            }
+            return true;
+        });
+    }
+
     static shallowCopy(obj) {
         if (!Validators.isObject(obj)) {
             Errors.throwError(`Invalid object: ${obj}. Expected a non-null object.`);

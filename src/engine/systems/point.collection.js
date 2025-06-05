@@ -1,4 +1,7 @@
-import {POINT_PROPS, POINT_TYPES} from '../data/points.data.js';
+import DataManager from '../systems/data.manager.js';
+
+import Validators from '../utils/validators.js';
+import Errors from '../utils/errors.js';
 
 export default class PointCollection {
 
@@ -13,28 +16,37 @@ export default class PointCollection {
      * @param { PointSet } newCollection 
      */
     constructor(newCollection) {
-        for (const point of POINT_PROPS) this.collection[point] = 0;
+        const pointProps = DataManager.getPointTypeData();
+        for (const point of pointProps) this.collection[point] = 0;
         if (newCollection) this.set(newCollection);
     }
 
     /**
-     * @param { PointSet } collectionValues 
+     * @param { PointSet } pointSet 
      */
-    set(collectionValues) {
-        if (!collectionValues || 
-            !typeof collectionValues === 'object')
+    set(pointSet) {
+        if (!Validators.isObject(pointSet)) {
+            Errors.invalidTypeError(typeof pointSet, 'object')
             return;
+        }
 
-        for (const [key, value] of Object.entries(collectionValues)) {
+        for (const [key, value] of Object.entries(pointSet)) {
+            if (!Validators.isNumber(value)) {
+                Errors.invalidTypeError(typeof value,'number');
+            }
             if (this.collection.hasOwnProperty(key)) {
                 this.totalValue += value - this.collection[key];
                 this.collection[key] = value;
+            } else {
+                this.collection = {};
+                Errors.invalidObjectPropError(key);
+                return;
             }
         }
     }
 
     /**
-     * @returns { PointSet } POINT_PROPS from points.data.js
+     * @returns { PointSet }
      */
     get collection() {
         return this.collection;

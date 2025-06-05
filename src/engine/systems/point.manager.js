@@ -1,5 +1,8 @@
 import Global from "../core/global.js";
+
 import DataManager from "./data.manager.js";
+import PointCollection from './point.collection.js';
+
 import Utils from "../utils/utils.js";
 import Validators from '../utils/validators.js';
 import Errors from '../utils/errors.js';
@@ -7,11 +10,37 @@ import Errors from '../utils/errors.js';
 export default class PointManager {
 
     /**
+     * @type { string[] }
+     */
+    #pointProps = [];
+
+    constructor () {
+        this.#pointProps = DataManager.getPointTypeData();
+    }
+
+    /**
      * @param { PointSet } generatePoints 
+     */
+    addPoints (generatePoints) {
+        const points = new PointCollection(generatePoints).collection;
+        for (const type of this.#pointProps) {
+            Global.proxy.points[type] += points.collection[type];
+            Global.proxy.points_order.push(...new Array(points.collection[type]).fill(type));
+        }
+    }
+
+    /**
      * @param { PointSet } consumePoints 
      */
-    balancePoints (generatePoints, consumePoints) {
-
+    substractPoints (consumePoints) {
+        const points = new PointCollection(consumePoints).collection;
+        for (const type of this.#pointProps) {
+            Global.proxy.points[type] -= points.collection[type];
+            Global.proxy.points_order = Utils.removeInitialNItems(
+                Global.proxy.points_order, 
+                (item) => item === type,
+                points.collection[type]);
+        }
     }
 
     /**
@@ -19,12 +48,13 @@ export default class PointManager {
      * @returns {Boolean}
      */
     hasEnoughPoints(pointsToMeet) {
-    let hasEnoughPoints = true;
-    if (pointsToMeet) {
-        for (const [key, value] of Object.entries(pointsToMeet)) {
-        if (value > Global.proxy.points[key]) hasEnoughPoints = false;
+        const points = new PointCollection(pointsToMeet).collection;
+        let hasEnoughPoints = true;
+
+        for (const [key, value] of Object.entries(points)) {
+            if (value > Global.proxy.points[key]) hasEnoughPoints = false;
         }
-    }
-    return hasEnoughPoints;
+        
+        return hasEnoughPoints;
     }
 }
