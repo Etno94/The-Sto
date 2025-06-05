@@ -2,7 +2,6 @@ import { GENERATORS, BUILD_GENERATOR } from '../data/generators.data.js';
 import { STORAGE_UPGRADES } from '../data/storage.data.js';
 import Utils from '../utils/utils.js';
 
-/// <reference path="../types/data-generator.type.js" />
 
 export default class DataManager {
 

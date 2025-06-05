@@ -140,7 +140,7 @@ function checkGeneratorUnlocks() {
 }
 
 /**
- * @param {string[]} generators
+ * @param {SaveGenerator[]} generators
  */
 function checkLockedGenerators(generators) {
 
@@ -157,7 +157,7 @@ function checkLockedGenerators(generators) {
 }
 
 /**
- * @param {string[]} generators
+ * @param {SaveGenerator[]} generators
  */
 function checkHintedGenerators(generators) {
 
@@ -178,7 +178,7 @@ function checkHintedGenerators(generators) {
 }
 
 /**
- * @param {string[]} generators
+ * @param {SaveGenerator[]} generators
  */
 function checkCanBeBuiltGenerators(generators) {
 
@@ -192,7 +192,7 @@ function checkCanBeBuiltGenerators(generators) {
 }
 
 /**
- * @param {string[]} generators
+ * @param {SaveGenerator[]} generators
  */
 function checkBuiltGenerators(generators) {
 
