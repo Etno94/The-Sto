@@ -133,10 +133,10 @@ function checkUnlocks() {
 }
 
 function checkGeneratorUnlocks() {
-  checkLockedGenerators([...generatorM.lockedGens]);
-  checkHintedGenerators([...generatorM.hintedGens]);
-  checkCanBeBuiltGenerators([...generatorM.canBuildGens]);
-  checkBuiltGenerators([...generatorM.builtGens]);
+  checkLockedGenerators([...generatorM.getLockedGenerators()]);
+  checkHintedGenerators([...generatorM.getHintedGenerators()]);
+  checkCanBeBuiltGenerators([...generatorM.getBuildableGenerators()]);
+  checkBuiltGenerators([...generatorM.getBuitGenerators()]);
 }
 
 /**
@@ -144,14 +144,14 @@ function checkGeneratorUnlocks() {
  */
 function checkLockedGenerators(generators) {
 
-  generators.forEach(generatorName => {
-    if (!generatorM.isValidGenerator(generatorName)) return;
+  generators.forEach(generator => {
+    if (!generatorM.isValidGenerator(generator.name)) return;
 
-    if (hasEnoughPoints(generatorM.whatUnlockHintRequires(generatorName))) {
-      if (!generatorM.isHinted(generatorName)) generatorM.setHinted(generatorName);
-      generatorM.canBeHinted(generatorName);
+    if (hasEnoughPoints(generatorM.whatUnlockHintRequires(generator.name))) {
+      if (!generatorM.isHinted(generator.name)) generatorM.setHinted(generator.name);
+      // generatorM.canBeHinted(generator);
     } else {
-      if (generatorM.isHinted(generatorName)) generatorM.setHinted(generatorName, false);
+      if (generatorM.isHinted(generator.name)) generatorM.setHinted(generator.name, false);
     }
   });
 }
@@ -161,18 +161,18 @@ function checkLockedGenerators(generators) {
  */
 function checkHintedGenerators(generators) {
 
-  generators.forEach(generatorName => {
-    if (!generatorM.isValidGenerator(generatorName)) return;
+  generators.forEach(generator => {
+    if (!generatorM.isValidGenerator(generator.name)) return;
 
-    if (hasEnoughPoints(generatorM.whatUnlockBuildRequires(generatorName))) {
-      if (!generatorM.isBuildable(generatorName)) generatorM.setBuildable(generatorName);
-      generatorM.canBeBuilt(generatorName);
+    if (hasEnoughPoints(generatorM.whatUnlockBuildRequires(generator.name))) {
+      if (!generatorM.isBuildable(generator.name)) generatorM.setBuildable(generator.name);
+      // generatorM.canBeBuilt(generatorName);
     } 
     else {
-      if (generatorM.isBuildable(generatorName)) generatorM.setBuildable(generatorName, false);
-      const generatorElement = getGeneratorElement(generatorName);
+      if (generatorM.isBuildable(generator.name)) generatorM.setBuildable(generator.name, false);
+      const generatorElement = getGeneratorElement(generator.name);
       showHint(generatorElement);
-      registerGeneratorAction(generatorElement, generatorName);
+      registerGeneratorAction(generatorElement, generator.name);
     }
   });
 }
@@ -182,12 +182,12 @@ function checkHintedGenerators(generators) {
  */
 function checkCanBeBuiltGenerators(generators) {
 
-  generators.forEach(generatorName => {
-    if (!generatorM.isValidGenerator(generatorName)) return;
+  generators.forEach(generator => {
+    if (!generatorM.isValidGenerator(generator.name)) return;
 
-    const generatorElement = getGeneratorElement(generatorName);
-    showBuild(generatorElement, generatorM.whatBuildStepRequires(generatorName));
-    registerGeneratorAction(generatorElement, generatorName);
+    const generatorElement = getGeneratorElement(generator.name);
+    showBuild(generatorElement, generatorM.whatBuildStepRequires(generator.name));
+    registerGeneratorAction(generatorElement, generator.name);
   });
 }
 
@@ -196,21 +196,13 @@ function checkCanBeBuiltGenerators(generators) {
  */
 function checkBuiltGenerators(generators) {
 
-  generators.forEach(generatorName => {
-    if (!generatorM.isValidGenerator(generatorName)) return;
+  generators.forEach(generator => {
+    if (!generatorM.isValidGenerator(generator.name)) return;
 
-    const generatorElement = getGeneratorElement(generatorName);
+    const generatorElement = getGeneratorElement(generator.name);
     showGeneratorElement(generatorElement);
-    registerGeneratorAction(generatorElement, generatorName);
+    registerGeneratorAction(generatorElement, generator.name);
   });
-}
-
-/**
- * @param {string} generatorName 
- * @returns {Object | null}
- */
-function getProxySaveGenerator(generatorName) {
-  return Global.proxy.generators.find(generator=> generator.name === generatorName);
 }
 
 
@@ -304,7 +296,7 @@ function buildGenerator(generatorName) {
 
   if (generatorM.isBuildProgressComplete(generatorName)) {
     generatorM.setBuilt(generatorName);
-    generatorM.hasBeenBuilt(generatorName);
+    // generatorM.hasBeenBuilt(generatorName);
     checkGeneratorBuilt(generatorName);
   }
 }
