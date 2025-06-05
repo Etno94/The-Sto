@@ -11,7 +11,17 @@ export default class Utils {
         return Number(value.split('ms')[0]);
     }
 
+    /**
+     * @param {HTMLElement} element 
+     * @param {string} type 
+     * @param {Function} listener 
+     * @param  {...any} args 
+     */
     static addEventListenerWithFlag(element, type, listener, ...args) {
+        if (!Validators.isHTMLElement(element)) {
+            Errors.invalidTypeError(element.constructor.name,'instanceof HTMLElement')
+            return;
+        }
         if (!element.eventListenerActive) {
             element.addEventListener(type, () => listener(...args));
             element.eventListenerActive = true;

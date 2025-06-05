@@ -8,6 +8,6 @@ export default class Errors {
     }
 
     static invalidTypeError(type, expectedType) {
-        throw new Error(`Invalid type: ${type}. Expected type: ${expectedType}.`);
+        Errors.throwError(`Invalid type: ${type}. Expected type: ${expectedType}.`)
     }
 }
