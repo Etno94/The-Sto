@@ -1,9 +1,21 @@
+import { POINT_PROPS } from '../data/points.data.js';
 import { GENERATORS, BUILD_GENERATOR } from '../data/generators.data.js';
 import { STORAGE_UPGRADES } from '../data/storage.data.js';
 import Utils from '../utils/utils.js';
 
 
 export default class DataManager {
+
+    // #region Points
+
+    /**
+     * @returns { string[] }
+     */
+    static getPointTypeData() {
+        return Utils.arrCopy(POINT_PROPS) || [];
+    }
+
+    // #endregion Points
 
     // #region Generators
 

@@ -6,6 +6,7 @@ export default class PointCollection {
      * @type { PointSet }
      */
     collection = {};
+    
     totalValue = 0;
 
     /**
