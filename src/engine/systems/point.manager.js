@@ -24,8 +24,8 @@ export default class PointManager {
     addPoints (generatePoints) {
         const points = new PointCollection(generatePoints).collection;
         for (const type of this.#pointProps) {
-            Global.proxy.points[type] += points.collection[type];
-            Global.proxy.points_order.push(...new Array(points.collection[type]).fill(type));
+            Global.proxy.points[type] += points[type];
+            Global.proxy.points_order.push(...new Array(points[type]).fill(type));
         }
     }
 
@@ -35,11 +35,11 @@ export default class PointManager {
     substractPoints (consumePoints) {
         const points = new PointCollection(consumePoints).collection;
         for (const type of this.#pointProps) {
-            Global.proxy.points[type] -= points.collection[type];
+            Global.proxy.points[type] -= points[type];
             Global.proxy.points_order = Utils.removeInitialNItems(
                 Global.proxy.points_order, 
                 (item) => item === type,
-                points.collection[type]);
+                points[type]);
         }
     }
 

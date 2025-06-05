@@ -72,7 +72,7 @@ function addPoints(generatorName) {
 
   // Consume
   if (pointsToConsume.total) {
-    consumePoints(pointsToConsume.collection);
+    pointM.substractPoints(pointsToConsume.collection);
   }
 
   // Generate
@@ -83,28 +83,6 @@ function addPoints(generatorName) {
   }
 }
 
-/**
- * @param {PointSet} pointsToConsume
- */
-function consumePoints(pointsToConsume) {
-  if (!pointsToConsume || typeof pointsToConsume !== 'object') return;
-
-  for (const [key, valueToConsume] of Object.entries(pointsToConsume)) {
-    if (valueToConsume) Global.proxy.points[key] -= valueToConsume;
-
-    let pointsOrderItemsToRemove = valueToConsume;
-    for (
-      let i = Global.proxy.points_order.length - 1;
-      i >= 0 && pointsOrderItemsToRemove > 0;
-      i--
-    ) {
-      if (Global.proxy.points_order[i] === key) {
-        Global.proxy.points_order.splice(i, 1);
-        pointsOrderItemsToRemove--;
-      }
-    }
-  }
-}
 
 function dumpAllPoints() {
   for (const type of pointProps) {
@@ -277,7 +255,7 @@ function buildGenerator(generatorName) {
 
   const buildStep = generatorM.whatBuildStepRequires(generatorName);
   if (!pointM.hasEnoughPoints(buildStep)) return;
-  consumePoints(buildStep);
+  pointM.substractPoints(buildStep);
 
   generatorM.buildProgress(generatorName, DataManager.getDefaultStepProgress());
 
