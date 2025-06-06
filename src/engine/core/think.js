@@ -33,28 +33,14 @@ const pointProps = POINT_PROPS;
 
 // #region Elements
 
-// Settings
-const saveButton = document.getElementById("saveGame");
-const resetButton = document.getElementById("resetGame");
-
 // Layout
 const central = document.getElementById("central");
 
 const storage = document.getElementById("storage");
-const dump = document.getElementById("dump");
 const storageUpgrade = document.getElementById("storage-upgrade");
 const pointsContainer = document.getElementById("points");
 
 // #endregion Elements
-
-// #region Event Listeners
-
-// Save
-// saveButton.addEventListener("click", () => GameSave.save(Global.proxy));
-// resetButton.addEventListener("click", () => GameSave.reset());
-// dump.addEventListener("click", () => EventBus.emit(Events.points.burnAll));
-
-// #endregion Event Listeners
 
 // #region Unlocks
 
