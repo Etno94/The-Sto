@@ -1,4 +1,4 @@
-import DataManager from '../systems/data.manager.js';
+import DataManager from '../systems/managers/data.manager.js';
 
 import Errors from '../utils/errors.js';
 import Asserts from '../utils/asserts.js';

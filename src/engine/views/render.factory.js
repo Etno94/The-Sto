@@ -6,8 +6,8 @@ import { ANIMATIONS } from '../data/animations.data.js';
 import { POINT_TYPES } from '../data/points.data.js';
 import { DATA_SET_ATTRs, DATA_SET_TYPES } from '../data/data-set-attr.data.js';
 
-import PointDirector from './directors/point.director.js';
-import GeneratorDirector from './directors/generator.director.js';
+import PointDirector from './builders/directors/point.director.js';
+import GeneratorDirector from './builders/directors/generator.director.js';
 
 export default class Render {
 

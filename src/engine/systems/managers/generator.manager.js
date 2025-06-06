@@ -1,11 +1,11 @@
-import Global from "../core/global.js";
-import { EventBus, Events } from "../core/event-bus.js";
+import Global from "../../core/global.js";
+import { EventBus, Events } from "../../core/event-bus.js";
 
 import DataManager from "./data.manager.js";
 
-import Utils from "../utils/utils.js";
-import Validators from '../utils/validators.js';
-import Errors from '../utils/errors.js';
+import Utils from "../../utils/utils.js";
+import Validators from '../../utils/validators.js';
+import Errors from '../../utils/errors.js';
 
 export default class GeneratorManager {
 

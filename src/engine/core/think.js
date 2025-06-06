@@ -5,11 +5,13 @@ import Global from "./global.js";
 import GameSave from "./save.js";
 import { EventBus, Events } from "./event-bus.js";
 
-import DataManager from "../systems/data.manager.js";
 import PointCollection from "../systems/point.collection.js";
-import PointManager from '../systems/point.manager.js';
-import GeneratorManager from "../systems/generator.manager.js";
-import StorageManager from "../systems/storage.manager.js";
+import InputController from "../systems/input.controller.js";
+
+import DataManager from "../systems/managers/data.manager.js";
+import PointManager from '../systems/managers/point.manager.js';
+import GeneratorManager from "../systems/managers/generator.manager.js";
+import StorageManager from "../systems/managers/storage.manager.js";
 
 import Render from "../views/render.factory.js";
 import Animate from "../views/helpers/animate.js";
@@ -21,6 +23,7 @@ const updateInterval = 1600;
 const render = new Render();
 const animate = new Animate();
 
+const inputController = new InputController();
 const pointM = new PointManager();
 const generatorM = new GeneratorManager();
 const storageM = new StorageManager();
@@ -47,9 +50,9 @@ const pointsContainer = document.getElementById("points");
 // #region Event Listeners
 
 // Save
-saveButton.addEventListener("click", () => GameSave.save(Global.proxy));
-resetButton.addEventListener("click", () => GameSave.reset());
-dump.addEventListener("click", () => EventBus.emit(Events.points.burnAll));
+// saveButton.addEventListener("click", () => GameSave.save(Global.proxy));
+// resetButton.addEventListener("click", () => GameSave.reset());
+// dump.addEventListener("click", () => EventBus.emit(Events.points.burnAll));
 
 // #endregion Event Listeners
 
@@ -361,6 +364,7 @@ function pointsContainerShake() {
 // SetUp
 
 function startGame() {
+  
   const save = GameSave.load();
   if(save && typeof save === 'object') {
     Object.assign(Global.proxy, save);

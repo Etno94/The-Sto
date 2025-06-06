@@ -1,11 +1,11 @@
-import Global from "../core/global.js";
+import Global from "../../core/global.js";
 
-import {EventBus, Events} from "../core/event-bus.js";
+import {EventBus, Events} from "../../core/event-bus.js";
 
 import DataManager from "./data.manager.js";
-import PointCollection from './point.collection.js';
+import PointCollection from '../point.collection.js';
 
-import Utils from "../utils/utils.js";
+import Utils from "../../utils/utils.js";
 
 export default class PointManager {
 
