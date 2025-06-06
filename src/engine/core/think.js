@@ -12,7 +12,7 @@ import GeneratorManager from "../systems/generator.manager.js";
 import StorageManager from "../systems/storage.manager.js";
 
 import Render from "../views/render.factory.js";
-import Animate from "../views/animate.js";
+import Animate from "../views/helpers/animate.js";
 import Utils from "../utils/utils.js";
 
 let lastUpdate = 0;

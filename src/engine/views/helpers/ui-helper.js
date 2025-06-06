@@ -1,5 +1,5 @@
 // import Utils from '../utils/utils.js';
-import Validators from '../utils/validators.js';
+import Validators from '../../utils/validators.js';
 
 export default class UIHelper {
 

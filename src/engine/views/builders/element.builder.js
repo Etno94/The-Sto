@@ -1,5 +1,5 @@
-import Utils from '../utils/utils.js';
-import UIHelper from './ui-helper.js';
+import Utils from '../../utils/utils.js';
+import UIHelper from '../helpers/ui-helper.js';
 
  class ElementBuilder {
 

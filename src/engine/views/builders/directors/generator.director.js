@@ -1,4 +1,4 @@
-import ElBuilder from "../element.builder.js";
+import ElBuilder from "../builders/element.builder.js";
 import { DATA_SET_ATTRs, DATA_SET_TYPES } from "../../data/data-set-attr.data.js";
 
 export default class GeneratorDirector {
