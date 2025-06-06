@@ -1,7 +1,7 @@
 import DataManager from '../systems/data.manager.js';
 
-import Validators from '../utils/validators.js';
 import Errors from '../utils/errors.js';
+import Asserts from '../utils/asserts.js';
 
 export default class PointCollection {
 
@@ -26,15 +26,10 @@ export default class PointCollection {
      * @param { PointCollection }
      */
     set(pointSet) {
-        if (!Validators.isObject(pointSet)) {
-            Errors.invalidTypeError(typeof pointSet, 'object')
-            return;
-        }
+        Asserts.object(pointSet, 'pointSet');
 
         for (const [key, value] of Object.entries(pointSet)) {
-            if (!Validators.isNumber(value)) {
-                Errors.invalidTypeError(typeof value,'number');
-            }
+            Asserts.number(value);
             if (this.collection.hasOwnProperty(key)) {
                 this.totalValue += value - this.collection[key];
                 this.collection[key] = value;

@@ -11,6 +11,10 @@ export default class Errors {
         Errors.throwError(`Invalid type: ${type}. Expected type: ${expectedType}.`)
     }
 
+    static invalidFormatError(string, format, message = '') {
+        Errors.throwError(`Invalid string: ${string}. Expected format: ${format}. ${message}`)
+    }
+
     static invalidObjectPropError(expectedProp) {
         Errors.throwError(`Invalid obj - missing prop: ${expectedProp}.`)
     }

@@ -5,7 +5,7 @@ export default class Validators {
     }
 
     static isObject(obj) {
-        return typeof obj === 'object' && !Array.isArray(obj) && Validators.isNotNullNorUndefined(obj);
+        return typeof obj === 'object' && !Array.isArray(obj);
     }
 
     static isArray(array) {
@@ -21,22 +21,26 @@ export default class Validators {
     }
 
     static isString(string) {
-        return typeof string === 'string' && string.trim() !== '' && Validators.isNotNullNorUndefined(string);
+        return typeof string === 'string' && string.trim() !== '';
+    }
+
+    static matchesRegex(string, regex) {
+        return regex.test(string);
     }
 
     static isNumber(number) {
-        return typeof number === 'number' && Validators.isNotNullNorUndefined(number);
+        return typeof number === 'number';
     }
 
     static isHTMLElement(element) {
-        return element instanceof HTMLElement && Validators.isNotNullNorUndefined(element);
+        return element instanceof HTMLElement;
     }
 
     static isFunction(func) {
-        return typeof func === 'function' && Validators.isNotNullNorUndefined(func);
+        return typeof func === 'function';
     }
 
     static isProxy(proxy) {
-        return proxy instanceof Proxy && Validators.isNotNullNorUndefined(proxy);
+        return proxy instanceof Proxy;
     }
 }
