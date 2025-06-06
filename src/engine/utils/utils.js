@@ -49,7 +49,7 @@ export default class Utils {
      * @param { number } n 
      * @returns { Array }
      */
-    static removeInitialNItems(arr, criteria, n) {
+    static filterInitialNItems(arr, criteria, n) {
         if (!Validators.isArray(arr)) {
             Errors.invalidTypeError(typeof arr, 'array');
         }

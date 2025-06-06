@@ -36,7 +36,7 @@ export default class PointManager {
         const points = new PointCollection(consumePoints).collection;
         for (const type of this.#pointProps) {
             Global.proxy.points[type] -= points[type];
-            Global.proxy.points_order = Utils.removeInitialNItems(
+            Global.proxy.points_order = Utils.filterInitialNItems(
                 Global.proxy.points_order, 
                 (item) => item === type,
                 points[type]);
@@ -48,7 +48,7 @@ export default class PointManager {
      * @returns {Boolean}
      */
     hasEnoughPoints(pointsToMeet) {
-        const points = new PointCollection(pointsToMeet).collection;
+        const points = new PointCollection().set(pointsToMeet).collection;
         let hasEnoughPoints = true;
 
         for (const [key, value] of Object.entries(points)) {
@@ -57,4 +57,15 @@ export default class PointManager {
         
         return hasEnoughPoints;
     }
+
+    // #region Access
+
+    /**
+     * @returns { number }
+     */
+    getCurrentTotalPoints() {
+        return new PointCollection(Global.proxy.points).total;
+    }
+
+    // #endregion Access
 }

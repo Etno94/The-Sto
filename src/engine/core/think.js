@@ -54,36 +54,6 @@ dump.addEventListener("click", () => dumpAllPoints());
 
 // #region Points
 
-function addPoints(generatorName) {
-  // Guards
-  if (!generatorM.isValidGenerator(generatorName)) return;
-
-  let pointsToConsume = new PointCollection(generatorM.whatConsumes(generatorName));
-
-  if (!pointM.hasEnoughPoints(pointsToConsume.collection)) return;
-
-  let pointsToGenerate = new PointCollection(generatorM.whatGenerates(generatorName));
-  let totalPoints = new PointCollection(Global.proxy.points).total;
-
-  if (storageM.doesOvercap(totalPoints, pointsToGenerate.total, pointsToConsume.total)) {
-    animate.timedOut(pointsContainer, animations.tilt);
-    return;
-  }
-
-  // Consume
-  if (pointsToConsume.total) {
-    pointM.substractPoints(pointsToConsume.collection);
-  }
-
-  // Generate
-  let collection = pointsToGenerate.collection;
-  for (const type of pointProps) {
-    Global.proxy.points[type] += collection[type];
-    Global.proxy.points_order.push(...new Array(collection[type]).fill(type));
-  }
-}
-
-
 function dumpAllPoints() {
   for (const type of pointProps) {
     Global.proxy.points[type] = 0;
@@ -278,13 +248,13 @@ function checkGeneratorBuilt(generatorName) {
 
 // #endregion Build
 
-// #region Generator
+// #region Generator Actions
 
 function generatorOnClick(generatorName) {
   if (!generatorM.isValidGenerator(generatorName)) return;
 
   if (generatorM.isBuilt(generatorName)) {
-    addPoints(generatorName);
+    builtGeneratorOnClick(generatorName);
     return;
   }
   if (generatorM.isBuildable(generatorName)) {
@@ -296,7 +266,35 @@ function generatorOnClick(generatorName) {
   }
 }
 
-// #endregion Generator
+/**
+ * @param { string } generatorName 
+ */
+function builtGeneratorOnClick (generatorName) {
+  const consumePCollection = new PointCollection(generatorM.whatConsumes(generatorName));
+  const generatePCollection = new PointCollection(generatorM.whatGenerates(generatorName));
+
+  let canConsume = true;
+  let canGenerate = true;
+
+  if (consumePCollection.total && !pointM.hasEnoughPoints(consumePCollection.collection)) canConsume = false;
+  if (generatePCollection.total && storageM.doesOvercap(
+    pointM.getCurrentTotalPoints(), generatePCollection.total, consumePCollection.total)
+  ) {
+    canGenerate = false;
+    sideEffectsWhenOvercap();
+  }
+
+  if (canConsume && canGenerate) {
+    pointM.substractPoints(consumePCollection.collection);
+    pointM.addPoints(generatePCollection.collection);
+  }
+}
+
+function sideEffectsWhenOvercap() {
+  pointsContainerShake();
+}
+
+// #endregion Generator Actions
 
 // #region Render
 
@@ -361,6 +359,10 @@ async function removePoints(currentPoints, pointsToMatch, pointType) {
       await render.removePoint(pointsContainer, pointType);
       currentPoints--;
   }
+}
+
+function pointsContainerShake() {
+  animate.timedOut(pointsContainer, animations.tilt);
 }
 
 // #endregion Render

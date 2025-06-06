@@ -22,7 +22,8 @@ export default class PointCollection {
     }
 
     /**
-     * @param { PointSet } pointSet 
+     * @param { PointSet } pointSet
+     * @param { PointCollection }
      */
     set(pointSet) {
         if (!Validators.isObject(pointSet)) {
@@ -40,9 +41,10 @@ export default class PointCollection {
             } else {
                 this.collection = {};
                 Errors.invalidObjectPropError(key);
-                return;
             }
         }
+
+        return this;
     }
 
     /**
