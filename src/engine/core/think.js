@@ -3,6 +3,7 @@ import { POINT_TYPES, POINT_PROPS } from "../data/points.data.js";
 
 import Global from "./global.js";
 import GameSave from "./save.js";
+import { EventBus, Events } from "./event-bus.js";
 
 import DataManager from "../systems/data.manager.js";
 import PointCollection from "../systems/point.collection.js";
@@ -48,7 +49,7 @@ const pointsContainer = document.getElementById("points");
 // Save
 saveButton.addEventListener("click", () => GameSave.save(Global.proxy));
 resetButton.addEventListener("click", () => GameSave.reset());
-dump.addEventListener("click", () => pointM.burnPoints());
+dump.addEventListener("click", () => EventBus.emit(Events.points.burnAll));
 
 // #endregion Event Listeners
 
@@ -240,6 +241,7 @@ function checkGeneratorBuilt(generatorName) {
 // #region Generator Actions
 
 function generatorOnClick(generatorName) {
+  EventBus.emit(Events.generator.onClick, generatorName);
   if (!generatorM.isValidGenerator(generatorName)) return;
 
   if (generatorM.isBuilt(generatorName)) {
@@ -274,8 +276,8 @@ function builtGeneratorOnClick (generatorName) {
   }
 
   if (canConsume && canGenerate) {
-    pointM.substractPoints(consumePCollection.collection);
-    pointM.addPoints(generatePCollection.collection);
+    EventBus.emit(Events.points.substracted, consumePCollection.collection);
+    EventBus.emit(Events.points.added, generatePCollection.collection);
   }
 }
 
@@ -365,6 +367,7 @@ function startGame() {
   if(save && typeof save === 'object') {
     Object.assign(Global.proxy, save);
   }
+  registerBusEvents();
   generatorM.setNewGeneratorManager();
   storageM.setCurrentStorage(Global.proxy.storage.maxStorageUpgradeCurrentLevel);
 
@@ -391,6 +394,11 @@ function gameLoop(timestamp) {
   //     lastUpdate = timestamp;
   // }
   // requestAnimationFrame(gameLoop);
+}
+
+function registerBusEvents() {
+  EventBus.on(Events.points.added, (message) => console.log(message));
+  EventBus.on(Events.points.substracted, (message) => console.log(message));
 }
 
 startGame();

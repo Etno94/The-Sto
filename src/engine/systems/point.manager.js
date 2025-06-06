@@ -1,11 +1,11 @@
 import Global from "../core/global.js";
 
+import {EventBus, Events} from "../core/event-bus.js";
+
 import DataManager from "./data.manager.js";
 import PointCollection from './point.collection.js';
 
 import Utils from "../utils/utils.js";
-import Validators from '../utils/validators.js';
-import Errors from '../utils/errors.js';
 
 export default class PointManager {
 
@@ -16,6 +16,13 @@ export default class PointManager {
 
     constructor () {
         this.#pointProps = DataManager.getPointTypeData();
+        this.#setBusEvents();
+    }
+
+    #setBusEvents() {
+        EventBus.on(Events.points.added, (points) => this.addPoints(points));
+        EventBus.on(Events.points.substracted, (points) => this.substractPoints(points));
+        EventBus.on(Events.points.burnAll, () => this.burnPoints());
     }
 
     /**
