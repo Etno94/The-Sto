@@ -67,5 +67,10 @@ export default class PointManager {
         return new PointCollection(Global.proxy.points).total;
     }
 
+    burnPoints() {
+        Global.proxy.points = new PointCollection().collection; // fresh PointSet
+        Global.proxy.points_order = [];
+    }
+
     // #endregion Access
 }

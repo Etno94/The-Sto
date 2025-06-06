@@ -48,20 +48,9 @@ const pointsContainer = document.getElementById("points");
 // Save
 saveButton.addEventListener("click", () => GameSave.save(Global.proxy));
 resetButton.addEventListener("click", () => GameSave.reset());
-dump.addEventListener("click", () => dumpAllPoints());
+dump.addEventListener("click", () => pointM.burnPoints());
 
 // #endregion Event Listeners
-
-// #region Points
-
-function dumpAllPoints() {
-  for (const type of pointProps) {
-    Global.proxy.points[type] = 0;
-  }
-  Global.proxy.points_order = [];
-}
-
-// #endregion Points
 
 // #region Unlocks
 
