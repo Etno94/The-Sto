@@ -17,7 +17,6 @@ export default class GeneratorManager {
 
     constructor () {
         this.#setOrderedGenerators();
-        this.#setBusEvents();
     }
 
     // #region Setup
@@ -41,19 +40,6 @@ export default class GeneratorManager {
             if (generator.built && !generator.canBuild) generator.built = false;
             if (generator.canBuild && !generator.hinted) generator.canBuild = false;
         });
-    }
-
-    #setBusEvents() {
-        EventBus.on(
-            Events.generator.onClick,
-            (generatorName) => {
-                if (!this.isValidGenerator(generatorName)) {
-                    Errors.logError(`Invalid generator`);
-                    return;
-                }
-                console.log(`[GeneratorManager] ${generatorName} clicked`);
-            }
-        );
     }
 
     // #endregion Setup

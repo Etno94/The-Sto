@@ -11,7 +11,7 @@
 
 /**
  * @typedef { Object } PointsBusEvents
- * @property { string } added
- * @property { string } substracted
+ * @property { string } add
+ * @property { string } substract
  * @property { string } burnAll
  */

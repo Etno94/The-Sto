@@ -1,6 +1,6 @@
 export default class Errors {
     static logError(error) {
-        console.error(`Error: ${error || error.message}`);
+        console.error(`Error: ${error.message || error}`);
     }
 
     static throwError(message) {

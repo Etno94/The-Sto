@@ -215,13 +215,12 @@ function buildGenerator(generatorName) {
 
   const buildStep = generatorM.whatBuildStepRequires(generatorName);
   if (!pointM.hasEnoughPoints(buildStep)) return;
-  pointM.substractPoints(buildStep);
+  EventBus.emit(Events.points.substract, buildStep);
 
   generatorM.buildProgress(generatorName, DataManager.getDefaultStepProgress());
 
   if (generatorM.isBuildProgressComplete(generatorName)) {
     generatorM.setBuilt(generatorName);
-    // generatorM.hasBeenBuilt(generatorName);
     checkGeneratorBuilt(generatorName);
   }
 }
@@ -241,7 +240,6 @@ function checkGeneratorBuilt(generatorName) {
 // #region Generator Actions
 
 function generatorOnClick(generatorName) {
-  EventBus.emit(Events.generator.onClick, generatorName);
   if (!generatorM.isValidGenerator(generatorName)) return;
 
   if (generatorM.isBuilt(generatorName)) {
@@ -276,8 +274,8 @@ function builtGeneratorOnClick (generatorName) {
   }
 
   if (canConsume && canGenerate) {
-    EventBus.emit(Events.points.substracted, consumePCollection.collection);
-    EventBus.emit(Events.points.added, generatePCollection.collection);
+    if (consumePCollection.total) EventBus.emit(Events.points.substract, consumePCollection.collection);
+    if (generatePCollection.total) EventBus.emit(Events.points.add, generatePCollection.collection);
   }
 }
 
@@ -397,8 +395,8 @@ function gameLoop(timestamp) {
 }
 
 function registerBusEvents() {
-  EventBus.on(Events.points.added, (message) => console.log(message));
-  EventBus.on(Events.points.substracted, (message) => console.log(message));
+  EventBus.on(Events.points.add, (message) => console.log(`[think] ${Events.points.add}`, message));
+  EventBus.on(Events.points.substract, (message) => console.log(`[think] ${Events.points.substract}`, message));
 }
 
 startGame();

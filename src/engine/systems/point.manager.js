@@ -20,15 +20,17 @@ export default class PointManager {
     }
 
     #setBusEvents() {
-        EventBus.on(Events.points.added, (points) => this.addPoints(points));
-        EventBus.on(Events.points.substracted, (points) => this.substractPoints(points));
-        EventBus.on(Events.points.burnAll, () => this.burnPoints());
+        EventBus.on(Events.points.add, (points) => this.#addPoints(points));
+        EventBus.on(Events.points.substract, (points) => this.#substractPoints(points));
+        EventBus.on(Events.points.burnAll, () => this.#burnPoints());
     }
+
+    // #region Manage
 
     /**
      * @param { PointSet } generatePoints 
      */
-    addPoints (generatePoints) {
+    #addPoints(generatePoints) {
         const points = new PointCollection(generatePoints).collection;
         for (const type of this.#pointProps) {
             Global.proxy.points[type] += points[type];
@@ -39,7 +41,7 @@ export default class PointManager {
     /**
      * @param { PointSet } consumePoints 
      */
-    substractPoints (consumePoints) {
+    #substractPoints(consumePoints) {
         const points = new PointCollection(consumePoints).collection;
         for (const type of this.#pointProps) {
             Global.proxy.points[type] -= points[type];
@@ -49,6 +51,15 @@ export default class PointManager {
                 points[type]);
         }
     }
+
+    #burnPoints() {
+        Global.proxy.points = new PointCollection().collection; // fresh PointSet
+        Global.proxy.points_order = [];
+    }
+
+    // #endregion Manage
+
+    // #region Access
 
     /**
      * @param {PointSet} pointsToMeet
@@ -65,18 +76,11 @@ export default class PointManager {
         return hasEnoughPoints;
     }
 
-    // #region Access
-
     /**
      * @returns { number }
      */
     getCurrentTotalPoints() {
         return new PointCollection(Global.proxy.points).total;
-    }
-
-    burnPoints() {
-        Global.proxy.points = new PointCollection().collection; // fresh PointSet
-        Global.proxy.points_order = [];
     }
 
     // #endregion Access
