@@ -3,9 +3,11 @@ import Asserts from './asserts.js';
 export default class Utils {
     constructor() {}
 
+    /** @param {string} value */
     static getNumberFromMSValue (value) {
         const numberMsSuffix = /^\d+ms$/;
         Asserts.regex(value, numberMsSuffix, `Expected a string with 'ms' suffix.`);
+        
         return Number(value.split('ms')[0]);
     }
 
@@ -47,7 +49,6 @@ export default class Utils {
     }
 
     /**
-     * 
      * @param { Array } arr 
      * @param { Function } criteria
      * @param { number } n 
@@ -69,7 +70,6 @@ export default class Utils {
     }
 
     /**
-     * 
      * @param { Object } obj 
      * @returns { Object}
      */
@@ -78,11 +78,19 @@ export default class Utils {
         return { ...obj };
     }
 
+    /**
+     * @param { Object } obj 
+     * @returns { Object}
+     */
     static deepCopy(obj) {
         Asserts.object(obj, 'obj');
         return JSON.parse(JSON.stringify(obj));
     }
 
+    /**
+     * @param { Array } arr 
+     * @returns { Array }
+     */
     static arrCopy(arr) {
         Asserts.array(arr, 'arr');
         return arr.slice();
