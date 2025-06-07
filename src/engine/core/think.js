@@ -15,13 +15,13 @@ import StorageManager from "../systems/managers/storage.manager.js";
 
 import Render from "../views/render.factory.js";
 import Animate from "../views/helpers/animate.js";
+import { UIControl } from "../views/ui-controller.js";
 import Utils from "../utils/utils.js";
 
 let lastUpdate = 0;
 const updateInterval = 1600;
 
 const render = new Render();
-const animate = new Animate();
 
 const inputController = new InputController();
 const pointM = new PointManager();
@@ -192,7 +192,7 @@ function showGeneratorElement(generatorElement) {
     central.children[
       generatorM.getOrderedGeneratorIndex(generatorElement.id)
     ]);
-  animate.widthIn(generatorElement);
+  Animate.widthIn(generatorElement);
 }
 
 // #endregion Unlocks
@@ -259,7 +259,8 @@ function builtGeneratorOnClick (generatorName) {
     pointM.getCurrentTotalPoints(), generatePCollection.total, consumePCollection.total)
   ) {
     canGenerate = false;
-    sideEffectsWhenOvercap();
+    // sideEffectsWhenOvercap();
+    EventBus.emit(Events.points.overcap);
   }
 
   if (canConsume && canGenerate) {
@@ -325,7 +326,7 @@ function renderPoints(currentPoints, pointsToMatch, pointType){
   while (currentPoints < pointsToMatch) {
       let pointToAppend = render.renderPoint(pointType, "no-width");
       pointsContainer.appendChild(pointToAppend);
-      animate.widthIn(pointToAppend);
+      Animate.widthIn(pointToAppend);
       currentPoints++;
   }
 }
@@ -340,7 +341,7 @@ async function removePoints(currentPoints, pointsToMatch, pointType) {
 }
 
 function pointsContainerShake() {
-  animate.timedOut(pointsContainer, animations.tilt);
+  Animate.timedOut(pointsContainer, animations.tilt);
 }
 
 // #endregion Render

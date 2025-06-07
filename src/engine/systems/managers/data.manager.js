@@ -2,6 +2,7 @@ import { BUS_EVENTS } from '../../data/bus-events.data.js';
 import { POINT_PROPS } from '../../data/points.data.js';
 import { GENERATORS, BUILD_GENERATOR } from '../../data/generators.data.js';
 import { STORAGE_UPGRADES } from '../../data/storage.data.js';
+import { ANIMATIONS } from "../../data/animations.data.js";
 import Utils from '../../utils/utils.js';
 
 
@@ -81,5 +82,17 @@ export default class DataManager {
     }
 
     // #endregion Storage
+
+    // #region Views
+
+    /**
+     * 
+     * @returns { Animations }
+     */
+    static getAnimations() {
+        return Utils.deepCopy(ANIMATIONS);
+    }
+
+    // #endregion Views
 
 }

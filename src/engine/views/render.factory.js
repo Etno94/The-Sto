@@ -41,7 +41,7 @@ export default class Render {
             if (!UIHelper.areParentAndChildValid(parent, child)) continue;
             if (child.dataset.pointType !== pointType) continue;
 
-            this.animate.widthOut(child);
+            Animate.widthOut(child);
             await Utils.delay(ANIMATIONS.width.timer);
             UIHelper.removeChild(parent, child);
 

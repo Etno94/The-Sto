@@ -14,4 +14,5 @@
  * @property { string } add
  * @property { string } substract
  * @property { string } burnAll
+ * @property { string } overcap
  */
