@@ -6,7 +6,7 @@ import Animate from "./helpers/animate.js";
 
 import DataManager from "../systems/managers/data.manager.js";
 
-export default class UIController {
+class UIController {
 
     /**
      * @type { Animations }
