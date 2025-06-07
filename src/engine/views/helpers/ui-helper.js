@@ -1,5 +1,6 @@
 // import Utils from '../utils/utils.js';
 import Validators from '../../utils/validators.js';
+import Asserts from '../../utils/asserts.js';
 
 export default class UIHelper {
 
@@ -11,7 +12,8 @@ export default class UIHelper {
      * @returns {boolean}
      */
     static containsClass(element, className) {
-        if (!Validators.isString(className)) return false;
+        Asserts.htmlElement(element);
+        Asserts.string(className);
         return element.classList.contains(className);
     }
 
@@ -21,7 +23,8 @@ export default class UIHelper {
      * @returns {boolean}
      */
     static hasAttribute(element, attribute) {
-        if (!Validators.isString(attribute)) return false;
+        Asserts.htmlElement(element);
+        Asserts.string(attribute);
         return element.hasAttribute(attribute);
     }
 
@@ -31,7 +34,8 @@ export default class UIHelper {
      * @returns {boolean}
      */
     static hasDataSet(element, datasetName) {
-        if (!Validators.isString(datasetName)) return false;
+        Asserts.htmlElement(element);
+        Asserts.string(datasetName);
         return element.hasAttribute(`data-${datasetName}`);
     }
 
@@ -42,7 +46,9 @@ export default class UIHelper {
      * @returns {boolean}
      */
     static isDataSetValue(element, datasetName, value) {
-        if (!Validators.isString(datasetName) || !Validators.isString(value)) return false;
+        Asserts.htmlElement(element);
+        Asserts.string(datasetName);
+        Asserts.string(value);
         return element.dataset[datasetName] === value;
     }
 
@@ -51,7 +57,7 @@ export default class UIHelper {
      * @return {boolean}
      */
     static hasChildrens(parent) {
-        if (!Validators.isHTMLElement(parent)) return false;
+        Asserts.htmlElement(parent);
         return parent.children && parent.children.length > 0;
     }
 
@@ -61,7 +67,8 @@ export default class UIHelper {
      * @return {boolean}
      */
     static areParentAndChildValid(parent, child) {
-        if (!Validators.isHTMLElement(parent) || !Validators.isHTMLElement(child)) return false;
+        Asserts.htmlElement(parent);
+        Asserts.htmlElement(child);
         return (parent !== child && UIHelper.isParentNode(parent, child));
     }
 
@@ -71,6 +78,8 @@ export default class UIHelper {
      * @return {boolean}
      */
     static isParentNode(parent, child) {
+        Asserts.htmlElement(parent);
+        Asserts.htmlElement(child);
         return child.parentNode === parent;
     }
 
@@ -79,31 +88,34 @@ export default class UIHelper {
     // #region Actions
 
     /**
-     * Creates a new HTML element with the specified tag.
      * @param {string} tag
      * @returns {HTMLElement}
      */
     static create(tag) {
-        return Validators.isString(tag) ? document.createElement(tag) : null;
+        Asserts.string(tag);
+        return document.createElement(tag);
     }
 
     // #region Class
 
     /**
      * @param {HTMLElement} element
-     * @param {string[]} classNames
+     * @param {string | string[]} classNames
      * @param {string} action
      * @returns {HTMLElement}
      */
     static actionOnClass(element, action, classNames ) {
+        Asserts.htmlElement(element);
+        Asserts.notNullOrUndefined(classNames, 'classNames');
+        Asserts.string(action, 'action');
         switch(typeof classNames) {
             case 'string':
-                if (Validators.isString(classNames)) 
-                    element.classList[action](classNames);
+                Asserts.string(classNames) 
+                element.classList[action](classNames);
                 break;
             case 'object':
-                if (Validators.isStringArray(classNames)) 
-                    element.classList[action](...classNames);
+                Asserts.stringArray(classNames) 
+                element.classList[action](...classNames);
                 break;
         }
         return element;
@@ -111,28 +123,31 @@ export default class UIHelper {
 
     /**
      * @param {HTMLElement} element
-     * @param {string[]} classNames
+     * @param {string | string[]} classNames
      * @returns {HTMLElement}
      */
     static addClass(element, classNames) {
+        Asserts.htmlElement(element);
         return UIHelper.actionOnClass(element,'add', classNames);
     }
 
     /**
      * @param {HTMLElement} element
-     * @param {string[]} classNames
+     * @param {string | string[]} classNames
      * @returns {HTMLElement}
      */
     static removeClass(element, classNames) {
+        Asserts.htmlElement(element);
         return UIHelper.actionOnClass(element, 'remove', classNames);
     }
 
     /**
      * @param {HTMLElement} element
-     * @param {string[]} classNames
+     * @param {string | string[]} classNames
      * @returns {HTMLElement}
      */
     static toggleClass(element, classNames) {
+        Asserts.htmlElement(element);
         UIHelper.actionOnClass(element, 'toggle', classNames);
     }
 
@@ -145,9 +160,11 @@ export default class UIHelper {
      * @returns {HTMLElement}
      */
     static addAttribute(element, name, value) {
-        if (Validators.isString(name) && Validators.isString(value)) {
-            element.setAttribute(name, value);
-        }
+        Asserts.htmlElement(element);
+        Asserts.string(name);
+        Asserts.string(value);
+
+        element.setAttribute(name, value);
         return element;
     }
 
@@ -157,9 +174,10 @@ export default class UIHelper {
      * @returns {HTMLElement}
      */
     static removeAttribute(name) {
-        if (Validators.isString(name)) {
-            element.removeAttribute(name);
-        }
+        Asserts.htmlElement(element);
+        Asserts.string(name);
+
+        element.removeAttribute(name);
         return element;
     }
 
@@ -170,9 +188,11 @@ export default class UIHelper {
      * @returns {HTMLElement}
      */
     static addDataSet(element, name, value) {
-        if (Validators.isString(name) && Validators.isString(value)) {
-            element.setAttribute(`data-${name}`, value);
-        }
+        Asserts.htmlElement(element);
+        Asserts.string(name);
+        Asserts.string(value);
+
+        element.setAttribute(`data-${name}`, value);
         return element;
     }
 
@@ -182,9 +202,10 @@ export default class UIHelper {
      * @returns {HTMLElement}
      */
     static removeDataSet(element, name) {
-        if (Validators.isString(name)) {
-            element.removeAttribute(`data-${name}`);
-        }
+        Asserts.htmlElement(element);
+        Asserts.string(name);
+
+        element.removeAttribute(`data-${name}`);
         return element;
     }
 
@@ -194,37 +215,48 @@ export default class UIHelper {
      * @returns {HTMLElement}
      */
     static appendChild(parent, child) {
-        if (Validators.isHTMLElement(child) &&
-            !parent.contains(child)) {
-            parent.appendChild(child);
-        }
+        Asserts.htmlElement(parent);
+        Asserts.htmlElement(child);
+
+        if (!parent.contains(child)) parent.appendChild(child);
+        return parent;
     }
 
     /**
      * @param {HTMLElement} parent 
-     * @param {HTMLElement} child 
+     * @param {HTMLElement} child
+     * @returns {HTMLElement}
      */
     static removeChild(parent, child) {
-        if (!UIHelper.areParentAndChildValid(parent, child)) return;
-        if (!UIHelper.isParentNode(parent, child)) return;
-        parent.removeChild(child);
+        Asserts.htmlElement(parent);
+        Asserts.htmlElement(child);
+
+        if (UIHelper.areParentAndChildValid(parent, child) && 
+            UIHelper.isParentNode(parent, child)) 
+            parent.removeChild(child);
+        
+        return parent;
     }
 
     // #endregion Actions
 
     // #region Iterators
 
+    /**
+     * @param { HTMLElement } parent 
+     * @param { Function } callback 
+     * @returns {HTMLElement}
+     */
     static applyToChildren(parent, callback)  {
-
-        if (!Validators.isHTMLElement(parent) || !Validators.isFunction(callback)) return;
-
-        if (!UIHelper.hasChildrens(parent)) return;
+        Asserts.htmlElement(parent);
+        Asserts.function(callback);
+        if (!UIHelper.hasChildrens(parent)) return parent;
 
         for (let child of parent.children) {
-            if (Validators.isHTMLElement(child)) {
-                callback(child);
-            }
+            Asserts.htmlElement(child)
+            callback(child);
         }
+        return parent;
     }
 
     // #endregion Iterators

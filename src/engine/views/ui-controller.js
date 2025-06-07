@@ -6,14 +6,16 @@ import Animate from "./helpers/animate.js";
 import UIHelper from "./helpers/ui-helper.js";
 
 import DataManager from "../systems/managers/data.manager.js";
+import Asserts from "../utils/asserts.js";
 
 class UIController {
+
+    // Data
 
     /**
      * @type { Animations }
      */
     #animations
-
     /**
      * @type { DataSet }
      */
@@ -21,6 +23,9 @@ class UIController {
         types: {},
         attr: {}
     }
+
+
+    // Elements
 
     /**
      * @type { HTMLElement }
@@ -37,6 +42,8 @@ class UIController {
         this.#setEventBus();
     }
 
+    // #region Setup
+
     #setData() {
         this.#animations = DataManager.getAnimations();
         this.#dataset.types = DataManager.getDataSetTypes();
@@ -52,14 +59,17 @@ class UIController {
         EventBus.on(Events.points.overcap, () => this.shakePointsContainer());
     }
 
+    // #endregion Setup
+
+    // #region Animations
+
     /**
      * @param { HTMLElement } element 
      */
     #shakeElement(element) {
+        Asserts.htmlElement(element);
         Animate.timedOut(element, this.#animations.tilt);
     }
-
-    // #region Animations
 
     shakePointsContainer() {
         this.#shakeElement(this.#pointsContainer);
@@ -74,9 +84,13 @@ class UIController {
      * @returns {boolean}
      */
     hasCostPreview(parentElement) {
+        Asserts.htmlElement(parentElement);
+
         if (!UIHelper.hasChildrens(parentElement)) return false;
         for (let child of parentElement.children) {
-            if (UIHelper.isDataSetValue(child, this.#dataset.attr.type, this.#dataset.types.costPreview)) return true;
+            if (UIHelper.isDataSetValue(child, this.#dataset.attr.type, this.#dataset.types.costPreview)) {
+                return true;
+            }
         }
         return false;
     }
@@ -84,11 +98,13 @@ class UIController {
     /**
      * @param {HTMLDivElement} parentElement
      */
-    removeCostPreview(element) {
-        UIHelper.applyToChildren(element, (child) => {
+    removeCostPreview(parentElement) {
+        Asserts.htmlElement(parentElement);
+
+        UIHelper.applyToChildren(parentElement, (child) => {
             if (UIHelper.containsClass(child, 'cost-preview') ||
                 UIHelper.hasDataSet(child, this.#dataset.attr.type, this.#dataset.types.costPreview)) {
-                UIHelper.removeChild(element, child);
+                UIHelper.removeChild(parentElement, child);
             }
         });
     }

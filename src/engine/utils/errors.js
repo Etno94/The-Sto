@@ -18,4 +18,8 @@ export default class Errors {
     static invalidObjectPropError(expectedProp) {
         Errors.throwError(`Invalid obj - missing prop: ${expectedProp}.`)
     }
+
+    static invalidArrayContent(expectedContent, arr = '') {
+        Errors.throwError(`Invalid array content: ${arr} - expected type: ${expectedContent}.`)
+    }
 }

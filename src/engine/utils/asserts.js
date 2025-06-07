@@ -8,6 +8,12 @@ export default class Asserts {
         }
     }
 
+    static stringArray(value, arrName = 'arr') {
+        if (!Validators.isStringArray(value)) {
+            Errors.invalidArrayContent('string', arrName);
+        }
+    }
+
     static nonEmptyArray(value, variableName = 'value') {
         if (!Validators.isNonEmptyArray(value)) {
             Errors.invalidTypeError(typeof value, `Non-empty Array (${variableName})`);

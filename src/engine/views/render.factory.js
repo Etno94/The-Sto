@@ -53,7 +53,6 @@ export default class Render {
 
     // #region Generators
 
-
     /**
      * @param {string} generatorName
      * @returns {HTMLDivElement}
@@ -67,33 +66,6 @@ export default class Render {
      */
     renderCostPreview() {
         return GeneratorDirector.createCostPreview();
-    }
-
-    // TODO: move it to UI Manager future class
-
-    /**
-     * @param {HTMLDivElement} parentElement
-     * @returns {boolean}
-     */
-    hasCostPreview(parentElement) {
-        if (!UIHelper.hasChildrens(parentElement)) return false;
-        for (let child of parentElement.children) {
-            if (UIHelper.isDataSetValue(child, DATA_SET_ATTRs.type, DATA_SET_TYPES.costPreview)) return true;
-        }
-        return false;
-    }
-
-    // TODO: move it to UI Manager future class
-    /**
-     * @param {HTMLDivElement} parentElement
-     */
-    removeCostPreview(element) {
-        UIHelper.applyToChildren(element, (child) => {
-            if (UIHelper.containsClass(child, 'cost-preview') ||
-                UIHelper.hasDataSet(child, DATA_SET_ATTRs.type, DATA_SET_TYPES.costPreview)) {
-                UIHelper.removeChild(element, child);
-            }
-        });
     }
 
     // #endregion Generators
