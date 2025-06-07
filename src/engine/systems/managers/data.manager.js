@@ -1,5 +1,5 @@
 import { BUS_EVENTS } from '../../data/bus-events.data.js';
-import { POINT_PROPS } from '../../data/points.data.js';
+import { POINT_PROPS, POINT_TYPES, POINT_CLASSES } from '../../data/points.data.js';
 import { GENERATORS, BUILD_GENERATOR } from '../../data/generators.data.js';
 import { STORAGE_UPGRADES } from '../../data/storage.data.js';
 import { ANIMATIONS } from "../../data/animations.data.js";
@@ -27,8 +27,22 @@ export default class DataManager {
     /**
      * @returns { string[] }
      */
-    static getPointTypeData() {
+    static getPointPropsData() {
         return Utils.arrCopy(POINT_PROPS) || [];
+    }
+
+    /**
+     * @returns { PointTypes }
+     */
+    static getPointTypesData() {
+        return Utils.deepCopy(POINT_TYPES) || null;
+    }
+
+    /**
+     * @returns { PointClasses }
+     */
+    static getPointClassesData() {
+        return Utils.arrCopy(POINT_CLASSES) || [];
     }
 
     // #endregion Points

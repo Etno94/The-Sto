@@ -79,6 +79,20 @@ class UIController {
     
     // #region Elements Flow
 
+    async removePoint(parent, pointType) {
+        for (let child of Array.from(parent.children)) {
+
+            if (!UIHelper.areParentAndChildValid(parent, child)) continue;
+            if (child.dataset.pointType !== pointType) continue;
+
+            Animate.widthOut(child);
+            await Utils.delay(ANIMATIONS.width.timer);
+            UIHelper.removeChild(parent, child);
+
+            return;
+        }
+    }
+
     /**
      * @param {HTMLDivElement} parentElement
      * @returns {boolean}

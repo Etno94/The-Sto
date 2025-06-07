@@ -16,7 +16,7 @@ export default class PointCollection {
      * @param { PointSet } newCollection 
      */
     constructor(newCollection) {
-        const pointProps = DataManager.getPointTypeData();
+        const pointProps = DataManager.getPointPropsData();
         for (const point of pointProps) this.collection[point] = 0;
         if (newCollection) this.set(newCollection);
     }

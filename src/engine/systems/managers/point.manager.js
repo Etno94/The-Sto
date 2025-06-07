@@ -15,7 +15,7 @@ export default class PointManager {
     #pointProps = [];
 
     constructor () {
-        this.#pointProps = DataManager.getPointTypeData();
+        this.#pointProps = DataManager.getPointPropsData();
         this.#setBusEvents();
     }
 

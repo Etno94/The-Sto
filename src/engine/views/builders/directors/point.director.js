@@ -1,6 +1,5 @@
 import ElBuilder from "../element.builder.js";
-import { POINT_TYPES, POINT_CLASSES } from "../../../data/points.data.js";
-import { DATA_SET_ATTRs, DATA_SET_TYPES } from "../../../data/data-set-attr.data.js";
+import DataManager from "../../../systems/managers/data.manager.js";
 
 export default class PointDirector {
 
@@ -10,10 +9,10 @@ export default class PointDirector {
      */
     static createBasicPoint(classes = []) {
         return new ElBuilder('div')
-            .addClass(POINT_CLASSES.point.layer_0)
+            .addClass(DataManager.getPointClassesData().point.layer_0)
             .addClass(classes)
-            .addDataSet(DATA_SET_ATTRs.type, DATA_SET_TYPES.point)
-            .addDataSet(DATA_SET_ATTRs.pointType, POINT_TYPES.point)
+            .addDataSet(DataManager.getDataSetAttrs().type, DataManager.getDataSetTypes().point)
+            .addDataSet(DataManager.getDataSetAttrs().pointType, DataManager.getPointTypesData().point)
             .finish();
     }
 
@@ -23,13 +22,13 @@ export default class PointDirector {
      */
     static createSolidPoint(classes = []) {
         return new ElBuilder('div')
-            .addClass(POINT_CLASSES.solid_point.layer_0)
+            .addClass(DataManager.getPointClassesData().solid_point.layer_0)
             .addClass(classes)
-            .addDataSet(DATA_SET_ATTRs.type, DATA_SET_TYPES.point)
-            .addDataSet(DATA_SET_ATTRs.pointType, POINT_TYPES.solid_point)
+            .addDataSet(DataManager.getDataSetAttrs().type, DataManager.getDataSetTypes().point)
+            .addDataSet(DataManager.getDataSetAttrs().pointType, DataManager.getPointTypesData().solid_point)
             .appendChild(
                 new ElBuilder('div')
-                    .addClass(POINT_CLASSES.solid_point.layer_1)
+                    .addClass(DataManager.getPointClassesData().solid_point.layer_1)
                     .finish()
             )
             .finish();
@@ -41,10 +40,10 @@ export default class PointDirector {
      */
     static createEnergyPoint(classes = []) {
         return new ElBuilder('div')
-            .addClass(POINT_CLASSES.energy_point.layer_0)
+            .addClass(DataManager.getPointClassesData().energy_point.layer_0)
             .addClass(classes)
-            .addDataSet(DATA_SET_ATTRs.type, DATA_SET_TYPES.point)
-            .addDataSet(DATA_SET_ATTRs.pointType, POINT_TYPES.energy_point)
+            .addDataSet(DataManager.getDataSetAttrs().type, DataManager.getDataSetTypes().point)
+            .addDataSet(DataManager.getDataSetAttrs().pointType, DataManager.getPointTypesData().energy_point)
             .finish();
     }
 }

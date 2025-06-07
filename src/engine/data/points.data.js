@@ -1,5 +1,5 @@
 /**
- * @returns {{[key: string]: string[]}}
+ * @type { PointClasses }
  */
 export const POINT_CLASSES = {
     point: {
@@ -15,7 +15,7 @@ export const POINT_CLASSES = {
 }
 
 /**
- * @returns {{[key: string]: string}}
+ * @type { PointTypes }
  */
 export const POINT_TYPES = {
     point: 'point',
