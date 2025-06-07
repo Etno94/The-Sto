@@ -42,7 +42,7 @@ export default class DataManager {
      * @returns { PointClasses }
      */
     static getPointClassesData() {
-        return Utils.arrCopy(POINT_CLASSES) || [];
+        return Utils.deepCopy(POINT_CLASSES) || null;
     }
 
     // #endregion Points
