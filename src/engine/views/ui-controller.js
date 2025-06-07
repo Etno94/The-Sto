@@ -83,6 +83,18 @@ class UIController {
     }
 
     /**
+     * @param {string} generatorName 
+     * @param {...string} classes
+     * @returns {HTMLElement}
+     */
+    renderGenerator(generatorName, ...classes) {
+        Asserts.string(generatorName);
+        Asserts.stringArray(classes);
+
+        return Render.renderGenerator(generatorName, classes);
+    }
+
+    /**
      * @param {HTMLElement} parent 
      * @param {string} pointType 
      */

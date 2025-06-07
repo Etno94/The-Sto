@@ -125,7 +125,7 @@ function checkBuiltGenerators(generators) {
  * @returns {HTMLElement}
  */
 function getGeneratorElement(generatorName) {
-  return document.getElementById(generatorName) ?? render.renderGenerator(generatorName, 'no-width');
+  return document.getElementById(generatorName) ?? UIControl.renderGenerator(generatorName, 'no-width');
 }
 
 /**

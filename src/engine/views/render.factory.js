@@ -34,11 +34,12 @@ export default class Render {
 
     /**
      * @param {string} generatorName
-     * @param {args} classes
+     * @param {string[]} classes
      * @returns {HTMLDivElement}
      */
-    renderGenerator(generatorName, ...classes) {
+    static renderGenerator(generatorName, classes) {
         Asserts.string(generatorName);
+        Asserts.stringArray(classes);
 
         return GeneratorDirector.createGenerator(generatorName, classes);
     }
