@@ -156,7 +156,7 @@ function showBuild(generatorElement, generatorData) {
  * @returns 
  */
 function showCostPreview(generatorElement, buildCosts) {
-  if (render.hasCostPreview(generatorElement)) return;
+  if (UIControl.hasCostPreview(generatorElement)) return;
 
   const costPreviewElement = render.renderCostPreview();
   for (let pointType in buildCosts) {
@@ -221,7 +221,7 @@ function checkGeneratorBuilt(generatorName) {
   if (generatorElement.classList.contains("blank"))
     generatorElement.classList.remove("blank");
 
-  render.removeCostPreview(generatorElement);
+  UIControl.removeCostPreview(generatorElement);
 }
 
 // #endregion Build
@@ -259,7 +259,6 @@ function builtGeneratorOnClick (generatorName) {
     pointM.getCurrentTotalPoints(), generatePCollection.total, consumePCollection.total)
   ) {
     canGenerate = false;
-    // sideEffectsWhenOvercap();
     EventBus.emit(Events.points.overcap);
   }
 
@@ -267,10 +266,6 @@ function builtGeneratorOnClick (generatorName) {
     if (consumePCollection.total) EventBus.emit(Events.points.substract, consumePCollection.collection);
     if (generatePCollection.total) EventBus.emit(Events.points.add, generatePCollection.collection);
   }
-}
-
-function sideEffectsWhenOvercap() {
-  pointsContainerShake();
 }
 
 // #endregion Generator Actions
@@ -338,10 +333,6 @@ async function removePoints(currentPoints, pointsToMatch, pointType) {
       await render.removePoint(pointsContainer, pointType);
       currentPoints--;
   }
-}
-
-function pointsContainerShake() {
-  Animate.timedOut(pointsContainer, animations.tilt);
 }
 
 // #endregion Render

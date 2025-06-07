@@ -3,6 +3,9 @@ import { POINT_PROPS } from '../../data/points.data.js';
 import { GENERATORS, BUILD_GENERATOR } from '../../data/generators.data.js';
 import { STORAGE_UPGRADES } from '../../data/storage.data.js';
 import { ANIMATIONS } from "../../data/animations.data.js";
+import { DATA_SET_ATTRs, DATA_SET_TYPES } from '../../data/data-set-attr.data.js';
+
+
 import Utils from '../../utils/utils.js';
 
 
@@ -86,7 +89,6 @@ export default class DataManager {
     // #region Views
 
     /**
-     * 
      * @returns { Animations }
      */
     static getAnimations() {
@@ -94,5 +96,23 @@ export default class DataManager {
     }
 
     // #endregion Views
+
+    // #region DataSets
+
+    /**
+     * @returns { DataSetTypes }
+     */
+    static getDataSetTypes() {
+        return Utils.deepCopy(DATA_SET_TYPES);
+    }
+
+    /**
+     * @returns { DataSetAttr }
+     */
+    static getDataSetAttrs() {
+        return Utils.deepCopy(DATA_SET_ATTRs);
+    }
+
+    // #endregion DataSets
 
 }
