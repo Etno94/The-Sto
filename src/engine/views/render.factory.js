@@ -47,7 +47,7 @@ export default class Render {
     /**
      * @returns {HTMLDivElement}
      */
-    renderCostPreview() {
+    static renderCostPreview() {
         return GeneratorDirector.createCostPreview();
     }
 

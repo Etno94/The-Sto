@@ -158,7 +158,7 @@ function showBuild(generatorElement, generatorData) {
 function showCostPreview(generatorElement, buildCosts) {
   if (UIControl.hasCostPreview(generatorElement)) return;
 
-  const costPreviewElement = render.renderCostPreview();
+  const costPreviewElement = UIControl.renderCostPreview();
   for (let pointType in buildCosts) {
     costPreviewElement.appendChild(UIControl.renderPoint(pointType));
   }

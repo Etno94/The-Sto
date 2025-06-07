@@ -95,6 +95,13 @@ class UIController {
     }
 
     /**
+     * @returns {HTMLDivElement}
+     */
+    renderCostPreview() {
+        return Render.renderCostPreview();
+    }
+
+    /**
      * @param {HTMLElement} parent 
      * @param {string} pointType 
      */
