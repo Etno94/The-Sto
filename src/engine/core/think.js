@@ -160,7 +160,7 @@ function showCostPreview(generatorElement, buildCosts) {
 
   const costPreviewElement = render.renderCostPreview();
   for (let pointType in buildCosts) {
-    costPreviewElement.appendChild(render.renderPoint(pointType));
+    costPreviewElement.appendChild(UIControl.renderPoint(pointType));
   }
   generatorElement.appendChild(costPreviewElement);
 }
@@ -319,7 +319,7 @@ function renderPoints(currentPoints, pointsToMatch, pointType){
   if (currentPoints >= pointsToMatch) return;
 
   while (currentPoints < pointsToMatch) {
-      let pointToAppend = render.renderPoint(pointType, "no-width");
+      let pointToAppend = UIControl.renderPoint(pointType, "no-width");
       pointsContainer.appendChild(pointToAppend);
       Animate.widthIn(pointToAppend);
       

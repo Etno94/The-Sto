@@ -13,13 +13,13 @@ export default class Render {
     // #region Points
 
     /**
-     * 
      * @param {string} pointType
-     * @param {args} classes
+     * @param {string[]} classes
      * @returns {HTMLDivElement}
      */
-    renderPoint(pointType, ...classes) {
+    static renderPoint(pointType, classes) {
         Asserts.string(pointType);
+        Asserts.stringArray(classes);
 
         return ({
             [DataManager.getPointTypesData().point]: PointDirector.createBasicPoint,

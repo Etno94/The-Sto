@@ -71,6 +71,18 @@ class UIController {
     // #region Elements Flow
 
     /**
+     * @param {string} type 
+     * @param {...string} classes
+     * @returns {HTMLElement}
+     */
+    renderPoint(type, ...classes) {
+        Asserts.string(type);
+        Asserts.stringArray(classes);
+
+        return Render.renderPoint(type, classes);
+    }
+
+    /**
      * @param {HTMLElement} parent 
      * @param {string} pointType 
      */
