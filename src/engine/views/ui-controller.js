@@ -7,34 +7,26 @@ import UIHelper from "./helpers/ui-helper.js";
 
 import DataManager from "../systems/managers/data.manager.js";
 import Asserts from "../utils/asserts.js";
+import Utils from "../utils/utils.js";
 
 class UIController {
 
     // Data
 
-    /**
-     * @type { Animations }
-     */
-    #animations
-    /**
-     * @type { DataSet }
-     */
+    /** @type { DataSet } */
+    #animations;
+    /** @type { DataSet } */
     #dataset = {
         types: {},
         attr: {}
-    }
-
+    };
 
     // Elements
 
-    /**
-     * @type { HTMLElement }
-     */
-    #central
-    /**
-     * @type { HTMLElement }
-     */
-    #pointsContainer
+    /** @type {HTMLElement} */
+    #generatorsContainer;
+    /** @type {HTMLElement} */
+    #pointsContainer;
     
     constructor() {
         this.#setData();
@@ -51,7 +43,7 @@ class UIController {
     }
 
     #setElements() {
-        this.#central = document.getElementById("central");
+        this.#generatorsContainer = document.getElementById("central");
         this.#pointsContainer = document.getElementById("points");
     }
 
@@ -63,11 +55,10 @@ class UIController {
 
     // #region Animations
 
-    /**
-     * @param { HTMLElement } element 
-     */
+    /** @param { HTMLElement } element */
     #shakeElement(element) {
         Asserts.htmlElement(element);
+
         Animate.timedOut(element, this.#animations.tilt);
     }
 
@@ -79,14 +70,21 @@ class UIController {
     
     // #region Elements Flow
 
+    /**
+     * @param {HTMLElement} parent 
+     * @param {string} pointType 
+     */
     async removePoint(parent, pointType) {
+        Asserts.htmlElement(parent);
+        Asserts.string(pointType);
+
         for (let child of Array.from(parent.children)) {
 
             if (!UIHelper.areParentAndChildValid(parent, child)) continue;
             if (child.dataset.pointType !== pointType) continue;
 
             Animate.widthOut(child);
-            await Utils.delay(ANIMATIONS.width.timer);
+            await Utils.delay(this.#animations.width.timer);
             UIHelper.removeChild(parent, child);
 
             return;
@@ -109,9 +107,7 @@ class UIController {
         return false;
     }
 
-    /**
-     * @param {HTMLDivElement} parentElement
-     */
+    /** @param {HTMLDivElement} parentElement */
     removeCostPreview(parentElement) {
         Asserts.htmlElement(parentElement);
 

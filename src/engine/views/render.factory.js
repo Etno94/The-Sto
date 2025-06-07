@@ -1,10 +1,6 @@
-import Animate from './helpers/animate.js';
-import Utils from '../utils/utils.js';
-import UIHelper from './helpers/ui-helper.js';
+import DataManager from '../systems/managers/data.manager.js';
 
-import { ANIMATIONS } from '../data/animations.data.js';
-import { POINT_TYPES } from '../data/points.data.js';
-import { DATA_SET_ATTRs, DATA_SET_TYPES } from '../data/data-set-attr.data.js';
+import Asserts from '../utils/asserts.js';
 
 import PointDirector from './builders/directors/point.director.js';
 import GeneratorDirector from './builders/directors/generator.director.js';
@@ -12,7 +8,6 @@ import GeneratorDirector from './builders/directors/generator.director.js';
 export default class Render {
 
     constructor() {
-        this.animate = new Animate();
     }
 
     // #region Points
@@ -24,29 +19,13 @@ export default class Render {
      * @returns {HTMLDivElement}
      */
     renderPoint(pointType, ...classes) {
+        Asserts.string(pointType);
 
-        // If functions use 'this' context, we need to bind them.
-        // In this case, we don't rely on 'this' context
         return ({
-            [POINT_TYPES.point]: PointDirector.createBasicPoint,
-            [POINT_TYPES.solid_point]: PointDirector.createSolidPoint,
-            [POINT_TYPES.energy_point]: PointDirector.createEnergyPoint
+            [DataManager.getPointTypesData().point]: PointDirector.createBasicPoint,
+            [DataManager.getPointTypesData().solid_point]: PointDirector.createSolidPoint,
+            [DataManager.getPointTypesData().energy_point]: PointDirector.createEnergyPoint
         })[pointType](classes);
-    }
-
-    // TODO: move it to UI Manager future class
-    async removePoint(parent, pointType) {
-        for (let child of Array.from(parent.children)) {
-
-            if (!UIHelper.areParentAndChildValid(parent, child)) continue;
-            if (child.dataset.pointType !== pointType) continue;
-
-            Animate.widthOut(child);
-            await Utils.delay(ANIMATIONS.width.timer);
-            UIHelper.removeChild(parent, child);
-
-            return;
-        }
     }
 
     // #endregion Points
@@ -55,9 +34,12 @@ export default class Render {
 
     /**
      * @param {string} generatorName
+     * @param {args} classes
      * @returns {HTMLDivElement}
      */
     renderGenerator(generatorName, ...classes) {
+        Asserts.string(generatorName);
+
         return GeneratorDirector.createGenerator(generatorName, classes);
     }
 

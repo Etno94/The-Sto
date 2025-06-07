@@ -322,6 +322,7 @@ function renderPoints(currentPoints, pointsToMatch, pointType){
       let pointToAppend = render.renderPoint(pointType, "no-width");
       pointsContainer.appendChild(pointToAppend);
       Animate.widthIn(pointToAppend);
+      
       currentPoints++;
   }
 }
@@ -330,7 +331,7 @@ async function removePoints(currentPoints, pointsToMatch, pointType) {
   if (currentPoints <= pointsToMatch) return;
 
   while (currentPoints > pointsToMatch) {
-      await render.removePoint(pointsContainer, pointType);
+      await UIControl.removePoint(pointsContainer, pointType);
       currentPoints--;
   }
 }
