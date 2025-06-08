@@ -10,7 +10,7 @@ export default class GeneratorDirector {
      * @returns {HTMLDivElement}
      */
     static createGenerator(generatorName, classes = []) {
-        return new ElBuilder('div')
+        return new ElBuilder('button')
             .addAttribute('id', generatorName)
             .addClass(["cell", "m-24"])
             .addClass(classes)
