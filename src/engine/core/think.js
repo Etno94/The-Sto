@@ -1,4 +1,3 @@
-import { ANIMATIONS } from "../data/animations.data.js";
 import { POINT_TYPES, POINT_PROPS } from "../data/points.data.js";
 
 import Global from "./global.js";
@@ -13,31 +12,25 @@ import PointManager from '../systems/managers/point.manager.js';
 import GeneratorManager from "../systems/managers/generator.manager.js";
 import StorageManager from "../systems/managers/storage.manager.js";
 
-import Render from "../views/render.factory.js";
 import Animate from "../views/helpers/animate.js";
 import { UIControl } from "../views/ui-controller.js";
 import Utils from "../utils/utils.js";
+import {RenderQ} from "../views/helpers/render-queue.js";
 
 let lastUpdate = 0;
 const updateInterval = 1600;
-
-const render = new Render();
 
 const inputController = new InputController();
 const pointM = new PointManager();
 const generatorM = new GeneratorManager();
 const storageM = new StorageManager();
 
-const animations = ANIMATIONS;
 const pointProps = POINT_PROPS;
 
 // #region Elements
 
 // Layout
 const central = document.getElementById("central");
-
-const storage = document.getElementById("storage");
-const storageUpgrade = document.getElementById("storage-upgrade");
 const pointsContainer = document.getElementById("points");
 
 // #endregion Elements
@@ -231,6 +224,8 @@ function checkGeneratorBuilt(generatorName) {
 function generatorOnClick(generatorName) {
   if (!generatorM.isValidGenerator(generatorName)) return;
 
+  console.log(`Clicked gen: ${generatorName}`);
+
   if (generatorM.isBuilt(generatorName)) {
     builtGeneratorOnClick(generatorName);
     return;
@@ -276,7 +271,7 @@ function builtGeneratorOnClick (generatorName) {
  * @param {Collection} points
  * @param {string[]} orderedPoints
  */
-function setStoragePoints(points, orderedPoints) {
+async function setStoragePoints(points, orderedPoints) {
   // Guards
   for (let [key, value] of Object.entries(points.collection)) {
     if (value === null || value === undefined) return;
@@ -286,35 +281,24 @@ function setStoragePoints(points, orderedPoints) {
   if (!pointsContainer) return;
   // -Guards
 
-  // Render points as necessary
-  let currentBasicPoints = 0;
-  let currentSolidPoints = 0;
-  let currentEnergyPoints = 0;
+  let { point: currentBasicPoints, solid_point: currentSolidPoints, energy_point: currentEnergyPoints } = UIControl.getCurrentPointsFromDOM();
 
-  Array.from(pointsContainer.children).forEach((child) => {
-    switch(child.dataset.pointType) {
-      case POINT_TYPES.energy_point:
-        currentEnergyPoints++;
-        break;
-      case POINT_TYPES.solid_point:
-        currentSolidPoints++;
-        break;
-      case POINT_TYPES.point:
-        currentBasicPoints++
-        break;
-    }
-  });
+  RenderQ.queue(removePoints, currentBasicPoints, points.collection.point, POINT_TYPES.point);
+  RenderQ.queue(removePoints, currentSolidPoints, points.collection.solid_point, POINT_TYPES.solid_point);
+  RenderQ.queue(removePoints, currentEnergyPoints, points.collection.energy_point, POINT_TYPES.energy_point);
 
-  removePoints(currentBasicPoints, points.collection.point, POINT_TYPES.point);
-  removePoints(currentSolidPoints, points.collection.solid_point, POINT_TYPES.solid_point);
-  removePoints(currentEnergyPoints, points.collection.energy_point, POINT_TYPES.energy_point);
-
-  renderPoints(currentBasicPoints, points.collection.point, POINT_TYPES.point);
-  renderPoints(currentSolidPoints, points.collection.solid_point, POINT_TYPES.solid_point);
-  renderPoints(currentEnergyPoints, points.collection.energy_point, POINT_TYPES.energy_point);
+  RenderQ.queue(renderPoints, currentBasicPoints, points.collection.point, POINT_TYPES.point);
+  RenderQ.queue(renderPoints, currentSolidPoints, points.collection.solid_point, POINT_TYPES.solid_point);
+  RenderQ.queue(renderPoints, currentEnergyPoints, points.collection.energy_point, POINT_TYPES.energy_point);
 }
 
 
+/**
+ * @param {number} currentPoints 
+ * @param {number} pointsToMatch 
+ * @param {string} pointType 
+ * @returns 
+ */
 function renderPoints(currentPoints, pointsToMatch, pointType){
   if (currentPoints >= pointsToMatch) return;
 
@@ -327,6 +311,12 @@ function renderPoints(currentPoints, pointsToMatch, pointType){
   }
 }
 
+/**
+ * @param {number} currentPoints 
+ * @param {number} pointsToMatch 
+ * @param {string} pointType 
+ * @returns 
+ */
 async function removePoints(currentPoints, pointsToMatch, pointType) {
   if (currentPoints <= pointsToMatch) return;
 
@@ -356,8 +346,7 @@ function startGame() {
     GameSave.save(updatedSave);
     gameLoop();
   });
-
-  requestAnimationFrame(gameLoop);
+  if (!save) requestAnimationFrame(gameLoop);
 }
 
 function gameLoop(timestamp) {

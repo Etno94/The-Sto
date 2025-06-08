@@ -1,4 +1,6 @@
 export default class Errors {
+
+    /** @param {Error | string} error */
     static logError(error) {
         console.error(`Error: ${error.message || error}`);
     }

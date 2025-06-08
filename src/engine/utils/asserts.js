@@ -39,6 +39,12 @@ export default class Asserts {
         }
     }
 
+    static boolean(value, variableName = 'value') {
+        if (!Validators.isBoolean(value)) {
+            Errors.invalidTypeError(typeof value, `Boolean (${variableName})`);
+        }
+    }
+
     static object(value, variableName = 'value') {
         if (!Validators.isObject(value)) {
             Errors.invalidTypeError(typeof value, `Object (${variableName})`);

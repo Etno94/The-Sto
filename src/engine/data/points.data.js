@@ -14,9 +14,7 @@ export const POINT_CLASSES = {
     } 
 }
 
-/**
- * @type { PointTypes }
- */
+/** @type { PointTypes } */
 export const POINT_TYPES = {
     point: 'point',
     solid_point: 'solid_point',

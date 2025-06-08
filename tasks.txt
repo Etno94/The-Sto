@@ -1,12 +1,9 @@
 Tareas:
 
 - desacoplar elementos de generadores del id, plasmar estilos a traves de clases
-- implementar event bus en conjunto con Proxy
 
 Nice to have:
 
 - tipar todos los parametros y obj
 
 Bugs:
-
-- al generar puntos rapidamente, hay una interaccion en la cual se genera un basic point pero no se llega a renderear

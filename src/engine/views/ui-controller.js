@@ -8,11 +8,11 @@ import UIHelper from "./helpers/ui-helper.js";
 import DataManager from "../systems/managers/data.manager.js";
 import Asserts from "../utils/asserts.js";
 import Utils from "../utils/utils.js";
+import Errors from "../utils/errors.js";
 
 class UIController {
 
     // Data
-
     /** @type { DataSet } */
     #animations;
     /** @type { DataSet } */
@@ -21,8 +21,10 @@ class UIController {
         attr: {}
     };
 
-    // Elements
+    /** @type { PointTypes } */
+    #pointTypes;
 
+    // Elements
     /** @type {HTMLElement} */
     #generatorsContainer;
     /** @type {HTMLElement} */
@@ -40,6 +42,7 @@ class UIController {
         this.#animations = DataManager.getAnimations();
         this.#dataset.types = DataManager.getDataSetTypes();
         this.#dataset.attr = DataManager.getDataSetAttrs();
+        this.#pointTypes = DataManager.getPointTypesData();
     }
 
     #setElements() {
@@ -49,6 +52,7 @@ class UIController {
 
     #setEventBus() {
         EventBus.on(Events.points.overcap, () => this.shakePointsContainer());
+        EventBus.on(Events.ui.render, (locked) => this.manageLockGenerators(locked));
     }
 
     // #endregion Setup
@@ -70,6 +74,7 @@ class UIController {
     
     // #region Elements Flow
 
+    // Points
     /**
      * @param {string} type 
      * @param {...string} classes
@@ -80,25 +85,6 @@ class UIController {
         Asserts.stringArray(classes);
 
         return Render.renderPoint(type, classes);
-    }
-
-    /**
-     * @param {string} generatorName 
-     * @param {...string} classes
-     * @returns {HTMLElement}
-     */
-    renderGenerator(generatorName, ...classes) {
-        Asserts.string(generatorName);
-        Asserts.stringArray(classes);
-
-        return Render.renderGenerator(generatorName, classes);
-    }
-
-    /**
-     * @returns {HTMLDivElement}
-     */
-    renderCostPreview() {
-        return Render.renderCostPreview();
     }
 
     /**
@@ -122,6 +108,20 @@ class UIController {
         }
     }
 
+    // Generators
+    /**
+     * @param {string} generatorName 
+     * @param {...string} classes
+     * @returns {HTMLElement}
+     */
+    renderGenerator(generatorName, ...classes) {
+        Asserts.string(generatorName);
+        Asserts.stringArray(classes);
+
+        return Render.renderGenerator(generatorName, classes);
+    }
+
+    // Cost Preview
     /**
      * @param {HTMLDivElement} parentElement
      * @returns {boolean}
@@ -138,6 +138,13 @@ class UIController {
         return false;
     }
 
+    /**
+     * @returns {HTMLDivElement}
+     */
+    renderCostPreview() {
+        return Render.renderCostPreview();
+    }
+
     /** @param {HTMLDivElement} parentElement */
     removeCostPreview(parentElement) {
         Asserts.htmlElement(parentElement);
@@ -148,6 +155,37 @@ class UIController {
                 UIHelper.removeChild(parentElement, child);
             }
         });
+    }
+
+    /** @param { boolean } isDisabled */
+    manageLockGenerators(isDisabled = false) {
+        Asserts.boolean(isDisabled);
+                if (!UIHelper.hasChildrens(this.#generatorsContainer)) {
+            Errors.logError(`(manageLockGenerators) There's no generators`);
+            return;
+        }
+
+        console.log(`(manageLockGenerators) setting generators to ${isDisabled ? 'disabled': 'enabled'}`)
+        const generatorElements = Array.from(this.#generatorsContainer.children);
+        generatorElements.forEach(gen => gen.disabled = isDisabled);
+    }
+
+    // Storage
+    getCurrentPointsFromDOM() {
+      const counts = {
+        [this.#pointTypes.point]: 0,
+        [this.#pointTypes.solid_point]: 0,
+        [this.#pointTypes.energy_point]: 0
+      };
+    
+      for (let child of this.#pointsContainer.children) {
+        const type = child.dataset.pointType;
+        if (counts.hasOwnProperty(type)) {
+          counts[type]++;
+        }
+      }
+    
+      return counts;
     }
 
     // #endregion Elements Flow

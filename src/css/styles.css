@@ -26,7 +26,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    transition-duration: 500ms;
 }
 
 #saveGame:hover, 
@@ -53,7 +52,6 @@
     justify-content: center;
     color: white;
     font-size: 24px;
-    transition-duration: 500ms;
 }
 
 /* Grid */
@@ -80,6 +78,10 @@
 
 .cell.blank {
     border: var(--bolder-border--bold-border);
+}
+
+.cell:disabled {
+    opacity: 0.5;
 }
 
 .cell .cost-preview {

@@ -9,7 +9,7 @@ class SaveProxy {
         this.subscribers = [];
         this.notifyDebounced = debounce(() => {
             this.subscribers.forEach(callback => callback(this.proxySave));
-        }, 200);
+        }, 10);
         this.proxySave = this.createProxy(save);
     }
 

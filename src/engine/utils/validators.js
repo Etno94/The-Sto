@@ -32,6 +32,10 @@ export default class Validators {
         return typeof number === 'number';
     }
 
+    static isBoolean(bool) {
+        return typeof bool === 'boolean';
+    }
+
     static isHTMLElement(element) {
         return element instanceof HTMLElement;
     }

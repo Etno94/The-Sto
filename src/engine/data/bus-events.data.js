@@ -8,7 +8,11 @@ export const BUS_EVENTS = {
     points: {
         add: 'point: added',
         substract: 'point: substracted',
+        balance: 'point: balanced',
         burnAll: 'point: burn all',
         overcap: 'point: overcap'
+    },
+    ui: {
+        render: 'UI: rendering'
     }
 }

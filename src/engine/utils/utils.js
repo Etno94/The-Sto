@@ -70,6 +70,27 @@ export default class Utils {
     }
 
     /**
+     * @param { Array } arr 
+     * @param { Function } criteria
+     * @param { number } n 
+     * @returns { Array }
+     */
+    static selectInitialNItems(arr, criteria, n) {
+        Asserts.array(arr, 'arr');
+        Asserts.function(criteria, 'criteria');
+        Asserts.number(n, 'n');
+
+        let count = 0;
+        return arr.filter((item) => {
+            if (criteria(item) && count < n) {
+                count++;
+                return true;
+            }
+            return false;
+        });
+    }
+
+    /**
      * @param { Object } obj 
      * @returns { Object}
      */
