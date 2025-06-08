@@ -44,9 +44,7 @@ function checkGeneratorUnlocks() {
   checkBuiltGenerators([...generatorM.getBuitGenerators()]);
 }
 
-/**
- * @param {SaveGenerator[]} generators
- */
+/** @param {SaveGenerator[]} generators */
 function checkLockedGenerators(generators) {
 
   generators.forEach(generator => {
@@ -60,9 +58,7 @@ function checkLockedGenerators(generators) {
   });
 }
 
-/**
- * @param {SaveGenerator[]} generators
- */
+/** @param {SaveGenerator[]} generators */
 function checkHintedGenerators(generators) {
 
   generators.forEach(generator => {
@@ -80,9 +76,7 @@ function checkHintedGenerators(generators) {
   });
 }
 
-/**
- * @param {SaveGenerator[]} generators
- */
+/** @param {SaveGenerator[]} generators */
 function checkCanBeBuiltGenerators(generators) {
 
   generators.forEach(generator => {
@@ -94,9 +88,7 @@ function checkCanBeBuiltGenerators(generators) {
   });
 }
 
-/**
- * @param {SaveGenerator[]} generators
- */
+/** @param {SaveGenerator[]} generators */
 function checkBuiltGenerators(generators) {
 
   generators.forEach(generator => {
@@ -117,9 +109,7 @@ function getGeneratorElement(generatorName) {
   return document.getElementById(generatorName) ?? UIControl.renderGenerator(generatorName, 'no-width');
 }
 
-/**
- * @param {HTMLElement} generatorElement 
- */
+/** @param {HTMLElement} generatorElement */
 function showHint(generatorElement) {
   if (!generatorElement.classList.contains("hint"))
     generatorElement.classList.add("hint");
@@ -139,7 +129,6 @@ function showBuild(generatorElement, generatorData) {
 }
 
 /**
- * 
  * @param {HTMLElement} generatorElement 
  * @param {Object} buildCosts 
  * @returns 
@@ -155,7 +144,6 @@ function showCostPreview(generatorElement, buildCosts) {
 }
 
 /**
- * 
  * @param {HTMLElement} generatorElement 
  * @param {string} generatorName 
  */
@@ -221,9 +209,7 @@ function generatorOnClick(generatorName) {
   }
 }
 
-/**
- * @param { string } generatorName 
- */
+/** @param { string } generatorName */
 function builtGeneratorOnClick (generatorName) {
   const consumePCollection = new PointCollection(generatorM.whatConsumes(generatorName));
   const generatePCollection = new PointCollection(generatorM.whatGenerates(generatorName));
