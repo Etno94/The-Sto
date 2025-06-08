@@ -69,7 +69,7 @@ function checkHintedGenerators(generators) {
     } 
     else {
       if (generatorM.isBuildable(generator.name)) generatorM.setBuildable(generator.name, false);
-      const generatorElement = getGeneratorElement(generator.name);
+      const generatorElement = UIControl.getGeneratorElement(generator.name);
       showHint(generatorElement);
       registerGeneratorAction(generatorElement, generator.name);
     }
@@ -82,7 +82,7 @@ function checkCanBeBuiltGenerators(generators) {
   generators.forEach(generator => {
     if (!generatorM.isValidGenerator(generator.name)) return;
 
-    const generatorElement = getGeneratorElement(generator.name);
+    const generatorElement = UIControl.getGeneratorElement(generator.name);
     showBuild(generatorElement, generatorM.whatBuildStepRequires(generator.name));
     registerGeneratorAction(generatorElement, generator.name);
   });
@@ -94,19 +94,10 @@ function checkBuiltGenerators(generators) {
   generators.forEach(generator => {
     if (!generatorM.isValidGenerator(generator.name)) return;
 
-    const generatorElement = getGeneratorElement(generator.name);
+    const generatorElement = UIControl.getGeneratorElement(generator.name);
     UIControl.showGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorElement.id));
     registerGeneratorAction(generatorElement, generator.name);
   });
-}
-
-
-/**
- * @param {string} generatorName 
- * @returns {HTMLElement}
- */
-function getGeneratorElement(generatorName) {
-  return document.getElementById(generatorName) ?? UIControl.renderGenerator(generatorName, 'no-width');
 }
 
 /** @param {HTMLElement} generatorElement */
@@ -178,7 +169,7 @@ function buildGenerator(generatorName) {
 }
 
 function checkGeneratorBuilt(generatorName) {
-  let generatorElement = getGeneratorElement(generatorName);
+  let generatorElement = UIControl.getGeneratorElement(generatorName);
   UIControl.showGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorElement.id));
 
   if (generatorElement.classList.contains("blank"))

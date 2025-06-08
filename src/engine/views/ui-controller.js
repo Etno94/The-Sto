@@ -134,6 +134,15 @@ class UIController {
         Animate.widthIn(generatorElement);
     }
 
+    /**
+     * @param {string} generatorName 
+     * @returns {HTMLElement}
+     */
+    getGeneratorElement(generatorName) {
+        Asserts.string(generatorName);
+        return document.getElementById(generatorName) ?? this.renderGenerator(generatorName, 'no-width');
+    }
+
     // Cost Preview
     /**
      * @param {HTMLDivElement} parentElement
