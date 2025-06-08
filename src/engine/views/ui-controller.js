@@ -20,7 +20,6 @@ class UIController {
         types: {},
         attr: {}
     };
-
     /** @type { PointTypes } */
     #pointTypes;
 
@@ -121,6 +120,20 @@ class UIController {
         return Render.renderGenerator(generatorName, classes);
     }
 
+    /** 
+     * @param {HTMLElement} generatorElement 
+     * @param {number} generatorPosition
+    */
+    showGeneratorElement(generatorElement, generatorPosition) {
+        Asserts.htmlElement(generatorElement);
+        if (UIHelper.isParentNode(this.#generatorsContainer, generatorElement)) return;
+    
+        this.#generatorsContainer.insertBefore(
+            generatorElement, 
+            this.#generatorsContainer.children[generatorPosition]);
+        Animate.widthIn(generatorElement);
+    }
+
     // Cost Preview
     /**
      * @param {HTMLDivElement} parentElement
@@ -160,12 +173,11 @@ class UIController {
     /** @param { boolean } isDisabled */
     manageLockGenerators(isDisabled = false) {
         Asserts.boolean(isDisabled);
-                if (!UIHelper.hasChildrens(this.#generatorsContainer)) {
+        if (!UIHelper.hasChildrens(this.#generatorsContainer)) {
             Errors.logError(`(manageLockGenerators) There's no generators`);
             return;
         }
 
-        console.log(`(manageLockGenerators) setting generators to ${isDisabled ? 'disabled': 'enabled'}`)
         const generatorElements = Array.from(this.#generatorsContainer.children);
         generatorElements.forEach(gen => gen.disabled = isDisabled);
     }

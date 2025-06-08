@@ -27,13 +27,9 @@ const storageM = new StorageManager();
 
 const pointProps = POINT_PROPS;
 
-// #region Elements
-
 // Layout
 const central = document.getElementById("central");
 const pointsContainer = document.getElementById("points");
-
-// #endregion Elements
 
 // #region Unlocks
 
@@ -107,7 +103,7 @@ function checkBuiltGenerators(generators) {
     if (!generatorM.isValidGenerator(generator.name)) return;
 
     const generatorElement = getGeneratorElement(generator.name);
-    showGeneratorElement(generatorElement);
+    UIControl.showGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorElement.id));
     registerGeneratorAction(generatorElement, generator.name);
   });
 }
@@ -128,7 +124,7 @@ function showHint(generatorElement) {
   if (!generatorElement.classList.contains("hint"))
     generatorElement.classList.add("hint");
 
-  showGeneratorElement(generatorElement);
+  UIControl.showGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorElement.id));
 }
 
 function showBuild(generatorElement, generatorData) {
@@ -137,7 +133,7 @@ function showBuild(generatorElement, generatorData) {
   if (generatorElement.classList.contains("hint"))
     generatorElement.classList.remove("hint");
 
-  showGeneratorElement(generatorElement);
+  UIControl.showGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorElement.id));
 
   showCostPreview(generatorElement, generatorData);
 }
@@ -174,20 +170,6 @@ function registerGeneratorAction(generatorElement, generatorName) {
   );
 }
 
-/**
- * @param {HTMLElement} generatorElement 
- */
-function showGeneratorElement(generatorElement) {
-  if (central.contains(generatorElement)) return;
-
-  central.insertBefore(
-    generatorElement, 
-    central.children[
-      generatorM.getOrderedGeneratorIndex(generatorElement.id)
-    ]);
-  Animate.widthIn(generatorElement);
-}
-
 // #endregion Unlocks
 
 // #region Build
@@ -209,7 +191,7 @@ function buildGenerator(generatorName) {
 
 function checkGeneratorBuilt(generatorName) {
   let generatorElement = getGeneratorElement(generatorName);
-  showGeneratorElement(generatorElement);
+  UIControl.showGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorElement.id));
 
   if (generatorElement.classList.contains("blank"))
     generatorElement.classList.remove("blank");
