@@ -176,10 +176,20 @@ class UIController {
     }
 
     /**
-     * @returns {HTMLDivElement}
+     * @param {HTMLElement} generatorElement 
+     * @param {PointSet} buildCosts 
+     * @returns 
      */
-    renderCostPreview() {
-        return Render.renderCostPreview();
+    renderCostPreview(generatorElement, buildCosts) {
+        Asserts.htmlElement(generatorElement);
+        Asserts.object(buildCosts);
+        if (this.hasCostPreview(generatorElement)) return;
+
+        const costPreviewElement = Render.renderCostPreview();
+        for (let pointType in buildCosts) {
+            costPreviewElement.appendChild(UIControl.renderPoint(pointType));
+        }
+        generatorElement.appendChild(costPreviewElement);
     }
 
     /** @param {HTMLDivElement} parentElement */

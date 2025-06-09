@@ -109,23 +109,7 @@ function showBuild(generatorElement, generatorData) {
     generatorElement.classList.remove("hint");
 
   UIControl.showGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorElement.id));
-
-  showCostPreview(generatorElement, generatorData);
-}
-
-/**
- * @param {HTMLElement} generatorElement 
- * @param {Object} buildCosts 
- * @returns 
- */
-function showCostPreview(generatorElement, buildCosts) {
-  if (UIControl.hasCostPreview(generatorElement)) return;
-
-  const costPreviewElement = UIControl.renderCostPreview();
-  for (let pointType in buildCosts) {
-    costPreviewElement.appendChild(UIControl.renderPoint(pointType));
-  }
-  generatorElement.appendChild(costPreviewElement);
+  UIControl.renderCostPreview(generatorElement, generatorData);
 }
 
 /**
