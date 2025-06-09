@@ -87,33 +87,36 @@ class UIController {
 
     // Points
     /**
-     * @param {string} type 
-     * @param {...string} classes
+     * @param {string} type
      * @returns {HTMLElement}
      */
     renderPoint(type, ...classes) {
         Asserts.string(type);
-        Asserts.stringArray(classes);
 
         return Render.renderPoint(type, classes);
     }
 
+    /** @param {string} type */
+    generatePoint(type) {
+        const point = this.renderPoint(type, "no-width");
+        this.#pointsContainer.appendChild(point);
+        Animate.widthIn(point);
+    }
+
     /**
-     * @param {HTMLElement} parent 
      * @param {string} pointType 
      */
-    async removePoint(parent, pointType) {
-        Asserts.htmlElement(parent);
+    async removePoint(pointType) {
         Asserts.string(pointType);
 
-        for (let child of Array.from(parent.children)) {
+        for (let child of Array.from(this.#pointsContainer.children)) {
 
-            if (!UIHelper.areParentAndChildValid(parent, child)) continue;
+            if (!UIHelper.areParentAndChildValid(this.#pointsContainer, child)) continue;
             if (child.dataset.pointType !== pointType) continue;
 
             Animate.widthOut(child);
             await Utils.delay(this.#animations.width.timer);
-            UIHelper.removeChild(parent, child);
+            UIHelper.removeChild(this.#pointsContainer, child);
 
             return;
         }
