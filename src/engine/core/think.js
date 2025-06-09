@@ -1,11 +1,9 @@
-import { POINT_TYPES, POINT_PROPS } from "../data/points.data.js";
-
 import Global from "./global.js";
 import GameSave from "./save.js";
 import { EventBus, Events } from "./event-bus.js";
 
 import PointCollection from "../systems/point.collection.js";
-import InputController from "../systems/input.controller.js";
+import InputControl from "../systems/input.controller.js";
 
 import DataManager from "../systems/managers/data.manager.js";
 import PointManager from '../systems/managers/point.manager.js';
@@ -20,15 +18,11 @@ import {RenderQ} from "../views/helpers/render-queue.js";
 let lastUpdate = 0;
 const updateInterval = 1600;
 
-const inputController = new InputController();
 const pointM = new PointManager();
 const generatorM = new GeneratorManager();
 const storageM = new StorageManager();
 
-const pointProps = POINT_PROPS;
-
 // Layout
-const central = document.getElementById("central");
 const pointsContainer = document.getElementById("points");
 
 // #region Unlocks
@@ -234,7 +228,7 @@ async function setStoragePoints(points, orderedPoints) {
   // Guards
   for (let [key, value] of Object.entries(points.collection)) {
     if (value === null || value === undefined) return;
-    if (!pointProps.includes(key)) return;
+    if (!DataManager.getPointPropsData().includes(key)) return;
   }
   if (!Array.isArray(orderedPoints) || !orderedPoints) return;
   if (!pointsContainer) return;
@@ -242,13 +236,13 @@ async function setStoragePoints(points, orderedPoints) {
 
   let { point: currentBasicPoints, solid_point: currentSolidPoints, energy_point: currentEnergyPoints } = UIControl.getCurrentPointsFromDOM();
 
-  RenderQ.queue(removePoints, currentBasicPoints, points.collection.point, POINT_TYPES.point);
-  RenderQ.queue(removePoints, currentSolidPoints, points.collection.solid_point, POINT_TYPES.solid_point);
-  RenderQ.queue(removePoints, currentEnergyPoints, points.collection.energy_point, POINT_TYPES.energy_point);
+  RenderQ.queue(removePoints, currentBasicPoints, points.collection.point, DataManager.getPointTypesData().point);
+  RenderQ.queue(removePoints, currentSolidPoints, points.collection.solid_point, DataManager.getPointTypesData().solid_point);
+  RenderQ.queue(removePoints, currentEnergyPoints, points.collection.energy_point, DataManager.getPointTypesData().energy_point);
 
-  RenderQ.queue(renderPoints, currentBasicPoints, points.collection.point, POINT_TYPES.point);
-  RenderQ.queue(renderPoints, currentSolidPoints, points.collection.solid_point, POINT_TYPES.solid_point);
-  RenderQ.queue(renderPoints, currentEnergyPoints, points.collection.energy_point, POINT_TYPES.energy_point);
+  RenderQ.queue(renderPoints, currentBasicPoints, points.collection.point, DataManager.getPointTypesData().point);
+  RenderQ.queue(renderPoints, currentSolidPoints, points.collection.solid_point, DataManager.getPointTypesData().solid_point);
+  RenderQ.queue(renderPoints, currentEnergyPoints, points.collection.energy_point, DataManager.getPointTypesData().energy_point);
 }
 
 

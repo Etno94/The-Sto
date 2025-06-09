@@ -194,10 +194,7 @@ class UIController {
     /** @param { boolean } isDisabled */
     manageLockGenerators(isDisabled = false) {
         Asserts.boolean(isDisabled);
-        if (!UIHelper.hasChildrens(this.#generatorsContainer)) {
-            Errors.logError(`(manageLockGenerators) There's no generators`);
-            return;
-        }
+        if (!UIHelper.hasChildrens(this.#generatorsContainer)) return;
 
         const generatorElements = Array.from(this.#generatorsContainer.children);
         generatorElements.forEach(gen => gen.disabled = isDisabled);

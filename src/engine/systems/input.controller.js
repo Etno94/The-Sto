@@ -2,7 +2,7 @@ import Global from "../core/global.js";
 import GameSave from "../core/save.js";
 import { EventBus, Events } from "../core/event-bus.js";
 
-export default class InputController {
+class InputController {
     
     // Settings
     saveButton = document.getElementById("saveGame");
@@ -16,3 +16,4 @@ export default class InputController {
         this.dump.addEventListener("click", () => EventBus.emit(Events.points.burnAll));
     }
 }
+export default new InputController();
