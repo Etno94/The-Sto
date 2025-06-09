@@ -1,5 +1,8 @@
 /**
- * @typedef {Object<string, AnimationItem>} Animations
+ * @typedef {Object} Animations
+ * @property {AnimationItem} width
+ * @property {AnimationItem} tilt
+ * @property {AnimationItem} ripple
  */
 
 /**

@@ -5,6 +5,11 @@ export const GENERATOR_IDS = {
     COOLDOWN: 'cooldownGenerator'
 }
 
+/** @type {DataGeneratorClasses} */
+export const GENERATOR_CLASSES = {
+    default: ["cell", "m-24"]
+}
+
 /**
  * @type {DataGenerator}
  */

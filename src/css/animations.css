@@ -5,6 +5,7 @@
     --expand: 710ms;
     --tilt: 425ms;
     --bolder-border: 770ms;
+    --ripple: 1600ms;
 
     /* Props */
     --bolder-border--light-border: 1px dashed #ccc;
@@ -81,4 +82,27 @@
     80% {
         transform: scale(0.7);
     }
+}
+
+.ripple {
+    animation-name: ripple;
+    animation-duration: var(--ripple);
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(1);
+    /* height: 80px;
+    width: 80px; */
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.45);
+    /* height: 240px;
+    width: 240px; */
+    opacity: 0;
+  }
 }

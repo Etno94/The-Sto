@@ -66,6 +66,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 }
 .cell:hover {
     cursor: pointer;
@@ -100,6 +101,30 @@
     opacity: 1;
 }
 
+.cell div.ripple {
+    position: absolute;
+    background: inherit;
+    border-radius: inherit;
+    width: inherit;
+    height: inherit;
+    pointer-events: none;
+    transform: scale(0.8);
+    opacity: 0.8;
+}
+
+/* .cell::before {
+    content: '';
+    position: absolute;
+    background: inherit;
+    border-radius: inherit;
+    width: 80px;
+    height: 80px; 
+    pointer-events: none;
+    transform: scale(0.8);
+    opacity: 0.8;
+} */
+
+
 /* Central */
 #central {
     flex: 1 1 100%;
@@ -112,7 +137,6 @@
 /* Click */
 #clickGenerator.cell {
     background-color: orange;
-    
 }
 #clickGenerator.cell:active {
     background-color: #ffa500bf;

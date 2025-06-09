@@ -19,6 +19,23 @@ export default class UIHelper {
 
     /**
      * @param {HTMLElement} element
+     * @param {string[]} classNames
+     * @returns {boolean}
+     */
+    static containsClasses(element, classNames) {
+        Asserts.htmlElement(element);
+        Asserts.stringArray(classNames);
+
+        let containsAll = true;
+        classNames.forEach(className => {
+            if (!UIHelper.containsClass(element, className)) containsAll = false;
+        });
+
+        return containsAll;
+    }
+
+    /**
+     * @param {HTMLElement} element
      * @param {string} attribute
      * @returns {boolean}
      */
@@ -143,12 +160,26 @@ export default class UIHelper {
 
     /**
      * @param {HTMLElement} element
-     * @param {string | string[]} classNames
+     * @param {string} className
      * @returns {HTMLElement}
      */
-    static toggleClass(element, classNames) {
+    static toggleClass(element, className) {
         Asserts.htmlElement(element);
-        UIHelper.actionOnClass(element, 'toggle', classNames);
+        Asserts.string(className);
+        return UIHelper.actionOnClass(element, 'toggle', className);
+    }
+
+    /**
+     * @param {HTMLElement} element
+     * @param {string[]} classNames
+     * @returns {HTMLElement}
+     */
+    static toggleClasses(element, classNames) {
+        Asserts.htmlElement(element);
+        Asserts.stringArray(classNames);
+
+        classNames.forEach(className => UIHelper.actionOnClass(element, 'toggle', className));
+        return element;
     }
 
     // #endregion Class

@@ -17,12 +17,17 @@ export default class GeneratorManager {
 
     constructor () {
         this.#setOrderedGenerators();
+        this.#setBusEvents();
     }
 
     // #region Setup
 
     #setOrderedGenerators() {
         this.#orderedGenerators = this.#getAllGeneratorsData().map(generator => generator.name);
+    }
+
+    #setBusEvents() {
+
     }
 
     setNewGeneratorManager() {

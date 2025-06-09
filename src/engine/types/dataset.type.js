@@ -9,6 +9,7 @@
  * @property { string } point
  * @property { string } generator
  * @property { string } costPreview
+ * @property { string } animationElement
  */
 
 /**

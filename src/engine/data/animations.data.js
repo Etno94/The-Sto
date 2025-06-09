@@ -15,5 +15,10 @@ export const ANIMATIONS = {
         name: 'tilt',
         classes: ['tilt'],
         timer: Utils.getNumberFromMSValue(cssVars.getPropertyValue('--tilt'))
+    },
+    ripple: {
+        name: 'ripple',
+        classes: ['ripple'],
+        timer: Utils.getNumberFromMSValue(cssVars.getPropertyValue('--ripple'))
     }
 }

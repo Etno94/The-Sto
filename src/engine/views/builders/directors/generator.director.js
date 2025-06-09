@@ -1,5 +1,5 @@
 import ElBuilder from "../element.builder.js";
-import { DATA_SET_ATTRs, DATA_SET_TYPES } from "../../../data/data-set-attr.data.js";
+import DataManager from "../../../systems/managers/data.manager.js";
 
 export default class GeneratorDirector {
 
@@ -12,9 +12,9 @@ export default class GeneratorDirector {
     static createGenerator(generatorName, classes = []) {
         return new ElBuilder('button')
             .addAttribute('id', generatorName)
-            .addClass(["cell", "m-24"])
+            .addClass(DataManager.getGeneratorClasses().default)
             .addClass(classes)
-            .addDataSet(DATA_SET_ATTRs.type, DATA_SET_TYPES.generator)
+            .addDataSet(DataManager.getDataSetAttrs().type, DataManager.getDataSetTypes().generator)
             .finish();
     }
 
@@ -24,7 +24,7 @@ export default class GeneratorDirector {
     static createCostPreview() {
         return new ElBuilder('div')
             .addClass("cost-preview")
-            .addDataSet(DATA_SET_ATTRs.type, DATA_SET_TYPES.costPreview)
+            .addDataSet(DataManager.getDataSetAttrs().type, DataManager.getDataSetTypes().costPreview)
             .finish();
     }
 

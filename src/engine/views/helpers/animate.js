@@ -1,3 +1,5 @@
+import DataManager from "../../systems/managers/data.manager.js";
+
 import Utils from '../../utils/utils.js';
 import Asserts from '../../utils/asserts.js';
 
@@ -15,9 +17,10 @@ export default class Animate {
         Asserts.htmlElement(element);
         Asserts.object(animation, 'animation');
 
-        UIHelper.toggleClass(element, animation.classes);
+        void element.offsetWidth;
+        UIHelper.toggleClasses(element, animation.classes);
         await Utils.delay(animation.timer);
-        UIHelper.toggleClass(element, animation.classes);
+        UIHelper.toggleClasses(element, animation.classes);
     }
 
     /**
@@ -26,10 +29,11 @@ export default class Animate {
     static widthIn(element) {
         Asserts.htmlElement(element);
 
-        if (!UIHelper.containsClass(element, 'no-width')) return;
-        element.offsetWidth; // We force a layout calculation to ensure the class is applied before the next frame
+        const widthClasses = DataManager.getAnimations().width.classes;
+        if (!UIHelper.containsClasses(element, widthClasses)) return;
+        void element.offsetWidth; // We force a layout calculation to ensure the class is applied before the next frame
         requestAnimationFrame(() => {
-            UIHelper.removeClass(element, 'no-width');
+            UIHelper.removeClass(element, widthClasses);
         });
     }
 
@@ -39,7 +43,19 @@ export default class Animate {
     static widthOut(element) {
         Asserts.htmlElement(element);
 
-        if (!UIHelper.containsClass(element, 'no-width'))
-            UIHelper.addClass(element, 'no-width');
+        const widthClasses = DataManager.getAnimations().width.classes;
+        if (!UIHelper.containsClasses(element, widthClasses))
+            UIHelper.addClass(element, widthClasses);
+    }
+
+    /**
+     * @param {HTMLElement} element
+     * @param {HTMLElement} rippleElement
+     */
+    static ripple(element, rippleElement) {
+        Asserts.htmlElement(element);
+        Asserts.htmlElement(rippleElement);
+
+        UIHelper.appendChild(element, rippleElement);
     }
 }

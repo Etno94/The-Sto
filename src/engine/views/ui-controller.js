@@ -13,7 +13,7 @@ import Errors from "../utils/errors.js";
 class UIController {
 
     // Data
-    /** @type { DataSet } */
+    /** @type { Animations } */
     #animations;
     /** @type { DataSet } */
     #dataset = {
@@ -52,6 +52,7 @@ class UIController {
     #setEventBus() {
         EventBus.on(Events.points.overcap, () => this.shakePointsContainer());
         EventBus.on(Events.ui.render, (locked) => this.manageLockGenerators(locked));
+        EventBus.on(Events.generator.onClick, (generatorName) => {});
     }
 
     // #endregion Setup
@@ -61,12 +62,23 @@ class UIController {
     /** @param { HTMLElement } element */
     #shakeElement(element) {
         Asserts.htmlElement(element);
-
         Animate.timedOut(element, this.#animations.tilt);
+    }
+
+    /** @param { HTMLElement } element */
+    #rippleElement(element) {
+        Asserts.htmlElement(element);
+        Animate.ripple(element, Render.renderAnimationElement(this.#animations.ripple.name));
     }
 
     shakePointsContainer() {
         this.#shakeElement(this.#pointsContainer);
+    }
+
+    /** @param { string } generatorName */
+    rippleGenerator(generatorName) {
+        Asserts.string(generatorName);
+        this.#rippleElement(this.getGeneratorElement(generatorName));
     }
 
     // #endregion Animations

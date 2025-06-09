@@ -185,7 +185,7 @@ function checkGeneratorBuilt(generatorName) {
 function generatorOnClick(generatorName) {
   if (!generatorM.isValidGenerator(generatorName)) return;
 
-  console.log(`Clicked gen: ${generatorName}`);
+  EventBus.emit(Events.generator.onClick, generatorName);
 
   if (generatorM.isBuilt(generatorName)) {
     builtGeneratorOnClick(generatorName);

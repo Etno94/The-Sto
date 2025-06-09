@@ -4,6 +4,7 @@ import Asserts from '../utils/asserts.js';
 
 import PointDirector from './builders/directors/point.director.js';
 import GeneratorDirector from './builders/directors/generator.director.js';
+import AnimationElementsDirector from './builders/directors/animation-elements.director.js';
 
 export default class Render {
 
@@ -52,5 +53,23 @@ export default class Render {
     }
 
     // #endregion Generators
+
+    // #region Animation Elements
+
+    /**
+     * @param {string} animationName
+     * @param {string[]} [classes=[]]
+     * @returns {HTMLDivElement}
+     */
+    static renderAnimationElement(animationName, classes) {
+        Asserts.string(animationName);
+        if (classes) Asserts.stringArray(classes);
+
+        return ({
+            [DataManager.getAnimations().ripple.name]: AnimationElementsDirector.createRippleChild
+        })[animationName](classes);
+    }
+
+    // #endregion Animation Elements
 
 }

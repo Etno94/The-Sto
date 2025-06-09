@@ -12,5 +12,6 @@ export const DATA_SET_ATTRs = {
 export const DATA_SET_TYPES = {
     point: 'point',
     generator: 'generator',
-    costPreview: 'cost-preview'
+    costPreview: 'cost-preview',
+    animationElement: 'animation-element'
 }

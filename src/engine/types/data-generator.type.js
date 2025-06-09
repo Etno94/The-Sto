@@ -23,3 +23,9 @@
  * @typedef {Object} BuildGeneratorData
  * @property {number} defaultStepProgress
  */
+
+
+/**
+ * @typedef {Object} DataGeneratorClasses
+ * @property {string[]} default
+ */
