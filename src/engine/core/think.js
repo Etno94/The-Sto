@@ -60,7 +60,8 @@ function checkHintedGenerators(generatorNames) {
     else {
       if (generatorM.isBuildable(generatorName)) generatorM.setBuildable(generatorName, false);
       const generatorElement = UIControl.getGeneratorElement(generatorName);
-      showHint(generatorElement);
+      UIControl.showHint(generatorElement);
+      UIControl.showGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorElement.id));
       InputControl.addEventListener(generatorElement, "click", generatorOnClick, generatorName);
     }
   });
@@ -88,14 +89,6 @@ function checkBuiltGenerators(generatorNames) {
     UIControl.showGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorElement.id));
       InputControl.addEventListener(generatorElement, "click", generatorOnClick, generatorName);
   });
-}
-
-/** @param {HTMLElement} generatorElement */
-function showHint(generatorElement) {
-  if (!generatorElement.classList.contains("hint"))
-    generatorElement.classList.add("hint");
-
-  UIControl.showGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorElement.id));
 }
 
 function showBuild(generatorElement, generatorData) {

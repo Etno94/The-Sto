@@ -28,4 +28,5 @@
 /**
  * @typedef {Object} DataGeneratorClasses
  * @property {string[]} default
+ * @property {string[]} hint
  */

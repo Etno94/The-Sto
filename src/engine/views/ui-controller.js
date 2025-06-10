@@ -158,6 +158,15 @@ class UIController {
         return document.getElementById(generatorName) ?? this.renderGenerator(generatorName, 'no-width');
     }
 
+    /** @param {HTMLElement} generatorElement */
+    showHint(generatorElement) {
+        Asserts.htmlElement(generatorElement);
+        
+        const hintClasses = DataManager.getGeneratorClasses().hint;
+        if (!UIHelper.containsClasses(generatorElement, hintClasses))
+            UIHelper.addClass(generatorElement, hintClasses);
+    }
+
     // Cost Preview
     /**
      * @param {HTMLDivElement} parentElement
