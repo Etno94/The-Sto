@@ -193,7 +193,6 @@ async function setStoragePoints(points) {
   RenderQ.queue(renderPoints, currentEnergyPoints, points.energy_point, DataManager.getPointTypesData().energy_point);
 }
 
-
 /**
  * @param {number} currentPoints 
  * @param {number} pointsToMatch 

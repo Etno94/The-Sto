@@ -125,10 +125,10 @@ class UIController {
     // Generators
     /**
      * @param {string} generatorName 
-     * @param {...string} classes
+     * @param {string[]} classes
      * @returns {HTMLElement}
      */
-    renderGenerator(generatorName, ...classes) {
+    renderGenerator(generatorName, classes) {
         Asserts.string(generatorName);
         Asserts.stringArray(classes);
 
@@ -155,7 +155,7 @@ class UIController {
      */
     getGeneratorElement(generatorName) {
         Asserts.string(generatorName);
-        return document.getElementById(generatorName) ?? this.renderGenerator(generatorName, 'no-width');
+        return document.getElementById(generatorName) ?? this.renderGenerator(generatorName, DataManager.getAnimations().width.classes);
     }
 
     /** @param {HTMLElement} generatorElement */
