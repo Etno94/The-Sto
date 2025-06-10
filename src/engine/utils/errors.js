@@ -21,6 +21,10 @@ export default class Errors {
         Errors.throwError(`Invalid obj - missing prop: ${expectedProp}.`)
     }
 
+    static invalidObjectPropValueError(objName, propValue) {
+        Errors.throwError(`Invalid obj: ${objName} - prop value can not be: ${propValue}.`)
+    }
+
     static invalidArrayContent(expectedContent, arr = '') {
         Errors.throwError(`Invalid array content: ${arr} - expected type: ${expectedContent}.`)
     }

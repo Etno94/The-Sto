@@ -29,7 +29,7 @@ export const POINT_PROPS = [
 ]
 
 /**
- * @returns {{[key: string]: number}}
+ * @returns {PointSet}
  */
 export const FRESH_POINTS = POINT_PROPS.reduce((acc, key) => {
     acc[key] = 0;

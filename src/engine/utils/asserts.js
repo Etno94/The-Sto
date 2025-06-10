@@ -51,6 +51,12 @@ export default class Asserts {
         }
     }
 
+    static noNullValuesObject(value, objName = 'value') {
+        if (!Validators.isObjectWithNotNullNorUndefinedValues(value)) {
+            Errors.invalidObjectPropValueError(objName, 'null | undefined');
+        }
+    }
+
     static function(value, variableName = 'value') {
         if (!Validators.isFunction(value)) {
             Errors.invalidTypeError(typeof value, `Function (${variableName})`);

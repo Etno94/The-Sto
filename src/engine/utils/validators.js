@@ -8,6 +8,14 @@ export default class Validators {
         return typeof obj === 'object' && !Array.isArray(obj);
     }
 
+    static isObjectWithNotNullNorUndefinedValues(obj) {
+        if (!Validators.isObject(obj)) return false;
+        for (let value of Object.values(obj)) {
+            if (!Validators.isNotNullNorUndefined(value)) return false;
+        }
+        return true;
+    }
+
     static isArray(array) {
         return Array.isArray(array) && array.every(item => Validators.isNotNullNorUndefined(item));
     }

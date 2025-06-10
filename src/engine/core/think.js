@@ -14,6 +14,7 @@ import Animate from "../views/helpers/animate.js";
 import { UIControl } from "../views/ui-controller.js";
 import Utils from "../utils/utils.js";
 import {RenderQ} from "../views/helpers/render-queue.js";
+import Asserts from "../utils/asserts.js";
 
 let lastUpdate = 0;
 const updateInterval = 1600;
@@ -21,9 +22,6 @@ const updateInterval = 1600;
 const pointM = new PointManager();
 const generatorM = new GeneratorManager();
 const storageM = new StorageManager();
-
-// Layout
-const pointsContainer = document.getElementById("points");
 
 // #region Unlocks
 
@@ -205,28 +203,20 @@ function builtGeneratorOnClick (generatorName) {
 // #region Render
 
 /**
- * @param {Collection} points
- * @param {string[]} orderedPoints
+ * @param {PointSet} points
  */
-async function setStoragePoints(points, orderedPoints) {
-  // Guards
-  for (let [key, value] of Object.entries(points.collection)) {
-    if (value === null || value === undefined) return;
-    if (!DataManager.getPointPropsData().includes(key)) return;
-  }
-  if (!Array.isArray(orderedPoints) || !orderedPoints) return;
-  if (!pointsContainer) return;
-  // -Guards
+async function setStoragePoints(points) {
+  Asserts.noNullValuesObject(points);
 
   let { point: currentBasicPoints, solid_point: currentSolidPoints, energy_point: currentEnergyPoints } = UIControl.getCurrentPointsFromDOM();
 
-  RenderQ.queue(removePoints, currentBasicPoints, points.collection.point, DataManager.getPointTypesData().point);
-  RenderQ.queue(removePoints, currentSolidPoints, points.collection.solid_point, DataManager.getPointTypesData().solid_point);
-  RenderQ.queue(removePoints, currentEnergyPoints, points.collection.energy_point, DataManager.getPointTypesData().energy_point);
+  RenderQ.queue(removePoints, currentBasicPoints, points.point, DataManager.getPointTypesData().point);
+  RenderQ.queue(removePoints, currentSolidPoints, points.solid_point, DataManager.getPointTypesData().solid_point);
+  RenderQ.queue(removePoints, currentEnergyPoints, points.energy_point, DataManager.getPointTypesData().energy_point);
 
-  RenderQ.queue(renderPoints, currentBasicPoints, points.collection.point, DataManager.getPointTypesData().point);
-  RenderQ.queue(renderPoints, currentSolidPoints, points.collection.solid_point, DataManager.getPointTypesData().solid_point);
-  RenderQ.queue(renderPoints, currentEnergyPoints, points.collection.energy_point, DataManager.getPointTypesData().energy_point);
+  RenderQ.queue(renderPoints, currentBasicPoints, points.point, DataManager.getPointTypesData().point);
+  RenderQ.queue(renderPoints, currentSolidPoints, points.solid_point, DataManager.getPointTypesData().solid_point);
+  RenderQ.queue(renderPoints, currentEnergyPoints, points.energy_point, DataManager.getPointTypesData().energy_point);
 }
 
 
@@ -284,9 +274,7 @@ function startGame() {
 }
 
 function gameLoop(timestamp) {
-  setStoragePoints(
-    new PointCollection(Global.proxy.points), 
-    Global.proxy.points_order);
+  setStoragePoints(new PointCollection(Global.proxy.points).collection);
 
   checkUnlocks();
 
