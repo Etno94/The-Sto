@@ -3,10 +3,12 @@ import GameSave from "../core/save.js";
 import { EventBus, Events } from "../core/event-bus.js";
 
 import Asserts from "../utils/asserts.js";
+import Errors from "../utils/errors.js";
+import Validators from "../utils/validators.js";
 
 class InputController {
 
-    /** @type {Map} */
+    /** @type {Map<HTMLElement, Map<string, function>>} */
     trackedElements = new Map();
     
     // Settings
@@ -32,20 +34,30 @@ class InputController {
         Asserts.string(type, 'type');
         Asserts.function(listener, 'listener');
 
+        const wrapper = () => listener(...args);
+
         if (!this.trackedElements.has(element)) {
-            const listeners = new Map(type, () => listener(...args));
-            this.trackedElements.set(element, listeners);
-            element.addEventListener(type, () => listener(...args));
+            this.trackedElements.set(element, new Map([[type, wrapper]]));
+            element.addEventListener(type, wrapper);
         } else {
-            /** @type {Map} */
-            const elementListenersMap = this.trackedElements.get(elementListenersMap);
+            /** @type {Map<string, function>} */
+            const elementListenersMap = this.trackedElements.get(element);
 
             if (!elementListenersMap.has(type)) {
-                elementListenersMap.set(type, () => listener(...args));
-                element.addEventListener(type, () => listener(...args));
+                elementListenersMap.set(type, wrapper);
+                element.addEventListener(type, wrapper);
+            } else {
+                const listener = elementListenersMap.get(type);
+                if (!Validators.isFunction(listener)) {
+                    Errors.logError(`Expected function: ${listener}`, listener);
+                }
             }
             
         }
+    }
+
+    removeEventListener() {
+
     }
 }
 export default new InputController();

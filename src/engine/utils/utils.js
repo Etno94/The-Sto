@@ -12,23 +12,6 @@ export default class Utils {
     }
 
     /**
-     * @param {HTMLElement} element 
-     * @param {string} type 
-     * @param {Function} listener 
-     * @param  {...any} args 
-     */
-    static addEventListenerWithFlag(element, type, listener, ...args) {
-        Asserts.htmlElement(element, 'element');
-        Asserts.string(type, 'type');
-        Asserts.function(listener, 'listener');
-
-        if (!element.eventListenerActive) {
-            element.addEventListener(type, () => listener(...args));
-            element.eventListenerActive = true;
-        }
-    }
-
-    /**
      * @param { number } ms 
      * @returns { Promise }
      */

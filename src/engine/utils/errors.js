@@ -1,8 +1,12 @@
 export default class Errors {
 
-    /** @param {Error | string} error */
-    static logError(error) {
+    /** 
+     * @param {Error | string} error 
+     * @param {...any} args
+    */
+    static logError(error, ...args) {
         console.error(`Error: ${error.message || error}`);
+        args.forEach(arg => console.error(arg));
     }
 
     static throwError(message) {

@@ -11,7 +11,6 @@ import GeneratorManager from "../systems/managers/generator.manager.js";
 import StorageManager from "../systems/managers/storage.manager.js";
 
 import { UIControl } from "../views/ui-controller.js";
-import Utils from "../utils/utils.js";
 import {RenderQ} from "../views/helpers/render-queue.js";
 import Asserts from "../utils/asserts.js";
 
@@ -62,7 +61,7 @@ function checkHintedGenerators(generators) {
       if (generatorM.isBuildable(generator.name)) generatorM.setBuildable(generator.name, false);
       const generatorElement = UIControl.getGeneratorElement(generator.name);
       showHint(generatorElement);
-      registerGeneratorAction(generatorElement, generator.name);
+      InputControl.addEventListener(generatorElement, "click", generatorOnClick, generator.name);
     }
   });
 }
@@ -75,7 +74,7 @@ function checkCanBeBuiltGenerators(generators) {
 
     const generatorElement = UIControl.getGeneratorElement(generator.name);
     showBuild(generatorElement, generatorM.whatBuildStepRequires(generator.name));
-    registerGeneratorAction(generatorElement, generator.name);
+      InputControl.addEventListener(generatorElement, "click", generatorOnClick, generator.name);
   });
 }
 
@@ -87,7 +86,7 @@ function checkBuiltGenerators(generators) {
 
     const generatorElement = UIControl.getGeneratorElement(generator.name);
     UIControl.showGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorElement.id));
-    registerGeneratorAction(generatorElement, generator.name);
+      InputControl.addEventListener(generatorElement, "click", generatorOnClick, generator.name);
   });
 }
 
@@ -107,21 +106,6 @@ function showBuild(generatorElement, generatorData) {
 
   UIControl.showGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorElement.id));
   UIControl.renderCostPreview(generatorElement, generatorData);
-}
-
-/**
- * @param {HTMLElement} generatorElement 
- * @param {string} generatorName 
- */
-function registerGeneratorAction(generatorElement, generatorName) {
-  if (!generatorElement || !generatorName) return;
-  
-  Utils.addEventListenerWithFlag(
-    generatorElement,
-    "click",
-    generatorOnClick,
-    generatorName
-  );
 }
 
 // #endregion Unlocks
