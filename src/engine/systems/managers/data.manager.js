@@ -3,7 +3,7 @@ import { POINT_PROPS, POINT_TYPES, POINT_CLASSES } from '../../data/points.data.
 import { GENERATORS, GENERATOR_CLASSES, BUILD_GENERATOR } from '../../data/generators.data.js';
 import { STORAGE_UPGRADES } from '../../data/storage.data.js';
 import { ANIMATIONS } from "../../data/animations.data.js";
-import { DATA_SET_ATTRs, DATA_SET_TYPES } from '../../data/data-set-attr.data.js';
+import { DATA_SET_ATTRs, DATA_SET_TYPES, DATA_SET_STATUS } from '../../data/data-set-attr.data.js';
 
 
 import Utils from '../../utils/utils.js';
