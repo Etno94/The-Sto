@@ -1,11 +1,6 @@
 export default class GameSave {
 
-    constructor() {
-    }
-
-    /**
-     * @returns {Object|null}
-     */
+    /** @returns {SaveType | null} */
     static load() {
         return JSON.parse(localStorage.getItem("save")) || null;
     }

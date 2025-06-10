@@ -197,7 +197,6 @@ async function setStoragePoints(points) {
  * @param {number} currentPoints 
  * @param {number} pointsToMatch 
  * @param {string} pointType 
- * @returns 
  */
 function renderPoints(currentPoints, pointsToMatch, pointType){
   if (currentPoints >= pointsToMatch) return;
@@ -212,7 +211,6 @@ function renderPoints(currentPoints, pointsToMatch, pointType){
  * @param {number} currentPoints 
  * @param {number} pointsToMatch 
  * @param {string} pointType 
- * @returns 
  */
 async function removePoints(currentPoints, pointsToMatch, pointType) {
   if (currentPoints <= pointsToMatch) return;
