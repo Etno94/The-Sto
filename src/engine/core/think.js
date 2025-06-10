@@ -74,8 +74,10 @@ function checkCanBeBuiltGenerators(generatorNames) {
     if (!generatorM.isValidGenerator(generatorName)) return;
 
     const generatorElement = UIControl.getGeneratorElement(generatorName);
-    showBuild(generatorElement, generatorM.whatBuildStepRequires(generatorName));
-      InputControl.addEventListener(generatorElement, "click", generatorOnClick, generatorName);
+    UIControl.showBuild(generatorElement);
+    UIControl.showGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorElement.id));
+    UIControl.renderCostPreview(generatorElement, generatorM.whatBuildStepRequires(generatorName));
+    InputControl.addEventListener(generatorElement, "click", generatorOnClick, generatorName);
   });
 }
 
@@ -89,16 +91,6 @@ function checkBuiltGenerators(generatorNames) {
     UIControl.showGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorElement.id));
       InputControl.addEventListener(generatorElement, "click", generatorOnClick, generatorName);
   });
-}
-
-function showBuild(generatorElement, generatorData) {
-  if (!generatorElement.classList.contains("blank"))
-    generatorElement.classList.add("blank");
-  if (generatorElement.classList.contains("hint"))
-    generatorElement.classList.remove("hint");
-
-  UIControl.showGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorElement.id));
-  UIControl.renderCostPreview(generatorElement, generatorData);
 }
 
 // #endregion Unlocks

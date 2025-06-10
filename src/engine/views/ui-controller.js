@@ -161,10 +161,22 @@ class UIController {
     /** @param {HTMLElement} generatorElement */
     showHint(generatorElement) {
         Asserts.htmlElement(generatorElement);
-        
+
         const hintClasses = DataManager.getGeneratorClasses().hint;
         if (!UIHelper.containsClasses(generatorElement, hintClasses))
             UIHelper.addClass(generatorElement, hintClasses);
+    }
+
+    /** @param {HTMLElement} generatorElement */
+    showBuild(generatorElement) {
+        Asserts.htmlElement(generatorElement);
+        
+        const hintClasses = DataManager.getGeneratorClasses().hint;
+        if (UIHelper.containsClasses(generatorElement, hintClasses))
+            UIHelper.removeClass(generatorElement, hintClasses);
+        const canBuildClasses = DataManager.getGeneratorClasses().canBuild;
+        if (!UIHelper.containsClasses(generatorElement, canBuildClasses))
+            UIHelper.addClass(generatorElement, canBuildClasses);
     }
 
     // Cost Preview

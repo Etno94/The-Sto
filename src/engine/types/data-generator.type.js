@@ -29,4 +29,5 @@
  * @typedef {Object} DataGeneratorClasses
  * @property {string[]} default
  * @property {string[]} hint
+ * @property {string[]} canBuild
  */
