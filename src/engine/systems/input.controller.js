@@ -56,8 +56,29 @@ class InputController {
         }
     }
 
-    removeEventListener() {
+    /**
+     * @param {HTMLElement} element 
+     * @param {string} type 
+     */
+    removeEventListener(element, type) {
+        Asserts.htmlElement(element, 'element');
+        Asserts.string(type, 'type');
 
+        const elementListenersMap = this.trackedElements.get(element);
+        if (!elementListenersMap) return;
+
+        const wrapper = elementListenersMap.get(type);
+        if (Validators.isFunction(wrapper)) {
+            element.removeEventListener(type, wrapper);
+            elementListenersMap.delete(type);
+
+            // If the element has no more listeners, remove the element entry
+            if (elementListenersMap.size === 0) {
+                this.trackedElements.delete(element);
+            }
+        } else {
+            Errors.logError(`No valid listener found for ${type} on element`, element);
+        }
     }
 }
 export default new InputController();
