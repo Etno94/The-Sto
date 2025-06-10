@@ -89,7 +89,7 @@ function checkBuiltGenerators(generatorNames) {
 
     const generatorElement = UIControl.getGeneratorElement(generatorName);
     UIControl.showGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorElement.id));
-      InputControl.addEventListener(generatorElement, "click", generatorOnClick, generatorName);
+    InputControl.addEventListener(generatorElement, "click", generatorOnClick, generatorName);
   });
 }
 
@@ -97,7 +97,9 @@ function checkBuiltGenerators(generatorNames) {
 
 // #region Build
 
+/** @param { string } generatorName */
 function buildGenerator(generatorName) {
+  Asserts.string(generatorName);
   if (!generatorM.isValidGenerator(generatorName) || generatorM.isBuilt(generatorName) || !generatorM.isBuildable(generatorName)) return;
 
   const buildStep = generatorM.whatBuildStepRequires(generatorName);
@@ -112,7 +114,10 @@ function buildGenerator(generatorName) {
   }
 }
 
+/** @param { string } generatorName */
 function checkGeneratorBuilt(generatorName) {
+  Asserts.string(generatorName);
+
   let generatorElement = UIControl.getGeneratorElement(generatorName);
   UIControl.showGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorElement.id));
 
@@ -126,7 +131,9 @@ function checkGeneratorBuilt(generatorName) {
 
 // #region Generator Actions
 
+/** @param { string } generatorName */
 function generatorOnClick(generatorName) {
+  Asserts.string(generatorName);
   if (!generatorM.isValidGenerator(generatorName)) return;
 
   EventBus.emit(Events.generator.onClick, generatorName);
@@ -139,13 +146,14 @@ function generatorOnClick(generatorName) {
     buildGenerator(generatorName);
     return;
   }
-  if (generatorM.isHinted(generatorName)) {
+  if (generatorM.isHinted(generatorName))
     console.log("You see a new thing...");
-  }
 }
 
 /** @param { string } generatorName */
 function builtGeneratorOnClick (generatorName) {
+  Asserts.string(generatorName);
+
   const consumePCollection = new PointCollection(generatorM.whatConsumes(generatorName));
   const generatePCollection = new PointCollection(generatorM.whatGenerates(generatorName));
 
@@ -153,9 +161,7 @@ function builtGeneratorOnClick (generatorName) {
   let canGenerate = true;
 
   if (consumePCollection.total && !pointM.hasEnoughPoints(consumePCollection.collection)) canConsume = false;
-  if (generatePCollection.total && storageM.doesOvercap(
-    pointM.getCurrentTotalPoints(), generatePCollection.total, consumePCollection.total)
-  ) {
+  if (generatePCollection.total && storageM.doesOvercap(pointM.getCurrentTotalPoints(), generatePCollection.total, consumePCollection.total)) {
     canGenerate = false;
     EventBus.emit(Events.points.overcap);
   }
