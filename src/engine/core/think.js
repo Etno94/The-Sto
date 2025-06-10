@@ -10,7 +10,6 @@ import PointManager from '../systems/managers/point.manager.js';
 import GeneratorManager from "../systems/managers/generator.manager.js";
 import StorageManager from "../systems/managers/storage.manager.js";
 
-import Animate from "../views/helpers/animate.js";
 import { UIControl } from "../views/ui-controller.js";
 import Utils from "../utils/utils.js";
 import {RenderQ} from "../views/helpers/render-queue.js";
