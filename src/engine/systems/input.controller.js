@@ -18,9 +18,9 @@ class InputController {
     dump = document.getElementById("dump");
 
     constructor() {
-        this.saveButton.addEventListener("click", () => GameSave.save(Global.proxy));
-        this.resetButton.addEventListener("click", () => GameSave.reset());
-        this.dump.addEventListener("click", () => EventBus.emit(Events.points.burnAll));
+        this.addEventListener(this.saveButton, 'click', GameSave.save, Global.proxy);
+        this.addEventListener(this.resetButton, 'click', GameSave.reset);
+        this.addEventListener(this.dump, 'click', () => EventBus.emit(Events.points.burnAll));
     }
 
     /**
@@ -72,7 +72,6 @@ class InputController {
             element.removeEventListener(type, wrapper);
             elementListenersMap.delete(type);
 
-            // If the element has no more listeners, remove the element entry
             if (elementListenersMap.size === 0) {
                 this.trackedElements.delete(element);
             }
