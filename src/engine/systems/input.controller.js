@@ -9,18 +9,18 @@ import Validators from "../utils/validators.js";
 class InputController {
 
     /** @type {Map<HTMLElement, Map<string, function>>} */
-    trackedElements = new Map();
+    #trackedElements = new Map();
     
     // Settings
-    saveButton = document.getElementById("saveGame");
-    resetButton = document.getElementById("resetGame");
+    #saveButton = document.getElementById("saveGame");
+    #resetButton = document.getElementById("resetGame");
 
-    dump = document.getElementById("dump");
+    #dump = document.getElementById("dump");
 
     constructor() {
-        this.addEventListener(this.saveButton, 'click', GameSave.save, Global.proxy);
-        this.addEventListener(this.resetButton, 'click', GameSave.reset);
-        this.addEventListener(this.dump, 'click', () => EventBus.emit(Events.points.burnAll));
+        this.addEventListener(this.#saveButton, 'click', GameSave.save, Global.proxy);
+        this.addEventListener(this.#resetButton, 'click', GameSave.reset);
+        this.addEventListener(this.#dump, 'click', () => EventBus.emit(Events.points.burnAll));
     }
 
     /**
@@ -36,12 +36,12 @@ class InputController {
 
         const wrapper = () => listener(...args);
 
-        if (!this.trackedElements.has(element)) {
-            this.trackedElements.set(element, new Map([[type, wrapper]]));
+        if (!this.#trackedElements.has(element)) {
+            this.#trackedElements.set(element, new Map([[type, wrapper]]));
             element.addEventListener(type, wrapper);
         } else {
             /** @type {Map<string, function>} */
-            const elementListenersMap = this.trackedElements.get(element);
+            const elementListenersMap = this.#trackedElements.get(element);
 
             if (!elementListenersMap.has(type)) {
                 elementListenersMap.set(type, wrapper);
@@ -64,7 +64,7 @@ class InputController {
         Asserts.htmlElement(element, 'element');
         Asserts.string(type, 'type');
 
-        const elementListenersMap = this.trackedElements.get(element);
+        const elementListenersMap = this.#trackedElements.get(element);
         if (!elementListenersMap) return;
 
         const wrapper = elementListenersMap.get(type);
@@ -73,7 +73,7 @@ class InputController {
             elementListenersMap.delete(type);
 
             if (elementListenersMap.size === 0) {
-                this.trackedElements.delete(element);
+                this.#trackedElements.delete(element);
             }
         } else {
             Errors.logError(`No valid listener found for ${type} on element`, element);
