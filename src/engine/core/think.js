@@ -28,65 +28,65 @@ function checkUnlocks() {
 }
 
 function checkGeneratorUnlocks() {
-  checkLockedGenerators([...generatorM.getLockedGenerators()]);
-  checkHintedGenerators([...generatorM.getHintedGenerators()]);
-  checkCanBeBuiltGenerators([...generatorM.getBuildableGenerators()]);
-  checkBuiltGenerators([...generatorM.getBuitGenerators()]);
+  checkLockedGenerators([...generatorM.getLockedGeneratorNames()]);
+  checkHintedGenerators([...generatorM.getHintedGeneratorNames()]);
+  checkCanBeBuiltGenerators([...generatorM.getBuildableGeneratorNames()]);
+  checkBuiltGenerators([...generatorM.getBuitGeneratorNames()]);
 }
 
-/** @param {SaveGenerator[]} generators */
-function checkLockedGenerators(generators) {
+/** @param {string[]} generatorNames */
+function checkLockedGenerators(generatorNames) {
 
-  generators.forEach(generator => {
-    if (!generatorM.isValidGenerator(generator.name)) return;
+  generatorNames.forEach(generatorName => {
+    if (!generatorM.isValidGenerator(generatorName)) return;
 
-    if (pointM.hasEnoughPoints(generatorM.whatUnlockHintRequires(generator.name))) {
-      if (!generatorM.isHinted(generator.name)) generatorM.setHinted(generator.name);
+    if (pointM.hasEnoughPoints(generatorM.whatUnlockHintRequires(generatorName))) {
+      if (!generatorM.isHinted(generatorName)) generatorM.setHinted(generatorName);
     } else {
-      if (generatorM.isHinted(generator.name)) generatorM.setHinted(generator.name, false);
+      if (generatorM.isHinted(generatorName)) generatorM.setHinted(generatorName, false);
     }
   });
 }
 
-/** @param {SaveGenerator[]} generators */
-function checkHintedGenerators(generators) {
+/** @param {string[]} generatorNames */
+function checkHintedGenerators(generatorNames) {
 
-  generators.forEach(generator => {
-    if (!generatorM.isValidGenerator(generator.name)) return;
+  generatorNames.forEach(generatorName => {
+    if (!generatorM.isValidGenerator(generatorName)) return;
 
-    if (pointM.hasEnoughPoints(generatorM.whatUnlockBuildRequires(generator.name))) {
-      if (!generatorM.isBuildable(generator.name)) generatorM.setBuildable(generator.name);
+    if (pointM.hasEnoughPoints(generatorM.whatUnlockBuildRequires(generatorName))) {
+      if (!generatorM.isBuildable(generatorName)) generatorM.setBuildable(generatorName);
     } 
     else {
-      if (generatorM.isBuildable(generator.name)) generatorM.setBuildable(generator.name, false);
-      const generatorElement = UIControl.getGeneratorElement(generator.name);
+      if (generatorM.isBuildable(generatorName)) generatorM.setBuildable(generatorName, false);
+      const generatorElement = UIControl.getGeneratorElement(generatorName);
       showHint(generatorElement);
-      InputControl.addEventListener(generatorElement, "click", generatorOnClick, generator.name);
+      InputControl.addEventListener(generatorElement, "click", generatorOnClick, generatorName);
     }
   });
 }
 
-/** @param {SaveGenerator[]} generators */
-function checkCanBeBuiltGenerators(generators) {
+/** @param {string[]} generatorNames */
+function checkCanBeBuiltGenerators(generatorNames) {
 
-  generators.forEach(generator => {
-    if (!generatorM.isValidGenerator(generator.name)) return;
+  generatorNames.forEach(generatorName => {
+    if (!generatorM.isValidGenerator(generatorName)) return;
 
-    const generatorElement = UIControl.getGeneratorElement(generator.name);
-    showBuild(generatorElement, generatorM.whatBuildStepRequires(generator.name));
-      InputControl.addEventListener(generatorElement, "click", generatorOnClick, generator.name);
+    const generatorElement = UIControl.getGeneratorElement(generatorName);
+    showBuild(generatorElement, generatorM.whatBuildStepRequires(generatorName));
+      InputControl.addEventListener(generatorElement, "click", generatorOnClick, generatorName);
   });
 }
 
-/** @param {SaveGenerator[]} generators */
-function checkBuiltGenerators(generators) {
+/** @param {string[]} generatorNames */
+function checkBuiltGenerators(generatorNames) {
 
-  generators.forEach(generator => {
-    if (!generatorM.isValidGenerator(generator.name)) return;
+  generatorNames.forEach(generatorName => {
+    if (!generatorM.isValidGenerator(generatorName)) return;
 
-    const generatorElement = UIControl.getGeneratorElement(generator.name);
+    const generatorElement = UIControl.getGeneratorElement(generatorName);
     UIControl.showGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorElement.id));
-      InputControl.addEventListener(generatorElement, "click", generatorOnClick, generator.name);
+      InputControl.addEventListener(generatorElement, "click", generatorOnClick, generatorName);
   });
 }
 

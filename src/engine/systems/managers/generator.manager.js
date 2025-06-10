@@ -103,31 +103,39 @@ export default class GeneratorManager {
     }
 
     /**
-     * @returns { SaveGenerator[] }
+     * @returns { string[] }
      */
-    getLockedGenerators() {
-        return this.#getProxySaveGeneratorByCriteria((generator) => !generator.hinted && !generator.canBuild && !generator.built) || null;
+    getLockedGeneratorNames() {
+        return this.#getProxySaveGeneratorByCriteria(
+            (generator) => !generator.hinted && !generator.canBuild && !generator.built)
+            .map(gen => gen.name) || null;
     }
 
     /**
-     * @returns { SaveGenerator[] }
+     * @returns { string[] }
      */
-    getHintedGenerators() {
-        return this.#getProxySaveGeneratorByCriteria((generator) => generator.hinted && !generator.canBuild && !generator.built) || null;
+    getHintedGeneratorNames() {
+        return this.#getProxySaveGeneratorByCriteria(
+            (generator) => generator.hinted && !generator.canBuild && !generator.built)
+            .map(gen => gen.name) || null;
     }
 
     /**
-     * @returns { SaveGenerator[] }
+     * @returns { string[] }
      */
-    getBuildableGenerators() {
-        return this.#getProxySaveGeneratorByCriteria((generator) => generator.hinted && generator.canBuild && !generator.built) || null;
+    getBuildableGeneratorNames() {
+        return this.#getProxySaveGeneratorByCriteria(
+            (generator) => generator.hinted && generator.canBuild && !generator.built)
+            .map(gen => gen.name) || null;
     }
 
     /**
-     * @returns { SaveGenerator[] }
+     * @returns { string[] }
      */
-    getBuitGenerators() {
-        return this.#getProxySaveGeneratorByCriteria((generator) => generator.hinted && generator.canBuild && generator.built) || null;
+    getBuitGeneratorNames() {
+        return this.#getProxySaveGeneratorByCriteria(
+            (generator) => generator.hinted && generator.canBuild && generator.built)
+            .map(gen => gen.name) || null;
     }
 
 
