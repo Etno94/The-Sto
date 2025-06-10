@@ -5,6 +5,13 @@
  */
 
 /**
+ * @typedef { Object } DataSetAttr
+ * @property { string } type
+ * @property { string } pointType
+ * @property { string } status
+ */
+
+/**
  * @typedef { Object } DataSetTypes
  * @property { string } point
  * @property { string } generator
@@ -13,7 +20,6 @@
  */
 
 /**
- * @typedef { Object } DataSetAttr
- * @property { string } type
- * @property { string } pointType
+ * @typedef DataSetStatus
+ * @property {string} remove
  */

@@ -120,18 +120,19 @@ export default class DataManager {
 
     // #region DataSets
 
-    /**
-     * @returns { DataSetTypes }
-     */
+    /** @returns { DataSetTypes } */
     static getDataSetTypes() {
         return Utils.deepCopy(DATA_SET_TYPES);
     }
 
-    /**
-     * @returns { DataSetAttr }
-     */
+    /** @returns { DataSetAttr } */
     static getDataSetAttrs() {
         return Utils.deepCopy(DATA_SET_ATTRs);
+    }
+
+    /** @returns { DataSetStatus } */
+    static getDataSetStatus() {
+        return Utils.deepCopy(DATA_SET_STATUS);
     }
 
     // #endregion DataSets
