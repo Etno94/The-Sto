@@ -9,6 +9,7 @@ import DataManager from "../systems/managers/data.manager.js";
 import Asserts from "../utils/asserts.js";
 import Utils from "../utils/utils.js";
 import Errors from "../utils/errors.js";
+import PointCollection from "../systems/point.collection.js";
 
 class UIController {
 
@@ -236,20 +237,16 @@ class UIController {
 
     // Storage
     getCurrentPointsFromDOM() {
-      const counts = {
-        [this.#pointTypes.point]: 0,
-        [this.#pointTypes.solid_point]: 0,
-        [this.#pointTypes.energy_point]: 0
-      };
-    
+      /** @type {PointSet} */
+      const currentDomPointSet = new PointCollection().collection;
+
       for (let child of this.#pointsContainer.children) {
         const type = child.dataset.pointType;
-        if (counts.hasOwnProperty(type)) {
-          counts[type]++;
+        if (currentDomPointSet.hasOwnProperty(type)) {
+          currentDomPointSet[type]++;
         }
       }
-    
-      return counts;
+      return currentDomPointSet;
     }
 
     // #endregion Elements Flow

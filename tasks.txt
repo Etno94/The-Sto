@@ -2,7 +2,6 @@ Tareas:
 
 - (CSS) desacoplar elementos de generadores del id, plasmar estilos a traves de clases
 - (think) mover el generate / remove point a UI Controller y tener un solo async, no N
-- (generator Manager) los GetGenerators: devolver .name en lugar del obj completo
 
 Nice to have:
 

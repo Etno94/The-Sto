@@ -83,5 +83,27 @@ export default class PointManager {
         return new PointCollection(Global.proxy.points).total;
     }
 
+    /**
+     * @param {PointSet} pointSetA 
+     * @param {PointSet} pointSetB
+     * @returns {PointSet}
+     */
+    calculatePointSetDiff(pointSetA, pointSetB) {
+
+        // We validate both point sets
+        /** @type {PointSet} */
+        const collectionA = new PointCollection(pointSetA).collection;
+        /** @type {PointSet} */
+        const collectionB = new PointCollection(pointSetB).collection;
+        /** @type {PointSet} */
+        const pointSetDiff = new PointCollection().collection;
+
+        for (const type of this.#pointProps) {
+            pointSetDiff[type] = pointSetA[type] - pointSetB[type]
+        }
+        
+        return pointSetDiff;
+    }
+
     // #endregion Access
 }
