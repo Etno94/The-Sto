@@ -1,7 +1,10 @@
+Activo:
+- (think) mover el generate / remove point a UI Controller y tener un solo async, no N
+=> Actualmente trabajando en [UI Controller] balancePoints
+
 Tareas:
 
 - (CSS) desacoplar elementos de generadores del id, plasmar estilos a traves de clases
-- (think) mover el generate / remove point a UI Controller y tener un solo async, no N
 
 Nice to have:
 

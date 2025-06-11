@@ -52,7 +52,7 @@ class UIController {
 
     #setEventBus() {
         EventBus.on(Events.points.overcap, () => this.shakePointsContainer());
-        EventBus.on(Events.ui.render, (locked) => this.manageLockGenerators(locked));
+        EventBus.on(Events.ui.render, (locked) => this.manageLockGenerators(locked)); // TODO: remove once finished with with RemovePoints revamp
         EventBus.on(Events.generator.onClick, (generatorName) => {});
     }
 
@@ -120,6 +120,35 @@ class UIController {
             UIHelper.removeChild(this.#pointsContainer, child);
 
             return;
+        }
+    }
+
+    /** @type {PointSet} */
+    balancePoints(pointSetDiff) {
+        pointSetDiff = new PointCollection(pointSetDiff).collection; // Validate point set
+
+        for (const [type, points] of Object.entries(pointSetDiff)) {
+            if (!this.#pointTypes.hasOwnProperty(type)) continue;
+            if (!points) continue;
+            if (points > 0) {
+                let toGenerate = points;
+                while (toGenerate) {
+                    this.generatePoint(type);
+                    toGenerate--;
+                }
+            } else {
+                this.setDOMPointsToBeRemoved(type, points);
+            }
+        }
+    }
+
+    setDOMPointsToBeRemoved(type, quantity) {
+        console.log(`${quantity} ${type} marked to be removed`);
+
+        for (let child of this.#pointsContainer.children) {
+            const childType = child.dataset.pointType;
+            if (childType !== type) continue;
+            UIHelper.addDataSet(child, DataManager.getDataSetAttrs().status, DataManager.getDataSetStatus().remove);
         }
     }
 

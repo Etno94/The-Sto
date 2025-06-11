@@ -101,8 +101,20 @@ export default class PointManager {
         for (const type of this.#pointProps) {
             pointSetDiff[type] = pointSetA[type] - pointSetB[type]
         }
-        
+
         return pointSetDiff;
+    }
+
+    /**
+     * @param {PointSet} DOMPointSet 
+     * @return {PointSet} 
+     */
+    calculateDOMPointDiff(DOMPointSet) {
+        // We validate point set
+        const elemPointSet = new PointCollection(DOMPointSet).collection;
+        const savePointSet = new PointCollection(Global.proxy.points).collection;
+
+        return this.calculatePointSetDiff(savePointSet, elemPointSet);
     }
 
     // #endregion Access

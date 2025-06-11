@@ -186,24 +186,24 @@ async function setStoragePoints(points) {
 
   /** @type {PointSet} */
   const currentDomPoints = UIControl.getCurrentPointsFromDOM();
-  balancePoints(points, currentDomPoints);
+  balancePoints(currentDomPoints);
 
-  RenderQ.queue(removePoints, currentBasicPoints, points.point, DataManager.getPointTypesData().point);
-  RenderQ.queue(removePoints, currentSolidPoints, points.solid_point, DataManager.getPointTypesData().solid_point);
-  RenderQ.queue(removePoints, currentEnergyPoints, points.energy_point, DataManager.getPointTypesData().energy_point);
+  // RenderQ.queue(removePoints, currentBasicPoints, points.point, DataManager.getPointTypesData().point);
+  // RenderQ.queue(removePoints, currentSolidPoints, points.solid_point, DataManager.getPointTypesData().solid_point);
+  // RenderQ.queue(removePoints, currentEnergyPoints, points.energy_point, DataManager.getPointTypesData().energy_point);
 
-  renderPoints(currentBasicPoints, points.point, DataManager.getPointTypesData().point);
-  renderPoints(currentSolidPoints, points.solid_point, DataManager.getPointTypesData().solid_point);
-  renderPoints(currentEnergyPoints, points.energy_point, DataManager.getPointTypesData().energy_point);
+  // renderPoints(currentBasicPoints, points.point, DataManager.getPointTypesData().point);
+  // renderPoints(currentSolidPoints, points.solid_point, DataManager.getPointTypesData().solid_point);
+  // renderPoints(currentEnergyPoints, points.energy_point, DataManager.getPointTypesData().energy_point);
 }
 
 /**
- * @param {PointSet} points 
  * @param {PointSet} currentDomPoints 
  */
-function balancePoints(points, currentDomPoints) {
-  const diffResult = pointM.calculatePointSetDiff(points, currentDomPoints);
+function balancePoints(currentDomPoints) {
+  const diffResult = pointM.calculateDOMPointDiff(currentDomPoints);
   console.log(`Diff Result:`, diffResult);
+  UIControl.balancePoints(diffResult);
 }
 
 /**
