@@ -1,6 +1,4 @@
 Activo:
-- (think) mover el generate / remove point a UI Controller y tener un solo async, no N
-=> Actualmente trabajando en [UI Controller] balancePoints
 
 Tareas:
 
@@ -9,5 +7,6 @@ Tareas:
 Nice to have:
 
 - tipar todos los parametros y obj
+- [Gamer Experience] actual: los puntos se borran en una sola animacion. Deseable: analizar si lo movemos a animar 1 punto a la vez.
 
 Bugs:

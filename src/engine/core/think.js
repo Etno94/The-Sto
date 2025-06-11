@@ -11,7 +11,6 @@ import GeneratorManager from "../systems/managers/generator.manager.js";
 import StorageManager from "../systems/managers/storage.manager.js";
 
 import { UIControl } from "../views/ui-controller.js";
-import {RenderQ} from "../views/helpers/render-queue.js";
 import Asserts from "../utils/asserts.js";
 
 let lastUpdate = 0;
@@ -176,62 +175,11 @@ function builtGeneratorOnClick (generatorName) {
 
 // #region Render
 
-/**
- * @param {PointSet} points
- */
-async function setStoragePoints(points) {
-  Asserts.noNullValuesObject(points);
-
-  let { point: currentBasicPoints, solid_point: currentSolidPoints, energy_point: currentEnergyPoints } = UIControl.getCurrentPointsFromDOM();
-
+function setStoragePoints() {
   /** @type {PointSet} */
   const currentDomPoints = UIControl.getCurrentPointsFromDOM();
-  balancePoints(currentDomPoints);
-
-  // RenderQ.queue(removePoints, currentBasicPoints, points.point, DataManager.getPointTypesData().point);
-  // RenderQ.queue(removePoints, currentSolidPoints, points.solid_point, DataManager.getPointTypesData().solid_point);
-  // RenderQ.queue(removePoints, currentEnergyPoints, points.energy_point, DataManager.getPointTypesData().energy_point);
-
-  // renderPoints(currentBasicPoints, points.point, DataManager.getPointTypesData().point);
-  // renderPoints(currentSolidPoints, points.solid_point, DataManager.getPointTypesData().solid_point);
-  // renderPoints(currentEnergyPoints, points.energy_point, DataManager.getPointTypesData().energy_point);
-}
-
-/**
- * @param {PointSet} currentDomPoints 
- */
-function balancePoints(currentDomPoints) {
   const diffResult = pointM.calculateDOMPointDiff(currentDomPoints);
-  console.log(`Diff Result:`, diffResult);
   UIControl.balancePoints(diffResult);
-}
-
-/**
- * @param {number} currentPoints 
- * @param {number} pointsToMatch 
- * @param {string} pointType 
- */
-function renderPoints(currentPoints, pointsToMatch, pointType){
-  if (currentPoints >= pointsToMatch) return;
-
-  while (currentPoints < pointsToMatch) {
-      UIControl.generatePoint(pointType);
-      currentPoints++;
-  }
-}
-
-/**
- * @param {number} currentPoints 
- * @param {number} pointsToMatch 
- * @param {string} pointType 
- */
-async function removePoints(currentPoints, pointsToMatch, pointType) {
-  if (currentPoints <= pointsToMatch) return;
-
-  while (currentPoints > pointsToMatch) {
-      await UIControl.removePoint(pointType);
-      currentPoints--;
-  }
 }
 
 // #endregion Render
@@ -258,8 +206,7 @@ function startGame() {
 }
 
 function gameLoop(timestamp) {
-  setStoragePoints(new PointCollection(Global.proxy.points).collection);
-
+  setStoragePoints();
   checkUnlocks();
 
   // requestAnimationFrame(gameLoop);

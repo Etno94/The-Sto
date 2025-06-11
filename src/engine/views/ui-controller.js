@@ -4,11 +4,11 @@ import { EventBus, Events } from "../core/event-bus.js";
 import Render from "./render.factory.js";
 import Animate from "./helpers/animate.js";
 import UIHelper from "./helpers/ui-helper.js";
+import { RenderQ } from "./helpers/render-queue.js";
 
 import DataManager from "../systems/managers/data.manager.js";
 import Asserts from "../utils/asserts.js";
 import Utils from "../utils/utils.js";
-import Errors from "../utils/errors.js";
 import PointCollection from "../systems/point.collection.js";
 
 class UIController {
@@ -52,7 +52,7 @@ class UIController {
 
     #setEventBus() {
         EventBus.on(Events.points.overcap, () => this.shakePointsContainer());
-        EventBus.on(Events.ui.render, (locked) => this.manageLockGenerators(locked)); // TODO: remove once finished with with RemovePoints revamp
+        EventBus.on(Events.ui.render, (isRendering) => {});
         EventBus.on(Events.generator.onClick, (generatorName) => {});
     }
 
@@ -80,6 +80,16 @@ class UIController {
     rippleGenerator(generatorName) {
         Asserts.string(generatorName);
         this.#rippleElement(this.getGeneratorElement(generatorName));
+    }
+
+    /** @param {HTMLElement} parent */
+    async removeMarkedElements(parent) {
+        Asserts.htmlElement(parent);
+        if (!UIHelper.hasChildrens(parent)) return;
+
+        Animate.widthOut(child);
+            await Utils.delay(this.#animations.width.timer);
+            UIHelper.removeChild(this.#pointsContainer, child);
     }
 
     // #endregion Animations
@@ -137,18 +147,55 @@ class UIController {
                     toGenerate--;
                 }
             } else {
-                this.setDOMPointsToBeRemoved(type, points);
+                this.setDOMPointsToBeRemoved(type, Math.abs(points), Animate.widthOut);
+                RenderQ.queue(async () => {
+                    await Utils.delay(this.#animations.width.timer);
+                    this.removeMarkedElementsFromParent(this.#pointsContainer);
+                });
             }
         }
     }
 
-    setDOMPointsToBeRemoved(type, quantity) {
-        console.log(`${quantity} ${type} marked to be removed`);
+    /**
+     * @param {string} type 
+     * @param {number} quantity 
+     * @param {Function} [animation] 
+     */
+    setDOMPointsToBeRemoved(type, quantity, animation = null) {
+        Asserts.string(type);
+        Asserts.number(quantity);
+        if (animation) Asserts.function(animation);
+
+        const dataSetStatus = DataManager.getDataSetAttrs().status;
+        const statusRemove = DataManager.getDataSetStatus().remove;
+        let toRemove = quantity;
 
         for (let child of this.#pointsContainer.children) {
+            if (!toRemove) return;
             const childType = child.dataset.pointType;
             if (childType !== type) continue;
-            UIHelper.addDataSet(child, DataManager.getDataSetAttrs().status, DataManager.getDataSetStatus().remove);
+            if (UIHelper.isDataSetValue(child, dataSetStatus, statusRemove)) continue;
+
+            UIHelper.addDataSet(child, dataSetStatus, statusRemove);
+            if (animation) animation(child);
+            toRemove--;
+        }
+    }
+
+    /**
+     * @param {htmlElement} parent 
+     */
+    removeMarkedElementsFromParent(parent) {
+        Asserts.htmlElement(parent);
+
+        const dataSetStatus = DataManager.getDataSetAttrs().status;
+        const statusRemove = DataManager.getDataSetStatus().remove;
+        for (let child of Array.from(parent.children)) {
+            if (!UIHelper.areParentAndChildValid(parent, child)) continue;
+            if (!UIHelper.hasDataSet(child, dataSetStatus)) continue;
+            if (!UIHelper.isDataSetValue(child, dataSetStatus, statusRemove)) continue;
+
+            UIHelper.removeChild(parent, child);
         }
     }
 
@@ -270,6 +317,10 @@ class UIController {
       const currentDomPointSet = new PointCollection().collection;
 
       for (let child of this.#pointsContainer.children) {
+        if (UIHelper.hasDataSet(child, DataManager.getDataSetAttrs().status) &&
+            UIHelper.isDataSetValue(child, DataManager.getDataSetAttrs().status, DataManager.getDataSetStatus().remove))
+            continue;
+
         const type = child.dataset.pointType;
         if (currentDomPointSet.hasOwnProperty(type)) {
           currentDomPointSet[type]++;
