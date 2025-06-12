@@ -1,14 +1,12 @@
+import Global from '../../core/global.js';
+
 import DataManager from './data.manager.js';
 
 export default class StorageManager {
 
-    /**
-     * @type { number }
-     */
+    /** @type { number } */
     #currentMaxStorage = 0;
-    /**
-     * @type { number }
-     */
+    /** @type { number } */
     #currentUpgradeLevel = 0;
 
     /**

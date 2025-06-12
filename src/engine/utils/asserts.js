@@ -14,6 +14,12 @@ export default class Asserts {
         }
     }
 
+    static functionArray(value, arrName = 'arr') {
+        if (!Validators.isFunctionArray(value)) {
+            Errors.invalidArrayContent('function', arrName);
+        }
+    }
+
     static nonEmptyArray(value, variableName = 'value') {
         if (!Validators.isNonEmptyArray(value)) {
             Errors.invalidTypeError(typeof value, `Non-empty Array (${variableName})`);

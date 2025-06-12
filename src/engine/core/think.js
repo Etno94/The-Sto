@@ -1,6 +1,7 @@
 import Global from "./global.js";
 import GameSave from "./save.js";
 import { EventBus, Events } from "./event-bus.js";
+import GameLoop from "./game-loop.js";
 
 import PointCollection from "../systems/point.collection.js";
 import InputControl from "../systems/input.controller.js";
@@ -12,9 +13,6 @@ import StorageManager from "../systems/managers/storage.manager.js";
 
 import { UIControl } from "../views/ui-controller.js";
 import Asserts from "../utils/asserts.js";
-
-let lastUpdate = 0;
-const updateInterval = 1600;
 
 const pointM = new PointManager();
 const generatorM = new GeneratorManager();
@@ -200,23 +198,16 @@ function startGame() {
 
   Global.saveProxy.subscribe((updatedSave) => {
     GameSave.save(updatedSave);
-    gameLoop();
+    setStoragePoints();
+    checkUnlocks();
   });
-  if (!save) requestAnimationFrame(gameLoop);
-}
 
-function gameLoop(timestamp) {
-  setStoragePoints();
-  checkUnlocks();
-
-  // requestAnimationFrame(gameLoop);
-
-  // if (timestamp - lastUpdate >= updateInterval) {
-  //     setStoragePoints(proxySave.points, proxySave.solid_points, proxySave.energy_points);
-  //     checkUnlocks();
-  //     lastUpdate = timestamp;
-  // }
-  // requestAnimationFrame(gameLoop);
+  new GameLoop()
+    .setGameUpdates([
+      () => setStoragePoints(),
+      () => checkUnlocks(),
+    ])
+    .start();
 }
 
 function registerBusEvents() {
