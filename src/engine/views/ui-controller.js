@@ -256,6 +256,15 @@ class UIController {
             UIHelper.addClass(generatorElement, canBuildClasses);
     }
 
+    /** @param {HTMLElement} generatorElement */
+    hideBuild(generatorElement) {
+        Asserts.htmlElement(generatorElement);
+
+        const canBuildClasses = DataManager.getGeneratorClasses().canBuild;
+        if (UIHelper.containsClasses(generatorElement, canBuildClasses))
+            UIHelper.removeClass(generatorElement, canBuildClasses);
+    }
+
     // Cost Preview
     /**
      * @param {HTMLDivElement} parentElement

@@ -7,16 +7,13 @@ import PointCollection from "../systems/point.collection.js";
 import InputControl from "../systems/input.controller.js";
 
 import DataManager from "../systems/managers/data.manager.js";
-import PointManager from '../systems/managers/point.manager.js';
-import GeneratorManager from "../systems/managers/generator.manager.js";
-import StorageManager from "../systems/managers/storage.manager.js";
+import {pointM} from '../systems/managers/point.manager.js';
+import {generatorM} from "../systems/managers/generator.manager.js";
+import {storageM} from "../systems/managers/storage.manager.js";
 
 import { UIControl } from "../views/ui-controller.js";
 import Asserts from "../utils/asserts.js";
 
-const pointM = new PointManager();
-const generatorM = new GeneratorManager();
-const storageM = new StorageManager();
 
 // #region Unlocks
 
@@ -33,7 +30,6 @@ function checkGeneratorUnlocks() {
 
 /** @param {string[]} generatorNames */
 function checkLockedGenerators(generatorNames) {
-
   generatorNames.forEach(generatorName => {
     if (!generatorM.isValidGenerator(generatorName)) return;
 
@@ -47,7 +43,6 @@ function checkLockedGenerators(generatorNames) {
 
 /** @param {string[]} generatorNames */
 function checkHintedGenerators(generatorNames) {
-
   generatorNames.forEach(generatorName => {
     if (!generatorM.isValidGenerator(generatorName)) return;
 
@@ -66,7 +61,6 @@ function checkHintedGenerators(generatorNames) {
 
 /** @param {string[]} generatorNames */
 function checkCanBeBuiltGenerators(generatorNames) {
-
   generatorNames.forEach(generatorName => {
     if (!generatorM.isValidGenerator(generatorName)) return;
 
@@ -80,7 +74,6 @@ function checkCanBeBuiltGenerators(generatorNames) {
 
 /** @param {string[]} generatorNames */
 function checkBuiltGenerators(generatorNames) {
-
   generatorNames.forEach(generatorName => {
     if (!generatorM.isValidGenerator(generatorName)) return;
 
@@ -107,21 +100,11 @@ function buildGenerator(generatorName) {
 
   if (generatorM.isBuildProgressComplete(generatorName)) {
     generatorM.setBuilt(generatorName);
-    checkGeneratorBuilt(generatorName);
+    const generatorElement = UIControl.getGeneratorElement(generatorName);
+    UIControl.showGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorElement.id));
+    UIControl.hideBuild(generatorElement);
+    UIControl.removeCostPreview(generatorElement);
   }
-}
-
-/** @param { string } generatorName */
-function checkGeneratorBuilt(generatorName) {
-  Asserts.string(generatorName);
-
-  let generatorElement = UIControl.getGeneratorElement(generatorName);
-  UIControl.showGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorElement.id));
-
-  if (generatorElement.classList.contains("blank"))
-    generatorElement.classList.remove("blank");
-
-  UIControl.removeCostPreview(generatorElement);
 }
 
 // #endregion Build
@@ -182,12 +165,11 @@ function setStoragePoints() {
 
 // #endregion Render
 
-// #region Global
+// #region SetUp
 
 // SetUp
 
 function startGame() {
-  
   const save = GameSave.load();
   if(save && typeof save === 'object') {
     Object.assign(Global.proxy, save);
@@ -217,4 +199,4 @@ function registerBusEvents() {
 
 startGame();
 
-// #endregion Global
+// #endregion SetUp
