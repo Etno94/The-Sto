@@ -6,6 +6,13 @@ import { FRESH_POINTS } from './points.data.js';
  * @type { SaveType }
  */
 export const FRESH_SAVE = {
+    time: {
+        saveTimestamp: Date.now(),
+        accumulator: 0
+    },
+    settings: {
+        version: '1.0.0'
+    },
     points: FRESH_POINTS,
     points_order: [],
     storage: {
@@ -34,6 +41,13 @@ export const FRESH_SAVE = {
  */
 export const TEST_SAVES = [
     {
+        time: {
+            saveTimestamp: Date.now(),
+            accumulator: 0
+        },
+        settings: {
+            version: '1.0.0'
+        },
         points: FRESH_POINTS,
         points_order: [],
         storage: {

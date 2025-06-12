@@ -6,6 +6,7 @@ export default class GameSave {
     }
     
     static save(save) {
+        (console.log('saving...'))
         localStorage.setItem('save', JSON.stringify(save));
     }
     

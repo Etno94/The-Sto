@@ -187,7 +187,7 @@ function startGame() {
   new GameLoop()
     .setGameUpdates([
       () => setStoragePoints(),
-      () => checkUnlocks(),
+      () => checkUnlocks()
     ])
     .start();
 }

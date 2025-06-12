@@ -1,6 +1,13 @@
 import debounce from '../utils/debounce.js';
 
 class SaveProxy {
+
+    /** @type {Set<string>} */
+    timeSaveTypeProperties = new Set([
+        'saveTimestamp',
+        'accumulator'
+    ]);
+
     constructor(initialSave) {
         if (initialSave) this.setSaveProxy(initialSave);
     }
@@ -18,6 +25,7 @@ class SaveProxy {
             set: (target, property, value) => {
                 if (target[property] === value && typeof value !== 'object') return true;
                 target[property] = value;
+                if (this.timeSaveTypeProperties.has(property)) return true;
                 this.notifyDebounced();
                 return true;
             },
@@ -39,6 +47,7 @@ class SaveProxy {
         this.subscribers = this.subscribers.filter(subscriber => subscriber !== callback);
     }
 
+    /** @returns {SaveType} */
     get proxy() {
         return this.proxySave;
     }

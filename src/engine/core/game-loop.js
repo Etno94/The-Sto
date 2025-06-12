@@ -1,5 +1,6 @@
-import Asserts from "../utils/asserts.js";
+import Global from "./global.js";
 
+import Asserts from "../utils/asserts.js";
 export default class GameLoop {
 
     /** @type {Function[]} */
@@ -42,6 +43,9 @@ export default class GameLoop {
             this.#functions.forEach(func => func());
             this.#accumulator -= this.#updateInterval;
         }
+
+        Global.proxy.time.accumulator = this.#accumulator;
+        Global.proxy.time.saveTimestamp = Date.now();
 
         requestAnimationFrame(this.loop);
     }
