@@ -6,6 +6,7 @@ import DataManager from "./data.manager.js";
 import Utils from "../../utils/utils.js";
 import Validators from '../../utils/validators.js';
 import Errors from '../../utils/errors.js';
+import Asserts from "../../utils/asserts.js";
 
 class GeneratorManager {
 
@@ -27,7 +28,7 @@ class GeneratorManager {
     }
 
     #setBusEvents() {
-
+        EventBus.on(Events.generator.onCD, (generatorName, cooldown) => this.setGeneratorOnCD(generatorName, cooldown));
     }
 
     setNewGeneratorManager() {
@@ -164,6 +165,10 @@ class GeneratorManager {
         return Utils.deepCopy(this.#getGeneratorData(generatorName))?.generates || null;
     }
 
+    whatCoolDown(generatorName) {
+        return this.#getGeneratorData(generatorName)?.cooldown || null;
+    }
+
     /**
      * @param { string } generatorName 
      * @return { UnlockRequires | null}
@@ -254,7 +259,7 @@ class GeneratorManager {
     /**
      * @param { string } generatorName
      * @param { string } prop
-     * @param {boolean} value
+     * @param {number | boolean} value
      * @return {boolean}
      */
     #setProp(generatorName, prop, value) {
@@ -304,6 +309,18 @@ class GeneratorManager {
     isBuildProgressComplete(generatorName) {
         if (!Validators.isString(generatorName)) return;
         return this.#getProxySaveGeneratorByName(generatorName).progress >= this.whatBuildTotalStepsRequires(generatorName);
+    }
+
+    /** 
+     * @param {string} generatorName 
+     * @param {number} cooldown
+     */
+    setGeneratorOnCD(generatorName, cooldown) {
+        Asserts.string(generatorName);
+        Asserts.number(cooldown);
+
+        this.#getProxySaveGeneratorByName(generatorName);
+        this.#setProp(generatorName, 'cooldown', cooldown);
     }
     
     // #endregion Manage

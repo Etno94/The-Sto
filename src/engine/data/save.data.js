@@ -31,7 +31,8 @@ export const FRESH_SAVE = {
             hinted: false,
             canBuild: false,
             progress: 0,
-            built: false
+            built: false,
+            remainingCD: 0
         }
     ]
 }

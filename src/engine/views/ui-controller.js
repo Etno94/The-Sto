@@ -54,6 +54,7 @@ class UIController {
         EventBus.on(Events.points.overcap, () => this.shakePointsContainer());
         EventBus.on(Events.ui.render, (isRendering) => {});
         EventBus.on(Events.generator.onClick, (generatorName) => {});
+        EventBus.on(Events.generator.onCD, (generatorName, cooldown) => this.setGeneratorOnCD(generatorName, cooldown));
     }
 
     // #endregion Setup
@@ -93,10 +94,8 @@ class UIController {
     }
 
     // #endregion Animations
-    
-    // #region Elements Flow
 
-    // Points
+    // #region Points
     /**
      * @param {string} type
      * @returns {HTMLElement}
@@ -199,7 +198,10 @@ class UIController {
         }
     }
 
-    // Generators
+    // #endregion Points
+
+    // #region Generators
+
     /**
      * @param {string} generatorName 
      * @param {string[]} classes
@@ -265,7 +267,30 @@ class UIController {
             UIHelper.removeClass(generatorElement, canBuildClasses);
     }
 
-    // Cost Preview
+    /** @param { boolean } isDisabled */
+    manageLockGenerators(isDisabled = false) {
+        Asserts.boolean(isDisabled);
+        if (!UIHelper.hasChildrens(this.#generatorsContainer)) return;
+
+        const generatorElements = Array.from(this.#generatorsContainer.children);
+        generatorElements.forEach(gen => gen.disabled = isDisabled);
+    }
+
+    /** 
+     * @param {string} generatorName
+     * @param {number} cooldown
+     */
+    setGeneratorOnCD(generatorName, cooldown) {
+        Asserts.string(generatorName);
+        Asserts.number(cooldown);
+
+        UIHelper.addClass(this.getGeneratorElement(generatorName), DataManager.getGeneratorClasses().onCd);
+    }
+
+    // #endregion Generators
+
+    // #region Cost Preview
+
     /**
      * @param {HTMLDivElement} parentElement
      * @returns {boolean}
@@ -285,7 +310,7 @@ class UIController {
     /**
      * @param {HTMLElement} generatorElement 
      * @param {PointSet} buildCosts 
-     * @returns 
+     * @returns
      */
     renderCostPreview(generatorElement, buildCosts) {
         Asserts.htmlElement(generatorElement);
@@ -311,16 +336,10 @@ class UIController {
         });
     }
 
-    /** @param { boolean } isDisabled */
-    manageLockGenerators(isDisabled = false) {
-        Asserts.boolean(isDisabled);
-        if (!UIHelper.hasChildrens(this.#generatorsContainer)) return;
+    // #endregion Cost Preview
 
-        const generatorElements = Array.from(this.#generatorsContainer.children);
-        generatorElements.forEach(gen => gen.disabled = isDisabled);
-    }
+    // #region Storage
 
-    // Storage
     getCurrentPointsFromDOM() {
       /** @type {PointSet} */
       const currentDomPointSet = new PointCollection().collection;
@@ -338,7 +357,7 @@ class UIController {
       return currentDomPointSet;
     }
 
-    // #endregion Elements Flow
+    // #endregion Storage
 }
 
 export const UIControl = new UIController();

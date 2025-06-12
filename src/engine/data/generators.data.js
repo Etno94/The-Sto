@@ -9,7 +9,8 @@ export const GENERATOR_IDS = {
 export const GENERATOR_CLASSES = {
     default: ["cell", "m-24"],
     hint: ['hint'],
-    canBuild: ['blank']
+    canBuild: ['blank'],
+    onCd: ['on-cd']
 }
 
 /**
@@ -33,6 +34,7 @@ const COOLDOWN_GENERATOR = {
     consumes: {
         [POINT_TYPES.point]: 2
     },
+    cooldown: 5000,
     unlockRequires: {
         hint: {
             [POINT_TYPES.point]: 2

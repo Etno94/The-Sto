@@ -112,17 +112,7 @@
     opacity: 0.8;
 }
 
-/* .cell::before {
-    content: '';
-    position: absolute;
-    background: inherit;
-    border-radius: inherit;
-    width: 80px;
-    height: 80px; 
-    pointer-events: none;
-    transform: scale(0.8);
-    opacity: 0.8;
-} */
+
 
 
 /* Central */
@@ -156,6 +146,18 @@
 #cooldownGenerator.cell.hint,
 #cooldownGenerator.cell.blank {
     background-color: unset;
+}
+/* #cooldownGenerator.cell.on-cd {
+    background-color: #ff7e0070;
+} */
+#cooldownGenerator.cell.on-cd::before {
+    content: '';
+    position: absolute;
+    background: conic-gradient(transparent var(--cooldownGenerator-oncd-dg, 0deg), #a75c13 0deg);
+    border-radius: inherit;
+    width: inherit;
+    height: inherit;
+    pointer-events: none;
 }
 
 /* Points */

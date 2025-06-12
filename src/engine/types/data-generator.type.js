@@ -1,8 +1,9 @@
 /**
  * @typedef {Object} DataGenerator
  * @property {string} name
- * @property {number} generates
+ * @property {PointSet} [generates]
  * @property {PointSet} [consumes]
+ * @property {number} [cooldown]
  * @property {UnlockRequires} [unlockRequires]
  * @property {BuildRequires} [buildRequires]
  */
@@ -30,4 +31,5 @@
  * @property {string[]} default
  * @property {string[]} hint
  * @property {string[]} canBuild
+ * @property {string[]} onCd
  */

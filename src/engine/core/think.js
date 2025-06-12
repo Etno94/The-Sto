@@ -149,6 +149,8 @@ function builtGeneratorOnClick (generatorName) {
   if (canConsume && canGenerate) {
     if (consumePCollection.total) EventBus.emit(Events.points.substract, consumePCollection.collection);
     if (generatePCollection.total) EventBus.emit(Events.points.add, generatePCollection.collection);
+    const cooldown = generatorM.whatCoolDown(generatorName);
+    if (cooldown) EventBus.emit(Events.generator.onCD, generatorName, cooldown);
   }
 }
 
