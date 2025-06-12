@@ -7,7 +7,7 @@ import Utils from "../../utils/utils.js";
 import Validators from '../../utils/validators.js';
 import Errors from '../../utils/errors.js';
 
-export default class GeneratorManager {
+class GeneratorManager {
 
     /**
      * @type {string[]}
@@ -308,3 +308,4 @@ export default class GeneratorManager {
     
     // #endregion Manage
 }
+export const generatorM = new GeneratorManager();

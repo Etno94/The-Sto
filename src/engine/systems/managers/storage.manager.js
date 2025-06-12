@@ -1,8 +1,7 @@
 import Global from '../../core/global.js';
 
 import DataManager from './data.manager.js';
-
-export default class StorageManager {
+class StorageManager {
 
     /** @type { number } */
     #currentMaxStorage = 0;
@@ -33,3 +32,4 @@ export default class StorageManager {
         return this.#currentMaxStorage < currentTotal + totalToGenerate - totalToConsume;
     }
 }
+export const storageM = new StorageManager();

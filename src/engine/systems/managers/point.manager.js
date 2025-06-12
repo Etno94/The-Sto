@@ -7,7 +7,7 @@ import PointCollection from '../point.collection.js';
 
 import Utils from "../../utils/utils.js";
 
-export default class PointManager {
+class PointManager {
 
     /**
      * @type { string[] }
@@ -119,3 +119,5 @@ export default class PointManager {
 
     // #endregion Access
 }
+
+export const pointM = new PointManager();
