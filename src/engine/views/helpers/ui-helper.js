@@ -121,20 +121,15 @@ export default class UIHelper {
      * @param {string} action
      * @returns {HTMLElement}
      */
-    static actionOnClass(element, action, classNames ) {
+    static actionOnClass(element, action, classNames) {
         Asserts.htmlElement(element);
         Asserts.notNullOrUndefined(classNames, 'classNames');
         Asserts.string(action, 'action');
-        switch(typeof classNames) {
-            case 'string':
-                Asserts.string(classNames) 
-                element.classList[action](classNames);
-                break;
-            case 'object':
-                Asserts.stringArray(classNames) 
-                element.classList[action](...classNames);
-                break;
-        }
+
+        const classes = typeof classNames === 'string' ? [classNames] : classNames;
+        Asserts.stringArray(classes);
+
+        element.classList[action](...classes);
         return element;
     }
 
@@ -204,7 +199,7 @@ export default class UIHelper {
      * @param {string} name 
      * @returns {HTMLElement}
      */
-    static removeAttribute(name) {
+    static removeAttribute(element, name) {
         Asserts.htmlElement(element);
         Asserts.string(name);
 

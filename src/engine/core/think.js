@@ -13,6 +13,7 @@ import {storageM} from "../systems/managers/storage.manager.js";
 
 import { UIControl } from "../views/ui-controller.js";
 import Asserts from "../utils/asserts.js";
+import Validators from "../utils/validators.js";
 
 
 // #region Unlocks
@@ -149,8 +150,8 @@ function builtGeneratorOnClick (generatorName) {
   if (canConsume && canGenerate) {
     if (consumePCollection.total) EventBus.emit(Events.points.substract, consumePCollection.collection);
     if (generatePCollection.total) EventBus.emit(Events.points.add, generatePCollection.collection);
-    const cooldown = generatorM.whatCoolDown(generatorName);
-    if (cooldown) EventBus.emit(Events.generator.onCD, generatorName, cooldown);
+    const baseCooldown = generatorM.whatBaseCoolDown(generatorName); // TODO: add usedAmounts
+    if (baseCooldown) EventBus.emit(Events.generator.onCD, generatorName, baseCooldown);
   }
 }
 
@@ -158,11 +159,36 @@ function builtGeneratorOnClick (generatorName) {
 
 // #region Render
 
+/** @param {number} interval */
+function renderGeneralUpdatedStatus(interval) {
+  setStoragePoints();
+  updateGeneratorsCooldown(interval);
+}
+
 function setStoragePoints() {
   /** @type {PointSet} */
   const currentDomPoints = UIControl.getCurrentPointsFromDOM();
   const diffResult = pointM.calculateDOMPointDiff(currentDomPoints);
   UIControl.balancePoints(diffResult);
+}
+
+/** @param {number} [interval=0] */
+function updateGeneratorsCooldown(interval = 0) {
+  Asserts.number(interval);
+  if (!generatorM.needToCheckCooldowns) {
+    return;
+  }
+
+  const generatorsOnCD = generatorM.getGeneratorsOnCooldownNames();
+  if (!Validators.isNonEmptyArray(generatorsOnCD)) {
+    generatorM.needToCheckCooldowns = false;
+    return;
+  }
+
+  generatorsOnCD.forEach(generatorName => {
+    const updatedRemainingCD = generatorM.getGeneratorRemainingCD(generatorName) - interval;
+    EventBus.emit(Events.generator.onCD, generatorName, updatedRemainingCD);
+  });
 }
 
 // #endregion Render
@@ -182,14 +208,14 @@ function startGame() {
 
   Global.saveProxy.subscribe((updatedSave) => {
     GameSave.save(updatedSave);
-    setStoragePoints();
     checkUnlocks();
+    renderGeneralUpdatedStatus();
   });
 
   new GameLoop()
     .setGameUpdates([
-      () => setStoragePoints(),
-      () => checkUnlocks()
+      () => checkUnlocks(),
+      (interval) => renderGeneralUpdatedStatus(interval)
     ])
     .start();
 }

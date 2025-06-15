@@ -11,10 +11,10 @@ export default class GameLoop {
     /** @type {number} */
     #accumulator = 0;
     /** @type {number} */
-    #updateInterval = 1000;
+    #updateInterval;
 
     /** @param {number} updateInterval */
-    constructor(updateInterval = 1000) {
+    constructor(updateInterval = 200) {
         this.#updateInterval = updateInterval;
         this.loop = this.#gameLoop.bind(this);
         return this;
@@ -40,7 +40,7 @@ export default class GameLoop {
         this.#accumulator += delta;
 
         while (this.#accumulator >= this.#updateInterval) {
-            this.#functions.forEach(func => func());
+            this.#functions.forEach(func => func(this.#updateInterval));
             this.#accumulator -= this.#updateInterval;
         }
 

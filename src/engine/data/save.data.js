@@ -24,7 +24,8 @@ export const FRESH_SAVE = {
             name: GENERATOR_IDS.CLICK,
             hinted: true,
             canBuild: true,
-            built: true
+            built: true,
+            timesUsed: 0,
         },
         {
             name: GENERATOR_IDS.COOLDOWN,
@@ -32,6 +33,7 @@ export const FRESH_SAVE = {
             canBuild: false,
             progress: 0,
             built: false,
+            timesUsed: 0,
             remainingCD: 0
         }
     ]

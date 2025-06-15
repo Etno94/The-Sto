@@ -4,7 +4,9 @@
 export const BUS_EVENTS = {
     generator: {
         onClick: 'generator: onclick',
-        onCD: 'generator: on Cooldown'
+        onCD: 'generator: on Cooldown',
+        updateCD: 'generator: update Cooldown',
+        ready: 'generator: ready to use'
     },
     points: {
         add: 'point: added',

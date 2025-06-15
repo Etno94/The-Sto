@@ -3,7 +3,7 @@
  * @property {string} name
  * @property {PointSet} [generates]
  * @property {PointSet} [consumes]
- * @property {number} [cooldown]
+ * @property {GeneratorCooldownData} [cooldown]
  * @property {UnlockRequires} [unlockRequires]
  * @property {BuildRequires} [buildRequires]
  */
@@ -18,6 +18,12 @@
  * @typedef {Object} BuildRequires
  * @property {PointSet} step
  * @property {number} totalSteps
+ */
+
+/**
+ * @typedef {Object} GeneratorCooldownData
+ * @property {number} baseCooldown
+ * @property {Function} cooldownIncrement
  */
 
 /**

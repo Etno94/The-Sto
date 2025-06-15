@@ -10,10 +10,11 @@ import Asserts from "../../utils/asserts.js";
 
 class GeneratorManager {
 
-    /**
-     * @type {string[]}
-     */
+    /** @type {string[]} */
     #orderedGenerators = [];
+
+    /** @type {boolean} */
+    #needToCheckCooldowns = false;
 
 
     constructor () {
@@ -28,7 +29,7 @@ class GeneratorManager {
     }
 
     #setBusEvents() {
-        EventBus.on(Events.generator.onCD, (generatorName, cooldown) => this.setGeneratorOnCD(generatorName, cooldown));
+        EventBus.on(Events.generator.onCD, (generatorName, remainingCooldown) => this.setRemainingCD(generatorName, remainingCooldown));
     }
 
     setNewGeneratorManager() {
@@ -40,12 +41,22 @@ class GeneratorManager {
      */
     #sanitizeGenerators(generators, generatorsData) {
         // Passed generators must exist in the code base
-        let sanitizedGenerators = generators.filter(generator => generator.name && generatorsData.find(gen => gen.name === generator.name));
+        let sanitizedGenerators = generators.filter(generator => generator.name && generatorsData.find(generatorDataName => generatorDataName === generator.name));
         // We set the correct life cycle state for generators flags
-        sanitizedGenerators.forEach(generator => {
-            if (generator.built && !generator.canBuild) generator.built = false;
-            if (generator.canBuild && !generator.hinted) generator.canBuild = false;
-        });
+        sanitizedGenerators.forEach(
+            /** @param {SaveGenerator} generator */
+            generator => {
+                if (generator.built && !generator.canBuild) generator.built = false;
+                if (generator.canBuild && !generator.hinted) generator.canBuild = false;
+                if (generator.remainingCD) {
+                    if (generator.remainingCD < 0) {
+                        generator.remainingCD = 0;
+                        return;
+                    }
+                    this.#needToCheckCooldowns = true;
+                }
+            }
+        );
     }
 
     // #endregion Setup
@@ -103,6 +114,10 @@ class GeneratorManager {
         return this.#getProxySaveGeneratorByCriteria((generator) => generator.name === generatorName)[0] || null;
     }
 
+    get needToCheckCooldowns() {
+        return this.#needToCheckCooldowns;
+    }
+
     /**
      * @returns { string[] }
      */
@@ -139,6 +154,23 @@ class GeneratorManager {
             .map(gen => gen.name) || null;
     }
 
+    /**
+     * @returns { string[] }
+     */
+    getGeneratorsOnCooldownNames() {
+        return this.#getProxySaveGeneratorByCriteria(
+            (generator) => generator.remainingCD)
+            .map(gen => gen.name) || null;
+    }
+
+    /**
+     * @param {string} generatorName
+     * @returns {number}
+     */
+    getGeneratorRemainingCD(generatorName) {
+        return this.#getProxySaveGeneratorByName(generatorName).remainingCD;
+    }
+
 
     /**
      * @param {string} generatorName 
@@ -165,8 +197,30 @@ class GeneratorManager {
         return Utils.deepCopy(this.#getGeneratorData(generatorName))?.generates || null;
     }
 
-    whatCoolDown(generatorName) {
+    /**
+     * 
+     * @param {string} generatorName 
+     * @returns {GeneratorCooldownData | null}
+     */
+    #whatCoolDown(generatorName) {
         return this.#getGeneratorData(generatorName)?.cooldown || null;
+    }
+
+    /**
+     * @param {string} generatorName 
+     * @returns {number | null}
+     */
+    whatBaseCoolDown(generatorName) {
+        return this.#whatCoolDown(generatorName)?.baseCooldown || null;
+    }
+
+    /**
+     * @param {string} generatorName 
+     * @param {number} timesUsed 
+     * @returns {number | null}
+     */
+    whatCoolDownIncrement(generatorName, timesUsed) {
+        return this.#whatCoolDown(generatorName)?.cooldownIncrement(timesUsed) || null;
     }
 
     /**
@@ -313,14 +367,22 @@ class GeneratorManager {
 
     /** 
      * @param {string} generatorName 
-     * @param {number} cooldown
+     * @param {number} remainingCD
      */
-    setGeneratorOnCD(generatorName, cooldown) {
+    setRemainingCD(generatorName, remainingCD) {
         Asserts.string(generatorName);
-        Asserts.number(cooldown);
+        Asserts.number(remainingCD);
 
-        this.#getProxySaveGeneratorByName(generatorName);
-        this.#setProp(generatorName, 'cooldown', cooldown);
+        if (!remainingCD || remainingCD < 0) remainingCD = 0;
+        this.#setProp(generatorName, 'remainingCD', remainingCD);
+        this.#needToCheckCooldowns = remainingCD > 0 || this.#needToCheckCooldowns;
+        if (!remainingCD) EventBus.emit(Events.generator.ready, generatorName);
+    }
+
+    /** @param {boolean} value */
+    set needToCheckCooldowns(value) {
+        Asserts.boolean(value);
+        this.#needToCheckCooldowns = value;
     }
     
     // #endregion Manage

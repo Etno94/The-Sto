@@ -34,7 +34,10 @@ const COOLDOWN_GENERATOR = {
     consumes: {
         [POINT_TYPES.point]: 2
     },
-    cooldown: 5000,
+    cooldown: {
+        baseCooldown: 2000,
+        cooldownIncrement: (cooldown) => cooldown * 1.05
+    },
     unlockRequires: {
         hint: {
             [POINT_TYPES.point]: 2

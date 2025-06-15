@@ -3,6 +3,19 @@ import Asserts from './asserts.js';
 export default class Utils {
     constructor() {}
 
+    /** @param {Function} fn */
+    static deferFrame(fn) {
+        Asserts.function(fn);
+        requestAnimationFrame(fn);
+    }
+
+    /** @param {Function} fn */
+    static deferTimeout(fn) {
+        Asserts.function(fn);
+        setTimeout(fn, 0);
+    }
+
+
     /** @param {string} value */
     static getNumberFromMSValue (value) {
         const numberMsSuffix = /^\d+ms$/;

@@ -15,5 +15,6 @@ export const DATA_SET_TYPES = {
 
 /** @type {DataSetStatus} */
 export const DATA_SET_STATUS = {
-    remove: 'remove'
+    remove: 'remove',
+    cooldown: 'on-cooldown'
 }

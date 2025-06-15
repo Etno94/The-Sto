@@ -54,7 +54,11 @@ class UIController {
         EventBus.on(Events.points.overcap, () => this.shakePointsContainer());
         EventBus.on(Events.ui.render, (isRendering) => {});
         EventBus.on(Events.generator.onClick, (generatorName) => {});
-        EventBus.on(Events.generator.onCD, (generatorName, cooldown) => this.setGeneratorOnCD(generatorName, cooldown));
+        EventBus.on(Events.generator.onCD, (generatorName, remainingCD) => {
+            this.setGeneratorOnCD(generatorName);
+            this.updateGeneratorRemainingCD(generatorName, remainingCD);
+        });
+        EventBus.on(Events.generator.ready, (generatorName) => this.setGeneratorOffCD(generatorName));
     }
 
     // #endregion Setup
@@ -234,6 +238,8 @@ class UIController {
      */
     getGeneratorElement(generatorName) {
         Asserts.string(generatorName);
+        if (document.querySelector(`#${generatorName}` == null)) console.log('is null');
+        
         return document.getElementById(generatorName) ?? this.renderGenerator(generatorName, DataManager.getAnimations().width.classes);
     }
 
@@ -278,13 +284,39 @@ class UIController {
 
     /** 
      * @param {string} generatorName
-     * @param {number} cooldown
      */
-    setGeneratorOnCD(generatorName, cooldown) {
+    setGeneratorOnCD(generatorName) {
         Asserts.string(generatorName);
-        Asserts.number(cooldown);
 
-        UIHelper.addClass(this.getGeneratorElement(generatorName), DataManager.getGeneratorClasses().onCd);
+        const generatorElement = this.getGeneratorElement(generatorName);
+        UIHelper.addClass(generatorElement, DataManager.getGeneratorClasses().onCd);
+        const dataSetStatus = DataManager.getDataSetAttrs().status;
+        const statusCooldown = DataManager.getDataSetStatus().cooldown;
+        UIHelper.addDataSet(generatorElement, dataSetStatus, statusCooldown);
+    }
+
+    /** @param {string} generatorName */
+    setGeneratorOffCD(generatorName) {
+        Asserts.string(generatorName);
+
+        const generatorElement = this.getGeneratorElement(generatorName);
+        Utils.deferFrame(() => UIHelper.removeClass(generatorElement, DataManager.getGeneratorClasses().onCd));
+
+        const dataSetStatus = DataManager.getDataSetAttrs().status;
+        const statusCooldown = DataManager.getDataSetStatus().cooldown;
+        if (UIHelper.isDataSetValue(generatorElement, dataSetStatus, statusCooldown))
+            Utils.deferFrame(() => UIHelper.removeDataSet(generatorElement, dataSetStatus));
+    }
+
+    /** 
+     * @param {string} generatorName
+     * @param {number} remainingCD
+     */
+    updateGeneratorRemainingCD(generatorName, remainingCD) {
+        Asserts.string(generatorName);
+        Asserts.number(remainingCD);
+
+        const generatorElement = this.getGeneratorElement(generatorName);
     }
 
     // #endregion Generators
