@@ -172,8 +172,11 @@ function setStoragePoints() {
   UIControl.balancePoints(diffResult);
 }
 
-/** @param {number} [interval=0] */
-function updateGeneratorsCooldown(interval = 0) {
+/** 
+ * @param {number} [interval]
+ * @param {boolean} [initialSet]
+ */
+function updateGeneratorsCooldown(interval = 0, initialSet = false) {
   Asserts.number(interval);
   if (!generatorM.needToCheckCooldowns) {
     return;
@@ -188,6 +191,7 @@ function updateGeneratorsCooldown(interval = 0) {
   generatorsOnCD.forEach(generatorName => {
     const updatedRemainingCD = generatorM.getGeneratorRemainingCD(generatorName) - interval;
     const baseCooldown = generatorM.whatBaseCoolDown(generatorName);
+    if (initialSet) EventBus.emit(Events.generator.onCD, generatorName, updatedRemainingCD);
     EventBus.emit(Events.generator.updateCD, generatorName, updatedRemainingCD, baseCooldown);
   });
 }
@@ -206,6 +210,10 @@ function startGame() {
   registerBusEvents();
   generatorM.setNewGeneratorManager();
   storageM.setCurrentStorage(Global.proxy.storage.maxStorageUpgradeCurrentLevel);
+
+  // Initial render for already unlocked generators
+  checkUnlocks();
+  updateGeneratorsCooldown(0, true);
 
   Global.saveProxy.subscribe((updatedSave) => {
     GameSave.save(updatedSave);

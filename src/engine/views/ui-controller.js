@@ -54,7 +54,7 @@ class UIController {
         EventBus.on(Events.points.overcap, () => this.shakePointsContainer());
         EventBus.on(Events.ui.render, (isRendering) => {});
         EventBus.on(Events.generator.onClick, (generatorName) => {});
-        EventBus.on(Events.generator.onCD, (generatorName, cooldown) => this.setGeneratorOnCD(generatorName, cooldown));
+        EventBus.on(Events.generator.onCD, (generatorName) => this.setGeneratorOnCD(generatorName));
         EventBus.on(Events.generator.updateCD, (generatorName, remainingCD, baseCooldown) => {
             this.updateGeneratorRemainingCD(generatorName, remainingCD, baseCooldown);
         });
@@ -238,8 +238,6 @@ class UIController {
      */
     getGeneratorElement(generatorName) {
         Asserts.string(generatorName);
-        if (document.querySelector(`#${generatorName}` == null)) console.log('is null');
-        
         return document.getElementById(generatorName) ?? this.renderGenerator(generatorName, DataManager.getAnimations().width.classes);
     }
 
@@ -285,13 +283,19 @@ class UIController {
     /** 
      * @param {string} generatorName
      */
-    setGeneratorOnCD(generatorName, cooldown) {
+    setGeneratorOnCD(generatorName) {
         Asserts.string(generatorName);
 
         const generatorElement = this.getGeneratorElement(generatorName);
-        UIHelper.addClass(generatorElement, DataManager.getGeneratorClasses().onCd);
+        const onCDClasses = DataManager.getGeneratorClasses().onCd;
         const dataSetStatus = DataManager.getDataSetAttrs().status;
         const statusCooldown = DataManager.getDataSetStatus().cooldown;
+
+        if (generatorElement.disabled && 
+            UIHelper.containsClasses(onCDClasses) &&
+            UIHelper.isDataSetValue(generatorElement, dataSetStatus, statusCooldown)) return;
+
+        UIHelper.addClass(generatorElement, onCDClasses);
         UIHelper.addDataSet(generatorElement, dataSetStatus, statusCooldown);
         generatorElement.disabled = true;
     }
