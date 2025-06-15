@@ -73,6 +73,10 @@
     transform: scale(1.15);
 }
 
+.cell:active {
+    transform: scale(1.05);
+}
+
 .cell.hint {
     border: var(--bolder-border--light-border);
 }
@@ -83,6 +87,8 @@
 
 .cell:disabled {
     opacity: 0.5;
+    cursor: default;
+    transform: none;
 }
 
 .cell .cost-preview {

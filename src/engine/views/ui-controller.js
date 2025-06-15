@@ -293,6 +293,7 @@ class UIController {
         const dataSetStatus = DataManager.getDataSetAttrs().status;
         const statusCooldown = DataManager.getDataSetStatus().cooldown;
         UIHelper.addDataSet(generatorElement, dataSetStatus, statusCooldown);
+        generatorElement.disabled = true;
     }
 
     /** @param {string} generatorName */
@@ -306,6 +307,7 @@ class UIController {
         const statusCooldown = DataManager.getDataSetStatus().cooldown;
         if (UIHelper.isDataSetValue(generatorElement, dataSetStatus, statusCooldown))
             Utils.deferFrame(() => UIHelper.removeDataSet(generatorElement, dataSetStatus));
+        generatorElement.disabled = false;
     }
 
     /** 
