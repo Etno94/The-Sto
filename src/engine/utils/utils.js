@@ -45,6 +45,40 @@ export default class Utils {
     }
 
     /**
+     * @param {number} baseValue 
+     * @param {number} refValue
+     * @returns {number}
+     */
+    static getPercentInDecimals(baseValue, refValue) {
+        Asserts.number(baseValue);
+        Asserts.number(refValue);
+        
+        return refValue / baseValue;
+    }
+
+    /**
+     * @param {number} baseValue 
+     * @param {number} refValue
+     * @returns {number}
+     */
+    static getDegPercent(baseValue, refValue) {
+        Asserts.number(baseValue);
+        Asserts.number(refValue);
+
+        return 360 * Utils.getPercentInDecimals(baseValue, refValue);
+    }
+
+    /**
+     * @param {number} degs 
+     * @returns {number}
+     */
+    static getReversedDeg(degs) {
+        Asserts.number(degs);
+
+        return 360 - degs;
+    }
+
+    /**
      * @param { Array } arr 
      * @param { Function } criteria
      * @param { number } n 

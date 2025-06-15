@@ -29,7 +29,8 @@ class GeneratorManager {
     }
 
     #setBusEvents() {
-        EventBus.on(Events.generator.onCD, (generatorName, remainingCooldown) => this.setRemainingCD(generatorName, remainingCooldown));
+        EventBus.on(Events.generator.onCD, (generatorName, baseCooldown) => this.setRemainingCD(generatorName, baseCooldown));
+        EventBus.on(Events.generator.updateCD, (generatorName, remainingCD) => this.setRemainingCD(generatorName, remainingCD));
     }
 
     setNewGeneratorManager() {

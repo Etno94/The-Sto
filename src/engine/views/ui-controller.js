@@ -54,9 +54,9 @@ class UIController {
         EventBus.on(Events.points.overcap, () => this.shakePointsContainer());
         EventBus.on(Events.ui.render, (isRendering) => {});
         EventBus.on(Events.generator.onClick, (generatorName) => {});
-        EventBus.on(Events.generator.onCD, (generatorName, remainingCD) => {
-            this.setGeneratorOnCD(generatorName);
-            this.updateGeneratorRemainingCD(generatorName, remainingCD);
+        EventBus.on(Events.generator.onCD, (generatorName) => this.setGeneratorOnCD(generatorName));
+        EventBus.on(Events.generator.updateCD, (generatorName, remainingCD, baseCooldown) => {
+            this.updateGeneratorRemainingCD(generatorName, remainingCD, baseCooldown);
         });
         EventBus.on(Events.generator.ready, (generatorName) => this.setGeneratorOffCD(generatorName));
     }
@@ -311,12 +311,16 @@ class UIController {
     /** 
      * @param {string} generatorName
      * @param {number} remainingCD
+     * @param {number} baseCooldown
      */
-    updateGeneratorRemainingCD(generatorName, remainingCD) {
+    updateGeneratorRemainingCD(generatorName, remainingCD, baseCooldown) {
         Asserts.string(generatorName);
         Asserts.number(remainingCD);
+        Asserts.number(baseCooldown);
 
         const generatorElement = this.getGeneratorElement(generatorName);
+        const degs = Utils.getReversedDeg(Utils.getDegPercent(baseCooldown, remainingCD));
+        Utils.deferFrame(() => UIHelper.setProperty(generatorElement, '--cooldownGenerator-oncd-dg', `${degs}deg`));
     }
 
     // #endregion Generators

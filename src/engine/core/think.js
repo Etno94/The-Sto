@@ -187,7 +187,8 @@ function updateGeneratorsCooldown(interval = 0) {
 
   generatorsOnCD.forEach(generatorName => {
     const updatedRemainingCD = generatorM.getGeneratorRemainingCD(generatorName) - interval;
-    EventBus.emit(Events.generator.onCD, generatorName, updatedRemainingCD);
+    const baseCooldown = generatorM.whatBaseCoolDown(generatorName);
+    EventBus.emit(Events.generator.updateCD, generatorName, updatedRemainingCD, baseCooldown);
   });
 }
 
