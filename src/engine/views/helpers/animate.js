@@ -58,4 +58,37 @@ export default class Animate {
 
         UIHelper.appendChild(element, rippleElement);
     }
+
+    static animateCooldown(durationMs, element, property, onUpdate) {
+        let start = performance.now();
+        let elapsedAccumulator = 0;
+        let lastFrameTime = start;
+
+        function frame(now) {
+            const deltaTime = now - lastFrameTime;
+            lastFrameTime = now;
+
+            elapsedAccumulator += deltaTime;
+
+            const elapsed = now - start;
+            const progress = Math.min(elapsed / durationMs, 1);
+            const angle = 360 * progress;
+            UIHelper.setProperty(element, property, `${angle}deg`);
+
+            if (onUpdate) onUpdate(elapsedAccumulator, progress);
+
+            if (progress < 1) {
+                requestAnimationFrame(frame);
+            } else {
+                if (onUpdate) onUpdate(elapsedAccumulator, 1, true);
+            }
+        }
+
+        requestAnimationFrame(frame);
+
+        element.reduceCooldown = (msToReduce) => {
+            const now = performance.now();
+            start -= msToReduce;
+        };
+    }
 }
