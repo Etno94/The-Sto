@@ -59,7 +59,19 @@ export default class Animate {
         UIHelper.appendChild(element, rippleElement);
     }
 
+    /**
+     * 
+     * @param {number} durationMs 
+     * @param {HTMLElement} element 
+     * @param {string} property 
+     * @param {Function} [onUpdate] 
+     */
     static animateCooldown(durationMs, element, property, onUpdate) {
+        Asserts.number(durationMs);
+        Asserts.htmlElement(element);
+        Asserts.string(property);
+        if (onUpdate) Asserts.function(onUpdate);
+
         let start = performance.now();
         let elapsedAccumulator = 0;
         let lastFrameTime = start;

@@ -14,7 +14,7 @@ export default class GameLoop {
     #updateInterval;
 
     /** @param {number} updateInterval */
-    constructor(updateInterval = 200) {
+    constructor(updateInterval = 16) {
         this.#updateInterval = updateInterval;
         this.loop = this.#gameLoop.bind(this);
         return this;

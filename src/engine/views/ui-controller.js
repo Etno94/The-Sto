@@ -56,7 +56,7 @@ class UIController {
         EventBus.on(Events.generator.onClick, (generatorName) => {});
         EventBus.on(Events.generator.onCD, (generatorName, cooldown) => this.setGeneratorOnCD(generatorName, cooldown));
         EventBus.on(Events.generator.updateCD, (generatorName, remainingCD, baseCooldown) => {
-            // this.updateGeneratorRemainingCD(generatorName, remainingCD, baseCooldown);
+            this.updateGeneratorRemainingCD(generatorName, remainingCD, baseCooldown);
         });
         EventBus.on(Events.generator.ready, (generatorName) => this.setGeneratorOffCD(generatorName));
     }
@@ -293,7 +293,6 @@ class UIController {
         const dataSetStatus = DataManager.getDataSetAttrs().status;
         const statusCooldown = DataManager.getDataSetStatus().cooldown;
         UIHelper.addDataSet(generatorElement, dataSetStatus, statusCooldown);
-        Utils.deferFrame(() => Animate.animateCooldown(cooldown, generatorElement, '--cooldownGenerator-oncd-dg'));
     }
 
     /** @param {string} generatorName */
@@ -321,7 +320,7 @@ class UIController {
 
         const generatorElement = this.getGeneratorElement(generatorName);
         const degs = Utils.getReversedDeg(Utils.getDegPercent(baseCooldown, remainingCD));
-        // Utils.deferFrame(() => UIHelper.setProperty(generatorElement, '--cooldownGenerator-oncd-dg', `${degs}deg`));
+        Utils.deferFrame(() => UIHelper.setProperty(generatorElement, '--cooldownGenerator-oncd-dg', `${degs}deg`));
     }
 
     // #endregion Generators
