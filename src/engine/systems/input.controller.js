@@ -16,11 +16,14 @@ class InputController {
     #resetButton = document.getElementById("resetGame");
 
     #dump = document.getElementById("dump");
+    #pointsContainer = document.getElementById("points");
 
     constructor() {
         this.addEventListener(this.#saveButton, 'click', GameSave.save, Global.proxy);
         this.addEventListener(this.#resetButton, 'click', GameSave.reset);
         this.addEventListener(this.#dump, 'click', () => EventBus.emit(Events.points.burnAll));
+
+        this.#setPointsContainerListener();
     }
 
     /**
@@ -78,6 +81,46 @@ class InputController {
         } else {
             Errors.logError(`No valid listener found for ${type} on element`, element);
         }
+    }
+
+    #setPointsContainerListener() {
+        const orbitRadius = 15;
+        const updateInterval = 350;
+        const pointState = new WeakMap();
+
+        function startZigZagOrbit(point) {
+            if (pointState.has(point)) return;
+
+            const intervalId = setInterval(() => {
+                const angle = Math.random() * 2 * Math.PI;
+                const x = Math.cos(angle) * orbitRadius;
+                const y = Math.sin(angle) * orbitRadius;
+                point.style.transform = `translate(${x}px, ${y}px)`;
+            }, updateInterval);
+
+            pointState.set(point, intervalId);
+        }
+
+        function stopZigZagOrbit(point) {
+            if (!pointState.has(point)) return;
+
+            clearInterval(pointState.get(point));
+            pointState.delete(point);
+
+            point.style.transform = 'translate(0, 0)';
+        }
+
+        this.#pointsContainer.addEventListener('mouseenter', (e) => {
+            if (e.target.matches('.point.energy')) {
+                startZigZagOrbit(e.target);
+            }
+        }, true); // useCapture = true to catch from bubbling
+
+        this.#pointsContainer.addEventListener('mouseleave', (e) => {
+            if (e.target.matches('.point.energy')) {
+                stopZigZagOrbit(e.target);
+            }
+        }, true);
     }
 }
 export default new InputController();

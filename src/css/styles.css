@@ -218,7 +218,8 @@
     height: 36px;
     background-color: #a200ff;
     transform: translate(0, 0);
-    transition: transform 0.6s ease-out;
+    transition: transform 0.6s ease-in-out;
+    will-change: transform;
 }
 
 /* Storage */
@@ -266,7 +267,7 @@
     transform: translateY(-6px);
 }
 #storage #points div.point.energy:hover {
-  animation: orbit 6s ease-in-out infinite;
+  /* animation: orbit 6s ease-in-out infinite; */
 }
 
 @keyframes orbit {
