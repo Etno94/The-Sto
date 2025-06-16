@@ -59,4 +59,8 @@ export default class Validators {
     static isProxy(proxy) {
         return proxy instanceof Proxy;
     }
+
+    static isReservibleMatrix(matrixDetValue) {
+        return Validators.isNumber(matrixDetValue) && matrixDetValue !== 0;
+    }
 }

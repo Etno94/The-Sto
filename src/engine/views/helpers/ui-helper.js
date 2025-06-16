@@ -1,6 +1,5 @@
-// import Utils from '../utils/utils.js';
-import Validators from '../../utils/validators.js';
 import Asserts from '../../utils/asserts.js';
+import Utils from '../../utils/utils.js';
 
 export default class UIHelper {
 
@@ -105,12 +104,21 @@ export default class UIHelper {
     /**
      * @param {HTMLElement} parent 
      * @param {HTMLElement} child
-     * @return {boolean}
+     * @returns {boolean}
      */
     static isParentNode(parent, child) {
         Asserts.htmlElement(parent);
         Asserts.htmlElement(child);
         return child.parentNode === parent;
+    }
+
+    /**
+     * @param {HTMLElement} element
+     * @returns {boolean}
+     */
+    static isElementTransformed(element) {
+        Asserts.htmlElement(element);
+        return window.getComputedStyle(element).transform !== 'none';
     }
 
     // #endregion Validations
@@ -126,7 +134,7 @@ export default class UIHelper {
         return document.createElement(tag);
     }
 
-    // #region Class
+    // #region Style Class
 
     /**
      * @param {HTMLElement} element
@@ -190,7 +198,7 @@ export default class UIHelper {
         return element;
     }
 
-    // #endregion Class
+    // #endregion Style Class
 
     /**
      * @param {HTMLElement} element
@@ -275,6 +283,36 @@ export default class UIHelper {
             parent.removeChild(child);
         
         return parent;
+    }
+
+    /**
+     * @param {string} strategy 
+     * @param {HTMLElement} elementTarget 
+     * @param {HTMLElement} elementReference 
+     * @returns {HTMLElement}
+     */
+    static transformStrategy(strategy, elementTarget, elementReference) {
+        Asserts.string(strategy);
+        Asserts.htmlElement(elementTarget);
+        Asserts.htmlElement(elementReference);
+
+        return ({
+            'counter': UIHelper.counterTransform
+        })[strategy](elementTarget, elementReference);
+    }
+
+    /**
+     * @param {HTMLElement} elementTarget 
+     * @param {HTMLElement} elementReference 
+     * @returns {HTMLElement}
+     */
+    static counterTransform(elementTarget, elementReference) {
+        Asserts.htmlElement(elementTarget);
+        Asserts.htmlElement(elementReference);
+        if (!UIHelper.isElementTransformed(elementReference)) return elementTarget;
+
+        elementTarget.style.transform = Utils.reverseMatrixString(window.getComputedStyle(elementReference).transform);
+        return elementTarget;
     }
 
     // #endregion Actions

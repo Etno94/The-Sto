@@ -14,6 +14,10 @@ Nice to have:
     actual: los puntos se borran en una sola animacion. 
     Deseable: analizar si lo movemos a animar 1 punto a la vez (inicial) y a traves de mejoras que sean todos los puntos a la vez.
 
+Nice to Know:
+
+- Como funcionan los parametros (y calculos) de transform:matrix()
+
 Bugs:
 
 

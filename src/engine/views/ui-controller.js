@@ -363,8 +363,15 @@ class UIController {
         if (this.hasCostPreview(generatorElement)) return;
 
         const costPreviewElement = Render.renderCostPreview();
-        for (let pointType in buildCosts) {
-            costPreviewElement.appendChild(UIControl.renderPoint(pointType));
+        for (const [key, value] of Object.entries(buildCosts)) {
+            let amount = value;
+            while (amount) {
+                costPreviewElement.appendChild(UIControl.renderPoint(key));
+                amount--;
+            }
+        }
+        if (UIHelper.isElementTransformed(generatorElement)) {
+            UIHelper.transformStrategy('counter', costPreviewElement, generatorElement);
         }
         generatorElement.appendChild(costPreviewElement);
     }

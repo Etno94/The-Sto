@@ -147,4 +147,29 @@ export default class Utils {
         return arr.slice();
     }
 
+    /**
+     * @param {string} matrixString 
+     * @returns {string}
+     */
+    static reverseMatrixString(matrixString) {
+        Asserts.string(matrixString);
+
+        const values = matrixString
+            .match(/matrix\(([^)]+)\)/)[1]
+            .split(',').map(Number);
+        const [a, b, c, d, e, f] = values;
+
+        const det = a * d - b * c;
+        Asserts.reversableMatrix(det, 'matrixString');
+
+        const aInv =  d / det;
+        const bInv = -b / det;
+        const cInv = -c / det;
+        const dInv =  a / det;
+        const eInv = (c * f - d * e) / det;
+        const fInv = (b * e - a * f) / det;
+
+        return `matrix(${aInv}, ${bInv}, ${cInv}, ${dInv}, ${eInv}, ${fInv})`;
+    }
+
 }

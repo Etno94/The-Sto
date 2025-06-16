@@ -1,5 +1,5 @@
 export const STORAGE_UPGRADES = {
-    baseMaxStorage: 3,
+    baseMaxStorage: 12,
     maxStorageUpgrade: {
         interval: 1,
         maxLevel: 7,

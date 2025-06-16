@@ -80,4 +80,10 @@ export default class Asserts {
             Errors.throwError(`"${variableName}" must not be null or undefined.`);
         }
     }
+
+    static reversableMatrix(value, variableName = 'value') {
+        if (!Validators.isReservibleMatrix(value)) {
+            Errors.throwError(`Matrix "${variableName}" is not reversible. Det value must not be 0.`);
+        }
+    }
 }
