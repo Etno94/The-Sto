@@ -81,8 +81,8 @@ export default class Asserts {
         }
     }
 
-    static reversableMatrix(value, variableName = 'value') {
-        if (!Validators.isReservibleMatrix(value)) {
+    static reversable2DMatrix(value, variableName = 'value') {
+        if (!Validators.isReservible2DMatrix(value)) {
             Errors.throwError(`Matrix "${variableName}" is not reversible. Det value must not be 0.`);
         }
     }

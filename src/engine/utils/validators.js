@@ -60,7 +60,7 @@ export default class Validators {
         return proxy instanceof Proxy;
     }
 
-    static isReservibleMatrix(matrixDetValue) {
+    static isReservible2DMatrix(matrixDetValue) {
         return Validators.isNumber(matrixDetValue) && matrixDetValue !== 0;
     }
 }

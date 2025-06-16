@@ -151,7 +151,7 @@ export default class Utils {
      * @param {string} matrixString 
      * @returns {string}
      */
-    static reverseMatrixString(matrixString) {
+    static reverse2DMatrixString(matrixString) {
         Asserts.string(matrixString);
 
         const values = matrixString
@@ -160,7 +160,7 @@ export default class Utils {
         const [a, b, c, d, e, f] = values;
 
         const det = a * d - b * c;
-        Asserts.reversableMatrix(det, 'matrixString');
+        Asserts.reversable2DMatrix(det, 'matrixString');
 
         const aInv =  d / det;
         const bInv = -b / det;

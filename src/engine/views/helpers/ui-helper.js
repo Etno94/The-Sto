@@ -311,7 +311,7 @@ export default class UIHelper {
         Asserts.htmlElement(elementReference);
         if (!UIHelper.isElementTransformed(elementReference)) return elementTarget;
 
-        elementTarget.style.transform = Utils.reverseMatrixString(window.getComputedStyle(elementReference).transform);
+        elementTarget.style.transform = Utils.reverse2DMatrixString(window.getComputedStyle(elementReference).transform);
         return elementTarget;
     }
 
