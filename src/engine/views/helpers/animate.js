@@ -103,4 +103,28 @@ export default class Animate {
             start -= msToReduce;
         };
     }
+
+    /**
+     * @param {HTMLElement} element 
+     * @param {Object} options 
+     * @returns {NodeJS.Timeout}
+     */
+    static startZigZagOrbit(element, options = {orbitRadius: 15,updateInterval: 350}) {
+        Asserts.htmlElement(element);
+        Asserts.object(options);
+
+        const intervalId = setInterval(() => {
+            const angle = Math.random() * 2 * Math.PI;
+            const x = Math.cos(angle) * options.orbitRadius;
+            const y = Math.sin(angle) * options.orbitRadius;
+            element.style.transform = `translate(${x}px, ${y}px)`;
+        }, options.updateInterval);
+
+        return intervalId;
+    }
+
+    /** @param {HTMLElement} element */
+    static stopZigZagOrbit(element) {
+        element.style.transform = 'translate(0, 0)';
+    }
 }

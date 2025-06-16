@@ -17,6 +17,9 @@ export const BUS_EVENTS = {
         overcap: 'point: overcap'
     },
     ui: {
-        render: 'UI: rendering'
+        render: 'UI: rendering',
+        pointsContainer: {
+            hover: 'UI - Points Container: hover'
+        }
     }
 }

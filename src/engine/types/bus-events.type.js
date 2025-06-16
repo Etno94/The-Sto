@@ -26,4 +26,10 @@
 /**
  * @typedef { Object } UIBusEvents
  * @property { string } render
+ * @property { UIPointsContainerBusEvents } pointsContainer
+ */
+
+/**
+ * @typedef {Object} UIPointsContainerBusEvents
+ * @property {string} hover
  */

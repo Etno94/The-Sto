@@ -29,6 +29,9 @@ class UIController {
     #generatorsContainer;
     /** @type {HTMLElement} */
     #pointsContainer;
+
+    // Animation tracking
+    #pointState = new WeakMap();
     
     constructor() {
         this.#setData();
@@ -52,18 +55,46 @@ class UIController {
 
     #setEventBus() {
         EventBus.on(Events.points.overcap, () => this.shakePointsContainer());
-        EventBus.on(Events.ui.render, (isRendering) => {});
+
         EventBus.on(Events.generator.onClick, (generatorName) => {});
         EventBus.on(Events.generator.onCD, (generatorName) => this.setGeneratorOnCD(generatorName));
         EventBus.on(Events.generator.updateCD, (generatorName, remainingCD, baseCooldown) => {
             this.updateGeneratorRemainingCD(generatorName, remainingCD, baseCooldown);
         });
         EventBus.on(Events.generator.ready, (generatorName) => this.setGeneratorOffCD(generatorName));
+
+        EventBus.on(Events.ui.render, (isRendering) => {});
+        EventBus.on(Events.ui.pointsContainer.hover, (target, isMouseEnter = false) => this.#animateEnergyPoint(target, isMouseEnter));
     }
 
     // #endregion Setup
 
     // #region Animations
+
+    /**
+     * @param {EventTarget} target 
+     * @param {boolean} isMouseEnter 
+     */
+    #animateEnergyPoint(target, isMouseEnter) {
+        Asserts.htmlElement(target);
+        Asserts.boolean(isMouseEnter);
+        
+        const orbitRadius = 15;
+        const updateInterval = 350;
+
+        if (isMouseEnter) {
+            if (this.#pointState.has(target)) return;
+
+            const intervalId = Animate.startZigZagOrbit(target, {orbitRadius, updateInterval});
+            this.#pointState.set(target, intervalId);
+        } else {
+            if (!this.#pointState.has(target)) return;
+
+            clearInterval(this.#pointState.get(target));
+            this.#pointState.delete(target);
+            Animate.stopZigZagOrbit(target);
+        }
+    }
 
     /** @param { HTMLElement } element */
     #shakeElement(element) {
@@ -86,16 +117,7 @@ class UIController {
         Asserts.string(generatorName);
         this.#rippleElement(this.getGeneratorElement(generatorName));
     }
-
-    /** @param {HTMLElement} parent */
-    async removeMarkedElements(parent) {
-        Asserts.htmlElement(parent);
-        if (!UIHelper.hasChildrens(parent)) return;
-
-        Animate.widthOut(child);
-            await Utils.delay(this.#animations.width.timer);
-            UIHelper.removeChild(this.#pointsContainer, child);
-    }
+    
 
     // #endregion Animations
 
@@ -115,25 +137,6 @@ class UIController {
         const point = this.renderPoint(type, "no-width");
         this.#pointsContainer.appendChild(point);
         Animate.widthIn(point);
-    }
-
-    /**
-     * @param {string} pointType 
-     */
-    async removePoint(pointType) {
-        Asserts.string(pointType);
-
-        for (let child of Array.from(this.#pointsContainer.children)) {
-
-            if (!UIHelper.areParentAndChildValid(this.#pointsContainer, child)) continue;
-            if (child.dataset.pointType !== pointType) continue;
-
-            Animate.widthOut(child);
-            await Utils.delay(this.#animations.width.timer);
-            UIHelper.removeChild(this.#pointsContainer, child);
-
-            return;
-        }
     }
 
     /** @type {PointSet} */
