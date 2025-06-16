@@ -1,15 +1,18 @@
 Activo:
 
-- Renderear status de cd
+- Incorporar incremento de CD al generador
 
 Tareas:
 
 - (CSS) desacoplar elementos de generadores del id, plasmar estilos a traves de clases
+- (content) desarrollar mejora de storage
 
 Nice to have:
 
 - tipar todos los parametros y obj
-- [Gamer Experience] actual: los puntos se borran en una sola animacion. Deseable: analizar si lo movemos a animar 1 punto a la vez.
+- [Gamer Experience] 
+    actual: los puntos se borran en una sola animacion. 
+    Deseable: analizar si lo movemos a animar 1 punto a la vez (inicial) y a traves de mejoras que sean todos los puntos a la vez.
 
 Bugs:
 

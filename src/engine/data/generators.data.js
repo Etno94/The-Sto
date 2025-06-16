@@ -2,7 +2,8 @@ import {POINT_TYPES} from './points.data.js';
 
 export const GENERATOR_IDS = {
     CLICK: 'clickGenerator',
-    COOLDOWN: 'cooldownGenerator'
+    COOLDOWN: 'cooldownGenerator',
+    CHARGE: 'chargeGenerator'
 }
 
 /** @type {DataGeneratorClasses} */
@@ -55,11 +56,39 @@ const COOLDOWN_GENERATOR = {
 }
 
 /**
+ * @type {DataGenerator}
+ */
+const CHARGE_GENERATOR = {
+    name: GENERATOR_IDS.CHARGE,
+    generates: {
+        [POINT_TYPES.energy_point]: 1
+    },
+    consumes: {
+        [POINT_TYPES.solid_point]: 2
+    },
+    unlockRequires: {
+        hint: {
+            [POINT_TYPES.solid_point]: 1
+        },
+        build: {
+            [POINT_TYPES.solid_point]: 2
+        }
+    },
+    buildRequires: {
+        step: {
+            [POINT_TYPES.solid_point]: 2
+        },
+        totalSteps: 3
+    }
+}
+
+/**
  * @type {DataGenerator[]}
  */
 export const GENERATORS = [
     CLICK_GENERATOR,
-    COOLDOWN_GENERATOR
+    COOLDOWN_GENERATOR,
+    CHARGE_GENERATOR
 ]
 
 /**

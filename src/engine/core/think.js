@@ -152,6 +152,7 @@ function builtGeneratorOnClick (generatorName) {
     if (generatePCollection.total) EventBus.emit(Events.points.add, generatePCollection.collection);
     const baseCooldown = generatorM.whatBaseCoolDown(generatorName); // TODO: add usedAmounts
     if (baseCooldown) EventBus.emit(Events.generator.onCD, generatorName, baseCooldown);
+    EventBus.emit(Events.generator.onUse, generatorName);
   }
 }
 
@@ -178,9 +179,7 @@ function setStoragePoints() {
  */
 function updateGeneratorsCooldown(interval = 0, initialSet = false) {
   Asserts.number(interval);
-  if (!generatorM.needToCheckCooldowns) {
-    return;
-  }
+  if (!generatorM.needToCheckCooldowns) return;
 
   const generatorsOnCD = generatorM.getGeneratorsOnCooldownNames();
   if (!Validators.isNonEmptyArray(generatorsOnCD)) {

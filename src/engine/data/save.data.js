@@ -35,7 +35,15 @@ export const FRESH_SAVE = {
             built: false,
             timesUsed: 0,
             remainingCD: 0
-        }
+        },
+        {
+            name: GENERATOR_IDS.CHARGE,
+            hinted: false,
+            canBuild: false,
+            progress: 0,
+            built: false,
+            timesUsed: 0
+        },
     ]
 }
 

@@ -11,6 +11,7 @@
  * @property { string } onCD
  * @property { string } updateCD
  * @property { string } ready
+ * @property { string } onUse
  */
 
 /**

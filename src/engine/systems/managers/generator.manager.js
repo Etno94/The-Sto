@@ -31,6 +31,7 @@ class GeneratorManager {
     #setBusEvents() {
         EventBus.on(Events.generator.onCD, (generatorName, baseCooldown) => this.setRemainingCD(generatorName, baseCooldown));
         EventBus.on(Events.generator.updateCD, (generatorName, remainingCD) => this.setRemainingCD(generatorName, remainingCD));
+        EventBus.on(Events.generator.onUse, (generatorName) => this.setGeneratorUses(generatorName));
     }
 
     setNewGeneratorManager() {
@@ -170,6 +171,14 @@ class GeneratorManager {
      */
     getGeneratorRemainingCD(generatorName) {
         return this.#getProxySaveGeneratorByName(generatorName).remainingCD;
+    }
+
+    /**
+     * @param {string} generatorName
+     * @returns {number}
+     */
+    getGeneratorTimesUsed(generatorName) {
+        return this.#getProxySaveGeneratorByName(generatorName).timesUsed;
     }
 
 
@@ -384,6 +393,15 @@ class GeneratorManager {
     set needToCheckCooldowns(value) {
         Asserts.boolean(value);
         this.#needToCheckCooldowns = value;
+    }
+
+    /** @param {string} generatorName */
+    setGeneratorUses(generatorName) {
+        Asserts.string(generatorName);
+        const generatorTimesUsed = this.getGeneratorTimesUsed(generatorName);
+        Asserts.number(generatorTimesUsed);
+        const newTimesUsed = generatorTimesUsed + 1;
+        this.#setProp(generatorName, 'timesUsed', newTimesUsed);
     }
     
     // #endregion Manage
