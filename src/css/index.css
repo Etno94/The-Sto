@@ -1,0 +1,8 @@
+@import './utils/reset.css';
+
+@import './styles/desk/index.css';
+@import './styles/mobile/index.css';
+
+@import './utils/utils.css';
+@import './animations/animations.css';
+@import './elements/symbols-clip-path.css';

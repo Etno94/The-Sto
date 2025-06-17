@@ -1,0 +1,51 @@
+/* Storage */
+
+#storage {
+    flex: 1 1 auto;
+    width: 100%;
+    max-width: 80%;
+    min-height: 68px;
+
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+#storage #storage-upgrade {
+    width: 48px;
+    height: 48px;
+    aspect-ratio: 1 / 1;
+    background-color: unset;
+    border: 1px dashed grey;
+    border-radius: 50%;
+}
+
+#storage #points{
+    --storage-points-grid-col: 1;
+    --storage-points-grid-rows: 1;
+
+    width: auto;
+
+    display: grid;
+    grid-template-columns: repeat(var(--storage-points-grid-col), 60px);
+    grid-template-rows: repeat(var(--storage-points-grid-rows), 60px);
+    grid-auto-flow: column;
+    grid-auto-columns: 60px;
+    grid-auto-rows: 60px;
+
+    align-items: center;
+    justify-items: center;
+}
+
+#storage #points div.point {
+    transition: width var(--width), transform 270ms 60ms;
+    transition-timing-function: cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+#storage #points div.point:hover {
+    transform: translateY(-12px);
+}
+#storage #points div.point.solid:hover {
+    transform: translateY(-6px);
+}

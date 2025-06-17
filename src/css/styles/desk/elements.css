@@ -1,0 +1,21 @@
+/* Cost Preview */
+
+div.cost-preview div.point {
+    max-width: 24px;
+    max-height: 24px;
+    opacity: 0.55;
+}
+
+div.cost-preview div.point.solid {
+    max-width: 30px;
+    max-height: 30px;
+    opacity: 0.55;
+}
+
+div.cost-preview div.point.solid div.inner-point {
+    background-color: orange;
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    box-shadow: inset 0px 0px 4px 2px #ffffff;
+}

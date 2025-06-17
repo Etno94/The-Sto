@@ -1,0 +1,55 @@
+:root {
+    --rows: 6;
+    --columns: 6;
+}
+
+#container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+}
+
+#saveGame, 
+#resetGame {
+    color: #ccc;
+    height: 32px;
+    width: 32px;
+    margin: 8px;
+    position: absolute;
+    top: 0;
+    border-radius: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#saveGame:hover, 
+#resetGame:hover,
+#dump:hover {
+    cursor: pointer;
+    transform: scale(1.15);
+}
+
+#saveGame {right: 0;}
+#resetGame {left: 0;}
+
+#dump {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 48px;
+    height: 48px;
+    margin: 8px;
+    background-color: grey;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+}
