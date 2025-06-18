@@ -1,8 +1,14 @@
 /**
  * @typedef { Object} PointClasses
+ * @property { PointClasses_Wrap } wrap
  * @property { PointClasses_Point } point
  * @property { PointClasses_SolidPoint } solid_point
  * @property { PointClasses_EnergyPoint } energy_point
+ */
+
+/**
+ * @typedef { Object } PointClasses_Wrap
+ * @property { string } layer_0
  */
 
 /**

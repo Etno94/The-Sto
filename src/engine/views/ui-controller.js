@@ -134,9 +134,9 @@ class UIController {
 
     /** @param {string} type */
     generatePoint(type) {
-        const point = this.renderPoint(type, "no-width");
-        this.#pointsContainer.appendChild(point);
-        Animate.widthIn(point);
+        const wrappedPoint = this.renderPoint(type, "no-width");
+        this.#pointsContainer.appendChild(wrappedPoint);
+        Animate.widthIn(wrappedPoint);
     }
 
     /** @type {PointSet} */

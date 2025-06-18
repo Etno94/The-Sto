@@ -1,5 +1,5 @@
 @media (max-width: 768px) {
   #storage #points {
-    grid-template-columns: repeat(3, 1fr);
+    /* grid-template-columns: repeat(var(--storage-points-grid-col), 60px); */
   }
 }

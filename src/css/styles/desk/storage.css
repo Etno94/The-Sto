@@ -3,13 +3,25 @@
 #storage {
     flex: 1 1 auto;
     width: 100%;
-    max-width: 80%;
     min-height: 68px;
 
     display: flex;
-    align-items: center;
     align-content: center;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+#storage #dump {
+    width: 48px;
+    height: 48px;
+    background-color: grey;
+    border-radius: 50%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
     justify-content: center;
+    color: white;
+    font-size: 24px;
 }
 
 #storage #storage-upgrade {
@@ -22,20 +34,34 @@
 }
 
 #storage #points{
-    --storage-points-grid-col: 1;
-    --storage-points-grid-rows: 1;
+    --storage-points-per-row: 5;
 
-    width: auto;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    max-width: calc((60px + 12px) * var(--storage-points-per-row) - 12px);
+
+    /* --storage-points-grid-col: 1;
+    --storage-points-grid-rows: 1;
+    --storage-points-grid-flow: column;
 
     display: grid;
     grid-template-columns: repeat(var(--storage-points-grid-col), 60px);
     grid-template-rows: repeat(var(--storage-points-grid-rows), 60px);
-    grid-auto-flow: column;
-    grid-auto-columns: 60px;
-    grid-auto-rows: 60px;
+    grid-auto-flow: var(--storage-points-grid-flow);
+    grid-auto-columns: auto;
+    grid-auto-rows: 60px; */
 
     align-items: center;
     justify-items: center;
+    justify-content: center;
+    align-content: center;
+}
+
+#storage #points .wrap {
+    width: 60px;
+    height: 60px;
 }
 
 #storage #points div.point {

@@ -2,8 +2,11 @@
  * @type { PointClasses }
  */
 export const POINT_CLASSES = {
+    wrap: {
+        layer_0: ['wrapper']
+    },
     point: {
-        layer_0: ['point']
+        layer_0: ['point', 'basic']
     },
     solid_point: {
         layer_0: ['point', 'solid'],

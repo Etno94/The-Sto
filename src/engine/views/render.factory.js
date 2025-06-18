@@ -29,6 +29,23 @@ export default class Render {
         })[pointType](classes);
     }
 
+    /**
+     * @param {string} pointType
+     * @param {string[]} pointClasses
+     * @param {string[]} [wrapClasses]
+     * @returns {HTMLDivElement}
+     */
+    static renderWrappedPoint(pointType, pointClasses, wrapClasses = []) {
+        Asserts.string(pointType);
+        Asserts.stringArray(pointClasses);
+        Asserts.stringArray(wrapClasses);
+
+        return PointDirector.wrapBasicPoint(
+            Render.renderPoint(pointType, pointClasses),
+            wrapClasses
+        );
+    }
+
     // #endregion Points
 
     // #region Generators

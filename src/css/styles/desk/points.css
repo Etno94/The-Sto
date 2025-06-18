@@ -7,6 +7,10 @@
     border-radius: 50%;
 }
 
+.point.basic {
+    margin: 6px;
+}
+
 .point.solid {
     background-color: #FF6300;
     width: 60px;
@@ -28,6 +32,7 @@
 .point.energy {
     width: 36px;
     height: 36px;
+    margin: 12px;
     background-color: #a200ff;
     transform: translate(0, 0);
     transition: transform 0.6s ease-in-out;
