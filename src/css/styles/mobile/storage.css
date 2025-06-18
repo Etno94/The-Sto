@@ -1,5 +1,26 @@
 @media (max-width: 768px) {
   #storage #points {
-    /* grid-template-columns: repeat(var(--storage-points-grid-col), 60px); */
+    --storage-points-per-row: 4;
+    --storage-points-dimension: 40px;
+    --storage-points-margin: 8px;
+  }
+
+  #storage #points .point.basic {
+    height: 36px;
+    width: 36px;
+    margin: 2px;
+  }
+  #storage #points .point.solid {
+    height: 40px;
+    width: 40px;
+  }
+  #storage #points .point.solid div.inner-point {
+    height: 30px;
+    width: 30px;
+  }
+  #storage #points .point.energy {
+    height: 26px;
+    width: 26px;
+    margin: 7px;
   }
 }

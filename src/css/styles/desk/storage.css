@@ -35,12 +35,14 @@
 
 #storage #points{
     --storage-points-per-row: 5;
+    --storage-points-dimension: 60px;
+    --storage-points-margin: 12px;
 
 
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
-    max-width: calc((60px + 12px) * var(--storage-points-per-row) - 12px);
+    gap: var(--storage-points-margin);
+    max-width: calc((var(--storage-points-dimension) + var(--storage-points-margin)) * var(--storage-points-per-row) - var(--storage-points-margin));
 
     /* --storage-points-grid-col: 1;
     --storage-points-grid-rows: 1;
