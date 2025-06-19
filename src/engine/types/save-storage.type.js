@@ -1,5 +1,6 @@
 /**
  * @typedef { Object } SaveStorage
- * @property { number } maxStorage
+ * @property {boolean} isHinted
+ * @property {boolean} isBuilt
  * @property { number } maxStorageUpgradeCurrentLevel
  */

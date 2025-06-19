@@ -16,8 +16,9 @@ export const FRESH_SAVE = {
     points: FRESH_POINTS,
     points_order: [],
     storage: {
+        isHinted: false,
+        isBuilt: false,
         maxStorageUpgradeCurrentLevel: 0,
-        maxStorage: 3,
     },
     generators: [
         {

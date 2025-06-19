@@ -32,6 +32,12 @@
     border: 1px dashed grey;
     border-radius: 50%;
 }
+#storage #storage-upgrade.hint {
+    border: var(--bolder-border--light-border);
+}
+#storage #storage-upgrade.blank {
+    border: var(--bolder-border--bold-border);
+}
 
 #storage #points{
     --storage-points-per-row: 5;

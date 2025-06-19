@@ -20,8 +20,17 @@ import Validators from "../utils/validators.js";
 
 function checkUnlocks() {
   checkGeneratorUnlocks();
+  checkStorageUpgraderUnlock();
 }
 
+// Burner Unlock
+
+// Storage Upgrader Unlock
+function checkStorageUpgraderUnlock() {
+
+}
+
+// Generator Unlocks
 function checkGeneratorUnlocks() {
   checkLockedGenerators([...generatorM.getLockedGeneratorNames()]);
   checkHintedGenerators([...generatorM.getHintedGeneratorNames()]);
