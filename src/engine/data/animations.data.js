@@ -8,7 +8,12 @@ let cssVars = getComputedStyle(document.body);
 export const ANIMATIONS = {
     width: {
         name: 'width',
-        classes: ['no-width'],
+        classes: [ 'no-width'],
+        timer: Utils.getNumberFromMSValue(cssVars.getPropertyValue('--width'))
+    },
+    height: {
+        name: 'height',
+        classes: [ 'no-height'],
         timer: Utils.getNumberFromMSValue(cssVars.getPropertyValue('--width'))
     },
     tilt: {

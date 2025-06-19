@@ -1,6 +1,7 @@
 /**
  * @typedef {Object} Animations
  * @property {AnimationItem} width
+ * @property {AnimationItem} height 
  * @property {AnimationItem} tilt
  * @property {AnimationItem} ripple
  */

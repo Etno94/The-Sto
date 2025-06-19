@@ -37,12 +37,13 @@
     --storage-points-per-row: 5;
     --storage-points-dimension: 60px;
     --storage-points-margin: 12px;
+    --storage-points-max-width: calc((var(--storage-points-dimension) + var(--storage-points-margin)) * var(--storage-points-per-row) + var(--storage-points-margin));
 
 
     display: flex;
     flex-wrap: wrap;
     gap: var(--storage-points-margin);
-    max-width: calc((var(--storage-points-dimension) + var(--storage-points-margin)) * var(--storage-points-per-row) - var(--storage-points-margin));
+    max-width: var(--storage-points-max-width);
 
     /* --storage-points-grid-col: 1;
     --storage-points-grid-rows: 1;
@@ -67,7 +68,7 @@
 }
 
 #storage #points div.point {
-    transition: width var(--width), transform 270ms 60ms;
+    transition: width var(--width), height var(--width), transform 270ms 60ms;
     transition-timing-function: cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 

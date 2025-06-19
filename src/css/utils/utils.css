@@ -80,3 +80,9 @@
     margin: 0px;
     padding: 0px;
 }
+.no-height, 
+.no-height * {
+    height: 0px !important;
+    margin: 0px;
+    padding: 0px;
+}
