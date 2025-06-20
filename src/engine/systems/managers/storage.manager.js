@@ -22,9 +22,16 @@ class StorageManager {
      * @param { number } [currentUpgradeLevel] 
      */
     setCurrentStorage(currentUpgradeLevel) {
+        this.updateMaxStorage(currentUpgradeLevel);
+        if (Global.proxy.storage.unlocked) this.#recentlyUnlocked = true;
+    }
+
+    /**
+     * @param { number } [currentUpgradeLevel] 
+     */
+    updateMaxStorage(currentUpgradeLevel) {
         this.#currentUpgradeLevel = currentUpgradeLevel;
         this.#currentMaxStorage = DataManager.getCurrentMaxStorageCalc(this.#currentUpgradeLevel);
-        if (Global.proxy.storage.unlocked) this.#recentlyUnlocked = true;
     }
 
     /** @returns {boolean} */
