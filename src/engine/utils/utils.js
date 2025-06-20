@@ -134,8 +134,17 @@ export default class Utils {
      * @returns { Object}
      */
     static deepCopy(obj) {
-        Asserts.object(obj, 'obj');
-        return JSON.parse(JSON.stringify(obj));
+        if (obj === null || typeof obj !== 'object') return obj;
+
+        if (Array.isArray(obj)) {
+            return obj.map(Utils.deepCopy);
+        }
+
+        const copy = {};
+        for (const key in obj) {
+            copy[key] = Utils.deepCopy(obj[key]);
+        }
+        return copy;
     }
 
     /**

@@ -68,10 +68,7 @@ class UIController {
 
         EventBus.on(Events.ui.render, (isRendering) => {});
         EventBus.on(Events.ui.pointsContainer.hover, (target, isMouseEnter = false) => this.#animateEnergyPoint(target, isMouseEnter));
-        EventBus.on(Events.storageUpgrade.unlocked, () => {
-            Animate.widthIn(this.#storageUpgrade);
-            Animate.opacityIn(this.#storageUpgrade);
-        });
+        EventBus.on(Events.storageUpgrade.unlocked, () => this.#showStorageUpgrader());
     }
 
     // #endregion Setup
@@ -398,6 +395,12 @@ class UIController {
     // #endregion Cost Preview
 
     // #region Storage
+
+    #showStorageUpgrader() {
+        Animate.widthIn(this.#storageUpgrade);
+        Animate.opacityIn(this.#storageUpgrade);
+        this.#storageUpgrade.disabled = false;
+    }
 
     getCurrentPointsFromDOM() {
       /** @type {PointSet} */

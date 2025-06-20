@@ -1,6 +1,6 @@
 /**
  * @typedef {Object} PointSet
- * @property { string } [point]
- * @property { string } [solid_point]
- * @property { string } [energy_point]
+ * @property { number } [point]
+ * @property { number } [solid_point]
+ * @property { number } [energy_point]
  */

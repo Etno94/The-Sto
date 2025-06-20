@@ -168,6 +168,15 @@ function builtGeneratorOnClick (generatorName) {
 
 // #endregion Generator Actions
 
+// #region Storage Upgrade
+
+function upgradeMaxStorage() {
+  const currentCost = storageM.getCurrentUpgradeCost();
+  console.log(currentCost);
+}
+
+// #endregion Storage Upgrade
+
 // #region Render
 
 /** @param {number} interval */
@@ -241,6 +250,7 @@ function startGame() {
 function registerBusEvents() {
   EventBus.on(Events.points.add, (message) => console.log(`[think] ${Events.points.add}`, message));
   EventBus.on(Events.points.substract, (message) => console.log(`[think] ${Events.points.substract}`, message));
+  EventBus.on(Events.storageUpgrade.onClick, () => upgradeMaxStorage())
 }
 
 startGame();

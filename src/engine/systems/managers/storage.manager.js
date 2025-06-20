@@ -26,14 +26,6 @@ class StorageManager {
         if (Global.proxy.storage.unlocked) this.#recentlyUnlocked = true;
     }
 
-    /**
-     * @param { number } [currentUpgradeLevel] 
-     */
-    updateMaxStorage(currentUpgradeLevel) {
-        this.#currentUpgradeLevel = currentUpgradeLevel;
-        this.#currentMaxStorage = DataManager.getCurrentMaxStorageCalc(this.#currentUpgradeLevel);
-    }
-
     /** @returns {boolean} */
     isStorageUpgradeUnlocked() {
         return Global.proxy.storage.unlocked;
@@ -60,6 +52,20 @@ class StorageManager {
      */
     doesOvercap(currentTotal, totalToGenerate, totalToConsume) {
         return this.#currentMaxStorage < currentTotal + totalToGenerate - totalToConsume;
+    }
+
+    /** @returns {PointSet} */
+    getCurrentUpgradeCost() {
+        const currentInterval = DataManager.getCurrentIntervalUpgradeCost(this.#currentUpgradeLevel);
+        return {[currentInterval.step]: currentInterval.costFormula(this.#currentUpgradeLevel)};
+    }
+
+    /**
+     * @param { number } [currentUpgradeLevel] 
+     */
+    updateMaxStorage(currentUpgradeLevel) {
+        this.#currentUpgradeLevel = currentUpgradeLevel;
+        this.#currentMaxStorage = DataManager.getCurrentMaxStorageCalc(this.#currentUpgradeLevel);
     }
 }
 export const storageM = new StorageManager();
