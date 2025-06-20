@@ -1,6 +1,6 @@
 /* Central */
 #central {
-    flex: 4 1 auto;
+    flex: 4 1 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;

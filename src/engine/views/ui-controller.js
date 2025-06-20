@@ -69,6 +69,7 @@ class UIController {
         EventBus.on(Events.ui.render, (isRendering) => {});
         EventBus.on(Events.ui.pointsContainer.hover, (target, isMouseEnter = false) => this.#animateEnergyPoint(target, isMouseEnter));
         EventBus.on(Events.storageUpgrade.unlocked, () => this.#showStorageUpgrader());
+        EventBus.on(Events.storageUpgrade.onUpgrade, (currentMaxStorage) => this.#updateStorageLayout(currentMaxStorage));
     }
 
     // #endregion Setup
@@ -400,6 +401,18 @@ class UIController {
         Animate.widthIn(this.#storageUpgrade);
         Animate.opacityIn(this.#storageUpgrade);
         this.#storageUpgrade.disabled = false;
+    }
+
+    /** @param {number} */
+    #updateStorageLayout(currentMaxStorage) {
+        Asserts.number(currentMaxStorage);
+
+        if (currentMaxStorage > 9) {
+            this.#pointsContainer.style.setProperty('--storage-points-per-row', 4)
+        }
+        if (currentMaxStorage > 5) {
+            this.#pointsContainer.style.setProperty('--storage-points-per-row', 3)
+        }
     }
 
     getCurrentPointsFromDOM() {

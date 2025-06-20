@@ -1,6 +1,5 @@
 @media (max-width: 768px) {
   #storage #points {
-    --storage-points-per-row: 4;
     --storage-points-dimension: 40px;
     --storage-points-margin: 8px;
   }

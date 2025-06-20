@@ -78,6 +78,7 @@ class StorageManager {
 
         this.#currentUpgradeLevel = currentUpgradeLevel;
         this.#currentMaxStorage = DataManager.getCurrentMaxStorageCalc(this.#currentUpgradeLevel);
+        EventBus.emit(Events.storageUpgrade.onUpgrade, this.#currentMaxStorage);
     }
 
     #upgradeMaxStorage() {

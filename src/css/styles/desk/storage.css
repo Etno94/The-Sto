@@ -1,9 +1,8 @@
 /* Storage */
 
 #storage {
-    flex: 1 1 auto;
+    flex: 1 1 280px;
     width: 100%;
-    min-height: 68px;
 
     display: flex;
     align-content: center;
@@ -55,27 +54,16 @@
     --storage-points-margin: 12px;
     --storage-points-max-width: calc((var(--storage-points-dimension) + var(--storage-points-margin)) * var(--storage-points-per-row) + var(--storage-points-margin));
 
-
     display: flex;
     flex-wrap: wrap;
     gap: var(--storage-points-margin);
     max-width: var(--storage-points-max-width);
 
-    /* --storage-points-grid-col: 1;
-    --storage-points-grid-rows: 1;
-    --storage-points-grid-flow: column;
-
-    display: grid;
-    grid-template-columns: repeat(var(--storage-points-grid-col), 60px);
-    grid-template-rows: repeat(var(--storage-points-grid-rows), 60px);
-    grid-auto-flow: var(--storage-points-grid-flow);
-    grid-auto-columns: auto;
-    grid-auto-rows: 60px; */
-
     align-items: center;
     justify-items: center;
     justify-content: center;
     align-content: center;
+    align-self: center;
 }
 
 #storage #points .wrap {
