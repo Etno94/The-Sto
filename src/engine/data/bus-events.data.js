@@ -18,7 +18,8 @@ export const BUS_EVENTS = {
     },
     storageUpgrade: {
         unlocked: 'storage upgrade: unlocked',
-        onClick: 'storage upgrade: onclick'
+        onClick: 'storage upgrade: onclick',
+        upgrade: 'storage upgrade: upgrade'
     },
     ui: {
         render: 'UI: rendering',

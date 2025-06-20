@@ -1,3 +1,5 @@
+import Asserts from '../../utils/asserts.js';
+import { EventBus, Events } from '../../core/event-bus.js';
 import Global from '../../core/global.js';
 
 import DataManager from './data.manager.js';
@@ -16,14 +18,19 @@ class StorageManager {
      */
     constructor(currentUpgradeLevel) {
         if (currentUpgradeLevel) this.setCurrentStorage(currentUpgradeLevel);
+        this.#setBusEvents();
     }
 
-    /**
-     * @param { number } [currentUpgradeLevel] 
-     */
+    /** @param { number } currentUpgradeLevel */
     setCurrentStorage(currentUpgradeLevel) {
+        Asserts.number(currentUpgradeLevel);
+
         this.updateMaxStorage(currentUpgradeLevel);
         if (Global.proxy.storage.unlocked) this.#recentlyUnlocked = true;
+    }
+
+    #setBusEvents() {
+        EventBus.on(Events.storageUpgrade.upgrade, () => this.#upgradeMaxStorage());
     }
 
     /** @returns {boolean} */
@@ -46,11 +53,16 @@ class StorageManager {
     }
 
     /**
+     * @param { Number } currentTotal
      * @param { Number } totalToGenerate
      * @param { Number } totalToConsume
      * @returns {Boolean}
      */
     doesOvercap(currentTotal, totalToGenerate, totalToConsume) {
+        Asserts.number(currentTotal);
+        Asserts.number(totalToGenerate);
+        Asserts.number(totalToConsume);
+
         return this.#currentMaxStorage < currentTotal + totalToGenerate - totalToConsume;
     }
 
@@ -60,12 +72,17 @@ class StorageManager {
         return {[currentInterval.step]: currentInterval.costFormula(this.#currentUpgradeLevel)};
     }
 
-    /**
-     * @param { number } [currentUpgradeLevel] 
-     */
+    /** @param { number } currentUpgradeLevel */
     updateMaxStorage(currentUpgradeLevel) {
+        Asserts.number(currentUpgradeLevel);
+
         this.#currentUpgradeLevel = currentUpgradeLevel;
         this.#currentMaxStorage = DataManager.getCurrentMaxStorageCalc(this.#currentUpgradeLevel);
+    }
+
+    #upgradeMaxStorage() {
+        Global.proxy.storage.maxStorageUpgradeCurrentLevel += 1;
+        this.updateMaxStorage(Global.proxy.storage.maxStorageUpgradeCurrentLevel);
     }
 }
 export const storageM = new StorageManager();

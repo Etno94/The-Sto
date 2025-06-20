@@ -28,6 +28,7 @@
  * @typedef {Object} StorageUpgradeBusEvents
  * @property {string} unlocked
  * @property {string} onClick
+ * @property {string} upgrade
  */
 
 /**

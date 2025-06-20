@@ -171,8 +171,13 @@ function builtGeneratorOnClick (generatorName) {
 // #region Storage Upgrade
 
 function upgradeMaxStorage() {
-  const currentCost = storageM.getCurrentUpgradeCost();
+  const currentCost = new PointCollection(storageM.getCurrentUpgradeCost()).collection;
   console.log(currentCost);
+
+  if (pointM.hasEnoughPoints(currentCost)) {
+    EventBus.emit(Events.points.substract, currentCost);
+    EventBus.emit(Events.storageUpgrade.upgrade);
+  }
 }
 
 // #endregion Storage Upgrade
