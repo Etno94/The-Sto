@@ -29,6 +29,7 @@
     justify-content: center;
     color: white;
     font-size: 24px;
+    cursor: pointer;
 }
 
 #storage #storage-upgrade {
@@ -40,6 +41,7 @@
     border-radius: 50%;
     transition: width var(--width), opacity var(--opacity);
     transition-timing-function: cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    cursor: pointer;
 }
 #storage #storage-upgrade.hint {
     border: var(--bolder-border--light-border);
