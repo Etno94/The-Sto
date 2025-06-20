@@ -17,6 +17,7 @@ class InputController {
 
     // Game elements
     #dump = document.getElementById("dump");
+    #storageUpgrade = document.getElementById("storage-upgrade");
     #pointsContainer = document.getElementById("points");
 
     constructor() {
@@ -85,6 +86,7 @@ class InputController {
         this.addEventListener(this.#saveButton, 'click', GameSave.save, Global.proxy);
         this.addEventListener(this.#resetButton, 'click', GameSave.reset);
         this.addEventListener(this.#dump, 'click', () => EventBus.emit(Events.points.burnAll));
+        this.addEventListener(this.#storageUpgrade, 'click', () => EventBus.emit(Events.storageUpgrade.onClick));
     }
 
     #setCustomListeners() {

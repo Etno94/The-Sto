@@ -2,6 +2,7 @@
  * @typedef { Object } BusEvents 
  * @property { GeneratorBusEvents } generator
  * @property { PointsBusEvents } points
+ * @property {StorageUpgradeBusEvents} storageUpgrade
  * @property { UIBusEvents } ui
  */
 
@@ -21,6 +22,12 @@
  * @property { string } balance
  * @property { string } burnAll
  * @property { string } overcap
+ */
+
+/**
+ * @typedef {Object} StorageUpgradeBusEvents
+ * @property {string} unlocked
+ * @property {string} onClick
  */
 
 /**

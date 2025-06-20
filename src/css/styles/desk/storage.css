@@ -11,6 +11,11 @@
     justify-content: space-between;
 }
 
+#storage .wrap {
+    width: 48px;
+    height: 48px;
+}
+
 #storage #dump {
     width: 48px;
     height: 48px;
@@ -31,6 +36,8 @@
     background-color: unset;
     border: 1px dashed grey;
     border-radius: 50%;
+    transition: width var(--width), opacity var(--opacity);
+    transition-timing-function: cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 #storage #storage-upgrade.hint {
     border: var(--bolder-border--light-border);

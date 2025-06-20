@@ -2,6 +2,7 @@
  * @typedef {Object} Animations
  * @property {AnimationItem} width
  * @property {AnimationItem} height 
+ * @property {AnimationItem} opacity 
  * @property {AnimationItem} tilt
  * @property {AnimationItem} ripple
  */

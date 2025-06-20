@@ -27,7 +27,7 @@ function checkUnlocks() {
 
 // Storage Upgrader Unlock
 function checkStorageUpgraderUnlock() {
-
+  if (storageM.wasStorageUpgradeRecentlyUnlocked()) EventBus.emit(Events.storageUpgrade.unlocked);
 }
 
 // Generator Unlocks
@@ -154,6 +154,7 @@ function builtGeneratorOnClick (generatorName) {
   if (generatePCollection.total && storageM.doesOvercap(pointM.getCurrentTotalPoints(), generatePCollection.total, consumePCollection.total)) {
     canGenerate = false;
     EventBus.emit(Events.points.overcap);
+    if (!storageM.isStorageUpgradeUnlocked()) storageM.setStorageUpgradeUnlocked();
   }
 
   if (canConsume && canGenerate) {

@@ -29,6 +29,8 @@ class UIController {
     #generatorsContainer;
     /** @type {HTMLElement} */
     #pointsContainer;
+    /** @type {HTMLElement} */
+    #storageUpgrade;
 
     // Animation tracking
     #pointState = new WeakMap();
@@ -51,6 +53,7 @@ class UIController {
     #setElements() {
         this.#generatorsContainer = document.getElementById("central");
         this.#pointsContainer = document.getElementById("points");
+        this.#storageUpgrade = document.getElementById("storage-upgrade");
     }
 
     #setEventBus() {
@@ -65,6 +68,10 @@ class UIController {
 
         EventBus.on(Events.ui.render, (isRendering) => {});
         EventBus.on(Events.ui.pointsContainer.hover, (target, isMouseEnter = false) => this.#animateEnergyPoint(target, isMouseEnter));
+        EventBus.on(Events.storageUpgrade.unlocked, () => {
+            Animate.widthIn(this.#storageUpgrade);
+            Animate.opacityIn(this.#storageUpgrade);
+        });
     }
 
     // #endregion Setup

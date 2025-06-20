@@ -16,6 +16,10 @@ export const BUS_EVENTS = {
         burnAll: 'point: burn all',
         overcap: 'point: overcap'
     },
+    storageUpgrade: {
+        unlocked: 'storage upgrade: unlocked',
+        onClick: 'storage upgrade: onclick'
+    },
     ui: {
         render: 'UI: rendering',
         pointsContainer: {

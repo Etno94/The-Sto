@@ -3,6 +3,9 @@ import Global from '../../core/global.js';
 import DataManager from './data.manager.js';
 class StorageManager {
 
+    /** @type {boolean} */
+    #recentlyUnlocked = false;
+
     /** @type { number } */
     #currentMaxStorage = 0;
     /** @type { number } */
@@ -21,6 +24,26 @@ class StorageManager {
     setCurrentStorage(currentUpgradeLevel) {
         this.#currentUpgradeLevel = currentUpgradeLevel;
         this.#currentMaxStorage = DataManager.getCurrentMaxStorageCalc(this.#currentUpgradeLevel);
+        if (Global.proxy.storage.unlocked) this.#recentlyUnlocked = true;
+    }
+
+    /** @returns {boolean} */
+    isStorageUpgradeUnlocked() {
+        return Global.proxy.storage.unlocked;
+    }
+
+    /** @returns {boolean} */
+    wasStorageUpgradeRecentlyUnlocked() {
+        if (this.#recentlyUnlocked) {
+            this.#recentlyUnlocked = false;
+            return Global.proxy.storage.unlocked;
+        }
+        return false;
+    }
+
+    setStorageUpgradeUnlocked() {
+        Global.proxy.storage.unlocked = true;
+        this.#recentlyUnlocked = true;
     }
 
     /**

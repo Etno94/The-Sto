@@ -1,15 +1,21 @@
 /**
  * @typedef {Object} DataStorage
+ * @property {number} baseMaxStorageUpgradeLevel
  * @property {number} baseMaxStorage
- * @property {UnlockRequires} unlockRequires
- * @property {BuildRequires} buildRequires
- * @property {MaxStorageUpgrade} maxStorageUpgrade
- * @property {Function} getCurrentMaxStorage
+ * @property {number} topMaxStorage
+ * @property {UnlockRequires} [unlockRequires]
+ * @property {BuildRequires} [buildRequires]
+ * @property {MaxStorageUpgradeInterval[]} maxStorageUpgradeIntervals
+ * @property {(currentLevel: number) => MaxStorageUpgradeInterval} getCurrentIntervalUpgradeCost
+ * @property {(currentLevel: number) => number} getCurrentMaxStorage
  */
 
 /**
- * @typedef {Object} MaxStorageUpgrade
- * @property {number} interval
+ * @typedef {Object} MaxStorageUpgradeInterval
+ * @property {string} name
+ * @property {number} minLevel
+ * @property {number} levelRequired
  * @property {number} maxLevel
- * @property {Function} costFormula
+ * @property {(currentLevel: number) => number} costFormula
+ * @property {string} step
  */

@@ -86,3 +86,7 @@
     margin: 0px;
     padding: 0px;
 }
+
+.no-opacity {
+    opacity: 0;
+}

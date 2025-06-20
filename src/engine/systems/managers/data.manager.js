@@ -89,18 +89,28 @@ export default class DataManager {
     
     // #region Storage
 
+    /** @returns {DataStorage} */
     static getMaxStorageData() {
         return Utils.deepCopy(STORAGE_UPGRADES);
     }
 
+    /** @returns {number} */
     static getBaseMaxStorage() {
         return Utils.deepCopy(STORAGE_UPGRADES.baseMaxStorage);
     }
 
-    static getMaxStorageUpgrade() {
-        return Utils.deepCopy(STORAGE_UPGRADES.maxStorageUpgrade);
+    /**
+     * @param {number} currentMaxStorageLevel 
+     * @returns {MaxStorageUpgradeInterval}
+     */
+    static getCurrentIntervalUpgradeCost(currentMaxStorageLevel) {
+        return Utils.deepCopy(STORAGE_UPGRADES.getCurrentIntervalUpgradeCost(currentMaxStorageLevel));
     }
 
+    /**
+     * @param {number} currentMaxStorageLevel 
+     * @returns {number}
+     */
     static getCurrentMaxStorageCalc(currentMaxStorageLevel) {
         return STORAGE_UPGRADES.getCurrentMaxStorage(currentMaxStorageLevel);
     }

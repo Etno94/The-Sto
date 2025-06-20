@@ -1,6 +1,7 @@
 import DataManager from "../systems/managers/data.manager.js";
 
 import Asserts from "../utils/asserts.js";
+import Validators from "../utils/validators.js";
 
 class MainEventBus {
   /**
@@ -40,6 +41,7 @@ class MainEventBus {
   emit(event, ...args) {
     Asserts.string(event);
     Asserts.notNullOrUndefined(this.#events[event]);
+    // if (!Validators.isNotNullNorUndefined(this.#events[event])) return;
 
     for (const listener of this.#events[event]) {
       listener(...args);

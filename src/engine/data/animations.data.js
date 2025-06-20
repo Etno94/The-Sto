@@ -16,6 +16,11 @@ export const ANIMATIONS = {
         classes: [ 'no-height'],
         timer: Utils.getNumberFromMSValue(cssVars.getPropertyValue('--width'))
     },
+    opacity: {
+        name: 'opacity',
+        classes: ['no-opacity'],
+        timer: Utils.getNumberFromMSValue(cssVars.getPropertyValue('--opacity'))
+    },
     tilt: {
         name: 'tilt',
         classes: ['tilt'],

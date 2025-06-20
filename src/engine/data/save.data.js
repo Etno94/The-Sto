@@ -1,6 +1,6 @@
 import { GENERATOR_IDS } from './generators.data.js';
 import { FRESH_POINTS } from './points.data.js';
-
+import { STORAGE_UPGRADES} from './storage.data.js';
 
 /**
  * @type { SaveType }
@@ -16,9 +16,8 @@ export const FRESH_SAVE = {
     points: FRESH_POINTS,
     points_order: [],
     storage: {
-        isHinted: false,
-        isBuilt: false,
-        maxStorageUpgradeCurrentLevel: 0,
+        unlocked: false,
+        maxStorageUpgradeCurrentLevel: STORAGE_UPGRADES.baseMaxStorageUpgradeLevel,
     },
     generators: [
         {
@@ -63,8 +62,7 @@ export const TEST_SAVES = [
         points: FRESH_POINTS,
         points_order: [],
         storage: {
-            maxStorageUpgradeCurrentLevel: 0,
-            maxStorage: 3,
+            maxStorageUpgradeCurrentLevel: STORAGE_UPGRADES.baseMaxStorageUpgradeLevel,
         },
         generators: [
             {

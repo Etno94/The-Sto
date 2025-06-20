@@ -49,6 +49,20 @@ export default class Animate {
     }
 
     /**
+     * @param {HTMLElement} element 
+     */
+    static opacityIn(element) {
+        Asserts.htmlElement(element);
+
+        const opacityClasses = DataManager.getAnimations().opacity.classes;
+        if (!UIHelper.containsClasses(element, opacityClasses)) return;
+        void element.offsetWidth; // We force a layout calculation to ensure the class is applied before the next frame
+        requestAnimationFrame(() => {
+            UIHelper.removeClass(element, opacityClasses);
+        });
+    }
+
+    /**
      * @param {HTMLElement} element
      * @param {HTMLElement} rippleElement
      */

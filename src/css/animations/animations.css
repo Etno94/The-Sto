@@ -1,6 +1,8 @@
 :root {
     /* Animation Durations */
     --width: 310ms;
+    --height: 310ms;
+    --opacity: 160ms;
     --shrink: 710ms;
     --expand: 710ms;
     --tilt: 425ms;
