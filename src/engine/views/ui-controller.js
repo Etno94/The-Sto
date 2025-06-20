@@ -157,7 +157,7 @@ class UIController {
                     toGenerate--;
                 }
             } else {
-                this.setDOMPointsToBeRemoved(type, Math.abs(points), Animate.widthOut);
+                this.setDOMPointsToBeRemoved(type, Math.abs(points), Animate.shrinkOut);
                 RenderQ.queue(async () => {
                     await Utils.delay(this.#animations.width.timer);
                     this.removeMarkedElementsFromParent(this.#pointsContainer);

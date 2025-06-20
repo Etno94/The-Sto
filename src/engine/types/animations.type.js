@@ -5,6 +5,7 @@
  * @property {AnimationItem} opacity 
  * @property {AnimationItem} tilt
  * @property {AnimationItem} ripple
+ * @property {AnimationItem} shrink
  */
 
 /**

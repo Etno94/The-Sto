@@ -84,8 +84,9 @@
 }
 
 #storage #points div.point {
-    transition: width var(--width), height var(--width), transform 270ms 60ms;
+    transition: width var(--width), height var(--height), transform var(--shrink);
     transition-timing-function: cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    will-change: transform;
 }
 
 #storage #points div.point:hover {

@@ -3,7 +3,7 @@
     --width: 310ms;
     --height: 310ms;
     --opacity: 160ms;
-    --shrink: 710ms;
+    --shrink: 410ms;
     --expand: 710ms;
     --tilt: 425ms;
     --bolder-border: 770ms;
@@ -50,19 +50,36 @@
     }
 }
 
-.shrink {
-    animation-name: shrink;
+.shrinkX {
+    animation-name: shrinkX;
     animation-duration: var(--shrink);
     animation-timing-function: ease-in-out;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
 }
 
-@keyframes shrink {
+@keyframes shrinkX {
+    0% {
+        transform: scaleX(1);
+    }
     100% {
-        transform: scale(0);
-        width: 0;
-        height: 0;
+        transform: scaleX(0);
+    }
+}
+.shrinkY {
+    animation-name: shrinkY;
+    animation-duration: var(--shrink);
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes shrinkY {
+    0% {
+        transform: scaleY(1);
+    }
+    100% {
+        transform: scaleY(0);
     }
 }
 

@@ -16,6 +16,11 @@ export const ANIMATIONS = {
         classes: [ 'no-height'],
         timer: Utils.getNumberFromMSValue(cssVars.getPropertyValue('--width'))
     },
+    shrink: {
+        name: 'shrink',
+        classes: [ 'shrinkX'],
+        timer: Utils.getNumberFromMSValue(cssVars.getPropertyValue('--shrink'))
+    },
     opacity: {
         name: 'opacity',
         classes: ['no-opacity'],
