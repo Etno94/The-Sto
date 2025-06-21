@@ -175,6 +175,7 @@ function upgradeMaxStorage() {
   console.log(currentCost);
 
   if (pointM.hasEnoughPoints(currentCost)) {
+    UIControl.removeCostPreview(storageM.upgradeStorageWraperElement);
     EventBus.emit(Events.points.substract, currentCost);
     EventBus.emit(Events.storageUpgrade.upgrade);
   }

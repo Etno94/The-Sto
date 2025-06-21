@@ -360,7 +360,6 @@ class UIController {
     /**
      * @param {HTMLElement} generatorElement 
      * @param {PointSet} cost 
-     * @returns
      */
     renderCostPreview(generatorElement, cost) {
         Asserts.htmlElement(generatorElement);

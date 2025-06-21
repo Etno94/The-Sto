@@ -1,11 +1,10 @@
 Activo:
 
-- Incorporar incremento de CD al generador
+- (content) desarrollar mejora de storage: estamos puliendo UX del boton con hovers
 
 Tareas:
 
 - (CSS) desacoplar elementos de generadores del id, plasmar estilos a traves de clases
-- (content) desarrollar mejora de storage
 
 Nice to have:
 
