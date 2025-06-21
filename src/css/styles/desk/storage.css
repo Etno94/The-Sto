@@ -1,7 +1,7 @@
 /* Storage */
 
 #storage {
-    flex: 1 1 280px;
+    flex: 0 1 280px;
     width: 100%;
 
     display: flex;
@@ -42,7 +42,7 @@
     border-radius: 8px;
     clip-path: polygon(0 100%, 0 0, 20% 0, 20% 80%, 80% 80%, 80% 0, 100% 0, 100% 100%);
     transition: width var(--width), opacity var(--opacity), transform var(--transform);
-    transition-timing-function: cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    transition-timing-function: var(--smooth-transition);
     cursor: pointer;
 }
 #storage #storage-upgrade ~ .icon {
@@ -58,7 +58,7 @@
     user-select: none;
     cursor: pointer;
     transition: transform var(--transform);
-    transition-timing-function: cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    transition-timing-function: var(--smooth-transition);
 }
 #storage #storage-upgrade-wrap .icon.no-width.no-opacity {
     cursor: unset;
@@ -113,7 +113,7 @@
     align-self: center;
 
     transition: border-color var(--opacity);
-    transition-timing-function: cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    transition-timing-function: var(--smooth-transition);
 }
 
 #storage #points .wrap {
@@ -123,7 +123,7 @@
 
 #storage #points div.point {
     transition: width var(--width), height var(--height), transform var(--shrink);
-    transition-timing-function: cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    transition-timing-function: var(--smooth-transition);
     will-change: transform;
 }
 

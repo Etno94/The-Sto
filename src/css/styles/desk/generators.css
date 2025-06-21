@@ -1,10 +1,14 @@
 /* Central */
 #central {
-    flex: 4 1 100%;
+    flex: 1 1 auto;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+#central #generators-container {
+    display: flex;
+    flex: 1 1 auto;
     justify-content: center;
-    align-content: center;
     align-items: center;
 }
 

@@ -53,7 +53,7 @@ class UIController {
     }
 
     #setElements() {
-        this.#generatorsContainer = document.getElementById("central");
+        this.#generatorsContainer = document.getElementById("generators-container");
         this.#pointsContainer = document.getElementById("points");
         this.#storageUpgradeWrapper = document.getElementById("storage-upgrade-wrap");
         this.#storageUpgrade = document.getElementById("storage-upgrade");
