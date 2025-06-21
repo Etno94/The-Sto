@@ -359,16 +359,16 @@ class UIController {
 
     /**
      * @param {HTMLElement} generatorElement 
-     * @param {PointSet} buildCosts 
+     * @param {PointSet} cost 
      * @returns
      */
-    renderCostPreview(generatorElement, buildCosts) {
+    renderCostPreview(generatorElement, cost) {
         Asserts.htmlElement(generatorElement);
-        Asserts.object(buildCosts);
+        Asserts.object(cost);
         if (this.hasCostPreview(generatorElement)) return;
 
         const costPreviewElement = Render.renderCostPreview();
-        for (const [key, value] of Object.entries(buildCosts)) {
+        for (const [key, value] of Object.entries(cost)) {
             let amount = value;
             while (amount) {
                 costPreviewElement.appendChild(UIControl.renderPoint(key));

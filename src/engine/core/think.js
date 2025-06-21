@@ -188,6 +188,7 @@ function upgradeMaxStorage() {
 function renderGeneralUpdatedStatus(interval) {
   setStoragePoints();
   updateGeneratorsCooldown(interval);
+  updateStorageUpgradeCostPreview();
 }
 
 function setStoragePoints() {
@@ -217,6 +218,10 @@ function updateGeneratorsCooldown(interval = 0, initialSet = false) {
     if (initialSet) EventBus.emit(Events.generator.onCD, generatorName, updatedRemainingCD);
     EventBus.emit(Events.generator.updateCD, generatorName, updatedRemainingCD, baseCooldown);
   });
+}
+
+function updateStorageUpgradeCostPreview() {
+  const currentCost = new PointCollection(storageM.getCurrentUpgradeCost()).collection;
 }
 
 // #endregion Render
