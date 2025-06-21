@@ -52,7 +52,7 @@
     border: var(--bolder-border--bold-border);
 }
 
-#storage #storage-upgrade-wrap .cost-preview {
+#storage #storage-upgrade ~ .cost-preview {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
@@ -60,8 +60,17 @@
     bottom: 64px;
     right: 32px;
     width: 90px;
+    opacity: 0;
+    transition: opacity var(--opacity);
+    transition-timing-function: cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
-    
+#storage #storage-upgrade:hover ~ .cost-preview {
+    opacity: 1;
+}
+
+#storage:has(#storage-upgrade:hover) #points {
+    border-color: #79797960;
+}
 
 #storage #points{
     --storage-points-per-row: 5;
@@ -73,12 +82,19 @@
     flex-wrap: wrap;
     gap: var(--storage-points-margin);
     max-width: var(--storage-points-max-width);
+    padding: 8px;
+    box-sizing: border-box;
+    border: 2px transparent dashed;
+    border-radius: 32px;
 
     align-items: center;
     justify-items: center;
     justify-content: center;
     align-content: center;
     align-self: center;
+
+    transition: border-color var(--opacity);
+    transition-timing-function: cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 
 #storage #points .wrap {
