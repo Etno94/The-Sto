@@ -4,6 +4,7 @@ import Asserts from '../utils/asserts.js';
 
 import PointDirector from './builders/directors/point.director.js';
 import GeneratorDirector from './builders/directors/generator.director.js';
+import WrapperDirector from './builders/directors/wrapper.director.js';
 import AnimationElementsDirector from './builders/directors/animation-elements.director.js';
 
 export default class Render {
@@ -58,7 +59,7 @@ export default class Render {
     static renderGenerator(generatorName, classes) {
         Asserts.string(generatorName);
         Asserts.stringArray(classes);
-
+        return WrapperDirector.wrapChild(GeneratorDirector.createGenerator(generatorName, classes));
         return GeneratorDirector.createGenerator(generatorName, classes);
     }
 

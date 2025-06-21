@@ -4,7 +4,7 @@ import { GENERATORS, GENERATOR_CLASSES, BUILD_GENERATOR } from '../../data/gener
 import { STORAGE_UPGRADES } from '../../data/storage.data.js';
 import { ANIMATIONS } from "../../data/animations.data.js";
 import { DATA_SET_ATTRs, DATA_SET_TYPES, DATA_SET_STATUS } from '../../data/data-set-attr.data.js';
-
+import { WRAPPER_CLASSES } from '../../data/elements.data.js';
 
 import Utils from '../../utils/utils.js';
 
@@ -146,5 +146,14 @@ export default class DataManager {
     }
 
     // #endregion DataSets
+
+    // #region Elements
+
+    /** @returns { string[] } */
+    static getWrapClasses() {
+        return Utils.arrCopy(WRAPPER_CLASSES);
+    }
+
+    // #endregion Elements
 
 }
