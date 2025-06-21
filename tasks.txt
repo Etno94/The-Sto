@@ -1,6 +1,6 @@
 Activo:
 
-- (content) desarrollar mejora de storage: estamos puliendo UX del boton con hovers
+- (UI) implementacion de wrappers para los elementos de los generadores
 
 Tareas:
 
