@@ -408,7 +408,8 @@ class UIController {
         Asserts.number(currentMaxStorage);
 
         if (currentMaxStorage > 9) {
-            this.#pointsContainer.style.setProperty('--storage-points-per-row', 4)
+            this.#pointsContainer.style.setProperty('--storage-points-per-row', 4);
+            return;
         }
         if (currentMaxStorage > 5) {
             this.#pointsContainer.style.setProperty('--storage-points-per-row', 3)
