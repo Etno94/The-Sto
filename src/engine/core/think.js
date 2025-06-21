@@ -222,6 +222,7 @@ function updateGeneratorsCooldown(interval = 0, initialSet = false) {
 
 function updateStorageUpgradeCostPreview() {
   const currentCost = new PointCollection(storageM.getCurrentUpgradeCost()).collection;
+  UIControl.renderCostPreview(storageM.upgradeStorageWraperElement, currentCost);
 }
 
 // #endregion Render

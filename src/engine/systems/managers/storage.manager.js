@@ -5,6 +5,11 @@ import Global from '../../core/global.js';
 import DataManager from './data.manager.js';
 class StorageManager {
 
+    /** @type {HTMLElement} */
+    #upgradeStorageWraperElement = document.getElementById('storage-upgrade-wrap');
+    /** @type {HTMLElement} */
+    #upgradeStorageElement = document.getElementById('storage-upgrade');
+
     /** @type {boolean} */
     #recentlyUnlocked = false;
 
@@ -84,6 +89,14 @@ class StorageManager {
     #upgradeMaxStorage() {
         Global.proxy.storage.maxStorageUpgradeCurrentLevel += 1;
         this.updateMaxStorage(Global.proxy.storage.maxStorageUpgradeCurrentLevel);
+    }
+
+    get upgradeStorageWraperElement() {
+        return this.#upgradeStorageWraperElement;
+    }
+
+    get upgradeStorageElement() {
+        return this.#upgradeStorageElement;
     }
 }
 export const storageM = new StorageManager();

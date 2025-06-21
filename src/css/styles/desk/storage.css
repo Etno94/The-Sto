@@ -16,6 +16,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    flex-direction: column-reverse;
 }
 
 #storage #dump {
@@ -49,6 +51,17 @@
 #storage #storage-upgrade.blank {
     border: var(--bolder-border--bold-border);
 }
+
+#storage #storage-upgrade-wrap .cost-preview {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    position: absolute;
+    bottom: 64px;
+    right: 32px;
+    width: 90px;
+}
+    
 
 #storage #points{
     --storage-points-per-row: 5;
