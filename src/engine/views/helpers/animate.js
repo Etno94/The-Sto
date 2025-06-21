@@ -51,6 +51,17 @@ export default class Animate {
     /**
      * @param {HTMLElement} element 
      */
+    static shrinkIn(element) {
+        Asserts.htmlElement(element);
+
+        const shrinkClasses = DataManager.getAnimations().shrink.classes;
+        if (UIHelper.containsClasses(element, shrinkClasses))
+            UIHelper.removeClass(element, shrinkClasses);
+    }
+
+    /**
+     * @param {HTMLElement} element 
+     */
     static shrinkOut(element) {
         Asserts.htmlElement(element);
 

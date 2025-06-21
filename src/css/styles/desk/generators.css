@@ -17,7 +17,7 @@
     height: 128px;
     width: 128px;
     text-align: center;
-    transition-duration: 770ms;
+    transition-duration: var(--transform);
 
     display: flex;
     justify-content: center;

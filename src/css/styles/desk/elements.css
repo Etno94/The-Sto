@@ -1,8 +1,8 @@
 /* Cost Preview */
-
-div.cost-preview div.point {
+div.cost-preview div.point.basic {
     max-width: 24px;
     max-height: 24px;
+    margin: 3px;
     opacity: 0.55;
 }
 
@@ -18,4 +18,11 @@ div.cost-preview div.point.solid div.inner-point {
     width: 18px;
     border-radius: 50%;
     box-shadow: inset 0px 0px 4px 2px #ffffff;
+}
+
+div.cost-preview .point.energy {
+    width: 18px;
+    height: 18px;
+    margin: 6px;
+    opacity: 0.55;
 }

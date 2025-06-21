@@ -27,7 +27,9 @@ function checkUnlocks() {
 
 // Storage Upgrader Unlock
 function checkStorageUpgraderUnlock() {
-  if (storageM.wasStorageUpgradeRecentlyUnlocked()) EventBus.emit(Events.storageUpgrade.unlocked);
+  if (storageM.isStorageUpgradeUnlocked() && 
+      storageM.isStorageUpgradeDisabled) 
+      EventBus.emit(Events.storageUpgrade.unlocked);
 }
 
 // Generator Unlocks
@@ -175,7 +177,7 @@ function upgradeMaxStorage() {
   console.log(currentCost);
 
   if (pointM.hasEnoughPoints(currentCost)) {
-    UIControl.removeCostPreview(storageM.upgradeStorageWraperElement);
+    UIControl.removeCostPreview(storageM.upgradeStorageWrapperElement);
     EventBus.emit(Events.points.substract, currentCost);
     EventBus.emit(Events.storageUpgrade.upgrade);
   }
@@ -223,7 +225,7 @@ function updateGeneratorsCooldown(interval = 0, initialSet = false) {
 
 function updateStorageUpgradeCostPreview() {
   const currentCost = new PointCollection(storageM.getCurrentUpgradeCost()).collection;
-  UIControl.renderCostPreview(storageM.upgradeStorageWraperElement, currentCost);
+  UIControl.renderCostPreview(storageM.upgradeStorageWrapperElement, currentCost);
 }
 
 // #endregion Render

@@ -6,12 +6,9 @@ import DataManager from './data.manager.js';
 class StorageManager {
 
     /** @type {HTMLElement} */
-    #upgradeStorageWraperElement = document.getElementById('storage-upgrade-wrap');
+    #upgradeStorageWrapperElement = document.getElementById('storage-upgrade-wrap');
     /** @type {HTMLElement} */
     #upgradeStorageElement = document.getElementById('storage-upgrade');
-
-    /** @type {boolean} */
-    #recentlyUnlocked = false;
 
     /** @type { number } */
     #currentMaxStorage = 0;
@@ -29,9 +26,7 @@ class StorageManager {
     /** @param { number } currentUpgradeLevel */
     setCurrentStorage(currentUpgradeLevel) {
         Asserts.number(currentUpgradeLevel);
-
-        this.updateMaxStorage(currentUpgradeLevel);
-        if (Global.proxy.storage.unlocked) this.#recentlyUnlocked = true;
+        this.#updateMaxStorage(currentUpgradeLevel);
     }
 
     #setBusEvents() {
@@ -44,17 +39,12 @@ class StorageManager {
     }
 
     /** @returns {boolean} */
-    wasStorageUpgradeRecentlyUnlocked() {
-        if (this.#recentlyUnlocked) {
-            this.#recentlyUnlocked = false;
-            return Global.proxy.storage.unlocked;
-        }
-        return false;
+    isStorageUpgradeDisabled() {
+        return this.#upgradeStorageElement.disabled;
     }
 
     setStorageUpgradeUnlocked() {
         Global.proxy.storage.unlocked = true;
-        this.#recentlyUnlocked = true;
     }
 
     /**
@@ -78,7 +68,7 @@ class StorageManager {
     }
 
     /** @param { number } currentUpgradeLevel */
-    updateMaxStorage(currentUpgradeLevel) {
+    #updateMaxStorage(currentUpgradeLevel) {
         Asserts.number(currentUpgradeLevel);
 
         this.#currentUpgradeLevel = currentUpgradeLevel;
@@ -88,11 +78,11 @@ class StorageManager {
 
     #upgradeMaxStorage() {
         Global.proxy.storage.maxStorageUpgradeCurrentLevel += 1;
-        this.updateMaxStorage(Global.proxy.storage.maxStorageUpgradeCurrentLevel);
+        this.#updateMaxStorage(Global.proxy.storage.maxStorageUpgradeCurrentLevel);
     }
 
-    get upgradeStorageWraperElement() {
-        return this.#upgradeStorageWraperElement;
+    get upgradeStorageWrapperElement() {
+        return this.#upgradeStorageWrapperElement;
     }
 
     get upgradeStorageElement() {

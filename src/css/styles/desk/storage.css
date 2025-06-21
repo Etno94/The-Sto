@@ -41,15 +41,9 @@
     background-color: #805840;
     border-radius: 8px;
     clip-path: polygon(0 100%, 0 0, 20% 0, 20% 80%, 80% 80%, 80% 0, 100% 0, 100% 100%);
-    transition: width var(--width), opacity var(--opacity);
+    transition: width var(--width), opacity var(--opacity), transform var(--transform);
     transition-timing-function: cubic-bezier(0.18, 0.89, 0.32, 1.28);
     cursor: pointer;
-}
-#storage #storage-upgrade.hint {
-    border: var(--bolder-border--light-border);
-}
-#storage #storage-upgrade.blank {
-    border: var(--bolder-border--bold-border);
 }
 #storage #storage-upgrade ~ .icon {
     position: absolute;
@@ -58,9 +52,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    color: #512f1b;
     font-size: 24px;
     font-weight: 600;
     user-select: none;
+    cursor: pointer;
+    transition: transform var(--transform);
+    transition-timing-function: cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+#storage #storage-upgrade-wrap .icon.no-width.no-opacity {
+    cursor: unset;
 }
 
 #storage #storage-upgrade ~ .cost-preview {
@@ -70,18 +71,23 @@
     align-items: flex-start;
     justify-content: center;
     position: absolute;
-    bottom: 64px;
+    bottom: 80px;
     right: 32px;
     width: 90px;
     opacity: 0;
     transition: opacity var(--opacity);
     transition-timing-function: ease-in-out;
+    pointer-events: none;
 }
-#storage #storage-upgrade:hover ~ .cost-preview {
+#storage #storage-upgrade-wrap:hover #storage-upgrade,
+#storage #storage-upgrade-wrap:hover .icon {
+    transform: scale(1.15);
+}
+#storage #storage-upgrade-wrap:hover:not(:has(#storage-upgrade.no-width.no-opacity)) .cost-preview {
     opacity: 1;
 }
 
-#storage:has(#storage-upgrade:hover) #points {
+#storage:has(#storage-upgrade-wrap:hover) #points {
     border-color: #79797960;
 }
 

@@ -30,6 +30,8 @@ class UIController {
     /** @type {HTMLElement} */
     #pointsContainer;
     /** @type {HTMLElement} */
+    #storageUpgradeWrapper;
+    /** @type {HTMLElement} */
     #storageUpgrade;
 
     // Animation tracking
@@ -53,6 +55,7 @@ class UIController {
     #setElements() {
         this.#generatorsContainer = document.getElementById("central");
         this.#pointsContainer = document.getElementById("points");
+        this.#storageUpgradeWrapper = document.getElementById("storage-upgrade-wrap");
         this.#storageUpgrade = document.getElementById("storage-upgrade");
     }
 
@@ -397,8 +400,11 @@ class UIController {
     // #region Storage
 
     #showStorageUpgrader() {
-        Animate.widthIn(this.#storageUpgrade);
-        Animate.opacityIn(this.#storageUpgrade);
+        const children = this.#storageUpgradeWrapper.children;
+        for (let child of Array.from(children)) {
+            Animate.widthIn(child);
+            Animate.opacityIn(child);
+        }   
         this.#storageUpgrade.disabled = false;
     }
 
