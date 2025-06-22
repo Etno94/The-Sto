@@ -85,7 +85,6 @@ function checkCanBeBuiltGenerators(generatorNames) {
   generatorNames.forEach(generatorName => {
     if (!generatorM.isValidGenerator(generatorName)) return;
 
-    // const generatorElement = UIControl.getGeneratorElement(generatorName);
     let generatorElement = UIControl.getGeneratorElement(generatorName);
       let wrappedGeneratorElement = null;
       if (!generatorElement) {
@@ -107,7 +106,6 @@ function checkBuiltGenerators(generatorNames) {
   generatorNames.forEach(generatorName => {
     if (!generatorM.isValidGenerator(generatorName)) return;
 
-    // const generatorElement = UIControl.getGeneratorElement(generatorName);
     let generatorElement = UIControl.getGeneratorElement(generatorName);
       let wrappedGeneratorElement = null;
       if (!generatorElement) {
@@ -139,7 +137,6 @@ function buildGenerator(generatorName) {
 
   if (generatorM.isBuildProgressComplete(generatorName)) {
     generatorM.setBuilt(generatorName);
-    // const generatorElement = UIControl.getGeneratorElement(generatorName);
     let generatorElement = UIControl.getGeneratorElement(generatorName);
       let wrappedGeneratorElement = null;
       if (!generatorElement) {
