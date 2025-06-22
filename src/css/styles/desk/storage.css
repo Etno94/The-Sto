@@ -11,8 +11,8 @@
 }
 
 #storage .wrap {
-    width: 60px;
-    height: 60px;
+    width: 100px;
+    height: auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -46,7 +46,8 @@
     cursor: pointer;
 }
 #storage #storage-upgrade ~ .icon {
-    position: absolute;
+    position: relative;
+    bottom: -32px;
     height: inherit;
     width: inherit;
     display: flex;
@@ -70,9 +71,6 @@
     flex-direction: row;
     align-items: flex-start;
     justify-content: center;
-    position: absolute;
-    bottom: 80px;
-    right: 32px;
     width: 90px;
     opacity: 0;
     transition: opacity var(--opacity);
@@ -87,7 +85,7 @@
     opacity: 1;
 }
 
-#storage:has(#storage-upgrade-wrap:hover) #points {
+#storage:has(#storage-upgrade-wrap:hover #storage-upgrade:not(.no-width.no-opacity)) #points {
     border-color: #79797960;
 }
 
