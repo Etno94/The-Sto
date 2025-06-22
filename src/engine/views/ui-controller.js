@@ -8,6 +8,8 @@ import { RenderQ } from "./helpers/render-queue.js";
 
 import DataManager from "../systems/managers/data.manager.js";
 import Asserts from "../utils/asserts.js";
+import Validators from "../utils/validators.js";
+import Errors from "../utils/errors.js";
 import Utils from "../utils/utils.js";
 import PointCollection from "../systems/point.collection.js";
 
@@ -230,16 +232,17 @@ class UIController {
     }
 
     /** 
-     * @param {HTMLElement} generatorElement 
+     * @param {HTMLElement} wrappedGeneratorElement 
      * @param {number} generatorPosition
     */
-    showGeneratorElement(generatorElement, generatorPosition) {
-        Asserts.htmlElement(generatorElement);
-        if (UIHelper.isParentNode(this.#generatorsContainer, generatorElement)) return;
+    showWrappedGeneratorElement(wrappedGeneratorElement, generatorPosition) {
+        Asserts.htmlElement(wrappedGeneratorElement);
+        if (UIHelper.isParentNode(this.#generatorsContainer, wrappedGeneratorElement)) return;
     
         this.#generatorsContainer.insertBefore(
-            generatorElement, 
+            wrappedGeneratorElement, 
             this.#generatorsContainer.children[generatorPosition]);
+        const generatorElement = wrappedGeneratorElement.children[0];
         Animate.widthIn(generatorElement);
     }
 
@@ -249,7 +252,28 @@ class UIController {
      */
     getGeneratorElement(generatorName) {
         Asserts.string(generatorName);
-        return document.getElementById(generatorName) ?? this.renderGenerator(generatorName, DataManager.getAnimations().width.classes);
+        
+        return document.getElementById(generatorName);
+    }
+
+    /**
+     * @param {string} generatorName 
+     * @returns {HTMLElement}
+     */
+    createWrappedGeneratorElement(generatorName) {
+        Asserts.string(generatorName);
+        
+        return this.renderGenerator(generatorName, DataManager.getAnimations().width.classes);
+    }
+
+    /** 
+     * @param {HTMLElement} generatorElement 
+     * @returns {boolean}
+     */
+    isGeneratorWrapped(generatorElement) {
+        Asserts.htmlElement(generatorElement);
+        if (!generatorElement.parentNode) return false;
+        return UIHelper.containsClasses(generatorElement.parentNode, DataManager.getWrapClasses());
     }
 
     /** @param {HTMLElement} generatorElement */

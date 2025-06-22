@@ -265,7 +265,8 @@ export default class UIHelper {
         Asserts.htmlElement(parent);
         Asserts.htmlElement(child);
 
-        if (!parent.contains(child)) parent.appendChild(child);
+        // if (!parent.contains(child)) parent.appendChild(child);
+        if (child.parentNode !== parent) parent.appendChild(child);
         return parent;
     }
 

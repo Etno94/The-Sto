@@ -63,9 +63,18 @@ function checkHintedGenerators(generatorNames) {
     } 
     else {
       if (generatorM.isBuildable(generatorName)) generatorM.setBuildable(generatorName, false);
-      const generatorElement = UIControl.getGeneratorElement(generatorName);
+
+      let generatorElement = UIControl.getGeneratorElement(generatorName);
+      let wrappedGeneratorElement = null;
+      if (!generatorElement) {
+        wrappedGeneratorElement = UIControl.createWrappedGeneratorElement(generatorName);
+        generatorElement = wrappedGeneratorElement.children[0];
+      }
       UIControl.showHint(generatorElement);
-      UIControl.showGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorElement.id));
+      UIControl.showWrappedGeneratorElement(
+        generatorElement.parentNode && UIControl.isGeneratorWrapped(generatorElement) ?
+          generatorElement.parentNode : generatorElement, 
+          generatorM.getOrderedGeneratorIndex(generatorName));
       InputControl.addEventListener(generatorElement, "click", generatorOnClick, generatorName);
     }
   });
@@ -76,9 +85,18 @@ function checkCanBeBuiltGenerators(generatorNames) {
   generatorNames.forEach(generatorName => {
     if (!generatorM.isValidGenerator(generatorName)) return;
 
-    const generatorElement = UIControl.getGeneratorElement(generatorName);
+    // const generatorElement = UIControl.getGeneratorElement(generatorName);
+    let generatorElement = UIControl.getGeneratorElement(generatorName);
+      let wrappedGeneratorElement = null;
+      if (!generatorElement) {
+        wrappedGeneratorElement = UIControl.createWrappedGeneratorElement(generatorName);
+        generatorElement = wrappedGeneratorElement.children[0];
+      }
     UIControl.showBuild(generatorElement);
-    UIControl.showGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorElement.id));
+    UIControl.showWrappedGeneratorElement(
+        generatorElement.parentNode && UIControl.isGeneratorWrapped(generatorElement) ?
+          generatorElement.parentNode : generatorElement, 
+          generatorM.getOrderedGeneratorIndex(generatorName));
     UIControl.renderCostPreview(generatorElement, generatorM.whatBuildStepRequires(generatorName));
     InputControl.addEventListener(generatorElement, "click", generatorOnClick, generatorName);
   });
@@ -89,8 +107,17 @@ function checkBuiltGenerators(generatorNames) {
   generatorNames.forEach(generatorName => {
     if (!generatorM.isValidGenerator(generatorName)) return;
 
-    const generatorElement = UIControl.getGeneratorElement(generatorName);
-    UIControl.showGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorElement.id));
+    // const generatorElement = UIControl.getGeneratorElement(generatorName);
+    let generatorElement = UIControl.getGeneratorElement(generatorName);
+      let wrappedGeneratorElement = null;
+      if (!generatorElement) {
+        wrappedGeneratorElement = UIControl.createWrappedGeneratorElement(generatorName);
+        generatorElement = wrappedGeneratorElement.children[0];
+      }
+    UIControl.showWrappedGeneratorElement(
+        generatorElement.parentNode && UIControl.isGeneratorWrapped(generatorElement) ?
+          generatorElement.parentNode : generatorElement, 
+          generatorM.getOrderedGeneratorIndex(generatorName));
     InputControl.addEventListener(generatorElement, "click", generatorOnClick, generatorName);
   });
 }
@@ -112,8 +139,17 @@ function buildGenerator(generatorName) {
 
   if (generatorM.isBuildProgressComplete(generatorName)) {
     generatorM.setBuilt(generatorName);
-    const generatorElement = UIControl.getGeneratorElement(generatorName);
-    UIControl.showGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorElement.id));
+    // const generatorElement = UIControl.getGeneratorElement(generatorName);
+    let generatorElement = UIControl.getGeneratorElement(generatorName);
+      let wrappedGeneratorElement = null;
+      if (!generatorElement) {
+        wrappedGeneratorElement = UIControl.createWrappedGeneratorElement(generatorName);
+        generatorElement = wrappedGeneratorElement.children[0];
+      }
+    UIControl.showWrappedGeneratorElement(
+        generatorElement.parentNode && UIControl.isGeneratorWrapped(generatorElement) ?
+          generatorElement.parentNode : generatorElement, 
+          generatorM.getOrderedGeneratorIndex(generatorName));
     UIControl.hideBuild(generatorElement);
     UIControl.removeCostPreview(generatorElement);
   }

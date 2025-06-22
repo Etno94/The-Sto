@@ -6,9 +6,9 @@
 
 /**
  * @typedef { Object } DataSetAttr
- * @property { string } type
- * @property { string } pointType
- * @property { string } status
+ * @property { string } type => DataSetTypes
+ * @property { string } pointType => PointTypes
+ * @property { string } status => DataSetStatus
  */
 
 /**
@@ -16,6 +16,7 @@
  * @property { string } point
  * @property { string } generator
  * @property { string } costPreview
+ * @property { string } wrap
  * @property { string } animationElement
  */
 

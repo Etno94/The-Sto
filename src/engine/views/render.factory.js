@@ -59,7 +59,9 @@ export default class Render {
     static renderGenerator(generatorName, classes) {
         Asserts.string(generatorName);
         Asserts.stringArray(classes);
-        return WrapperDirector.wrapChild(GeneratorDirector.createGenerator(generatorName, classes));
+
+        const wrappedGenerator = WrapperDirector.wrapChild(GeneratorDirector.createGenerator(generatorName, classes));
+        return wrappedGenerator;
         return GeneratorDirector.createGenerator(generatorName, classes);
     }
 
