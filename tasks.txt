@@ -4,12 +4,16 @@ Activo:
 
 Tareas:
 
+- (content / UI) implementar mecanica de Charge Generator
+    - (UI) Plasmar cargas del Charge
+    - (logica) Programar mecanica. (quizas en Generator Manager?)
 - (CSS) desacoplar elementos de generadores del id, plasmar estilos a traves de clases
 
 Nice to have:
 
 - tipar todos los parametros y obj
 - en los Type, actualizar todas las prop tipo Function por () =>
+- creacion de puntos / generadores tiene hardcodeado la animacion con la que entran. Hacer dinamico desde donde se plantea que animacion usar
 - [Gamer Experience] 
     actual: los puntos se borran en una sola animacion. 
     Deseable: analizar si lo movemos a animar 1 punto a la vez (inicial) y a traves de mejoras que sean todos los puntos a la vez.

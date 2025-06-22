@@ -73,8 +73,8 @@ class UIController {
 
         EventBus.on(Events.ui.render, (isRendering) => {});
         EventBus.on(Events.ui.pointsContainer.hover, (target, isMouseEnter = false) => this.#animateEnergyPoint(target, isMouseEnter));
-        EventBus.on(Events.storageUpgrade.unlocked, () => this.#showStorageUpgrader());
-        EventBus.on(Events.storageUpgrade.onUpgrade, (currentMaxStorage) => this.#updateStorageLayout(currentMaxStorage));
+        EventBus.on(Events.storageUpgrade.unlocked, () => this.showStorageUpgrader());
+        EventBus.on(Events.storageUpgrade.onUpgrade, (currentMaxStorage) => this.updateStorageLayout(currentMaxStorage));
     }
 
     // #endregion Setup
@@ -224,7 +224,7 @@ class UIController {
      * @param {string[]} classes
      * @returns {HTMLElement}
      */
-    renderGenerator(generatorName, classes) {
+    #renderGenerator(generatorName, classes) {
         Asserts.string(generatorName);
         Asserts.stringArray(classes);
 
@@ -232,17 +232,21 @@ class UIController {
     }
 
     /** 
-     * @param {HTMLElement} wrappedGeneratorElement 
+     * @param {HTMLElement} generatorElement 
      * @param {number} generatorPosition
     */
-    showWrappedGeneratorElement(wrappedGeneratorElement, generatorPosition) {
-        Asserts.htmlElement(wrappedGeneratorElement);
+    showWrappedGeneratorElement(generatorElement, generatorPosition) {
+        Asserts.htmlElement(generatorElement);
+
+        const wrappedGeneratorElement = 
+            generatorElement.parentNode && UIControl.#isGeneratorWrapped(generatorElement) ?
+                generatorElement.parentNode : generatorElement;
+
         if (UIHelper.isParentNode(this.#generatorsContainer, wrappedGeneratorElement)) return;
     
         this.#generatorsContainer.insertBefore(
             wrappedGeneratorElement, 
             this.#generatorsContainer.children[generatorPosition]);
-        const generatorElement = wrappedGeneratorElement.children[0];
         Animate.widthIn(generatorElement);
     }
 
@@ -252,25 +256,27 @@ class UIController {
      */
     getGeneratorElement(generatorName) {
         Asserts.string(generatorName);
-        
-        return document.getElementById(generatorName);
+
+        let generatorElement = document.getElementById(generatorName);
+        if (!generatorElement) generatorElement = this.#createWrappedGeneratorElement(generatorName).children[0];
+        return generatorElement;
     }
 
     /**
      * @param {string} generatorName 
      * @returns {HTMLElement}
      */
-    createWrappedGeneratorElement(generatorName) {
+    #createWrappedGeneratorElement(generatorName) {
         Asserts.string(generatorName);
         
-        return this.renderGenerator(generatorName, DataManager.getAnimations().width.classes);
+        return this.#renderGenerator(generatorName, DataManager.getAnimations().width.classes);
     }
 
     /** 
      * @param {HTMLElement} generatorElement 
      * @returns {boolean}
      */
-    isGeneratorWrapped(generatorElement) {
+    #isGeneratorWrapped(generatorElement) {
         Asserts.htmlElement(generatorElement);
         if (!generatorElement.parentNode) return false;
         return UIHelper.containsClasses(generatorElement.parentNode, DataManager.getWrapClasses());
@@ -423,7 +429,7 @@ class UIController {
 
     // #region Storage
 
-    #showStorageUpgrader() {
+    showStorageUpgrader() {
         const children = this.#storageUpgradeWrapper.children;
         for (let child of Array.from(children)) {
             Animate.widthIn(child);
@@ -433,7 +439,7 @@ class UIController {
     }
 
     /** @param {number} */
-    #updateStorageLayout(currentMaxStorage) {
+    updateStorageLayout(currentMaxStorage) {
         Asserts.number(currentMaxStorage);
 
         if (currentMaxStorage > 9) {
