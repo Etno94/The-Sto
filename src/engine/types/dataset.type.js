@@ -30,6 +30,6 @@
 
 /**
  * @typedef DataSetGeneratorStatus
- * @property {string} point
+ * @property {string} pointChance
  * @property {string} shadowPoint
  */

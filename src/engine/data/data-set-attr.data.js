@@ -23,6 +23,6 @@ export const DATA_SET_STATUS = {
 
 /** @type {DataSetGeneratorStatus} */
 export const DATA_SET_GENERATOR_STATUS = {
-    point: 'point',
+    pointChance: 'point-chance',
     shadowPoint: 'shadow-point'
 }
