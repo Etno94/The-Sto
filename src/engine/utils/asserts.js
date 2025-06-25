@@ -20,6 +20,12 @@ export default class Asserts {
         }
     }
 
+    static htmlArray(value, arrName = 'arr') {
+        if (!Validators.isHtmlArray(value)) {
+            Errors.invalidArrayContent('html', arrName);
+        }
+    }
+
     static nonEmptyArray(value, variableName = 'value') {
         if (!Validators.isNonEmptyArray(value)) {
             Errors.invalidTypeError(typeof value, `Non-empty Array (${variableName})`);

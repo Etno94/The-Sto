@@ -32,6 +32,10 @@ export default class Validators {
         return Validators.isArray(array) && array.every(item => typeof item === 'function');
     }
 
+    static isHtmlArray(array) {
+        return Validators.isArray(array) && array.every(item => Validators.isHTMLElement(item));
+    }
+
     static isString(string) {
         return typeof string === 'string' && string.trim() !== '';
     }
