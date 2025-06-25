@@ -258,7 +258,7 @@ class UIController {
         Asserts.string(generatorName);
 
         let generatorElement = document.getElementById(generatorName);
-        if (!generatorElement) generatorElement = this.#createWrappedGeneratorElement(generatorName).children[0];
+        if (!generatorElement) generatorElement = this.#createWrappedGeneratorElement(generatorName).querySelector(`button#${generatorName}`);
         return generatorElement;
     }
 

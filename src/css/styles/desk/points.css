@@ -12,9 +12,11 @@
 }
 
 .point.solid {
-    --point-base-width: var(--point-max-unit);
-    --point-base-height: var(--point-max-unit);
-    --point-base-margin: calc((var(--point-max-unit) - var(--point-base-unit)) / 2);
+    --point-solid-unit: var(--point-max-unit);
+
+    --point-base-width: var(--point-solid-unit);
+    --point-base-height: var(--point-solid-unit);
+    --point-base-margin: calc((var(--point-max-unit) - var(--point-solid-unit)) / 2);
 
     background-color: var(--cd-gen-bg-color);
     width: var(--point-base-width);
@@ -35,9 +37,11 @@
 }
 
 .point.energy {
-    --point-base-width: calc(var(--point-base-unit) * 0.75);
-    --point-base-height: calc(var(--point-base-unit) * 0.75);
-    --point-base-margin: calc((var(--point-max-unit) - var(--point-base-unit)) / 2);
+    --point-energy-unit: calc(var(--point-base-unit) * 0.75);
+
+    --point-base-width: var(--point-energy-unit);
+    --point-base-height: var(--point-energy-unit);
+    --point-base-margin: calc((var(--point-max-unit) - var(--point-energy-unit)) / 2);
 
     width: var(--point-base-width);
     height: var(--point-base-height);

@@ -51,14 +51,39 @@ div.cost-preview .point.energy {
     display: flex;
 }
 
+div.point-chance .point[data-generator-status="point"] {
+    mask-image: conic-gradient(black var(--point-chance-percent), transparent var(--point-chance-percent) 100%);
+}
+
+/* Basic Point */
 div.point-chance .point.basic {
     width: var(--point-base-width);
     height: var(--point-base-height);
     margin: var(--point-base-margin);
 }
-div.point-chance .point.basic[data-generator-status="point"] {
-    background: conic-gradient(var(--click-gen-bg-color) var(--point-chance-percent), transparent var(--point-chance-percent) 100%);
+
+/* Solid Point */
+div.point-chance .point.solid {
+    --point-solid-unit: var(--point-max-unit);
+
+    --point-base-width: var(--point-solid-unit);
+    --point-base-height: var(--point-solid-unit);
+    --point-base-margin: calc((var(--point-max-unit) - var(--point-solid-unit)) / 2);
+
+    width: var(----point-base-width);
+    height: var(--point-base-height);
+    margin: var(--point-base-margin);
 }
-div.point-chance [data-generator-status="shadow-point"] {
-    
+
+/* Energy Point */
+div.point-chance .point.energy {
+    --point-energy-unit: calc(var(--point-base-unit) * 0.75);
+
+    --point-base-width: var(--point-energy-unit);
+    --point-base-height: var(--point-energy-unit);
+    --point-base-margin: calc((var(--point-max-unit) - var(--point-energy-unit)) / 2);
+
+    width: var(--point-base-width);
+    height: var(--point-base-height);
+    margin: var(--point-base-margin);
 }
