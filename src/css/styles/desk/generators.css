@@ -19,24 +19,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 8px;
 }
 
-/* Gen buffs and status - Point chances */
 
-#central #generators-container .wrapper .generator-status {
-    display: flex;
-}
-#central #generators-container .wrapper .generator-status .point-chance {
-    --point-chance-percent: 75%;
 
-    display: flex;
-}
-#central #generators-container .wrapper .generator-status .point-chance [data-generator-status="point"] {
-    background: conic-gradient(#ffa500 var(--point-chance-percent), transparent var(--point-chance-percent) 100%);
-}
-#central #generators-container .wrapper .generator-status .point-chance [data-generator-status="shadow-point"] {
-    
-}
 /* #central #generators-container .wrapper .point-chances .point-chance .point {
     opacity: 0.5;
 }

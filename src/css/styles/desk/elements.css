@@ -26,3 +26,39 @@ div.cost-preview .point.energy {
     margin: 6px;
     opacity: 0.55;
 }
+
+/* Gen buffs and status - Point chances */
+
+#central #generators-container .wrapper .generator-status {
+    display: flex;
+}
+#central #generators-container .wrapper #chargeGenerator ~ .generator-status {
+    transform: translateY(16px);
+} 
+
+/* Point Chance */
+
+#central #generators-container .wrapper .generator-status div.point-chance {
+    --point-chance-percent: 100%;
+
+    --point-base-unit: 18px;
+    --point-max-unit: 24px;
+
+    --point-base-width: var(--point-base-unit);
+    --point-base-height: var(--point-base-unit);
+    --point-base-margin: calc((var(--point-max-unit) - var(--point-base-unit)) / 2);
+
+    display: flex;
+}
+
+div.point-chance .point.basic {
+    width: var(--point-base-width);
+    height: var(--point-base-height);
+    margin: var(--point-base-margin);
+}
+div.point-chance .point.basic[data-generator-status="point"] {
+    background: conic-gradient(var(--click-gen-bg-color) var(--point-chance-percent), transparent var(--point-chance-percent) 100%);
+}
+div.point-chance [data-generator-status="shadow-point"] {
+    
+}
