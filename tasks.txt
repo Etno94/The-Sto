@@ -1,7 +1,7 @@
 Activo:
 
-- (UI) implementacion de elementos visuales para generadores
-    - Click gen
+- (UI) implementacion de gen status elementos para generadores
+    - Revampeo de modelo de generator data
 
 Tareas:
 
