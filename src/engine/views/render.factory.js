@@ -62,7 +62,7 @@ export default class Render {
 
         const wrappedGenerator = WrapperDirector.wrapChildren([
             GeneratorDirector.createGenerator(generatorName, classes),
-            GeneratorDirector.createPointChancesWrap([
+            GeneratorDirector.createGeneratorStatusWrap([
                 Render.renderPoint('point')
             ])
         ]);

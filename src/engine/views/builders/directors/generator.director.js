@@ -22,13 +22,13 @@ export default class GeneratorDirector {
      * @param {HTMLDivElement[]} [pointsToShow]
      * @returns {HTMLDivElement}
      */
-    static createPointChancesWrap(pointsToShow = []) {
+    static createGeneratorStatusWrap(pointsToShow = []) {
         /** @type {HTMLElement[]} */
         let lastWrappers = [];
 
         for (const point of pointsToShow) {
             const lastWrapper = new ElBuilder('div')
-                .addClass(DataManager.getPointChancesWrapClasses().layer_1)
+                .addClass(DataManager.getGeneratorStatusWrapClasses().layer_1)
                 .appendChild(
                     new ElBuilder(point)
                         .addDataSet(DataManager.getDataSetAttrs().generatorStatus, DataManager.getDataSetGeneratorStatus().point)
@@ -37,7 +37,7 @@ export default class GeneratorDirector {
                 .appendChild(
                     new ElBuilder(point)
                         .addDataSet(DataManager.getDataSetAttrs().generatorStatus, DataManager.getDataSetGeneratorStatus().shadowPoint)
-                        .addClass(DataManager.getPointChancesWrapClasses().layer_shadow_point)
+                        .addClass(DataManager.getGeneratorStatusWrapClasses().layer_shadow_point)
                         .finish()
                 );
 
@@ -45,7 +45,7 @@ export default class GeneratorDirector {
         }
 
         const pointChancesWrapper = new ElBuilder('div')
-            .addClass(DataManager.getPointChancesWrapClasses().layer_0)
+            .addClass(DataManager.getGeneratorStatusWrapClasses().layer_0)
 
         for (const wrap of lastWrappers) {
             pointChancesWrapper.appendChild(wrap);
