@@ -1,6 +1,17 @@
 :root {
     --rows: 6;
     --columns: 6;
+
+    --click-gen-bg-color: #ffa500;
+    --cd-gen-bg-color: #FF6300;
+    --charge-gen-bg-color: #a200ff;
+
+    --point-base-unit: 48px;
+    --point-max-unit: 60px;
+
+    --point-base-width: var(--point-base-unit);
+    --point-base-height: var(--point-base-unit);
+    --point-base-margin: calc((var(--point-max-unit) - var(--point-base-unit)) / 2);
 }
 
 #container {

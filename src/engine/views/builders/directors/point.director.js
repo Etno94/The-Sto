@@ -9,16 +9,16 @@ export default class PointDirector {
      * @param {HTMLDivElement} pointToWrap
      * @returns {HTMLDivElement}
      */
-    static wrapBasicPoint(pointToWrap, classes = []) {
-        Asserts.stringArray(classes);
-        Asserts.htmlElement(pointToWrap);
+    // static wrapBasicPoint(pointToWrap, classes = []) {
+    //     Asserts.stringArray(classes);
+    //     Asserts.htmlElement(pointToWrap);
 
-        return new ElBuilder('div')
-            .addClass(DataManager.getPointClassesData().wrap.layer_0)
-            .addClass(classes)
-            .appendChild(pointToWrap)
-            .finish();
-    }
+    //     return new ElBuilder('div')
+    //         .addClass(DataManager.getPointClassesData().wrap.layer_0)
+    //         .addClass(classes)
+    //         .appendChild(pointToWrap)
+    //         .finish();
+    // }
 
     /**
      * @param {string[]} [classes=[]]

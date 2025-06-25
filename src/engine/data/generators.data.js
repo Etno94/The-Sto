@@ -8,7 +8,7 @@ export const GENERATOR_IDS = {
 
 /** @type {DataGeneratorClasses} */
 export const GENERATOR_CLASSES = {
-    default: ["cell", "m-24"],
+    default: ["cell"],
     hint: ['hint'],
     canBuild: ['blank'],
     onCd: ['on-cd']

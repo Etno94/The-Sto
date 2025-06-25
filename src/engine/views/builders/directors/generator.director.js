@@ -19,6 +19,42 @@ export default class GeneratorDirector {
     }
 
     /**
+     * @param {HTMLDivElement[]} [pointsToShow]
+     * @returns {HTMLDivElement}
+     */
+    static createPointChancesWrap(pointsToShow = []) {
+        /** @type {HTMLElement[]} */
+        let lastWrappers = [];
+
+        for (const point of pointsToShow) {
+            const lastWrapper = new ElBuilder('div')
+                .addClass(DataManager.getPointChancesWrapClasses().layer_1)
+                .appendChild(
+                    new ElBuilder(point)
+                        .addDataSet(DataManager.getDataSetAttrs().generatorStatus, DataManager.getDataSetGeneratorStatus().point)
+                        .finish()
+                )
+                .appendChild(
+                    new ElBuilder(point)
+                        .addDataSet(DataManager.getDataSetAttrs().generatorStatus, DataManager.getDataSetGeneratorStatus().shadowPoint)
+                        .addClass(DataManager.getPointChancesWrapClasses().layer_shadow_point)
+                        .finish()
+                );
+
+            lastWrappers.push(lastWrapper.finish());
+        }
+
+        const pointChancesWrapper = new ElBuilder('div')
+            .addClass(DataManager.getPointChancesWrapClasses().layer_0)
+
+        for (const wrap of lastWrappers) {
+            pointChancesWrapper.appendChild(wrap);
+        }
+
+        return pointChancesWrapper.finish();
+    }
+
+    /**
      * @returns {HTMLDivElement}
      */
     static createCostPreview() {

@@ -9,6 +9,7 @@
  * @property { string } type => DataSetTypes
  * @property { string } pointType => PointTypes
  * @property { string } status => DataSetStatus
+ * @property { string } generatorStatus => DataSetGeneratorStatus
  */
 
 /**
@@ -17,6 +18,7 @@
  * @property { string } generator
  * @property { string } costPreview
  * @property { string } wrap
+ * @property { string } generatorStatus => DataSetGeneratorStatus
  * @property { string } animationElement
  */
 
@@ -24,4 +26,10 @@
  * @typedef DataSetStatus
  * @property {string} remove
  * @property {string} cooldown
+ */
+
+/**
+ * @typedef DataSetGeneratorStatus
+ * @property {string} point
+ * @property {string} shadowPoint
  */

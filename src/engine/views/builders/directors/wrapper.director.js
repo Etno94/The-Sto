@@ -16,4 +16,21 @@ export default class WrapperDirector {
             .finish();
     }
 
+    /**
+     * @param {HTMLElement[]} children
+     * @param {string[]} [classes=[]]
+     * @returns {HTMLDivElement}
+     */
+    static wrapChildren(children, classes = []) {
+        const wrapper = new ElBuilder('div')
+            .addClass(DataManager.getWrapClasses())
+            .addClass(classes)
+
+        for (const child of children) {
+            wrapper.appendChild(child);
+        }
+        
+        return wrapper.finish();
+    }
+
 }

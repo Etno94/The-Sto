@@ -1,5 +1,6 @@
 /* Central */
 #central {
+    width: 100%;
     flex: 1 1 auto;
     display: flex;
     flex-direction: column;
@@ -10,7 +11,45 @@
     flex: 1 1 auto;
     justify-content: center;
     align-items: center;
+    gap: 64px;
 }
+
+#central #generators-container .wrapper {
+    width: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Gen buffs and status - Point chances */
+
+#central #generators-container .wrapper .generator-status {
+    display: flex;
+}
+#central #generators-container .wrapper .generator-status .point-chance {
+    --point-chance-percent: 75%;
+
+    display: flex;
+}
+#central #generators-container .wrapper .generator-status .point-chance [data-generator-status="point"] {
+    background: conic-gradient(#ffa500 var(--point-chance-percent), transparent var(--point-chance-percent) 100%);
+}
+#central #generators-container .wrapper .generator-status .point-chance [data-generator-status="shadow-point"] {
+    
+}
+/* #central #generators-container .wrapper .point-chances .point-chance .point {
+    opacity: 0.5;
+}
+#central #generators-container .wrapper .point-chances .point-chance .point:before {
+    display: block;
+    height: inherit;
+    width: inherit;
+    content: '';
+    position: relative;
+    border-radius: 50%;
+    background: conic-gradient(#ffa500 var(--point-chance-percent), transparent var(--point-chance-percent) 100%);
+} */
+
 
 /* Generators */
 .cell {

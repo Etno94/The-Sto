@@ -1,20 +1,25 @@
 /* Points */
 
 .point {
-    width: 48px;
-    height: 48px;
-    background-color: #ffa500;
+    width: var(--point-base-width);
+    height: var(--point-base-height);
+    margin: var(--point-base-margin);
     border-radius: 50%;
 }
 
 .point.basic {
-    margin: 6px;
+    background-color: var(--click-gen-bg-color);
 }
 
 .point.solid {
-    background-color: #FF6300;
-    width: 60px;
-    height: 60px;
+    --point-base-width: var(--point-max-unit);
+    --point-base-height: var(--point-max-unit);
+    --point-base-margin: calc((var(--point-max-unit) - var(--point-base-unit)) / 2);
+
+    background-color: var(--cd-gen-bg-color);
+    width: var(--point-base-width);
+    height: var(--point-base-height);
+    margin: var(--point-base-margin);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -22,7 +27,7 @@
 }
 
 .point.solid div.inner-point {
-    background-color: #ffa500;
+    background-color: var(--click-gen-bg-color);
     height: 42px;
     width: 42px;
     border-radius: 50%;
@@ -30,10 +35,14 @@
 }
 
 .point.energy {
-    width: 36px;
-    height: 36px;
-    margin: 12px;
-    background-color: #a200ff;
+    --point-base-width: calc(var(--point-base-unit) * 0.75);
+    --point-base-height: calc(var(--point-base-unit) * 0.75);
+    --point-base-margin: calc((var(--point-max-unit) - var(--point-base-unit)) / 2);
+
+    width: var(--point-base-width);
+    height: var(--point-base-height);
+    margin: var(--point-base-margin);
+    background-color: var(--charge-gen-bg-color);
     transform: translate(0, 0);
     transition: transform 0.6s ease-in-out;
     will-change: transform;

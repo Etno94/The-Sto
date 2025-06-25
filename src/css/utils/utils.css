@@ -1,4 +1,6 @@
-
+.pos-abs {
+    position: absolute;
+}
 
 .m-4 {margin: 4px}
 .m-8 {margin: 8px}
@@ -87,6 +89,9 @@
     padding: 0px;
 }
 
+.half-opacity {
+    opacity: 0.5;
+}
 .no-opacity {
     opacity: 0;
 }

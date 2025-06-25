@@ -81,6 +81,12 @@ export default class Asserts {
         }
     }
 
+    static stringOrHtmlElement(value, variableName = 'value') {
+        if (!Validators.isHTMLElement(value) && !Validators.isString(value)) {
+            Errors.throwError(`"${variableName}" must be string or HTMLElement.`);
+        }
+    }
+
     static reversable2DMatrix(value, variableName = 'value') {
         if (!Validators.isReservible2DMatrix(value)) {
             Errors.throwError(`Matrix "${variableName}" is not reversible. Det value must not be 0.`);

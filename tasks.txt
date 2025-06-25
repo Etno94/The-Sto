@@ -1,6 +1,7 @@
 Activo:
 
-- (UI) implementacion de wrappers para los elementos de los generadores
+- (UI) implementacion de elementos visuales para generadores
+    - Click gen
 
 Tareas:
 

@@ -1,4 +1,6 @@
 import UIHelper from '../helpers/ui-helper.js';
+import Asserts from '../../utils/asserts.js';
+import Errors from '../../utils/errors.js';
 
  class ElementBuilder {
 
@@ -8,10 +10,14 @@ import UIHelper from '../helpers/ui-helper.js';
     #element = null;
 
     /**
-     * @param {string} tag 
+     * @param {string | HTMLElement} toCreate 
      */
-    constructor(tag) {
-        this.#element = UIHelper.create(tag);
+    constructor(toCreate) {
+        Asserts.stringOrHtmlElement(toCreate, 'toCreate');
+
+        if (typeof toCreate === 'string') this.#element = UIHelper.create(toCreate);
+        else if (toCreate instanceof HTMLElement) this.#element = toCreate.cloneNode(true);
+        else Errors.throwError(`Invalid type for toCreate - typeof: ${typeof toCreate}`);
     }
 
 

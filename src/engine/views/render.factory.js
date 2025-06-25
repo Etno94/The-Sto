@@ -16,10 +16,10 @@ export default class Render {
 
     /**
      * @param {string} pointType
-     * @param {string[]} classes
+     * @param {string[]} [classes]
      * @returns {HTMLDivElement}
      */
-    static renderPoint(pointType, classes) {
+    static renderPoint(pointType, classes = []) {
         Asserts.string(pointType);
         Asserts.stringArray(classes);
 
@@ -36,16 +36,16 @@ export default class Render {
      * @param {string[]} [wrapClasses]
      * @returns {HTMLDivElement}
      */
-    static renderWrappedPoint(pointType, pointClasses, wrapClasses = []) {
-        Asserts.string(pointType);
-        Asserts.stringArray(pointClasses);
-        Asserts.stringArray(wrapClasses);
+    // static renderWrappedPoint(pointType, pointClasses, wrapClasses = []) {
+    //     Asserts.string(pointType);
+    //     Asserts.stringArray(pointClasses);
+    //     Asserts.stringArray(wrapClasses);
 
-        return PointDirector.wrapBasicPoint(
-            Render.renderPoint(pointType, pointClasses),
-            wrapClasses
-        );
-    }
+    //     return PointDirector.wrapBasicPoint(
+    //         Render.renderPoint(pointType, pointClasses),
+    //         wrapClasses
+    //     );
+    // }
 
     // #endregion Points
 
@@ -60,9 +60,13 @@ export default class Render {
         Asserts.string(generatorName);
         Asserts.stringArray(classes);
 
-        const wrappedGenerator = WrapperDirector.wrapChild(GeneratorDirector.createGenerator(generatorName, classes));
+        const wrappedGenerator = WrapperDirector.wrapChildren([
+            GeneratorDirector.createGenerator(generatorName, classes),
+            GeneratorDirector.createPointChancesWrap([
+                Render.renderPoint('point')
+            ])
+        ]);
         return wrappedGenerator;
-        return GeneratorDirector.createGenerator(generatorName, classes);
     }
 
     /**

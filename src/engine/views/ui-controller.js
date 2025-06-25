@@ -372,6 +372,12 @@ class UIController {
 
     // #endregion Generators
 
+    // #region Generator Buffs
+
+    
+
+    // #endregion Generator Buffs
+
     // #region Cost Preview
 
     /**
