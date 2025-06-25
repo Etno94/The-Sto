@@ -44,6 +44,16 @@ import Errors from '../../utils/errors.js';
      * @param {string} value 
      * @returns {ElementBuilder}
      */
+    setProperty(name, value) {
+        this.#element = UIHelper.setProperty(this.#element, name, value);
+        return this;
+    }
+
+    /**
+     * @param {string} name 
+     * @param {string} value 
+     * @returns {ElementBuilder}
+     */
     addAttribute(name, value) {
         this.#element = UIHelper.addAttribute(this.#element, name, value);
         return this;

@@ -219,17 +219,7 @@ class UIController {
 
     // #region Generators
 
-    /**
-     * @param {string} generatorName 
-     * @param {string[]} classes
-     * @returns {HTMLElement}
-     */
-    #renderGenerator(generatorName, classes) {
-        Asserts.string(generatorName);
-        Asserts.stringArray(classes);
-
-        return Render.renderGenerator(generatorName, classes);
-    }
+    // Generator Wrappers
 
     /** 
      * @param {HTMLElement} generatorElement 
@@ -258,18 +248,34 @@ class UIController {
         Asserts.string(generatorName);
 
         let generatorElement = document.getElementById(generatorName);
-        if (!generatorElement) generatorElement = this.#createWrappedGeneratorElement(generatorName).querySelector(`button#${generatorName}`);
+        if (!generatorElement) 
+            generatorElement = this.#createWrappedGeneratorElement(
+                                this.#renderGenerator(
+                                    generatorName, DataManager.getAnimations().width.classes))
+                                .querySelector(`button#${generatorName}`);
         return generatorElement;
     }
 
     /**
      * @param {string} generatorName 
+     * @param {string[]} classes
      * @returns {HTMLElement}
      */
-    #createWrappedGeneratorElement(generatorName) {
+    #renderGenerator(generatorName, classes) {
         Asserts.string(generatorName);
-        
-        return this.#renderGenerator(generatorName, DataManager.getAnimations().width.classes);
+        Asserts.stringArray(classes);
+
+        return Render.renderGenerator(generatorName, classes);
+    }
+
+    /**
+     * @param {HTMLElement} generatorElement 
+     * @returns {HTMLElement}
+     */
+    #createWrappedGeneratorElement(generatorElement) {
+        Asserts.htmlElement(generatorElement);
+
+        return Render.renderWrappedGenerator(generatorElement);
     }
 
     /** 
@@ -282,6 +288,8 @@ class UIController {
         return UIHelper.containsClasses(generatorElement.parentNode, DataManager.getWrapClasses());
     }
 
+    // Generator Flow
+
     /** @param {HTMLElement} generatorElement */
     showHint(generatorElement) {
         Asserts.htmlElement(generatorElement);
@@ -290,7 +298,7 @@ class UIController {
         if (!UIHelper.containsClasses(generatorElement, hintClasses))
             UIHelper.addClass(generatorElement, hintClasses);
     }
-
+    
     /** @param {HTMLElement} generatorElement */
     showBuild(generatorElement) {
         Asserts.htmlElement(generatorElement);
@@ -374,7 +382,73 @@ class UIController {
 
     // #region Generator Buffs
 
-    
+    /**
+     * @param {string} generatorName 
+     * @param {Array} pointChances
+     * @returns {HTMLElement[]}
+     */
+    getPointChanceElements(generatorName, pointChances = []) {
+        Asserts.string(generatorName);
+
+        switch (generatorName) {
+            case DataManager.getGeneratorIds().CLICK:
+                pointChances = [
+                    {type: DataManager.getPointTypesData().point, chance: 80},
+                    {type: DataManager.getPointTypesData().point, chance: 37},
+                    {type: DataManager.getPointTypesData().point, chance: 59},
+                ];
+                break;
+            case DataManager.getGeneratorIds().COOLDOWN:
+                pointChances = [
+                    {type: DataManager.getPointTypesData().solid_point, chance: 80},
+                    {type: DataManager.getPointTypesData().solid_point, chance: 37},
+                    {type: DataManager.getPointTypesData().solid_point, chance: 59},
+                ];
+                break;
+            case DataManager.getGeneratorIds().CHARGE:
+                pointChances = [
+                    {type: DataManager.getPointTypesData().energy_point, chance: 80},
+                    {type: DataManager.getPointTypesData().energy_point, chance: 37},
+                    {type: DataManager.getPointTypesData().energy_point, chance: 59},
+                ];
+                break;
+        }
+
+        const pointElements = [];
+        pointChances.forEach(pointChance => {
+            pointElements.push(Render.renderPoint(pointChance.type))
+        })
+
+        return Render.renderPointChanceWrapper(pointElements);
+    }
+
+    /**
+     * @param {string} generatorName 
+     * @param {HTMLElement[]} [pointChanceElements]
+     */
+    setGeneratorStatusElements(generatorName, pointChanceElements = []) {
+        Asserts.string(generatorName);
+        Asserts.htmlArray(pointChanceElements);
+
+        const generatorElement = this.getGeneratorElement(generatorName);
+        const generatorStatusElement = generatorElement.nextSibling;
+        if (!UIHelper.containsClass(generatorStatusElement, DataManager.getGeneratorStatusWrapClasses().layer_0)) return;
+
+        
+    }
+
+    /**
+     * @param {string} generatorName 
+     * @param {Object} pointChances
+     */
+    updateGeneratorStatusElements(generatorName, pointChances) {
+        Asserts.string(generatorName);
+
+        const generatorElement = this.getGeneratorElement(generatorName);
+        const generatorStatusElement = generatorElement.nextSibling;
+        if (!UIHelper.containsClass(generatorStatusElement, DataManager.getGeneratorStatusWrapClasses().layer_0)) return;
+
+    }
 
     // #endregion Generator Buffs
 

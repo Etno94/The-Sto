@@ -1,6 +1,6 @@
 import { BUS_EVENTS } from '../../data/bus-events.data.js';
 import { POINT_PROPS, POINT_TYPES, POINT_CLASSES } from '../../data/points.data.js';
-import { GENERATORS, GENERATOR_CLASSES, BUILD_GENERATOR } from '../../data/generators.data.js';
+import { GENERATOR_IDS, GENERATORS, GENERATOR_CLASSES, BUILD_GENERATOR } from '../../data/generators.data.js';
 import { STORAGE_UPGRADES } from '../../data/storage.data.js';
 import { ANIMATIONS } from "../../data/animations.data.js";
 import { DATA_SET_ATTRs, DATA_SET_TYPES, DATA_SET_STATUS, DATA_SET_GENERATOR_STATUS } from '../../data/data-set-attr.data.js';
@@ -48,6 +48,13 @@ export default class DataManager {
     // #endregion Points
 
     // #region Generators
+
+    /**
+     * @return { DataGeneratorId | null }
+     */
+    static getGeneratorIds() {
+        return Utils.deepCopy(GENERATOR_IDS) || null;
+    }
 
     /**
      * @param { string } generatorName 

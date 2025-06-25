@@ -1,5 +1,6 @@
 import {POINT_TYPES} from './points.data.js';
 
+/** @type {DataGeneratorId} */
 export const GENERATOR_IDS = {
     CLICK: 'clickGenerator',
     COOLDOWN: 'cooldownGenerator',

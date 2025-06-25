@@ -1,5 +1,6 @@
 import ElBuilder from "../element.builder.js";
 import DataManager from "../../../systems/managers/data.manager.js";
+import Asserts from "../../../utils/asserts.js";
 
 export default class GeneratorDirector {
 
@@ -19,39 +20,53 @@ export default class GeneratorDirector {
     }
 
     /**
-     * @param {HTMLDivElement[]} [pointsToShow]
+     * @param {HTMLDivElement[]} [statusElements]
      * @returns {HTMLDivElement}
      */
-    static createGeneratorStatusWrap(pointsToShow = []) {
-        /** @type {HTMLElement[]} */
-        let lastWrappers = [];
+    static createGeneratorStatusWrap(statusElements = []) {
+        Asserts.htmlArray(statusElements);
 
-        for (const point of pointsToShow) {
-            const lastWrapper = new ElBuilder('div')
-                .addClass(DataManager.getGeneratorStatusWrapClasses().layer_1)
+        const pointChancesWrapper = new ElBuilder('div')
+            .addClass(DataManager.getGeneratorStatusWrapClasses().layer_0)
+
+        for (const wrap of statusElements) {
+            pointChancesWrapper.appendChild(wrap);
+        }
+
+        return pointChancesWrapper.finish();
+    }
+
+    /**
+     * @param {HTMLDivElement[]} pointElements
+     * @param {string[]} [chances]
+     * @returns {HTMLDivElement[]}
+     */
+    static createPointChanceWrap(pointElements, chances = []) {
+        Asserts.htmlArray(pointElements);
+        Asserts.stringArray(chances);
+
+        /** @type {HTMLElement[]} */
+        let pointChanceWrappers = [];
+
+        for (const point of pointElements) {
+            const pointChanceWrap = new ElBuilder('div')
+                .addClass(DataManager.getPointChanceWrapClasses().layer_0)
                 .appendChild(
                     new ElBuilder(point)
-                        .addDataSet(DataManager.getDataSetAttrs().generatorStatus, DataManager.getDataSetGeneratorStatus().point)
+                        .addDataSet(DataManager.getDataSetAttrs().generatorStatus, DataManager.getDataSetGeneratorStatus().pointChance)
                         .finish()
                 )
                 .appendChild(
                     new ElBuilder(point)
                         .addDataSet(DataManager.getDataSetAttrs().generatorStatus, DataManager.getDataSetGeneratorStatus().shadowPoint)
-                        .addClass(DataManager.getGeneratorStatusWrapClasses().layer_shadow_point)
+                        .addClass(DataManager.getPointChanceWrapClasses().layer_1.shadowPoint)
                         .finish()
                 );
 
-            lastWrappers.push(lastWrapper.finish());
+            pointChanceWrappers.push(pointChanceWrap.finish());
         }
 
-        const pointChancesWrapper = new ElBuilder('div')
-            .addClass(DataManager.getGeneratorStatusWrapClasses().layer_0)
-
-        for (const wrap of lastWrappers) {
-            pointChancesWrapper.appendChild(wrap);
-        }
-
-        return pointChancesWrapper.finish();
+        return pointChanceWrappers;
     }
 
     /**

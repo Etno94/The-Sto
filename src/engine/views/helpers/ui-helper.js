@@ -69,19 +69,6 @@ export default class UIHelper {
     }
 
     /**
-     * @param {HTMLElement} element
-     * @param {string} property 
-     * @param {string} value 
-     * @returns {HTMLElement}
-     */
-    static setProperty(element, property, value) {
-        Asserts.htmlElement(element);
-        Asserts.string(property);
-        Asserts.string(value);
-        return element.style.setProperty(property, value);
-    }
-
-    /**
      * @param {HTMLElement} parent 
      * @return {boolean}
      */
@@ -199,6 +186,19 @@ export default class UIHelper {
     }
 
     // #endregion Style Class
+
+    /**
+     * @param {HTMLElement} element
+     * @param {string} property 
+     * @param {string} value 
+     * @returns {HTMLElement}
+     */
+    static setProperty(element, property, value) {
+        Asserts.htmlElement(element);
+        Asserts.string(property);
+        Asserts.string(value);
+        return element.style.setProperty(property, value);
+    }
 
     /**
      * @param {HTMLElement} element

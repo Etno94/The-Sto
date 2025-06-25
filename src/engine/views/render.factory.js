@@ -30,23 +30,6 @@ export default class Render {
         })[pointType](classes);
     }
 
-    /**
-     * @param {string} pointType
-     * @param {string[]} pointClasses
-     * @param {string[]} [wrapClasses]
-     * @returns {HTMLDivElement}
-     */
-    // static renderWrappedPoint(pointType, pointClasses, wrapClasses = []) {
-    //     Asserts.string(pointType);
-    //     Asserts.stringArray(pointClasses);
-    //     Asserts.stringArray(wrapClasses);
-
-    //     return PointDirector.wrapBasicPoint(
-    //         Render.renderPoint(pointType, pointClasses),
-    //         wrapClasses
-    //     );
-    // }
-
     // #endregion Points
 
     // #region Generators
@@ -60,13 +43,46 @@ export default class Render {
         Asserts.string(generatorName);
         Asserts.stringArray(classes);
 
+        return GeneratorDirector.createGenerator(generatorName, classes);
+    }
+
+    /**
+     * @param {HTMLDivElement} generatorElement
+     * @param {string[]} [classes]
+     * @returns {HTMLDivElement}
+     */
+    static renderWrappedGenerator(generatorElement, classes = []) {
+        Asserts.htmlElement(generatorElement);
+        Asserts.stringArray(classes);
+
         const wrappedGenerator = WrapperDirector.wrapChildren([
-            GeneratorDirector.createGenerator(generatorName, classes),
-            GeneratorDirector.createGeneratorStatusWrap([
-                Render.renderPoint('point')
-            ])
-        ]);
+            generatorElement,
+            GeneratorDirector.createGeneratorStatusWrap()
+        ], classes);
+
         return wrappedGenerator;
+    }
+
+    // #endregion Generators
+
+    // #region UI Elements
+
+    /**
+     * @param {HTMLElement[]} [generatorStatusElements] 
+     * @returns {HTMLElement[]}
+     */
+    static renderGeneratorStatusWrap(generatorStatusElements = []) {
+        Asserts.htmlArray(generatorStatusElements);
+        return GeneratorDirector.createGeneratorStatusWrap(generatorStatusElements);
+    }
+
+    /**
+     * @param {HTMLElement[]} pointElements 
+     * @returns {HTMLElement[]}
+     */
+    static renderPointChanceWrapper(pointElements) {
+        Asserts.htmlArray(pointElements);
+        return GeneratorDirector.createPointChanceWrap(pointElements);
     }
 
     /**
@@ -76,7 +92,7 @@ export default class Render {
         return GeneratorDirector.createCostPreview();
     }
 
-    // #endregion Generators
+    // #endregion UI Elements
 
     // #region Animation Elements
 

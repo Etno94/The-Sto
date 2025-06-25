@@ -1,4 +1,11 @@
 /**
+ * @typedef {Object} DataGeneratorId
+ * @property {string} CLICK
+ * @property {string} COOLDOWN
+ * @property {string} CHARGE
+ */
+
+/**
  * @typedef {Object} DataGenerator
  * @property {string} name
  * @property {PointSet} [generates]
