@@ -30,8 +30,8 @@
 
 .point.solid div.inner-point {
     background-color: var(--click-gen-bg-color);
-    height: 42px;
-    width: 42px;
+    width: calc((var(--point-base-width) / 10) * 7);
+    height: calc((var(--point-base-height) / 10) * 7);
     border-radius: 50%;
     box-shadow: inset 0px 0px 4px 2px #ffffff;
 }

@@ -7,4 +7,7 @@
  * @property {boolean} built
  * @property {number} timesUsed
  * @property {number} [remainingCD=0]
+ * @property {number} currentMultiplier
+ * @property {number} currentChance
+ * @property {number} [guaranteedChanceTries=0]
  */

@@ -323,7 +323,7 @@ class UIController {
     /** @param { boolean } isDisabled */
     manageLockGenerators(isDisabled = false) {
         Asserts.boolean(isDisabled);
-        if (!UIHelper.hasChildrens(this.#generatorsContainer)) return;
+        if (!UIHelper.hasChildren(this.#generatorsContainer)) return;
 
         const generatorElements = Array.from(this.#generatorsContainer.children);
         generatorElements.forEach(gen => gen.disabled = isDisabled);
@@ -380,7 +380,7 @@ class UIController {
 
     // #endregion Generators
 
-    // #region Generator Buffs
+    // #region Generator Status
 
     /**
      * @param {string} generatorName 
@@ -396,6 +396,12 @@ class UIController {
                     {type: DataManager.getPointTypesData().point, chance: 80},
                     {type: DataManager.getPointTypesData().point, chance: 37},
                     {type: DataManager.getPointTypesData().point, chance: 59},
+                    {type: DataManager.getPointTypesData().point, chance: 80},
+                    {type: DataManager.getPointTypesData().point, chance: 37},
+                    {type: DataManager.getPointTypesData().point, chance: 59},
+                    {type: DataManager.getPointTypesData().point, chance: 80},
+                    {type: DataManager.getPointTypesData().point, chance: 37},
+                    {type: DataManager.getPointTypesData().point, chance: 59},
                 ];
                 break;
             case DataManager.getGeneratorIds().COOLDOWN:
@@ -403,10 +409,22 @@ class UIController {
                     {type: DataManager.getPointTypesData().solid_point, chance: 80},
                     {type: DataManager.getPointTypesData().solid_point, chance: 37},
                     {type: DataManager.getPointTypesData().solid_point, chance: 59},
+                    {type: DataManager.getPointTypesData().solid_point, chance: 80},
+                    {type: DataManager.getPointTypesData().solid_point, chance: 37},
+                    {type: DataManager.getPointTypesData().solid_point, chance: 59},
+                    {type: DataManager.getPointTypesData().solid_point, chance: 80},
+                    {type: DataManager.getPointTypesData().solid_point, chance: 37},
+                    {type: DataManager.getPointTypesData().solid_point, chance: 59},
                 ];
                 break;
             case DataManager.getGeneratorIds().CHARGE:
                 pointChances = [
+                    {type: DataManager.getPointTypesData().energy_point, chance: 80},
+                    {type: DataManager.getPointTypesData().energy_point, chance: 37},
+                    {type: DataManager.getPointTypesData().energy_point, chance: 59},
+                    {type: DataManager.getPointTypesData().energy_point, chance: 80},
+                    {type: DataManager.getPointTypesData().energy_point, chance: 37},
+                    {type: DataManager.getPointTypesData().energy_point, chance: 59},
                     {type: DataManager.getPointTypesData().energy_point, chance: 80},
                     {type: DataManager.getPointTypesData().energy_point, chance: 37},
                     {type: DataManager.getPointTypesData().energy_point, chance: 59},
@@ -432,11 +450,12 @@ class UIController {
 
         const generatorElement = this.getGeneratorElement(generatorName);
         const generatorStatusElement = generatorElement.nextSibling;
-        if (!UIHelper.containsClass(generatorStatusElement, DataManager.getGeneratorStatusWrapClasses().layer_0)) return;
-
-        
+        if (!UIHelper.containsClasses(generatorStatusElement, DataManager.getGeneratorStatusWrapClasses().layer_0)) return;
+        if (UIHelper.hasChildren(generatorStatusElement)) return; // To revamp
+        UIHelper.appendChildren(generatorStatusElement, pointChanceElements);
     }
 
+    // Pending
     /**
      * @param {string} generatorName 
      * @param {Object} pointChances
@@ -449,8 +468,9 @@ class UIController {
         if (!UIHelper.containsClass(generatorStatusElement, DataManager.getGeneratorStatusWrapClasses().layer_0)) return;
 
     }
+    // --Pending
 
-    // #endregion Generator Buffs
+    // #endregion Generator Status
 
     // #region Cost Preview
 
@@ -461,7 +481,7 @@ class UIController {
     hasCostPreview(parentElement) {
         Asserts.htmlElement(parentElement);
 
-        if (!UIHelper.hasChildrens(parentElement)) return false;
+        if (!UIHelper.hasChildren(parentElement)) return false;
         for (let child of parentElement.children) {
             if (UIHelper.isDataSetValue(child, this.#dataset.attr.type, this.#dataset.types.costPreview)) {
                 return true;

@@ -150,7 +150,7 @@ class GeneratorManager {
     /**
      * @returns { string[] }
      */
-    getBuitGeneratorNames() {
+    getBuiltGeneratorNames() {
         return this.#getProxySaveGeneratorByCriteria(
             (generator) => generator.hinted && generator.canBuild && generator.built)
             .map(gen => gen.name) || null;

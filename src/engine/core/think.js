@@ -37,7 +37,7 @@ function checkGeneratorUnlocks() {
   checkLockedGenerators([...generatorM.getLockedGeneratorNames()]);
   checkHintedGenerators([...generatorM.getHintedGeneratorNames()]);
   checkCanBeBuiltGenerators([...generatorM.getBuildableGeneratorNames()]);
-  checkBuiltGenerators([...generatorM.getBuitGeneratorNames()]);
+  checkBuiltGenerators([...generatorM.getBuiltGeneratorNames()]);
 }
 
 /** @param {string[]} generatorNames */
@@ -67,6 +67,7 @@ function checkHintedGenerators(generatorNames) {
       let generatorElement = UIControl.getGeneratorElement(generatorName);
       UIControl.showHint(generatorElement);
       UIControl.showWrappedGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorName));
+      
       InputControl.addEventListener(generatorElement, "click", generatorOnClick, generatorName);
     }
   });
@@ -194,6 +195,7 @@ function renderGeneralUpdatedStatus(interval) {
   setStoragePoints();
   updateGeneratorsCooldown(interval);
   updateStorageUpgradeCostPreview();
+  updateGeneratorStatus();
 }
 
 function setStoragePoints() {
@@ -228,6 +230,16 @@ function updateGeneratorsCooldown(interval = 0, initialSet = false) {
 function updateStorageUpgradeCostPreview() {
   const currentCost = new PointCollection(storageM.getCurrentUpgradeCost()).collection;
   UIControl.renderCostPreview(storageM.upgradeStorageWrapperElement, currentCost);
+}
+
+function updateGeneratorStatus() {
+  const builtGeneratorNames = generatorM.getBuiltGeneratorNames();
+  if (!Validators.isNonEmptyArray(builtGeneratorNames)) return;
+
+  builtGeneratorNames.forEach(generatorName => {
+    const pointChanceElements = UIControl.getPointChanceElements(generatorName);
+    UIControl.setGeneratorStatusElements(generatorName, pointChanceElements);
+  });
 }
 
 // #endregion Render

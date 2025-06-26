@@ -72,7 +72,7 @@ export default class UIHelper {
      * @param {HTMLElement} parent 
      * @return {boolean}
      */
-    static hasChildrens(parent) {
+    static hasChildren(parent) {
         Asserts.htmlElement(parent);
         return parent.children && parent.children.length > 0;
     }
@@ -286,6 +286,29 @@ export default class UIHelper {
     }
 
     /**
+     * @param {HTMLElement} parent 
+     * @param {HTMLElement[]} children
+     * @returns {HTMLElement}
+     */
+    static appendChildren(parent, children) {
+        Asserts.htmlElement(parent);
+        Asserts.htmlArray(children);
+
+        parent.append(...children);
+        return parent;
+    }
+
+    /**
+     * @param {HTMLElement} parent 
+     * @returns {HTMLElement}
+     */
+    static removeChildren(parent) {
+        Asserts.htmlElement(parent);
+        parent.innerHTML = '';
+        return parent;
+    }
+
+    /**
      * @param {string} strategy 
      * @param {HTMLElement} elementTarget 
      * @param {HTMLElement} elementReference 
@@ -327,7 +350,7 @@ export default class UIHelper {
     static applyToChildren(parent, callback)  {
         Asserts.htmlElement(parent);
         Asserts.function(callback);
-        if (!UIHelper.hasChildrens(parent)) return parent;
+        if (!UIHelper.hasChildren(parent)) return parent;
 
         for (let child of parent.children) {
             Asserts.htmlElement(child)

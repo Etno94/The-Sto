@@ -2,6 +2,7 @@ Activo:
 
 - (UI) implementacion de gen status elementos para generadores
     - Revampeo de modelo de generator data
+        - Implementacion de pointChance
 
 Tareas:
 
@@ -25,6 +26,8 @@ Nice to Know:
 
 Bugs:
 
+-low:
+    - (visual) los generadores, al estar dentro de un wrapper, aparecen abruptamente en el canvas
 
 
 ---------------

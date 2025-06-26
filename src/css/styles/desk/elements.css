@@ -30,7 +30,14 @@ div.cost-preview .point.energy {
 /* Gen buffs and status - Point chances */
 
 #central #generators-container .wrapper .generator-status {
+    max-width: 70%;
     display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
 }
 #central #generators-container .wrapper #chargeGenerator ~ .generator-status {
     transform: translateY(16px);
@@ -70,9 +77,13 @@ div.point-chance .point.solid {
     --point-base-height: var(--point-solid-unit);
     --point-base-margin: calc((var(--point-max-unit) - var(--point-solid-unit)) / 2);
 
-    width: var(----point-base-width);
+    width: var(--point-base-width);
     height: var(--point-base-height);
     margin: var(--point-base-margin);
+}
+div.point-chance .point.solid div.inner-point {
+    width: calc((var(--point-base-width) / 3) * 2);
+    height: calc((var(--point-base-height) / 3) * 2);
 }
 
 /* Energy Point */

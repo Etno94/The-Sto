@@ -28,6 +28,23 @@ const CLICK_GENERATOR = {
 /**
  * @type {DataGenerator}
  */
+const CLICK_GENERATORb = {
+    name: GENERATOR_IDS.CLICK,
+    generates: {
+        baseMultiplier: 1,
+        points: [
+            {
+                type: POINT_TYPES.point,
+                baseChance: 0.8,
+                startingGuaranteedChanceTries: 3
+            }
+        ]
+    }
+}
+
+/**
+ * @type {DataGenerator}
+ */
 const COOLDOWN_GENERATOR = {
     name: GENERATOR_IDS.COOLDOWN,
     generates: {

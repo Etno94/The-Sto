@@ -26,6 +26,9 @@ export const FRESH_SAVE = {
             canBuild: true,
             built: true,
             timesUsed: 0,
+            currentMultiplier: 1,
+            currentChance: 0.8,
+            guaranteedChanceTries: 3
         },
         {
             name: GENERATOR_IDS.COOLDOWN,
@@ -34,7 +37,9 @@ export const FRESH_SAVE = {
             progress: 0,
             built: false,
             timesUsed: 0,
-            remainingCD: 0
+            remainingCD: 0,
+            currentMultiplier: 1,
+            currentChance: 1,
         },
         {
             name: GENERATOR_IDS.CHARGE,
@@ -42,7 +47,9 @@ export const FRESH_SAVE = {
             canBuild: false,
             progress: 0,
             built: false,
-            timesUsed: 0
+            timesUsed: 0,
+            currentMultiplier: 1,
+            currentChance: 0.5,
         },
     ]
 }
