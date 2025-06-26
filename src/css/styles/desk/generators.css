@@ -22,22 +22,6 @@
     gap: 8px;
 }
 
-
-
-/* #central #generators-container .wrapper .point-chances .point-chance .point {
-    opacity: 0.5;
-}
-#central #generators-container .wrapper .point-chances .point-chance .point:before {
-    display: block;
-    height: inherit;
-    width: inherit;
-    content: '';
-    position: relative;
-    border-radius: 50%;
-    background: conic-gradient(#ffa500 var(--point-chance-percent), transparent var(--point-chance-percent) 100%);
-} */
-
-
 /* Generators */
 .cell {
     --cell-hover-transform: scale(1.15);

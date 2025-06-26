@@ -18,17 +18,7 @@ export const GENERATOR_CLASSES = {
 /**
  * @type {DataGenerator}
  */
-const CLICK_GENERATOR = {
-    name: GENERATOR_IDS.CLICK,
-    generates: {
-        [POINT_TYPES.point]: 1
-    }
-}
-
-/**
- * @type {DataGenerator}
- */
-const CLICK_GENERATORb = {
+export const CLICK_GENERATOR = {
     name: GENERATOR_IDS.CLICK,
     generates: {
         baseMultiplier: 1,
@@ -45,10 +35,16 @@ const CLICK_GENERATORb = {
 /**
  * @type {DataGenerator}
  */
-const COOLDOWN_GENERATOR = {
+export const COOLDOWN_GENERATOR = {
     name: GENERATOR_IDS.COOLDOWN,
     generates: {
-        [POINT_TYPES.solid_point]: 1
+        baseMultiplier: 1,
+        points: [
+            {
+                type: POINT_TYPES.solid_point,
+                baseChance: 1,
+            }
+        ]
     },
     consumes: {
         [POINT_TYPES.point]: 2
@@ -76,10 +72,16 @@ const COOLDOWN_GENERATOR = {
 /**
  * @type {DataGenerator}
  */
-const CHARGE_GENERATOR = {
+export const CHARGE_GENERATOR = {
     name: GENERATOR_IDS.CHARGE,
     generates: {
-        [POINT_TYPES.energy_point]: 1
+        baseMultiplier: 1,
+        points: [
+            {
+                type: POINT_TYPES.energy_point,
+                baseChance: 1
+            }
+        ]
     },
     consumes: {
         [POINT_TYPES.point]: 2,

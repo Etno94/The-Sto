@@ -217,7 +217,7 @@ class GeneratorManager {
 
     /**
      * @param {string} generatorName 
-     * @returns {DataGeneratorGeneratesPoint | null}
+     * @returns {DataGeneratorGeneratesPoint[] | null}
      */
     whatGeneratesPoints(generatorName) {
         return this.whatGenerates(generatorName)?.points || null;

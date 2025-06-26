@@ -1,6 +1,8 @@
-import { GENERATOR_IDS } from './generators.data.js';
-import { FRESH_POINTS } from './points.data.js';
+import { GENERATOR_IDS, CLICK_GENERATOR, COOLDOWN_GENERATOR, CHARGE_GENERATOR } from './generators.data.js';
+import { POINT_TYPES, FRESH_POINTS } from './points.data.js';
 import { STORAGE_UPGRADES} from './storage.data.js';
+
+import {ToSavePoints} from '../utils/adapters/generatorGenerates-to-saveGenerates.adapter.js';
 
 /**
  * @type { SaveType }
@@ -11,7 +13,7 @@ export const FRESH_SAVE = {
         accumulator: 0
     },
     settings: {
-        version: '1.0.0'
+        version: '0.1.0'
     },
     points: FRESH_POINTS,
     points_order: [],
@@ -26,9 +28,8 @@ export const FRESH_SAVE = {
             canBuild: true,
             built: true,
             timesUsed: 0,
-            currentMultiplier: 1,
-            currentChance: 0.8,
-            guaranteedChanceTries: 3
+            currentMultiplier: CLICK_GENERATOR.generates.baseMultiplier,
+            generatesPoints: ToSavePoints(CLICK_GENERATOR.generates.points)
         },
         {
             name: GENERATOR_IDS.COOLDOWN,
@@ -38,8 +39,8 @@ export const FRESH_SAVE = {
             built: false,
             timesUsed: 0,
             remainingCD: 0,
-            currentMultiplier: 1,
-            currentChance: 1,
+            currentMultiplier: COOLDOWN_GENERATOR.generates.baseMultiplier,
+            generatesPoints: ToSavePoints(COOLDOWN_GENERATOR.generates.points)
         },
         {
             name: GENERATOR_IDS.CHARGE,
@@ -48,8 +49,8 @@ export const FRESH_SAVE = {
             progress: 0,
             built: false,
             timesUsed: 0,
-            currentMultiplier: 1,
-            currentChance: 0.5,
+            currentMultiplier: CHARGE_GENERATOR.generates.baseMultiplier,
+            generatesPoints: ToSavePoints(CHARGE_GENERATOR.generates.points)
         },
     ]
 }

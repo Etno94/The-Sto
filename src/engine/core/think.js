@@ -12,8 +12,10 @@ import {generatorM} from "../systems/managers/generator.manager.js";
 import {storageM} from "../systems/managers/storage.manager.js";
 
 import { UIControl } from "../views/ui-controller.js";
+
 import Asserts from "../utils/asserts.js";
 import Validators from "../utils/validators.js";
+import {ToPointSet} from "../utils/adapters/generates-to-pointset.adapter.js";
 
 
 // #region Unlocks
@@ -150,12 +152,14 @@ function builtGeneratorOnClick (generatorName) {
   Asserts.string(generatorName);
 
   const consumePCollection = new PointCollection(generatorM.whatConsumes(generatorName));
-  let generatePCollection = null;
-  if (generatorName === 'clickGenerator') {
-
-  } else {
     // const generatePCollection = new PointCollection(generatorM.whatGenerates(generatorName));
-    generatePCollection = new PointCollection(generatorM.whatGenerates(generatorName));
+  const generatePCollection = new PointCollection();
+  if (generatorName === 'clickGenerator') {
+    const pointsToGenerate = generatorM.whatGeneratesPoints(generatorName);
+    const pointSet = ToPointSet(pointsToGenerate);
+    generatePCollection.set(pointSet);
+  } else {
+    generatePCollection.set(generatorM.whatGenerates(generatorName));
   }
 
   let canConsume = true;

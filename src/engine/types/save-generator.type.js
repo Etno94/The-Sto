@@ -8,6 +8,12 @@
  * @property {number} timesUsed
  * @property {number} [remainingCD=0]
  * @property {number} currentMultiplier
+ * @property {SaveGeneratorPoints[]} generatesPoints
+ */
+
+/**
+ * @typedef {Object} SaveGeneratorPoints
+ * @property {string} type
  * @property {number} currentChance
  * @property {number} [guaranteedChanceTries=0]
  */
