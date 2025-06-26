@@ -411,12 +411,13 @@ class UIController {
                 break;
         }
 
-        const pointElements = [];
+        /** @type {{element: HTMLElement, chance: number}[]} */
+        const pointElementsWithChances = [];
         pointChances.forEach(pointChance => {
-            pointElements.push(Render.renderPoint(pointChance.type))
+            pointElementsWithChances.push({element: Render.renderPoint(pointChance.type), chance: pointChance.chance});
         })
 
-        return Render.renderPointChanceWrapper(pointElements);
+        return Render.renderPointChanceWrapper(pointElementsWithChances);
     }
 
     /**

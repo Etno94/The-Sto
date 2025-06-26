@@ -58,7 +58,7 @@ div.cost-preview .point.energy {
     display: flex;
 }
 
-div.point-chance .point[data-generator-status="point"] {
+div.point-chance .point[data-generator-status="point-chance"] {
     mask-image: conic-gradient(black var(--point-chance-percent), transparent var(--point-chance-percent) 100%);
 }
 

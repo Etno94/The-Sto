@@ -16,6 +16,8 @@ class GeneratorManager {
     /** @type {boolean} */
     #needToCheckCooldowns = false;
 
+    #currentGeneratorStatus = [];
+
 
     constructor () {
         this.#setOrderedGenerators();

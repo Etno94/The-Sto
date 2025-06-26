@@ -37,27 +37,26 @@ export default class GeneratorDirector {
     }
 
     /**
-     * @param {HTMLDivElement[]} pointElements
-     * @param {string[]} [chances]
+     * @param {{element: HTMLElement, chance: number}[]} pointElementsWithChances
      * @returns {HTMLDivElement[]}
      */
-    static createPointChanceWrap(pointElements, chances = []) {
-        Asserts.htmlArray(pointElements);
-        Asserts.stringArray(chances);
+    static createPointChanceWrap(pointElementsWithChances = []) {
+        Asserts.array(pointElementsWithChances);
 
         /** @type {HTMLElement[]} */
         let pointChanceWrappers = [];
 
-        for (const point of pointElements) {
+        for (const {element, chance} of pointElementsWithChances) {
             const pointChanceWrap = new ElBuilder('div')
                 .addClass(DataManager.getPointChanceWrapClasses().layer_0)
+                .setProperty('--point-chance-percent', `${chance}%`)
                 .appendChild(
-                    new ElBuilder(point)
+                    new ElBuilder(element)
                         .addDataSet(DataManager.getDataSetAttrs().generatorStatus, DataManager.getDataSetGeneratorStatus().pointChance)
                         .finish()
                 )
                 .appendChild(
-                    new ElBuilder(point)
+                    new ElBuilder(element)
                         .addDataSet(DataManager.getDataSetAttrs().generatorStatus, DataManager.getDataSetGeneratorStatus().shadowPoint)
                         .addClass(DataManager.getPointChanceWrapClasses().layer_1.shadowPoint)
                         .finish()

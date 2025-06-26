@@ -77,12 +77,12 @@ export default class Render {
     }
 
     /**
-     * @param {HTMLElement[]} pointElements 
+     * @param {{element: HTMLElement, chance: number}[]} pointElementsWithChances
      * @returns {HTMLElement[]}
      */
-    static renderPointChanceWrapper(pointElements) {
-        Asserts.htmlArray(pointElements);
-        return GeneratorDirector.createPointChanceWrap(pointElements);
+    static renderPointChanceWrapper(pointElementsWithChances) {
+        Asserts.array(pointElementsWithChances);
+        return GeneratorDirector.createPointChanceWrap(pointElementsWithChances);
     }
 
     /**

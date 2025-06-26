@@ -18,6 +18,10 @@ import Errors from '../../utils/errors.js';
         if (typeof toCreate === 'string') this.#element = UIHelper.create(toCreate);
         else if (toCreate instanceof HTMLElement) this.#element = toCreate.cloneNode(true);
         else Errors.throwError(`Invalid type for toCreate - typeof: ${typeof toCreate}`);
+
+        if (!this.#element) {
+            throw new Error('ElBuilder failed to initialize this.element');
+        }
     }
 
 
@@ -45,7 +49,7 @@ import Errors from '../../utils/errors.js';
      * @returns {ElementBuilder}
      */
     setProperty(name, value) {
-        this.#element = UIHelper.setProperty(this.#element, name, value);
+        UIHelper.setProperty(this.#element, name, value);
         return this;
     }
 
