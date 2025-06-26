@@ -150,7 +150,13 @@ function builtGeneratorOnClick (generatorName) {
   Asserts.string(generatorName);
 
   const consumePCollection = new PointCollection(generatorM.whatConsumes(generatorName));
-  const generatePCollection = new PointCollection(generatorM.whatGenerates(generatorName));
+  let generatePCollection = null;
+  if (generatorName === 'clickGenerator') {
+
+  } else {
+    // const generatePCollection = new PointCollection(generatorM.whatGenerates(generatorName));
+    generatePCollection = new PointCollection(generatorM.whatGenerates(generatorName));
+  }
 
   let canConsume = true;
   let canGenerate = true;

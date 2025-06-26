@@ -201,10 +201,26 @@ class GeneratorManager {
 
     /**
      * @param { string } generatorName 
-     * @return { PointSet | null}
+     * @return { DataGeneratorGenerates | PointSet | null}
      */
     whatGenerates(generatorName) {
         return Utils.deepCopy(this.#getGeneratorData(generatorName))?.generates || null;
+    }
+
+    /**
+     * @param {string} generatorName 
+     * @returns {number | null}
+     */
+    whatGeneratesMultiplier(generatorName) {
+        return this.whatGenerates(generatorName)?.baseMultiplier || null;
+    }
+
+    /**
+     * @param {string} generatorName 
+     * @returns {DataGeneratorGeneratesPoint | null}
+     */
+    whatGeneratesPoints(generatorName) {
+        return this.whatGenerates(generatorName)?.points || null;
     }
 
     /**

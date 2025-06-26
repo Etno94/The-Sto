@@ -395,39 +395,18 @@ class UIController {
                 pointChances = [
                     {type: DataManager.getPointTypesData().point, chance: 80},
                     {type: DataManager.getPointTypesData().point, chance: 37},
-                    {type: DataManager.getPointTypesData().point, chance: 59},
-                    {type: DataManager.getPointTypesData().point, chance: 80},
-                    {type: DataManager.getPointTypesData().point, chance: 37},
-                    {type: DataManager.getPointTypesData().point, chance: 59},
-                    {type: DataManager.getPointTypesData().point, chance: 80},
-                    {type: DataManager.getPointTypesData().point, chance: 37},
-                    {type: DataManager.getPointTypesData().point, chance: 59},
                 ];
                 break;
             case DataManager.getGeneratorIds().COOLDOWN:
                 pointChances = [
                     {type: DataManager.getPointTypesData().solid_point, chance: 80},
                     {type: DataManager.getPointTypesData().solid_point, chance: 37},
-                    {type: DataManager.getPointTypesData().solid_point, chance: 59},
-                    {type: DataManager.getPointTypesData().solid_point, chance: 80},
-                    {type: DataManager.getPointTypesData().solid_point, chance: 37},
-                    {type: DataManager.getPointTypesData().solid_point, chance: 59},
-                    {type: DataManager.getPointTypesData().solid_point, chance: 80},
-                    {type: DataManager.getPointTypesData().solid_point, chance: 37},
-                    {type: DataManager.getPointTypesData().solid_point, chance: 59},
                 ];
                 break;
             case DataManager.getGeneratorIds().CHARGE:
                 pointChances = [
                     {type: DataManager.getPointTypesData().energy_point, chance: 80},
                     {type: DataManager.getPointTypesData().energy_point, chance: 37},
-                    {type: DataManager.getPointTypesData().energy_point, chance: 59},
-                    {type: DataManager.getPointTypesData().energy_point, chance: 80},
-                    {type: DataManager.getPointTypesData().energy_point, chance: 37},
-                    {type: DataManager.getPointTypesData().energy_point, chance: 59},
-                    {type: DataManager.getPointTypesData().energy_point, chance: 80},
-                    {type: DataManager.getPointTypesData().energy_point, chance: 37},
-                    {type: DataManager.getPointTypesData().energy_point, chance: 59},
                 ];
                 break;
         }
