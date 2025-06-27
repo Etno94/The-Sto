@@ -66,7 +66,7 @@ class GeneratorManager {
 
     // #endregion Setup
 
-    // #region Get Data
+    // #region Get Generator Data
 
     /**
      * @param {string} generatorName 
@@ -85,7 +85,6 @@ class GeneratorManager {
         return index;
     }
 
-
     /**
      * @return {Array}
      */
@@ -102,112 +101,12 @@ class GeneratorManager {
     }
 
     /**
-     * @param {Function} callback 
-     * @returns { SaveGenerator[] | null}
-     */
-    #getProxySaveGeneratorByCriteria(callback) {
-        if (!Validators.isFunction(callback)) return null;
-        return Utils.arrCopy(Global.proxy.generators.filter(callback)) || null;
-    }
-
-    /**
-     * @param {string} generatorName 
-     * @returns { SaveGenerator | null}
-     */
-    #getProxySaveGeneratorByName(generatorName) {
-        if (!Validators.isString(generatorName)) return null;
-        return this.#getProxySaveGeneratorByCriteria((generator) => generator.name === generatorName)[0] || null;
-    }
-
-    get needToCheckCooldowns() {
-        return this.#needToCheckCooldowns;
-    }
-
-    /**
-     * @returns { string[] }
-     */
-    getLockedGeneratorNames() {
-        return this.#getProxySaveGeneratorByCriteria(
-            (generator) => !generator.hinted && !generator.canBuild && !generator.built)
-            .map(gen => gen.name) || null;
-    }
-
-    /**
-     * @returns { string[] }
-     */
-    getHintedGeneratorNames() {
-        return this.#getProxySaveGeneratorByCriteria(
-            (generator) => generator.hinted && !generator.canBuild && !generator.built)
-            .map(gen => gen.name) || null;
-    }
-
-    /**
-     * @returns { string[] }
-     */
-    getBuildableGeneratorNames() {
-        return this.#getProxySaveGeneratorByCriteria(
-            (generator) => generator.hinted && generator.canBuild && !generator.built)
-            .map(gen => gen.name) || null;
-    }
-
-    /**
-     * @returns { string[] }
-     */
-    getBuiltGeneratorNames() {
-        return this.#getProxySaveGeneratorByCriteria(
-            (generator) => generator.hinted && generator.canBuild && generator.built)
-            .map(gen => gen.name) || null;
-    }
-
-    /**
-     * @returns { string[] }
-     */
-    getGeneratorsOnCooldownNames() {
-        return this.#getProxySaveGeneratorByCriteria(
-            (generator) => generator.remainingCD)
-            .map(gen => gen.name) || null;
-    }
-
-    /**
-     * @param {string} generatorName
-     * @returns {number}
-     */
-    getGeneratorRemainingCD(generatorName) {
-        return this.#getProxySaveGeneratorByName(generatorName).remainingCD;
-    }
-
-    /**
-     * @param {string} generatorName
-     * @returns {number}
-     */
-    getGeneratorTimesUsed(generatorName) {
-        return this.#getProxySaveGeneratorByName(generatorName).timesUsed;
-    }
-
-    /**
-     * @param {string} generatorName
-     * @returns {number}
-     */
-    getGeneratorMultiplier(generatorName) {
-        return this.#getProxySaveGeneratorByName(generatorName)?.currentMultiplier || null;
-    }
-
-    /**
-     * @param {string} generatorName
-     * @returns {SaveGeneratorPoints[] | []}
-     */
-    getGeneratorPoints(generatorName) {
-        return this.#getProxySaveGeneratorByName(generatorName)?.generatesPoints || [];
-    }
-
-    /**
      * @param {string} generatorName 
      * @returns {boolean}
      */
     isValidGenerator(generatorName) {
         return Validators.isNotNullNorUndefined(this.#getGeneratorData(generatorName));
     }
-
 
     /**
      * @param { string } generatorName
@@ -315,6 +214,108 @@ class GeneratorManager {
         return Utils.deepCopy(this.#whatBuildRequires(generatorName))?.totalSteps || null;
     }
 
+    // #endregion Get Generator Data
+
+    // #region Get Proxy Save
+
+    /**
+     * @param {Function} callback 
+     * @returns { SaveGenerator[] | null}
+     */
+    #getProxySaveGeneratorByCriteria(callback) {
+        if (!Validators.isFunction(callback)) return null;
+        return Utils.arrCopy(Global.proxy.generators.filter(callback)) || null;
+    }
+
+    /**
+     * @param {string} generatorName 
+     * @returns { SaveGenerator | null}
+     */
+    #getProxySaveGeneratorByName(generatorName) {
+        if (!Validators.isString(generatorName)) return null;
+        return this.#getProxySaveGeneratorByCriteria((generator) => generator.name === generatorName)[0] || null;
+    }
+
+    /**
+     * @returns { string[] }
+     */
+    getLockedGeneratorNames() {
+        return this.#getProxySaveGeneratorByCriteria(
+            (generator) => !generator.hinted && !generator.canBuild && !generator.built)
+            .map(gen => gen.name) || null;
+    }
+
+    /**
+     * @returns { string[] }
+     */
+    getHintedGeneratorNames() {
+        return this.#getProxySaveGeneratorByCriteria(
+            (generator) => generator.hinted && !generator.canBuild && !generator.built)
+            .map(gen => gen.name) || null;
+    }
+
+    /**
+     * @returns { string[] }
+     */
+    getBuildableGeneratorNames() {
+        return this.#getProxySaveGeneratorByCriteria(
+            (generator) => generator.hinted && generator.canBuild && !generator.built)
+            .map(gen => gen.name) || null;
+    }
+
+    /**
+     * @returns { string[] }
+     */
+    getBuiltGeneratorNames() {
+        return this.#getProxySaveGeneratorByCriteria(
+            (generator) => generator.hinted && generator.canBuild && generator.built)
+            .map(gen => gen.name) || null;
+    }
+
+    /**
+     * @returns { string[] }
+     */
+    getGeneratorsOnCooldownNames() {
+        return this.#getProxySaveGeneratorByCriteria(
+            (generator) => generator.remainingCD)
+            .map(gen => gen.name) || null;
+    }
+
+    // Generator Status
+
+    /**
+     * @param {string} generatorName
+     * @returns {number}
+     */
+    getGeneratorRemainingCD(generatorName) {
+        return this.#getProxySaveGeneratorByName(generatorName).remainingCD;
+    }
+
+    /**
+     * @param {string} generatorName
+     * @returns {number}
+     */
+    getGeneratorTimesUsed(generatorName) {
+        return this.#getProxySaveGeneratorByName(generatorName).timesUsed;
+    }
+
+    /**
+     * @param {string} generatorName
+     * @returns {number}
+     */
+    getGeneratorMultiplier(generatorName) {
+        return this.#getProxySaveGeneratorByName(generatorName)?.currentMultiplier || null;
+    }
+
+    /**
+     * @param {string} generatorName
+     * @returns {SaveGeneratorPoints[] | []}
+     */
+    getGeneratorPoints(generatorName) {
+        return this.#getProxySaveGeneratorByName(generatorName)?.generatesPoints || [];
+    }
+
+    // Unlock Flow
 
     /**
      * @param {string} generatorName
@@ -350,9 +351,9 @@ class GeneratorManager {
         return this.#isProp(generatorName, 'built');
     }
 
-    // #endregion Get Data
+    // #endregion Get Proxy Save
 
-    // #region Manage
+    // #region Manage Proxy Save
 
     /**
      * @param { string } generatorName
@@ -422,6 +423,10 @@ class GeneratorManager {
         this.#needToCheckCooldowns = remainingCD > 0 || this.#needToCheckCooldowns;
         if (!remainingCD) EventBus.emit(Events.generator.ready, generatorName);
     }
+    
+    get needToCheckCooldowns() {
+        return this.#needToCheckCooldowns;
+    }
 
     /** @param {boolean} value */
     set needToCheckCooldowns(value) {
@@ -438,6 +443,6 @@ class GeneratorManager {
         this.#setProp(generatorName, 'timesUsed', newTimesUsed);
     }
     
-    // #endregion Manage
+    // #endregion Manage Proxy Save
 }
 export const generatorM = new GeneratorManager();
