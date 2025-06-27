@@ -36,6 +36,9 @@ class UIController {
     /** @type {HTMLElement} */
     #storageUpgrade;
 
+    // UI elements tracking
+    #generatorStatusElements = [];
+
     // Animation tracking
     #pointState = new WeakMap();
     
@@ -384,37 +387,17 @@ class UIController {
 
     /**
      * @param {string} generatorName 
-     * @param {Array} pointChances
+     * @param {SaveGeneratorPoints[]} pointChances
      * @returns {HTMLElement[]}
      */
     getPointChanceElements(generatorName, pointChances = []) {
         Asserts.string(generatorName);
-
-        switch (generatorName) {
-            case DataManager.getGeneratorIds().CLICK:
-                pointChances = [
-                    {type: DataManager.getPointTypesData().point, chance: 80},
-                    {type: DataManager.getPointTypesData().point, chance: 37},
-                ];
-                break;
-            case DataManager.getGeneratorIds().COOLDOWN:
-                pointChances = [
-                    {type: DataManager.getPointTypesData().solid_point, chance: 80},
-                    {type: DataManager.getPointTypesData().solid_point, chance: 37},
-                ];
-                break;
-            case DataManager.getGeneratorIds().CHARGE:
-                pointChances = [
-                    {type: DataManager.getPointTypesData().energy_point, chance: 80},
-                    {type: DataManager.getPointTypesData().energy_point, chance: 37},
-                ];
-                break;
-        }
+        Asserts.array(pointChances);
 
         /** @type {{element: HTMLElement, chance: number}[]} */
         const pointElementsWithChances = [];
         pointChances.forEach(pointChance => {
-            pointElementsWithChances.push({element: Render.renderPoint(pointChance.type), chance: pointChance.chance});
+            pointElementsWithChances.push({element: Render.renderPoint(pointChance.type), chance: pointChance.currentChance});
         })
 
         return Render.renderPointChanceWrapper(pointElementsWithChances);
@@ -431,11 +414,11 @@ class UIController {
         const generatorElement = this.getGeneratorElement(generatorName);
         const generatorStatusElement = generatorElement.nextSibling;
         if (!UIHelper.containsClasses(generatorStatusElement, DataManager.getGeneratorStatusWrapClasses().layer_0)) return;
-        if (UIHelper.hasChildren(generatorStatusElement)) return; // To revamp
+        if (UIHelper.hasChildren(generatorStatusElement)) return; // TODO: currently doesnt refresh, sets and forget. Needs to be able to refresh status items
         UIHelper.appendChildren(generatorStatusElement, pointChanceElements);
     }
 
-    // Pending
+    // TODO: Pending
     /**
      * @param {string} generatorName 
      * @param {Object} pointChances

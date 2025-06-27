@@ -242,7 +242,8 @@ function updateGeneratorStatus() {
   if (!Validators.isNonEmptyArray(builtGeneratorNames)) return;
 
   builtGeneratorNames.forEach(generatorName => {
-    const pointChanceElements = UIControl.getPointChanceElements(generatorName);
+    const generatesPoints = generatorM.getGeneratorPoints(generatorName);
+    const pointChanceElements = UIControl.getPointChanceElements(generatorName, generatesPoints);
     UIControl.setGeneratorStatusElements(generatorName, pointChanceElements);
   });
 }

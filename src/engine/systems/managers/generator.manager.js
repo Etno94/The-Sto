@@ -16,6 +16,7 @@ class GeneratorManager {
     /** @type {boolean} */
     #needToCheckCooldowns = false;
 
+    // TODO: check if we will track here the status items or in UI controller
     #currentGeneratorStatus = [];
 
 
@@ -183,11 +184,21 @@ class GeneratorManager {
         return this.#getProxySaveGeneratorByName(generatorName).timesUsed;
     }
 
-    // TODO: get proxy save multiplier
-    getGeneratorGeneratesMultiplier(generatorName) {
-
+    /**
+     * @param {string} generatorName
+     * @returns {number}
+     */
+    getGeneratorMultiplier(generatorName) {
+        return this.#getProxySaveGeneratorByName(generatorName)?.currentMultiplier || null;
     }
 
+    /**
+     * @param {string} generatorName
+     * @returns {SaveGeneratorPoints[] | []}
+     */
+    getGeneratorPoints(generatorName) {
+        return this.#getProxySaveGeneratorByName(generatorName)?.generatesPoints || [];
+    }
 
     /**
      * @param {string} generatorName 

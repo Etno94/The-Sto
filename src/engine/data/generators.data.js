@@ -25,7 +25,7 @@ export const CLICK_GENERATOR = {
         points: [
             {
                 type: POINT_TYPES.point,
-                baseChance: 0.8,
+                baseChance: 80,
                 startingGuaranteedChanceTries: 3
             }
         ]
@@ -42,7 +42,7 @@ export const COOLDOWN_GENERATOR = {
         points: [
             {
                 type: POINT_TYPES.solid_point,
-                baseChance: 1,
+                baseChance: 100,
             }
         ]
     },
@@ -79,7 +79,7 @@ export const CHARGE_GENERATOR = {
         points: [
             {
                 type: POINT_TYPES.energy_point,
-                baseChance: 1
+                baseChance: 50
             }
         ]
     },
