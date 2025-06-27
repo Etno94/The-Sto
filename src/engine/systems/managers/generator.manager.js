@@ -183,6 +183,11 @@ class GeneratorManager {
         return this.#getProxySaveGeneratorByName(generatorName).timesUsed;
     }
 
+    // TODO: get proxy save multiplier
+    getGeneratorGeneratesMultiplier(generatorName) {
+
+    }
+
 
     /**
      * @param {string} generatorName 
@@ -203,7 +208,7 @@ class GeneratorManager {
 
     /**
      * @param { string } generatorName 
-     * @return { DataGeneratorGenerates | PointSet | null}
+     * @return { DataGeneratorGenerates | null}
      */
     whatGenerates(generatorName) {
         return Utils.deepCopy(this.#getGeneratorData(generatorName))?.generates || null;
