@@ -16,7 +16,7 @@ import { UIControl } from "../views/ui-controller.js";
 import Asserts from "../utils/asserts.js";
 import Validators from "../utils/validators.js";
 import Utils from "../utils/utils.js";
-import {ToPointSet, SaveGeneratesToPointSet} from "../utils/adapters/generates-to-pointset.adapter.js";
+import {SaveGeneratesToPointSet} from "../utils/adapters/generates-to-pointset.adapter.js";
 
 
 // #region Unlocks

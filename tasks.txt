@@ -1,5 +1,5 @@
 Activo:
-
+- (logic) implementacion de template / strategy de generadores
 - (UI) implementacion de actualizacion de point chance en cada render
 
 Tareas:
@@ -11,6 +11,7 @@ Tareas:
 
 Nice to have:
 
+- usar manager-index en todos lados
 - tipar todos los parametros y obj
 - en los Type, actualizar todas las prop tipo Function por () =>
 - creacion de puntos / generadores tiene hardcodeado la animacion con la que entran. Hacer dinamico desde donde se plantea que animacion usar
