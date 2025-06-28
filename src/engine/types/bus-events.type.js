@@ -13,6 +13,25 @@
  * @property { string } updateCD
  * @property { string } ready
  * @property { string } onUse
+ * @property { GeneratorElementsBusEvents } elements
+ */
+
+/**
+ * @typedef { Object } GeneratorElementsBusEvents
+ * @property { GeneratorStatusItemsBusEvents } statusItems
+ * @property { string } cdCharges
+ * @property { string } pulseCharges
+ */
+
+/**
+ * @typedef { Object } GeneratorStatusItemsBusEvents
+ * @property { GeneratorPointChanceBusEvents } pointChance
+ */
+
+/**
+ * @typedef { Object } GeneratorPointChanceBusEvents
+ * @property { string } created
+ * @property { string } updated
  */
 
 /**

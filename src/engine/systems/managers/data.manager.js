@@ -5,6 +5,7 @@ import { STORAGE_UPGRADES } from '../../data/storage.data.js';
 import { ANIMATIONS } from "../../data/animations.data.js";
 import { DATA_SET_ATTRs, DATA_SET_TYPES, DATA_SET_STATUS, DATA_SET_GENERATOR_STATUS } from '../../data/data-set-attr.data.js';
 import { WRAPPER_CLASSES, GENERATOR_STATUS_WRAP_CLASSES, POINT_CHANCE_WRAP_CLASSES } from '../../data/elements.data.js';
+import {DATA_GENERATOR_REGISTRY} from "../../data/registries/generator-registry.data.js";
 
 import Utils from '../../utils/utils.js';
 
@@ -177,5 +178,14 @@ export default class DataManager {
     }
 
     // #endregion Elements
+
+    // #region UI Registries
+
+    /** @returns { DataGeneratorRegistry } */
+    static getDataGeneratorRegistry() {
+        return Utils.deepCopy(DATA_GENERATOR_REGISTRY);
+    }
+    
+    // #endregion UI Registries
 
 }

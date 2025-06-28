@@ -95,3 +95,7 @@
 .no-opacity {
     opacity: 0;
 }
+
+.d-none {
+    display: none;
+}

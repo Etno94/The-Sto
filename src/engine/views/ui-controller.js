@@ -5,11 +5,10 @@ import Render from "./render.factory.js";
 import Animate from "./helpers/animate.js";
 import UIHelper from "./helpers/ui-helper.js";
 import { RenderQ } from "./helpers/render-queue.js";
+import {GenUIReg} from "./ui-registries/generators.ui-registry.js";
 
 import DataManager from "../systems/managers/data.manager.js";
 import Asserts from "../utils/asserts.js";
-import Validators from "../utils/validators.js";
-import Errors from "../utils/errors.js";
 import Utils from "../utils/utils.js";
 import PointCollection from "../systems/point.collection.js";
 
@@ -25,6 +24,8 @@ class UIController {
     };
     /** @type { PointTypes } */
     #pointTypes;
+    /** @type { DataGeneratorRegistry } */
+    #dataGeneratorRegistry;
 
     // Elements
     /** @type {HTMLElement} */
@@ -55,6 +56,7 @@ class UIController {
         this.#dataset.types = DataManager.getDataSetTypes();
         this.#dataset.attr = DataManager.getDataSetAttrs();
         this.#pointTypes = DataManager.getPointTypesData();
+        this.#dataGeneratorRegistry = DataManager.getDataGeneratorRegistry();
     }
 
     #setElements() {
@@ -414,8 +416,9 @@ class UIController {
         const generatorElement = this.getGeneratorElement(generatorName);
         const generatorStatusElement = generatorElement.nextSibling;
         if (!UIHelper.containsClasses(generatorStatusElement, DataManager.getGeneratorStatusWrapClasses().layer_0)) return;
-        if (UIHelper.hasChildren(generatorStatusElement)) return; // TODO: currently doesnt refresh, sets and forget. Needs to be able to refresh status items
+        if (UIHelper.hasChildren(generatorStatusElement)) return;
         UIHelper.appendChildren(generatorStatusElement, pointChanceElements);
+        this.registerGeneratorPointChanceElements(generatorName, pointChanceElements);
     }
 
     // TODO: Pending
@@ -432,6 +435,18 @@ class UIController {
 
     }
     // --Pending
+
+    /**
+     * 
+     * @param {string} generatorName 
+     * @param {HTMLElement[]} pointChanceElements 
+     */
+    registerGeneratorPointChanceElements(generatorName, pointChanceElements) {
+        pointChanceElements.forEach((pointChanceElement, index) => {
+            GenUIReg.register(generatorName, this.#dataGeneratorRegistry.category.statusItems, 
+                `${this.#dataGeneratorRegistry.itemPrefixes.pointChance}#${index}`, pointChanceElement);
+        });
+    }
 
     // #endregion Generator Status
 

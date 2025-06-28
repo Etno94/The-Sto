@@ -236,6 +236,7 @@ class GeneratorManager {
         return this.#getProxySaveGeneratorByCriteria((generator) => generator.name === generatorName)[0] || null;
     }
 
+    // Get Generators in each stage
     /**
      * @returns { string[] }
      */
@@ -272,6 +273,8 @@ class GeneratorManager {
             .map(gen => gen.name) || null;
     }
 
+    // Generator Status
+
     /**
      * @returns { string[] }
      */
@@ -280,8 +283,6 @@ class GeneratorManager {
             (generator) => generator.remainingCD)
             .map(gen => gen.name) || null;
     }
-
-    // Generator Status
 
     /**
      * @param {string} generatorName

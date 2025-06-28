@@ -7,7 +7,17 @@ export const BUS_EVENTS = {
         onCD: 'generator: on Cooldown',
         updateCD: 'generator: update Cooldown',
         ready: 'generator: ready to use',
-        onUse: 'generator: used'
+        onUse: 'generator: used',
+        elements: {
+            statusItems: {
+                pointChance: {
+                    created: 'generator: point chance created',
+                    updated: 'generator: point chance updated',
+                }
+            },
+            cdCharges: 'generator: cooldown charges updated',
+            pulseCharges: 'generator: pulse charges  updated'
+        },
     },
     points: {
         add: 'point: added',

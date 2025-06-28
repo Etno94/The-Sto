@@ -121,6 +121,7 @@ function buildGenerator(generatorName) {
     UIControl.showWrappedGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorName));
     UIControl.hideBuild(generatorElement);
     UIControl.removeCostPreview(generatorElement);
+    setGeneratorStatus(generatorName);
   }
 }
 
@@ -200,7 +201,6 @@ function renderGeneralUpdatedStatus(interval) {
   setStoragePoints();
   updateGeneratorsCooldown(interval);
   updateStorageUpgradeCostPreview();
-  updateGeneratorStatus();
 }
 
 function setStoragePoints() {
@@ -237,15 +237,21 @@ function updateStorageUpgradeCostPreview() {
   UIControl.renderCostPreview(storageM.upgradeStorageWrapperElement, currentCost);
 }
 
-function updateGeneratorStatus() {
+function setBuiltGeneratorStatus() {
   const builtGeneratorNames = generatorM.getBuiltGeneratorNames();
   if (!Validators.isNonEmptyArray(builtGeneratorNames)) return;
 
   builtGeneratorNames.forEach(generatorName => {
-    const generatesPoints = generatorM.getGeneratorPoints(generatorName);
-    const pointChanceElements = UIControl.getPointChanceElements(generatorName, generatesPoints);
-    UIControl.setGeneratorStatusElements(generatorName, pointChanceElements);
+    setGeneratorStatus(generatorName);
   });
+}
+
+/** @param {string} generatorName */
+function setGeneratorStatus(generatorName) {
+  Asserts.string(generatorName);
+  const generatesPoints = generatorM.getGeneratorPoints(generatorName);
+  const pointChanceElements = UIControl.getPointChanceElements(generatorName, generatesPoints);
+  UIControl.setGeneratorStatusElements(generatorName, pointChanceElements);
 }
 
 // #endregion Render
@@ -266,6 +272,7 @@ function startGame() {
   // Initial render for already unlocked generators
   checkUnlocks();
   updateGeneratorsCooldown(0, true);
+  setBuiltGeneratorStatus();
 
   Global.saveProxy.subscribe((updatedSave) => {
     GameSave.save(updatedSave);

@@ -1,0 +1,18 @@
+/**
+ * @typedef {Object} DataGeneratorRegistry
+ * @property {Object<string, string>} generatorNames
+ * @property {DataGeneratorRegistryCategories} category
+ * @property {DataGeneratorRegistryItemPrefixes} itemPrefixes
+ */
+
+/**
+ * @typedef {Object} DataGeneratorRegistryCategories
+ * @property {string} statusItems
+ * @property {string} cdCharges
+ * @property {string} pulseCharges
+ */
+
+/**
+ * @typedef {Object} DataGeneratorRegistryItemPrefixes
+ * @property {string} pointChance
+ */
