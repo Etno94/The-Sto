@@ -43,6 +43,23 @@ export default class PointCollection {
     }
 
     /**
+     * @param {number} points 
+     * @param {string} type 
+     */
+    addToCollection(points, type) {
+        Asserts.number(points);
+        Asserts.string(type);
+
+        if (this.collection.hasOwnProperty(type)) {
+            this.totalValue += points
+            this.collection[type] += points;
+        } else {
+            this.collection = {};
+            Errors.invalidObjectPropError(type);
+        }
+    }
+
+    /**
      * @returns { PointSet }
      */
     get collection() {

@@ -181,4 +181,28 @@ export default class Utils {
         return `matrix(${aInv}, ${bInv}, ${cInv}, ${dInv}, ${eInv}, ${fInv})`;
     }
 
+    /**
+     * @param {number} percent
+     * @returns {boolean}
+     */
+    static chance(percent) {
+        Asserts.number(percent, 'percent');
+        return Math.random() * 100 < percent;
+    }
+
+    /**
+     * Returns the number of successes based on overload chance.
+     * If percent > 100, always returns at least 1, and the decimal part is used as a chance for an extra success.
+     * @param {number} percent - The chance percentage (can be above 100).
+     * @returns {number} - Number of successes (0, 1, or 2 for percent <= 200, etc.)
+     */
+    static overloadChance(percent) {
+        Asserts.number(percent, 'percent');
+        if (percent <= 0) return 0;
+        const guaranteed = Math.floor(percent / 100);
+        const remainder = percent % 100;
+        let total = guaranteed;
+        if (Math.random() * 100 < remainder) total += 1;
+        return total;
+    }
 }

@@ -35,6 +35,8 @@ class GeneratorManager {
         EventBus.on(Events.generator.onCD, (generatorName, baseCooldown) => this.setRemainingCD(generatorName, baseCooldown));
         EventBus.on(Events.generator.updateCD, (generatorName, remainingCD) => this.setRemainingCD(generatorName, remainingCD));
         EventBus.on(Events.generator.onUse, (generatorName) => this.setGeneratorUses(generatorName));
+        EventBus.on(Events.generator.elements.statusItems.pointChance.updated, 
+            (generatorName, pointsToGenerate, pointSetGenerated) => this.updateGeneratorPointChance(generatorName, pointsToGenerate, pointSetGenerated));
     }
 
     setNewGeneratorManager() {
@@ -442,6 +444,20 @@ class GeneratorManager {
         Asserts.number(generatorTimesUsed);
         const newTimesUsed = generatorTimesUsed + 1;
         this.#setProp(generatorName, 'timesUsed', newTimesUsed);
+    }
+
+    /** 
+     * @param {string} generatorName 
+     * @param {DataGeneratorGeneratesPoint[]} pointsToGenerate
+     * @param {PointSet} pointSetGenerated
+     * */
+    updateGeneratorPointChance(generatorName, pointsToGenerate, pointSetGenerated) {
+        Asserts.string(generatorName);
+        Asserts.nonEmptyArray(pointsToGenerate);
+        Asserts.object(pointSetGenerated);
+
+        // this.#setProp(generatorName, 'generatesPoints', ;
+
     }
     
     // #endregion Manage Proxy Save

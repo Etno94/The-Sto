@@ -15,7 +15,8 @@ import { UIControl } from "../views/ui-controller.js";
 
 import Asserts from "../utils/asserts.js";
 import Validators from "../utils/validators.js";
-import {ToPointSet} from "../utils/adapters/generates-to-pointset.adapter.js";
+import Utils from "../utils/utils.js";
+import {ToPointSet, SaveGeneratesToPointSet} from "../utils/adapters/generates-to-pointset.adapter.js";
 
 
 // #region Unlocks
@@ -154,8 +155,8 @@ function builtGeneratorOnClick (generatorName) {
 
   const consumePCollection = new PointCollection(generatorM.whatConsumes(generatorName));
 
-  const pointsToGenerate = generatorM.whatGeneratesPoints(generatorName);
-  const pointSet = ToPointSet(pointsToGenerate);
+  const pointsToGenerate = generatorM.getGeneratorPoints(generatorName);
+  const pointSet = SaveGeneratesToPointSet(pointsToGenerate);
   const generatePCollection = new PointCollection(pointSet);
 
   let canConsume = true;
@@ -169,11 +170,24 @@ function builtGeneratorOnClick (generatorName) {
   }
 
   if (canConsume && canGenerate) {
+
+    // We consume points
     if (consumePCollection.total) EventBus.emit(Events.points.substract, consumePCollection.collection);
-    if (generatePCollection.total) EventBus.emit(Events.points.add, generatePCollection.collection);
+
+    // We check if points are generated
+    const pointSetToGenerate = new PointCollection();
+    pointsToGenerate.forEach(
+      /** @type {SaveGeneratorPoints} */
+      point => {
+      const result = Utils.overloadChance(point.currentChance);
+      if (result) pointSetToGenerate.addToCollection(result, point.type);
+    });
+
+    if (pointSetToGenerate.total) EventBus.emit(Events.points.add, pointSetToGenerate.collection);
     const baseCooldown = generatorM.whatBaseCoolDown(generatorName); // TODO: add usedAmounts
     if (baseCooldown) EventBus.emit(Events.generator.onCD, generatorName, baseCooldown);
     EventBus.emit(Events.generator.onUse, generatorName);
+    EventBus.emit(Events.generator.elements.statusItems.pointChance.updated, generatorName, pointsToGenerate, pointSetToGenerate.collection);
   }
 }
 
