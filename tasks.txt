@@ -1,8 +1,6 @@
 Activo:
 
-- (UI) implementacion de gen status elementos para generadores
-    - Revampeo de modelo de generator data
-        - Implementacion de pointChance
+- (UI) implementacion de actualizacion de point chance en cada render
 
 Tareas:
 
