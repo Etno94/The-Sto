@@ -87,6 +87,7 @@ export default class BaseGenerator {
     if (generated.total) EventBus.emit(Events.points.add, generated.collection);
   }
 
+  /** @param {PointCollection} generated */
   emitStatus(generated) {
     Asserts.object(generated);
     
@@ -94,16 +95,11 @@ export default class BaseGenerator {
     if (this.baseCooldown) {
       EventBus.emit(Events.generator.onCD, this.generatorName, this.baseCooldown);
     }
-
-    EventBus.emit(
-      Events.generator.elements.statusItems.pointChance.updated,
-      this.generatorName,
-      this.pointsToGenerate,
-      generated.collection
-    );
   }
 
+  /** @param {PointCollection} generated */
   afterGenerate(generated) {
+    Asserts.object(generated);
     // Hook for subclasses like CooldownGenerator, PulseGenerator
   }
 }
