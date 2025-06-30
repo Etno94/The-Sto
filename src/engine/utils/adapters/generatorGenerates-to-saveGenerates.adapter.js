@@ -1,5 +1,4 @@
 import Asserts from "../asserts.js";
-import Validators from "../validators.js";
 
 class AdapterGeneratorGeneratesPointToSaveGeneratesPoint {
 

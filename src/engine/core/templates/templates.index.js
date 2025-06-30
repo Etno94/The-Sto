@@ -1,0 +1,1 @@
+export {generatorF} from "./generator/generator.factory.js";

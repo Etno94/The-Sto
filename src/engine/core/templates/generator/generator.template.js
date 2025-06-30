@@ -1,9 +1,9 @@
-import { pointM, generatorM, storageM } from "../../../systems/managers-index.js";
+import {EventBus, Events} from "../../event-bus.js";
 
+import { pointM, generatorM, storageM } from "../../../systems/managers-index.js";
 import PointCollection from "../../../systems/point.collection.js";
 
-import Asserts from "../../../utils/asserts.js";
-
+import {Asserts, Utils, SaveGeneratesToPointSet} from "../../../utils//utils.index.js";
 export default class BaseGenerator {
 
     /** @type {string} */
@@ -48,7 +48,7 @@ export default class BaseGenerator {
   canGenerate() {
     if (!this.pointsToGenerate.length) return true;
 
-    const generateTotal = this.getExpectedGenerateTotal();
+    const generateTotal = new PointCollection(SaveGeneratesToPointSet(this.pointsToGenerate)).total;
     const overcaps = storageM.doesOvercap(
       pointM.getCurrentTotalPoints(),
       generateTotal,
@@ -81,15 +81,15 @@ export default class BaseGenerator {
     return generated;
   }
 
-  getExpectedGenerateTotal() {
-    return this.pointsToGenerate.reduce((acc, p) => acc + p.amount, 0); // or more accurate model
-  }
-
+  /** @param {PointCollection} generated */
   applyGenerated(generated) {
+    Asserts.object(generated);
     if (generated.total) EventBus.emit(Events.points.add, generated.collection);
   }
 
   emitStatus(generated) {
+    Asserts.object(generated);
+    
     EventBus.emit(Events.generator.onUse, this.generatorName);
     if (this.baseCooldown) {
       EventBus.emit(Events.generator.onCD, this.generatorName, this.baseCooldown);

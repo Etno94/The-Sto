@@ -1,4 +1,4 @@
-import BaseGenerator from "../generator.template";
+import BaseGenerator from "../generator.template.js";
 
 export default class PulseGenerator extends BaseGenerator {
   afterGenerate(generated) {

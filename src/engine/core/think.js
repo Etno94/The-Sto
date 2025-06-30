@@ -3,21 +3,16 @@ import GameSave from "./save.js";
 import { EventBus, Events } from "./event-bus.js";
 import GameLoop from "./game-loop.js";
 
+import {generatorF} from "./templates/templates.index.js";
+
 import PointCollection from "../systems/point.collection.js";
 import InputControl from "../systems/input.controller.js";
 
-import DataManager from "../systems/managers/data.manager.js";
-import {pointM} from '../systems/managers/point.manager.js';
-import {generatorM} from "../systems/managers/generator.manager.js";
-import {storageM} from "../systems/managers/storage.manager.js";
+import {DataManager, pointM, generatorM, storageM} from "../systems/managers-index.js";
 
 import { UIControl } from "../views/ui-controller.js";
 
-import Asserts from "../utils/asserts.js";
-import Validators from "../utils/validators.js";
-import Utils from "../utils/utils.js";
-import {SaveGeneratesToPointSet} from "../utils/adapters/generates-to-pointset.adapter.js";
-
+import {Asserts, Validators} from "../utils/utils.index.js";
 
 // #region Unlocks
 
@@ -152,43 +147,7 @@ function generatorOnClick(generatorName) {
 /** @param { string } generatorName */
 function builtGeneratorOnClick (generatorName) {
   Asserts.string(generatorName);
-
-  const consumePCollection = new PointCollection(generatorM.whatConsumes(generatorName));
-
-  const pointsToGenerate = generatorM.getGeneratorPoints(generatorName);
-  const pointSet = SaveGeneratesToPointSet(pointsToGenerate);
-  const generatePCollection = new PointCollection(pointSet);
-
-  let canConsume = true;
-  let canGenerate = true;
-
-  if (consumePCollection.total && !pointM.hasEnoughPoints(consumePCollection.collection)) canConsume = false;
-  if (generatePCollection.total && storageM.doesOvercap(pointM.getCurrentTotalPoints(), generatePCollection.total, consumePCollection.total)) {
-    canGenerate = false;
-    EventBus.emit(Events.points.overcap);
-    if (!storageM.isStorageUpgradeUnlocked()) storageM.setStorageUpgradeUnlocked();
-  }
-
-  if (canConsume && canGenerate) {
-
-    // We consume points
-    if (consumePCollection.total) EventBus.emit(Events.points.substract, consumePCollection.collection);
-
-    // We check if points are generated
-    const pointSetToGenerate = new PointCollection();
-    pointsToGenerate.forEach(
-      /** @type {SaveGeneratorPoints} */
-      point => {
-      const result = Utils.overloadChance(point.currentChance);
-      if (result) pointSetToGenerate.addToCollection(result, point.type);
-    });
-
-    if (pointSetToGenerate.total) EventBus.emit(Events.points.add, pointSetToGenerate.collection);
-    const baseCooldown = generatorM.whatBaseCoolDown(generatorName); // TODO: add usedAmounts
-    if (baseCooldown) EventBus.emit(Events.generator.onCD, generatorName, baseCooldown);
-    EventBus.emit(Events.generator.onUse, generatorName);
-    EventBus.emit(Events.generator.elements.statusItems.pointChance.updated, generatorName, pointsToGenerate, pointSetToGenerate.collection);
-  }
+  generatorF.run(generatorName);
 }
 
 // #endregion Generator Actions
