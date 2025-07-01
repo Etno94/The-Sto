@@ -1,12 +1,14 @@
-import Global from "../../core/global.js";
-import { EventBus, Events } from "../../core/event-bus.js";
+import Global from "../../../core/global.js";
+import { EventBus, Events } from "../../../core/event-bus.js";
 
-import DataManager from "./data.manager.js";
+import DataManager from "../data.manager.js";
 
-import Utils from "../../utils/utils.js";
-import Validators from '../../utils/validators.js';
-import Errors from '../../utils/errors.js';
-import Asserts from "../../utils/asserts.js";
+import {pointChanceStrategy} from "./point-chance.strategy.js";
+
+import Utils from "../../../utils/utils.js";
+import Validators from '../../../utils/validators.js';
+import Errors from '../../../utils/errors.js';
+import Asserts from "../../../utils/asserts.js";
 
 class GeneratorManager {
 
@@ -36,7 +38,7 @@ class GeneratorManager {
         EventBus.on(Events.generator.updateCD, (generatorName, remainingCD) => this.setRemainingCD(generatorName, remainingCD));
         EventBus.on(Events.generator.onUse, (generatorName) => this.setGeneratorUses(generatorName));
         EventBus.on(Events.generator.elements.statusItems.pointChance.updated, 
-            (generatorName, pointsToGenerate, pointSetGenerated) => this.updateGeneratorPointChance(generatorName, pointsToGenerate, pointSetGenerated));
+            (generatorName, pointSetGenerated) => this.updateGeneratorPointChance(generatorName, pointSetGenerated));
     }
 
     setNewGeneratorManager() {
@@ -448,16 +450,18 @@ class GeneratorManager {
 
     /** 
      * @param {string} generatorName 
-     * @param {DataGeneratorGeneratesPoint[]} pointsToGenerate
      * @param {PointSet} pointSetGenerated
      * */
-    updateGeneratorPointChance(generatorName, pointsToGenerate, pointSetGenerated) {
+    updateGeneratorPointChance(generatorName, pointSetGenerated) {
         Asserts.string(generatorName);
-        Asserts.nonEmptyArray(pointsToGenerate);
         Asserts.object(pointSetGenerated);
 
-        // this.#setProp(generatorName, 'generatesPoints', ;
+        const currentGeneratesPoints = this.getGeneratorPoints(generatorName);
+        Asserts.nonEmptyArray(currentGeneratesPoints);
+        const dataGeneratorPoints = this.whatGeneratesPoints(generatorName);
+        Asserts.nonEmptyArray(dataGeneratorPoints);
 
+        pointChanceStrategy.useStrategyFor(generatorName, currentGeneratesPoints, pointSetGenerated, dataGeneratorPoints);
     }
     
     // #endregion Manage Proxy Save

@@ -26,6 +26,8 @@ export const CLICK_GENERATOR = {
             {
                 type: POINT_TYPES.point,
                 baseChance: 80,
+                updateChanceOnSuccess: 0.2,
+                updateChanceOnFail: -1,
                 startingGuaranteedChanceTries: 3
             }
         ]

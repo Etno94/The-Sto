@@ -18,7 +18,7 @@
 /**
  * @typedef {Object} DataGenerator
  * @property {string} name
- * @property {PointSet | DataGeneratorGenerates} [generates]
+ * @property {DataGeneratorGenerates} [generates]
  * @property {PointSet} [consumes]
  * @property {GeneratorCooldownData} [cooldown]
  * @property {UnlockRequires} [unlockRequires]
@@ -36,7 +36,9 @@
  * @typedef {Object} DataGeneratorGeneratesPoint
  * @property {string} type
  * @property {number} baseChance
- * @property {number} startingGuaranteedChanceTries
+ * @property {number} [updateChanceOnSuccess=0]
+ * @property {number} [updateChanceOnFail=0]
+ * @property {number} [startingGuaranteedChanceTries=0]
  */
 
 // What needs to be unlocked

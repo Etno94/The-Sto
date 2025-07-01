@@ -11,7 +11,6 @@ export default class ClickGenerator extends BaseGenerator {
     EventBus.emit(
       Events.generator.elements.statusItems.pointChance.updated,
       this.generatorName,
-      this.pointsToGenerate,
       generated.collection
     );
   }
