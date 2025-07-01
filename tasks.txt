@@ -1,5 +1,4 @@
 Activo:
-- (logic) implementacion de template / strategy de generadores
 - (UI) implementacion de actualizacion de point chance en cada render
 
 Tareas:
