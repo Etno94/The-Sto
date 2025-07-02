@@ -49,16 +49,11 @@ class StorageManager {
 
     /**
      * @param { Number } currentTotal
-     * @param { Number } totalToGenerate
-     * @param { Number } totalToConsume
-     * @returns {Boolean}
+     * @returns {Number}
      */
-    doesOvercap(currentTotal, totalToGenerate, totalToConsume) {
+    storageSpaceLeft(currentTotal) {
         Asserts.number(currentTotal);
-        Asserts.number(totalToGenerate);
-        Asserts.number(totalToConsume);
-
-        return this.#currentMaxStorage < currentTotal + totalToGenerate - totalToConsume;
+        return this.#currentMaxStorage - currentTotal;
     }
 
     /** @returns {PointSet} */

@@ -38,6 +38,7 @@ export default class BaseGenerator {
     this.afterGenerate(generatedPoints);
   }
 
+  /** @returns {Boolean} */
   canConsume() {
     return (
       !this.consumeCollection.total ||
@@ -45,24 +46,23 @@ export default class BaseGenerator {
     );
   }
 
+  /** @returns {Boolean} */
   canGenerate() {
-    if (!this.pointsToGenerate.length) return true;
-
-    const generateTotal = new PointCollection(SaveGeneratesToPointSet(this.pointsToGenerate)).total;
-    const overcaps = storageM.doesOvercap(
-      pointM.getCurrentTotalPoints(),
-      generateTotal,
-      this.consumeCollection.total
-    );
-
-    if (overcaps) {
+    const result = this.canGeneratePure();
+    if (!result) {
       EventBus.emit(Events.points.overcap);
       if (!storageM.isStorageUpgradeUnlocked())
         storageM.setStorageUpgradeUnlocked();
-      return false;
     }
+    return result;
+  }
 
-    return true;
+  /** @returns {Boolean} */
+  canGeneratePure() {
+    if (!this.pointsToGenerate.length) return true;
+    const generateTotal = new PointCollection(SaveGeneratesToPointSet(this.pointsToGenerate)).total;
+    const spaceLeft = storageM.storageSpaceLeft(pointM.getCurrentTotalPoints());
+    return !(spaceLeft <= 0 && generateTotal > 0);
   }
 
   consume() {
@@ -70,12 +70,19 @@ export default class BaseGenerator {
       EventBus.emit(Events.points.substract, this.consumeCollection.collection);
   }
 
+  /** @returns {PointCollection} */
   rollGeneration() {
+    let spaceLeft = storageM.storageSpaceLeft(pointM.getCurrentTotalPoints());
     const generated = new PointCollection();
 
     this.pointsToGenerate.forEach((point) => {
+      if (spaceLeft <= 0) return;
       const result = Utils.overloadChance(point.currentChance);
-      if (result) generated.addToCollection(result, point.type);
+      if (result) {
+        const toAdd = result > spaceLeft ? spaceLeft : result;
+        generated.addToCollection(toAdd, point.type);
+        spaceLeft -= toAdd;
+      }
     });
 
     return generated;
