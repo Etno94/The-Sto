@@ -1,5 +1,6 @@
 Activo:
-- (logic) modificacion de overCap => poder generar puntos si aun hay espacio por más que no se generen el total posible.
+
+- (UI) implementar cargas de cd en CD Generator
 
 Tareas:
 
@@ -10,6 +11,8 @@ Tareas:
 
 Nice to have:
 
+- renombar Charge Generator a Pulse Generator y sus respectivas dependencias (revisar js y css)
+- actualizar render de solid point (actualmente se muestra tier 2 como tier 1) (tier 2 se llama heavy point)
 - usar manager-index en todos lados
 - tipar todos los parametros y obj
 - en los Type, actualizar todas las prop tipo Function por () =>
