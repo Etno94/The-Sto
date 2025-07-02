@@ -1,5 +1,5 @@
 import Asserts from './asserts.js';
-
+import Errors from './errors.js';
 export default class Utils {
     constructor() {}
 
@@ -25,6 +25,16 @@ export default class Utils {
     }
 
     /**
+     * Converts a kebab-case string to camelCase.
+     * @param {string} str
+     * @returns {string}
+     */
+    static kebabToCamel(str) {
+        Asserts.string(str, 'str');
+        return str.replace(/-([a-z])/g, (match, letter) => letter.toUpperCase());
+    }
+
+    /**
      * @param { number } ms 
      * @returns { Promise }
      */
@@ -43,6 +53,8 @@ export default class Utils {
             requestAnimationFrame(frame);
         });
     }
+
+
 
     /**
      * @param {number} baseValue 
@@ -204,5 +216,21 @@ export default class Utils {
         let total = guaranteed;
         if (Math.random() * 100 < remainder) total += 1;
         return total;
+    }
+
+    /**
+     * @param {number} dividend 
+     * @param {number} divisor 
+     * @returns {[number, number]}
+     */
+    static getDivisionRemainder(dividend, divisor) {
+        Asserts.number(dividend, 'divident');
+        Asserts.number(divisor, 'divisor');
+        if (divisor === 0) Errors.logError(`divisor cant be 0`);
+
+        const total = Math.floor(dividend / divisor);
+        const remainder = dividend % divisor;
+
+        return [total, remainder];
     }
 }

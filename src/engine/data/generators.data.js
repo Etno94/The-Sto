@@ -26,7 +26,7 @@ export const CLICK_GENERATOR = {
             {
                 type: POINT_TYPES.point,
                 baseChance: 80,
-                updateChanceOnSuccess: 0.2,
+                updateChanceOnSuccess: 22.2,
                 updateChanceOnFail: -1,
                 startingGuaranteedChanceTries: 3
             }
@@ -81,7 +81,7 @@ export const CHARGE_GENERATOR = {
         points: [
             {
                 type: POINT_TYPES.energy_point,
-                baseChance: 50
+                baseChance: 100
             }
         ]
     },

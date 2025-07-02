@@ -65,6 +65,7 @@ export default class UIHelper {
         Asserts.htmlElement(element);
         Asserts.string(datasetName);
         Asserts.string(value);
+        datasetName = Utils.kebabToCamel(datasetName);
         return element.dataset[datasetName] === value;
     }
 

@@ -8,8 +8,9 @@ import { RenderQ } from "./helpers/render-queue.js";
 import {GenUIReg} from "./ui-registries/generators.ui-registry.js";
 
 import DataManager from "../systems/managers/data.manager.js";
-import Asserts from "../utils/asserts.js";
-import Utils from "../utils/utils.js";
+import {Asserts, Utils, Errors} from "../utils/utils.index.js";
+// import Asserts from "../utils/asserts.js";
+// import Utils from "../utils/utils.js";
 import PointCollection from "../systems/point.collection.js";
 
 class UIController {
@@ -75,6 +76,9 @@ class UIController {
             this.updateGeneratorRemainingCD(generatorName, remainingCD, baseCooldown);
         });
         EventBus.on(Events.generator.ready, (generatorName) => this.setGeneratorOffCD(generatorName));
+        EventBus.on(Events.generator.elements.statusItems.pointChance.updated, 
+            (generatorName, pointChances) => this.updateGeneratorStatusElements(generatorName, pointChances)
+        );
 
         EventBus.on(Events.ui.render, (isRendering) => {});
         EventBus.on(Events.ui.pointsContainer.hover, (target, isMouseEnter = false) => this.#animateEnergyPoint(target, isMouseEnter));
@@ -416,25 +420,70 @@ class UIController {
         const generatorElement = this.getGeneratorElement(generatorName);
         const generatorStatusElement = generatorElement.nextSibling;
         if (!UIHelper.containsClasses(generatorStatusElement, DataManager.getGeneratorStatusWrapClasses().layer_0)) return;
-        if (UIHelper.hasChildren(generatorStatusElement)) return;
         UIHelper.appendChildren(generatorStatusElement, pointChanceElements);
         this.registerGeneratorPointChanceElements(generatorName, pointChanceElements);
     }
 
-    // TODO: Pending
     /**
      * @param {string} generatorName 
-     * @param {Object} pointChances
+     * @param {SaveGeneratorPoints[]} pointChances
      */
     updateGeneratorStatusElements(generatorName, pointChances) {
         Asserts.string(generatorName);
+        Asserts.nonEmptyArray(pointChances);
 
         const generatorElement = this.getGeneratorElement(generatorName);
         const generatorStatusElement = generatorElement.nextSibling;
-        if (!UIHelper.containsClass(generatorStatusElement, DataManager.getGeneratorStatusWrapClasses().layer_0)) return;
+        if (!generatorStatusElement || !UIHelper.containsClasses(generatorStatusElement, DataManager.getGeneratorStatusWrapClasses().layer_0)) {
+            Errors.logError(`generatorStatusElement doesnt exist`).
+            return;
+        }
+        const pointChanceElements = GenUIReg.getPointChancesFromGenerator(generatorName);
 
+        pointChances.forEach((chance) => {
+
+            const [fullChanceElements, remainingChance] = Utils.getDivisionRemainder(chance.currentChance, 100);
+
+            /** @type {Node[]} */
+            const currentPointTypeChances = Array.from(pointChanceElements).filter(element => {
+                return UIHelper.hasChildren(element) && 
+                        Array.from(element.children).some(child => 
+                            UIHelper.isDataSetValue(child, DataManager.getDataSetAttrs().pointType, chance.type));
+            });
+
+            let fullChanceCounter = fullChanceElements;
+            let remainingChanceChecked = false;
+
+            currentPointTypeChances.forEach(point => {
+                if (fullChanceCounter) {
+                    UIHelper.setProperty(point, '--point-chance-percent', '100%');
+                    fullChanceCounter--;
+                } else if(remainingChance && !remainingChanceChecked) {
+                    UIHelper.setProperty(point, '--point-chance-percent', `${remainingChance}%`);
+                    remainingChanceChecked = true;
+                } else {
+                    UIHelper.setProperty(point, '--point-chance-percent', '0%');
+                }
+                console.log(point);
+            });
+
+            /** @type {SaveGeneratorPoints[]} */
+            const chancePointsToAdd = [];
+            while (fullChanceCounter) {
+                chancePointsToAdd.push({type: chance.type, currentChance: 100});
+                fullChanceCounter--;
+            }
+            if (remainingChance && !remainingChanceChecked) {
+                chancePointsToAdd.push({type: chance.type, currentChance: remainingChance});
+                remainingChanceChecked = true;
+            }
+
+            if (chancePointsToAdd.length) {
+                const newPointChancesToRegister = this.getPointChanceElements(generatorName, chancePointsToAdd);
+                this.setGeneratorStatusElements(generatorName, newPointChancesToRegister);
+            }
+        })
     }
-    // --Pending
 
     /**
      * 
@@ -442,9 +491,14 @@ class UIController {
      * @param {HTMLElement[]} pointChanceElements 
      */
     registerGeneratorPointChanceElements(generatorName, pointChanceElements) {
-        pointChanceElements.forEach((pointChanceElement, index) => {
+        let newIndex = 0;
+        const lastRegistryKey = GenUIReg.checkLastRegister(generatorName, this.#dataGeneratorRegistry.category.statusItems);
+        if (lastRegistryKey) newIndex = Number(lastRegistryKey.split('#')[1]) + 1;
+
+        pointChanceElements.forEach((pointChanceElement) => {
             GenUIReg.register(generatorName, this.#dataGeneratorRegistry.category.statusItems, 
-                `${this.#dataGeneratorRegistry.itemPrefixes.pointChance}#${index}`, pointChanceElement);
+                `${this.#dataGeneratorRegistry.itemPrefixes.pointChance}#${newIndex}`, pointChanceElement);
+            newIndex++;
         });
     }
 

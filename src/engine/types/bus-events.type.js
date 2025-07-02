@@ -31,6 +31,7 @@
 /**
  * @typedef { Object } GeneratorPointChanceBusEvents
  * @property { string } created
+ * @property { string } onUpdate
  * @property { string } updated
  */
 

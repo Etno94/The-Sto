@@ -1,5 +1,5 @@
 Activo:
-- (UI) implementacion de actualizacion de point chance en cada render
+- (UI) implementacion de actualizacion de point chance en cada render => updateGeneratorStatusElements
 
 Tareas:
 

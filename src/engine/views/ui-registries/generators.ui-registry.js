@@ -1,4 +1,5 @@
 import DataManager from "../../systems/managers/data.manager.js";
+import {Asserts, Errors} from "../../utils/utils.index.js";
 
 class GeneratorsUIRegistry {
   constructor() {
@@ -35,6 +36,23 @@ class GeneratorsUIRegistry {
       this._pointChances.set(key, element);
       console.log(`Generator registry - key: ${key}`);
     }
+  }
+
+  /**
+   * @param {string} generator
+   * @param {string} category
+   * @returns {string | null}
+   */
+  checkLastRegister(generator, category) {
+    Asserts.string(generator);
+    Asserts.string(category);
+
+    /** @type {Map} */
+    const categoryMap = this._registry.get(generator)?.get(category) || null;
+    if (!categoryMap) return categoryMap;
+    const lastEntry = Array.from(categoryMap.keys()).pop() || null;
+
+    return lastEntry;
   }
 
   /**

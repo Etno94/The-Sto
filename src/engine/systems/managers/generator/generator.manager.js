@@ -37,7 +37,7 @@ class GeneratorManager {
         EventBus.on(Events.generator.onCD, (generatorName, baseCooldown) => this.setRemainingCD(generatorName, baseCooldown));
         EventBus.on(Events.generator.updateCD, (generatorName, remainingCD) => this.setRemainingCD(generatorName, remainingCD));
         EventBus.on(Events.generator.onUse, (generatorName) => this.setGeneratorUses(generatorName));
-        EventBus.on(Events.generator.elements.statusItems.pointChance.updated, 
+        EventBus.on(Events.generator.elements.statusItems.pointChance.onUpdate, 
             (generatorName, pointSetGenerated) => this.updateGeneratorPointChance(generatorName, pointSetGenerated));
     }
 
@@ -461,7 +461,9 @@ class GeneratorManager {
         const dataGeneratorPoints = this.whatGeneratesPoints(generatorName);
         Asserts.nonEmptyArray(dataGeneratorPoints);
 
+        // Mutated reference from strategy, event bus emiting updated value
         pointChanceStrategy.useStrategyFor(generatorName, currentGeneratesPoints, pointSetGenerated, dataGeneratorPoints);
+        EventBus.emit(Events.generator.elements.statusItems.pointChance.updated, generatorName, currentGeneratesPoints);
     }
     
     // #endregion Manage Proxy Save

@@ -9,7 +9,7 @@ export default class ClickGenerator extends BaseGenerator {
     console.log(`[Click] Generated ${generated.total} points`);
 
     EventBus.emit(
-      Events.generator.elements.statusItems.pointChance.updated,
+      Events.generator.elements.statusItems.pointChance.onUpdate,
       this.generatorName,
       generated.collection
     );

@@ -12,7 +12,8 @@ export const BUS_EVENTS = {
             statusItems: {
                 pointChance: {
                     created: 'generator: point chance created',
-                    updated: 'generator: point chance updated',
+                    onUpdate: 'generator: point chance to update',
+                    updated: 'generator: point chance updated'
                 }
             },
             cdCharges: 'generator: cooldown charges updated',
