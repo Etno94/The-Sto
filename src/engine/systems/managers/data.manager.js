@@ -4,11 +4,10 @@ import { GENERATOR_IDS, GENERATORS, GENERATOR_CLASSES, BUILD_GENERATOR } from '.
 import { STORAGE_UPGRADES } from '../../data/storage.data.js';
 import { ANIMATIONS } from "../../data/animations.data.js";
 import { DATA_SET_ATTRs, DATA_SET_TYPES, DATA_SET_STATUS, DATA_SET_GENERATOR_STATUS } from '../../data/data-set-attr.data.js';
-import { WRAPPER_CLASSES, GENERATOR_STATUS_WRAP_CLASSES, POINT_CHANCE_WRAP_CLASSES } from '../../data/elements.data.js';
+import { WRAPPER_CLASSES, GENERATOR_STATUS_WRAP_CLASSES, POINT_CHANCE_WRAP_CLASSES, COST_PREVIEW_CLASSES } from '../../data/elements.data.js';
 import {DATA_GENERATOR_REGISTRY} from "../../data/registries/generator-registry.data.js";
 
 import Utils from '../../utils/utils.js';
-
 
 export default class DataManager {
 
@@ -175,6 +174,11 @@ export default class DataManager {
     /** @returns { PointChance_Wrap } */
     static getPointChanceWrapClasses() {
         return Utils.deepCopy(POINT_CHANCE_WRAP_CLASSES);
+    }
+
+    /** @returns { string[] } */
+    static getCostPreviewClasses() {
+        return Utils.arrCopy(COST_PREVIEW_CLASSES);
     }
 
     // #endregion Elements

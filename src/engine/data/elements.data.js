@@ -14,3 +14,6 @@ export const POINT_CHANCE_WRAP_CLASSES = {
         hiddenPoint: ['d-none']
     }
 }
+
+/** @type {string[]} */
+export const COST_PREVIEW_CLASSES = ['cost-preview'];

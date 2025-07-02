@@ -73,7 +73,7 @@ export default class GeneratorDirector {
      */
     static createCostPreview() {
         return new ElBuilder('div')
-            .addClass("cost-preview")
+            .addClass(DataManager.getCostPreviewClasses())
             .addDataSet(DataManager.getDataSetAttrs().type, DataManager.getDataSetTypes().costPreview)
             .finish();
     }
