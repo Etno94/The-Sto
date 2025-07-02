@@ -223,8 +223,6 @@ function setBuiltGeneratorStatus() {
 function setGeneratorStatus(generatorName) {
   Asserts.string(generatorName);
   const generatesPoints = generatorM.getGeneratorPoints(generatorName);
-  // const pointChanceElements = UIControl.getPointChanceElements(generatorName, generatesPoints);
-  // UIControl.setGeneratorStatusElements(generatorName, pointChanceElements);
   UIControl.updateGeneratorStatusElements(generatorName, generatesPoints);
 }
 

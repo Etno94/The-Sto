@@ -38,9 +38,6 @@ class UIController {
     /** @type {HTMLElement} */
     #storageUpgrade;
 
-    // UI elements tracking
-    #generatorStatusElements = [];
-
     // Animation tracking
     #pointState = new WeakMap();
     
@@ -68,8 +65,10 @@ class UIController {
     }
 
     #setEventBus() {
+        // Points
         EventBus.on(Events.points.overcap, () => this.shakePointsContainer());
 
+        // Generators
         EventBus.on(Events.generator.onClick, (generatorName) => {});
         EventBus.on(Events.generator.onCD, (generatorName) => this.setGeneratorOnCD(generatorName));
         EventBus.on(Events.generator.updateCD, (generatorName, remainingCD, baseCooldown) => {
@@ -80,8 +79,11 @@ class UIController {
             (generatorName, pointChances) => this.updateGeneratorStatusElements(generatorName, pointChances)
         );
 
+        // UI Elements
         EventBus.on(Events.ui.render, (isRendering) => {});
         EventBus.on(Events.ui.pointsContainer.hover, (target, isMouseEnter = false) => this.#animateEnergyPoint(target, isMouseEnter));
+
+        // Storage
         EventBus.on(Events.storageUpgrade.unlocked, () => this.showStorageUpgrader());
         EventBus.on(Events.storageUpgrade.onUpgrade, (currentMaxStorage) => this.updateStorageLayout(currentMaxStorage));
     }
@@ -394,39 +396,6 @@ class UIController {
     /**
      * @param {string} generatorName 
      * @param {SaveGeneratorPoints[]} pointChances
-     * @returns {HTMLElement[]}
-     */
-    getPointChanceElements(generatorName, pointChances = []) {
-        Asserts.string(generatorName);
-        Asserts.array(pointChances);
-
-        /** @type {{element: HTMLElement, chance: number}[]} */
-        const pointElementsWithChances = [];
-        pointChances.forEach(pointChance => {
-            pointElementsWithChances.push({element: Render.renderPoint(pointChance.type), chance: pointChance.currentChance});
-        })
-
-        return Render.renderPointChanceWrapper(pointElementsWithChances);
-    }
-
-    /**
-     * @param {string} generatorName 
-     * @param {HTMLElement[]} [pointChanceElements]
-     */
-    setGeneratorStatusElements(generatorName, pointChanceElements = []) {
-        Asserts.string(generatorName);
-        Asserts.htmlArray(pointChanceElements);
-
-        const generatorElement = this.getGeneratorElement(generatorName);
-        const generatorStatusElement = generatorElement.nextSibling;
-        if (!UIHelper.containsClasses(generatorStatusElement, DataManager.getGeneratorStatusWrapClasses().layer_0)) return;
-        UIHelper.appendChildren(generatorStatusElement, pointChanceElements);
-        this.registerGeneratorPointChanceElements(generatorName, pointChanceElements);
-    }
-
-    /**
-     * @param {string} generatorName 
-     * @param {SaveGeneratorPoints[]} pointChances
      */
     updateGeneratorStatusElements(generatorName, pointChances) {
         Asserts.string(generatorName);
@@ -457,12 +426,15 @@ class UIController {
             currentPointTypeChances.forEach(point => {
                 if (fullChanceCounter) {
                     UIHelper.setProperty(point, '--point-chance-percent', '100%');
+                    UIHelper.removeClass(point, DataManager.getPointChanceWrapClasses().layer_1.hiddenPoint);
                     fullChanceCounter--;
                 } else if(remainingChance && !remainingChanceChecked) {
                     UIHelper.setProperty(point, '--point-chance-percent', `${remainingChance}%`);
+                    UIHelper.removeClass(point, DataManager.getPointChanceWrapClasses().layer_1.hiddenPoint);
                     remainingChanceChecked = true;
                 } else {
                     UIHelper.setProperty(point, '--point-chance-percent', '0%');
+                    UIHelper.addClass(point, DataManager.getPointChanceWrapClasses().layer_1.hiddenPoint);
                 }
                 console.log(point);
             });
@@ -479,10 +451,43 @@ class UIController {
             }
 
             if (chancePointsToAdd.length) {
-                const newPointChancesToRegister = this.getPointChanceElements(generatorName, chancePointsToAdd);
-                this.setGeneratorStatusElements(generatorName, newPointChancesToRegister);
+                const newPointChances = this.getPointChanceElements(generatorName, chancePointsToAdd);
+                this.appendGeneratorStatusElements(generatorName, newPointChances);
+                this.registerGeneratorPointChanceElements(generatorName, newPointChances);
             }
         })
+    }
+
+    /**
+     * @param {string} generatorName 
+     * @param {SaveGeneratorPoints[]} pointChances
+     * @returns {HTMLElement[]}
+     */
+    getPointChanceElements(generatorName, pointChances = []) {
+        Asserts.string(generatorName);
+        Asserts.array(pointChances);
+
+        /** @type {{element: HTMLElement, chance: number}[]} */
+        const pointElementsWithChances = [];
+        pointChances.forEach(pointChance => {
+            pointElementsWithChances.push({element: Render.renderPoint(pointChance.type), chance: pointChance.currentChance});
+        })
+
+        return Render.renderPointChanceWrapper(pointElementsWithChances);
+    }
+
+    /**
+     * @param {string} generatorName 
+     * @param {HTMLElement[]} [pointChanceElements]
+     */
+    appendGeneratorStatusElements(generatorName, pointChanceElements = []) {
+        Asserts.string(generatorName);
+        Asserts.htmlArray(pointChanceElements);
+
+        const generatorElement = this.getGeneratorElement(generatorName);
+        const generatorStatusElement = generatorElement.nextSibling;
+        if (!UIHelper.containsClasses(generatorStatusElement, DataManager.getGeneratorStatusWrapClasses().layer_0)) return;
+        UIHelper.appendChildren(generatorStatusElement, pointChanceElements);
     }
 
     /**

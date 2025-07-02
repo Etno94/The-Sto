@@ -12,4 +12,5 @@
 /** 
  * @typedef {Object} PointChance_Props 
  * @property {string[]} shadowPoint
+ * @property {string[]} hiddenPoint
  * */

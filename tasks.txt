@@ -1,5 +1,5 @@
 Activo:
-- (UI) implementacion de actualizacion de point chance en cada render => updateGeneratorStatusElements
+- (logic) modificacion de overCap => poder generar puntos si aun hay espacio por más que no se generen el total posible.
 
 Tareas:
 

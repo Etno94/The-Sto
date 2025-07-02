@@ -10,6 +10,7 @@ export const GENERATOR_STATUS_WRAP_CLASSES = {
 export const POINT_CHANCE_WRAP_CLASSES = {
     layer_0: ['point-chance'],
     layer_1: {
-        shadowPoint: ['half-opacity', 'pos-abs']
+        shadowPoint: ['half-opacity', 'pos-abs'],
+        hiddenPoint: ['d-none']
     }
 }
