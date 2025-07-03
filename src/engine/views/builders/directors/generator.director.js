@@ -49,7 +49,7 @@ export default class GeneratorDirector {
         for (const {element, chance} of pointElementsWithChances) {
             const pointChanceWrap = new ElBuilder('div')
                 .addClass(DataManager.getPointChanceWrapClasses().layer_0)
-                .setProperty('--point-chance-percent', `${chance}%`)
+                .setProperty(DataManager.getCssVars().pointChancePercent, `${chance}%`)
                 .appendChild(
                     new ElBuilder(element)
                         .addDataSet(DataManager.getDataSetAttrs().generatorStatus, DataManager.getDataSetGeneratorStatus().pointChance)

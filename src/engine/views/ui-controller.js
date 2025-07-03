@@ -18,6 +18,8 @@ class UIController {
     // Data
     /** @type { Animations } */
     #animations;
+    /** @type { CssVarsData } */
+    #cssVars;
     /** @type { DataSet } */
     #dataset = {
         types: {},
@@ -50,6 +52,8 @@ class UIController {
     // #region Setup
 
     #setData() {
+        this.#animations = DataManager.getAnimations();
+        this.#cssVars = DataManager.getCssVars();
         this.#animations = DataManager.getAnimations();
         this.#dataset.types = DataManager.getDataSetTypes();
         this.#dataset.attr = DataManager.getDataSetAttrs();
@@ -386,7 +390,7 @@ class UIController {
 
         const generatorElement = this.getGeneratorElement(generatorName);
         const degs = Utils.getReversedDeg(Utils.getDegPercent(baseCooldown, remainingCD));
-        Utils.deferFrame(() => UIHelper.setProperty(generatorElement, '--cooldownGenerator-oncd-dg', `${degs}deg`));
+        Utils.deferFrame(() => UIHelper.setProperty(generatorElement, this.#cssVars.cdGeneratorOnCdDg, `${degs}deg`));
     }
 
     // #endregion Generators
@@ -425,15 +429,15 @@ class UIController {
 
             currentPointTypeChances.forEach(point => {
                 if (fullChanceCounter) {
-                    UIHelper.setProperty(point, '--point-chance-percent', '100%');
+                    UIHelper.setProperty(point, this.#cssVars.pointChancePercent, '100%');
                     UIHelper.removeClass(point, DataManager.getPointChanceWrapClasses().layer_1.hiddenPoint);
                     fullChanceCounter--;
                 } else if(remainingChance && !remainingChanceChecked) {
-                    UIHelper.setProperty(point, '--point-chance-percent', `${remainingChance}%`);
+                    UIHelper.setProperty(point, this.#cssVars.pointChancePercent, `${remainingChance}%`);
                     UIHelper.removeClass(point, DataManager.getPointChanceWrapClasses().layer_1.hiddenPoint);
                     remainingChanceChecked = true;
                 } else {
-                    UIHelper.setProperty(point, '--point-chance-percent', '0%');
+                    UIHelper.setProperty(point, this.#cssVars.pointChancePercent, '0%');
                     UIHelper.addClass(point, DataManager.getPointChanceWrapClasses().layer_1.hiddenPoint);
                 }
                 console.log(point);
@@ -580,11 +584,11 @@ class UIController {
         Asserts.number(currentMaxStorage);
 
         if (currentMaxStorage > 9) {
-            this.#pointsContainer.style.setProperty('--storage-points-per-row', 4);
+            this.#pointsContainer.style.setProperty(this.#cssVars.storagePointsPerRow, 4);
             return;
         }
         if (currentMaxStorage > 5) {
-            this.#pointsContainer.style.setProperty('--storage-points-per-row', 3)
+            this.#pointsContainer.style.setProperty(this.#cssVars.storagePointsPerRow, 3)
         }
     }
 
