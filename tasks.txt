@@ -1,6 +1,7 @@
 Activo:
 
-- (UI) implementar cargas de cd en CD Generator
+- (logic) hacer indice de css vars para trackeo mas limpio
+- (logic) implementar sistema de CD en cargas del generadores
 
 Tareas:
 
@@ -8,7 +9,6 @@ Tareas:
     - (UI) Plasmar cargas del Charge
     - (logica) Programar mecanica. (quizas en Generator Manager?)
 - (CSS) desacoplar elementos de generadores del id, plasmar estilos a traves de clases
-- (logic) hacer indice de css vars para trackeo mas limpio
 
 Nice to have:
 
