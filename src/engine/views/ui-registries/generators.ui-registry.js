@@ -1,5 +1,5 @@
 import DataManager from "../../systems/managers/data.manager.js";
-import {Asserts, Errors} from "../../utils/utils.index.js";
+import {Asserts} from "../../utils/utils.index.js";
 
 class GeneratorsUIRegistry {
   constructor() {

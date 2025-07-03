@@ -15,4 +15,6 @@
 /**
  * @typedef {Object} DataGeneratorRegistryItemPrefixes
  * @property {string} pointChance
+ * @property {string} cdCharge
+ * @property {string} pulseCell
  */

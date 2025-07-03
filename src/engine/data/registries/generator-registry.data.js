@@ -13,6 +13,8 @@ export const DATA_GENERATOR_REGISTRY = {
         pulseCharges: 'pulseCharges'
     },
     itemPrefixes: {
-        pointChance: 'pointChance'
+        pointChance: 'pointChance',
+        cdCharge: 'cdCharge',
+        pulseCell: 'pulseCell'
     }
 }

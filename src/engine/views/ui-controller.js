@@ -6,6 +6,7 @@ import Animate from "./helpers/animate.js";
 import UIHelper from "./helpers/ui-helper.js";
 import { RenderQ } from "./helpers/render-queue.js";
 import {GenUIReg} from "./ui-registries/generators.ui-registry.js";
+import {UIRegService} from "./ui-registries/ui-registry.service.js";
 
 import DataManager from "../systems/managers/data.manager.js";
 import {Asserts, Utils, Errors} from "../utils/utils.index.js";
@@ -290,7 +291,9 @@ class UIController {
     #createWrappedGeneratorElement(generatorElement) {
         Asserts.htmlElement(generatorElement);
 
-        return Render.renderWrappedGenerator(generatorElement);
+        const generatorWrap = Render.renderWrappedGenerator(generatorElement);
+        UIRegService.registerGeneratorWrap(generatorWrap);
+        return generatorWrap;
     }
 
     /** 
@@ -411,7 +414,7 @@ class UIController {
             Errors.logError(`generatorStatusElement doesnt exist`).
             return;
         }
-        const pointChanceElements = GenUIReg.getPointChancesFromGenerator(generatorName);
+        const pointChanceElements = UIRegService.getPointChancesFromGenerator(generatorName);
 
         pointChances.forEach((chance) => {
 
@@ -455,9 +458,9 @@ class UIController {
             }
 
             if (chancePointsToAdd.length) {
-                const newPointChances = this.getPointChanceElements(generatorName, chancePointsToAdd);
+                const newPointChances = this.createPointChanceElements(generatorName, chancePointsToAdd);
                 this.appendGeneratorStatusElements(generatorName, newPointChances);
-                this.registerGeneratorPointChanceElements(generatorName, newPointChances);
+                UIRegService.registerGeneratorPointChanceElements(generatorName, newPointChances);
             }
         })
     }
@@ -467,7 +470,7 @@ class UIController {
      * @param {SaveGeneratorPoints[]} pointChances
      * @returns {HTMLElement[]}
      */
-    getPointChanceElements(generatorName, pointChances = []) {
+    createPointChanceElements(generatorName, pointChances = []) {
         Asserts.string(generatorName);
         Asserts.array(pointChances);
 
@@ -494,29 +497,7 @@ class UIController {
         UIHelper.appendChildren(generatorStatusElement, pointChanceElements);
     }
 
-    /**
-     * @param {string} generatorName 
-     * @param {HTMLElement[]} pointChanceElements 
-     */
-    registerGeneratorPointChanceElements(generatorName, pointChanceElements) {
-        let newIndex = 0;
-        const lastRegistryKey = GenUIReg.checkLastRegister(generatorName, this.#dataGeneratorRegistry.category.statusItems);
-        if (lastRegistryKey) newIndex = Number(lastRegistryKey.split('#')[1]) + 1;
-
-        pointChanceElements.forEach((pointChanceElement) => {
-            GenUIReg.register(generatorName, this.#dataGeneratorRegistry.category.statusItems, 
-                `${this.#dataGeneratorRegistry.itemPrefixes.pointChance}#${newIndex}`, pointChanceElement);
-            newIndex++;
-        });
-    }
-
     // #endregion Generator Status
-
-    // #region CD Charges
-
-
-
-    // #endregion CD Charges
 
     // #region Cost Preview
 
