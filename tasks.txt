@@ -1,6 +1,4 @@
 Activo:
-
-- (logic) hacer indice de css vars para trackeo mas limpio
 - (logic) implementar sistema de CD en cargas del generadores
 
 Tareas:
