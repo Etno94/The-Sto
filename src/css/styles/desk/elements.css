@@ -9,6 +9,17 @@
     border: var(--bolder-border--bold-border);
 }
 
+/* Cd Display */
+*.on-cd::before {
+    content: '';
+    position: absolute;
+    background: conic-gradient(transparent var(--cooldownGenerator-oncd-dg, 0deg), #00000050 0deg);
+    border-radius: inherit;
+    width: inherit;
+    height: inherit;
+    pointer-events: none;
+}
+
 /* Cost Preview */
 div.cost-preview div.point.basic {
     max-width: 24px;
@@ -111,3 +122,47 @@ div.point-chance .point.energy {
 }
 
 /* Cd Charges */
+
+div.cd-charges-wrap {
+    position: absolute;
+    height: var(--cd-gen-height);
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+}
+
+div.cd-charges-wrap .cd-charge {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: rgb(var(--cd-gen-bg-color));
+}
+
+/* Pulse Cells*/
+
+div.pulse-cells-wrap {
+    position: absolute;
+    height: var(--cell-gen-height);
+    top: -8px;
+    left: -16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+div.pulse-cells-wrap .pulse-cell {
+    --pulse-cell-load: 0%;
+
+    width: 16px;
+    height: 48px;
+    border-radius: 16px;
+    background: linear-gradient(to top,
+        rgb(var(--charge-gen-bg-color)) 0%,
+        rgb(var(--charge-gen-bg-color)) var(--pulse-cell-load),
+        rgb(var(--charge-gen-bg-color), 0.25) var(--pulse-cell-load),
+        rgb(var(--charge-gen-bg-color), 0.25) 100%);
+    border: 2px rgb(var(--charge-gen-bg-color)) solid;
+    cursor: pointer;
+}

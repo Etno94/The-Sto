@@ -8,7 +8,7 @@
 }
 
 .point.basic {
-    background-color: var(--click-gen-bg-color);
+    background-color: rgb(var(--click-gen-bg-color));
 }
 
 .point.solid {
@@ -18,7 +18,7 @@
     --point-base-height: var(--point-solid-unit);
     --point-base-margin: calc((var(--point-max-unit) - var(--point-solid-unit)) / 2);
 
-    background-color: var(--cd-gen-bg-color);
+    background-color: rgb(var(--cd-gen-bg-color));
     width: var(--point-base-width);
     height: var(--point-base-height);
     margin: var(--point-base-margin);
@@ -29,7 +29,7 @@
 }
 
 .point.solid div.inner-point {
-    background-color: var(--click-gen-bg-color);
+    background-color: rgb(var(--click-gen-bg-color));
     width: calc((var(--point-base-width) / 10) * 7);
     height: calc((var(--point-base-height) / 10) * 7);
     border-radius: 50%;
@@ -46,7 +46,7 @@
     width: var(--point-base-width);
     height: var(--point-base-height);
     margin: var(--point-base-margin);
-    background-color: var(--charge-gen-bg-color);
+    background-color: rgb(var(--charge-gen-bg-color));
     transform: translate(0, 0);
     transition: transform 0.6s ease-in-out;
     will-change: transform;

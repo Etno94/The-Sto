@@ -8,6 +8,7 @@ Tareas:
     - (UI) Plasmar cargas del Charge
     - (logica) Programar mecanica. (quizas en Generator Manager?)
 - (CSS) desacoplar elementos de generadores del id, plasmar estilos a traves de clases
+- (logic) hacer indice de css vars para trackeo mas limpio
 
 Nice to have:
 
@@ -26,6 +27,8 @@ Nice to Know:
 - Como funcionan los parametros (y calculos) de transform:matrix()
 
 Bugs:
+
+- si estoy a maxima capacidad de storage, no me esta detectando bien el consumo de puntos
 
 -low:
     - (visual) los generadores, al estar dentro de un wrapper, aparecen abruptamente en el canvas

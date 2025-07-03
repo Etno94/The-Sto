@@ -28,5 +28,11 @@ export const GENERATOR_CD_CHARGES_WRAP_CLASSES = {
     layer_1: ['cd-charge']
 }
 
+/** @type {Generator_PulseCells_Wrap} */
+export const GENERATOR_PULSE_CELLS_WRAP_CLASSES = {
+    layer_0: ['pulse-cells-wrap'],
+    layer_1: ['pulse-cell']
+}
+
 /** @type {string[]} */
 export const COST_PREVIEW_CLASSES = ['cost-preview'];

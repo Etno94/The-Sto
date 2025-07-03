@@ -105,4 +105,31 @@ export default class GeneratorDirector {
             .finish();
     }
 
+    /**
+     * @returns {HTMLDivElement}
+     */
+    static createPulseCellsWrapper() {
+        return new ElBuilder('div')
+            .addClass(DataManager.getPulseCellsWrapClasses().layer_0)
+            .addDataSet(DataManager.getDataSetAttrs().type, DataManager.getDataSetTypes().pulseCells)
+            .appendChild(
+                new ElBuilder('div')
+                .addClass(DataManager.getPulseCellsWrapClasses().layer_1)
+                .finish()
+            )
+            .appendChild(
+                new ElBuilder('div')
+                .addClass(DataManager.getPulseCellsWrapClasses().layer_1)
+                .addClass(DataManager.getLifeCycleClasses().hidden)
+                .finish()
+            )
+            .appendChild(
+                new ElBuilder('div')
+                .addClass(DataManager.getPulseCellsWrapClasses().layer_1)
+                .addClass(DataManager.getLifeCycleClasses().hidden)
+                .finish()
+            )
+            .finish();
+    }
+
 }

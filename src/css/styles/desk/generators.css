@@ -15,7 +15,8 @@
 }
 
 #central #generators-container .wrapper {
-    width: 140px;
+    position: relative;
+    width: 160px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -28,8 +29,8 @@
     --cell-active-transform: scale(1.05);
 
     border-radius: 32px;
-    height: 128px;
-    width: 128px;
+    height: var(--cell-gen-width);
+    width: var(--cell-gen-height);
     text-align: center;
     transition-duration: var(--transform);
 
@@ -90,34 +91,25 @@
 
 /* Click */
 #clickGenerator.cell {
-    background-color: #ffa500;
+    background-color: rgb(var(--click-gen-bg-color));
 }
 #clickGenerator.cell:active {
-    background-color: #ffa500bf;
+    background-color: rgb(var(--click-gen-bg-color), var(--active-gen-opacity-color));
 }
 
 /* CoolDown */
 #cooldownGenerator.cell {
-    width: 96px;
-    height: 160px;
-    background-color: #FF6300;
+    width: var(--cd-gen-width);
+    height: var(--cd-gen-height);
+    background-color: rgb(var(--cd-gen-bg-color));
     border-radius: 24px;
 }
 #cooldownGenerator.cell:active {
-    background-color: #FF6300bf;
+    background-color: rgb(var(--cd-gen-bg-color), var(--active-gen-opacity-color));
 }
 #cooldownGenerator.cell.hint,
 #cooldownGenerator.cell.blank {
     background-color: unset;
-}
-#cooldownGenerator.cell.on-cd::before {
-    content: '';
-    position: absolute;
-    background: conic-gradient(transparent var(--cooldownGenerator-oncd-dg, 0deg), #805840 0deg);
-    border-radius: inherit;
-    width: inherit;
-    height: inherit;
-    pointer-events: none;
 }
 
 /* Charge */
@@ -125,10 +117,10 @@
     --chargeGenerator-transform-rotate: rotate(45deg);
 }
 #chargeGenerator.cell {
-    width: 112px;
-    height: 112px;
+    width: var(--pulse-gen-width);
+    height: var(--pulse-gen-height);
     transform: rotate(45deg);
-    background-color: #A200FF;
+    background-color: rgb(var(--charge-gen-bg-color));
     position: relative;
     border-top-left-radius: 16px;
     border-bottom-right-radius: 16px;
@@ -136,7 +128,7 @@
     border-bottom-left-radius: 24px;
 }
 #chargeGenerator.cell:active {
-    background-color: #A200FFbf;
+    background-color: rgb(var(--charge-gen-bg-color), var(--active-gen-opacity-color));
     transform: var(--cell-active-transform) var(--chargeGenerator-transform-rotate) !important;
 }
 #chargeGenerator.cell:hover {
@@ -145,4 +137,9 @@
 #chargeGenerator.cell.hint,
 #chargeGenerator.cell.blank {
     background-color: unset;
+}
+#chargeGenerator.cell.on-cd::before {
+    transform: rotate(-45deg);
+    width: 140%;
+    height: 140%;
 }

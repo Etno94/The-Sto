@@ -55,11 +55,19 @@ export default class Render {
         Asserts.htmlElement(generatorElement);
         Asserts.stringArray(classes);
 
-        const wrappedGenerator = WrapperDirector.wrapChildren([
+        const childrenToWrap = [
             generatorElement,
             GeneratorDirector.createGeneratorStatusWrap()
-        ], classes);
+        ];
 
+        const generatorElements = ({
+                [DataManager.getGeneratorIds().CLICK]: () => null,
+                [DataManager.getGeneratorIds().COOLDOWN]: GeneratorDirector.createCdChargesWrapper,
+                [DataManager.getGeneratorIds().CHARGE]: GeneratorDirector.createPulseCellsWrapper
+            })[generatorElement.id]();
+
+        if (generatorElements) childrenToWrap.push(generatorElements);
+        const wrappedGenerator = WrapperDirector.wrapChildren(childrenToWrap, classes);
         return wrappedGenerator;
     }
 
@@ -90,6 +98,13 @@ export default class Render {
      */
     static renderCostPreview() {
         return GeneratorDirector.createCostPreview();
+    }
+
+    /**
+     * @returns {HTMLDivElement}
+     */
+    static renderCdChargesWrapper() {
+        return GeneratorDirector.createCdChargesWrapper();
     }
 
     // #endregion UI Elements
