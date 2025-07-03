@@ -20,7 +20,7 @@
  * @typedef { Object } GeneratorElementsBusEvents
  * @property { GeneratorStatusItemsBusEvents } statusItems
  * @property { string } cdCharges
- * @property { string } pulseCharges
+ * @property { string } pulseCells
  */
 
 /**

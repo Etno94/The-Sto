@@ -1,4 +1,4 @@
-import { GENERATOR_IDS, CLICK_GENERATOR, COOLDOWN_GENERATOR, CHARGE_GENERATOR } from './generators.data.js';
+import { GENERATOR_IDS, CLICK_GENERATOR, COOLDOWN_GENERATOR, PULSE_GENERATOR } from './generators.data.js';
 import { POINT_TYPES, FRESH_POINTS } from './points.data.js';
 import { STORAGE_UPGRADES} from './storage.data.js';
 
@@ -43,14 +43,14 @@ export const FRESH_SAVE = {
             generatesPoints: ToSavePoints(COOLDOWN_GENERATOR.generates.points)
         },
         {
-            name: GENERATOR_IDS.CHARGE,
+            name: GENERATOR_IDS.PULSE,
             hinted: false,
             canBuild: false,
             progress: 0,
             built: false,
             timesUsed: 0,
-            currentMultiplier: CHARGE_GENERATOR.generates.baseMultiplier,
-            generatesPoints: ToSavePoints(CHARGE_GENERATOR.generates.points)
+            currentMultiplier: PULSE_GENERATOR.generates.baseMultiplier,
+            generatesPoints: ToSavePoints(PULSE_GENERATOR.generates.points)
         },
     ]
 }

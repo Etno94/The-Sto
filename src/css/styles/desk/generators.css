@@ -113,32 +113,32 @@
 }
 
 /* Charge */
-#chargeGenerator {
-    --chargeGenerator-transform-rotate: rotate(45deg);
+#pulseGenerator {
+    --pulseGenerator-transform-rotate: rotate(45deg);
 }
-#chargeGenerator.cell {
+#pulseGenerator.cell {
     width: var(--pulse-gen-width);
     height: var(--pulse-gen-height);
     transform: rotate(45deg);
-    background-color: rgb(var(--charge-gen-bg-color));
+    background-color: rgb(var(--pulse-gen-bg-color));
     position: relative;
     border-top-left-radius: 16px;
     border-bottom-right-radius: 16px;
     border-top-right-radius: 24px;
     border-bottom-left-radius: 24px;
 }
-#chargeGenerator.cell:active {
-    background-color: rgb(var(--charge-gen-bg-color), var(--active-gen-opacity-color));
-    transform: var(--cell-active-transform) var(--chargeGenerator-transform-rotate) !important;
+#pulseGenerator.cell:active {
+    background-color: rgb(var(--pulse-gen-bg-color), var(--active-gen-opacity-color));
+    transform: var(--cell-active-transform) var(--pulseGenerator-transform-rotate) !important;
 }
-#chargeGenerator.cell:hover {
-    transform: var(--cell-hover-transform) var(--chargeGenerator-transform-rotate);
+#pulseGenerator.cell:hover {
+    transform: var(--cell-hover-transform) var(--pulseGenerator-transform-rotate);
 }
-#chargeGenerator.cell.hint,
-#chargeGenerator.cell.blank {
+#pulseGenerator.cell.hint,
+#pulseGenerator.cell.blank {
     background-color: unset;
 }
-#chargeGenerator.cell.on-cd::before {
+#pulseGenerator.cell.on-cd::before {
     transform: rotate(-45deg);
     width: 140%;
     height: 140%;

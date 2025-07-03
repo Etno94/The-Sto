@@ -63,7 +63,7 @@ export default class Render {
         const generatorElements = ({
                 [DataManager.getGeneratorIds().CLICK]: () => null,
                 [DataManager.getGeneratorIds().COOLDOWN]: GeneratorDirector.createCdChargesWrapper,
-                [DataManager.getGeneratorIds().CHARGE]: GeneratorDirector.createPulseCellsWrapper
+                [DataManager.getGeneratorIds().PULSE]: GeneratorDirector.createPulseCellsWrapper
             })[generatorElement.id]();
 
         if (generatorElements) childrenToWrap.push(generatorElements);

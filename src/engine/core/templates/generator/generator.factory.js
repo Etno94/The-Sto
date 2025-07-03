@@ -16,7 +16,7 @@ class GeneratorFactory {
         this.#generatorRegistry = {
             [this.#generatorIds.CLICK]: ClickGenerator,
             [this.#generatorIds.COOLDOWN]: CDGenerator,
-            [this.#generatorIds.CHARGE]: PulseGenerator,
+            [this.#generatorIds.PULSE]: PulseGenerator,
         }
     }
 

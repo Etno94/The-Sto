@@ -3,7 +3,7 @@
  * @typedef {Object} DataGeneratorId
  * @property {string} CLICK
  * @property {string} COOLDOWN
- * @property {string} CHARGE
+ * @property {string} PULSE
  */
 
 /**

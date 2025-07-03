@@ -11,7 +11,6 @@ Tareas:
 
 Nice to have:
 
-- renombar Charge Generator a Pulse Generator y sus respectivas dependencias (revisar js y css)
 - actualizar render de solid point (actualmente se muestra tier 2 como tier 1) (tier 2 se llama heavy point)
 - usar manager-index en todos lados
 - tipar todos los parametros y obj
@@ -26,8 +25,6 @@ Nice to Know:
 - Como funcionan los parametros (y calculos) de transform:matrix()
 
 Bugs:
-
-- si estoy a maxima capacidad de storage, no me esta detectando bien el consumo de puntos
 
 -low:
     - (visual) los generadores, al estar dentro de un wrapper, aparecen abruptamente en el canvas

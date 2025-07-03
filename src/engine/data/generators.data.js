@@ -4,7 +4,7 @@ import {POINT_TYPES} from './points.data.js';
 export const GENERATOR_IDS = {
     CLICK: 'clickGenerator',
     COOLDOWN: 'cooldownGenerator',
-    CHARGE: 'chargeGenerator'
+    PULSE: 'pulseGenerator'
 }
 
 /** @type {DataGeneratorClasses} */
@@ -74,8 +74,8 @@ export const COOLDOWN_GENERATOR = {
 /**
  * @type {DataGenerator}
  */
-export const CHARGE_GENERATOR = {
-    name: GENERATOR_IDS.CHARGE,
+export const PULSE_GENERATOR = {
+    name: GENERATOR_IDS.PULSE,
     generates: {
         baseMultiplier: 1,
         points: [
@@ -115,7 +115,7 @@ export const CHARGE_GENERATOR = {
 export const GENERATORS = [
     CLICK_GENERATOR,
     COOLDOWN_GENERATOR,
-    CHARGE_GENERATOR
+    PULSE_GENERATOR
 ]
 
 /**

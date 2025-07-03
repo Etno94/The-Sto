@@ -39,8 +39,8 @@ class UIRegistryService {
             [this.#generatorIds.CLICK]: (el) => this.registerClickGeneratorElements(el),
             [this.#generatorIds.COOLDOWN]: (el) => this.registerGeneratorElements(el, 
                 this.#dataCdChargesClasses, this.#dataGeneratorRegistry.itemPrefixes.cdCharge, this.#dataGeneratorRegistry.category.cdCharges),
-            [this.#generatorIds.CHARGE]: (el) => this.registerGeneratorElements(el, 
-                this.#dataPulseCellsClasses, this.#dataGeneratorRegistry.itemPrefixes.pulseCell, this.#dataGeneratorRegistry.category.pulseCharges)
+            [this.#generatorIds.PULSE]: (el) => this.registerGeneratorElements(el, 
+                this.#dataPulseCellsClasses, this.#dataGeneratorRegistry.itemPrefixes.pulseCell, this.#dataGeneratorRegistry.category.pulseCells)
         };
 
         const generatorFunc = map[buttomElement.id] || (() => {});

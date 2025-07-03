@@ -14,7 +14,7 @@ class PointChanceStrategy {
         this.#generatorRegistry = {
             [this.#generatorIds.CLICK]: this.#updatePointChanceForClickGenerator,
             [this.#generatorIds.COOLDOWN]: this.#updatePointChanceForCDGenerator,
-            [this.#generatorIds.CHARGE]: this.#updatePointChanceForPulseGenerator,
+            [this.#generatorIds.PULSE]: this.#updatePointChanceForPulseGenerator,
         }
     }
 

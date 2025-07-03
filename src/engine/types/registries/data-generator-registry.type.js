@@ -9,7 +9,7 @@
  * @typedef {Object} DataGeneratorRegistryCategories
  * @property {string} statusItems
  * @property {string} cdCharges
- * @property {string} pulseCharges
+ * @property {string} pulseCells
  */
 
 /**

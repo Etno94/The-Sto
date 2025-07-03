@@ -17,7 +17,7 @@ export const BUS_EVENTS = {
                 }
             },
             cdCharges: 'generator: cooldown charges updated',
-            pulseCharges: 'generator: pulse charges  updated'
+            pulseCells: 'generator: pulse cells  updated'
         },
     },
     points: {

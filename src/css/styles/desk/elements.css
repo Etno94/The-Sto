@@ -61,7 +61,7 @@ div.cost-preview .point.energy {
     justify-content: center;
     align-content: center;
 }
-#central #generators-container .wrapper #chargeGenerator ~ .generator-status {
+#central #generators-container .wrapper #pulseGenerator ~ .generator-status {
     transform: translateY(16px);
 } 
 
@@ -159,10 +159,10 @@ div.pulse-cells-wrap .pulse-cell {
     height: 48px;
     border-radius: 16px;
     background: linear-gradient(to top,
-        rgb(var(--charge-gen-bg-color)) 0%,
-        rgb(var(--charge-gen-bg-color)) var(--pulse-cell-load),
-        rgb(var(--charge-gen-bg-color), 0.25) var(--pulse-cell-load),
-        rgb(var(--charge-gen-bg-color), 0.25) 100%);
-    border: 2px rgb(var(--charge-gen-bg-color)) solid;
+        rgb(var(--pulse-gen-bg-color)) 0%,
+        rgb(var(--pulse-gen-bg-color)) var(--pulse-cell-load),
+        rgb(var(--pulse-gen-bg-color), 0.25) var(--pulse-cell-load),
+        rgb(var(--pulse-gen-bg-color), 0.25) 100%);
+    border: 2px rgb(var(--pulse-gen-bg-color)) solid;
     cursor: pointer;
 }
