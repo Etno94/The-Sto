@@ -495,7 +495,6 @@ class UIController {
     }
 
     /**
-     * 
      * @param {string} generatorName 
      * @param {HTMLElement[]} pointChanceElements 
      */
@@ -512,6 +511,12 @@ class UIController {
     }
 
     // #endregion Generator Status
+
+    // #region CD Charges
+
+
+
+    // #endregion CD Charges
 
     // #region Cost Preview
 

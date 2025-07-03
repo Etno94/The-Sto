@@ -1,4 +1,6 @@
 Activo:
+- (logic) abstraer registro UI de UI controller y moverlo a UI Registry Service
+- (logic) consumir UI Registry Service en UI Controller / Render Factory para registrar elementos (y cd charges)
 - (logic) implementar sistema de CD en cargas del generadores
 
 Tareas:
