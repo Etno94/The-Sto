@@ -61,7 +61,7 @@ export default class BaseGenerator {
   canGeneratePure() {
     if (!this.pointsToGenerate.length) return true;
     const generateTotal = new PointCollection(SaveGeneratesToPointSet(this.pointsToGenerate)).total;
-    const spaceLeft = storageM.storageSpaceLeft(pointM.getCurrentTotalPoints());
+    const spaceLeft = storageM.storageSpaceLeft(pointM.getCurrentTotalPoints(), this.consumeCollection.total);
     return !(spaceLeft <= 0 && generateTotal > 0);
   }
 
@@ -72,7 +72,7 @@ export default class BaseGenerator {
 
   /** @returns {PointCollection} */
   rollGeneration() {
-    let spaceLeft = storageM.storageSpaceLeft(pointM.getCurrentTotalPoints());
+    let spaceLeft = storageM.storageSpaceLeft(pointM.getCurrentTotalPoints(), this.consumeCollection.total);
     const generated = new PointCollection();
 
     this.pointsToGenerate.forEach((point) => {

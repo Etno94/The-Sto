@@ -1,6 +1,6 @@
 Activo:
-- (logic) consumir UI Registry Service en UI Controller / Render Factory para registrar elementos (y cd charges)
 - (logic) implementar sistema de CD en cargas del generadores
+- (UI, life cycle) mostrar cd charges / pulse cells cuando el generador esta construido
 
 Tareas:
 

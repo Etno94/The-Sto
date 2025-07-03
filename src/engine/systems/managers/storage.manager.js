@@ -49,11 +49,13 @@ class StorageManager {
 
     /**
      * @param { Number } currentTotal
+     * @param { Number } consumeTotal
      * @returns {Number}
      */
-    storageSpaceLeft(currentTotal) {
+    storageSpaceLeft(currentTotal, consumeTotal) {
         Asserts.number(currentTotal);
-        return this.#currentMaxStorage - currentTotal;
+        Asserts.number(consumeTotal);
+        return this.#currentMaxStorage - currentTotal + consumeTotal;
     }
 
     /** @returns {PointSet} */
