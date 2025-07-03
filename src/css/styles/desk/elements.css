@@ -1,3 +1,14 @@
+/* Life Cycle */
+.hidden {
+    display: none;
+}
+.hint {
+    border: var(--bolder-border--light-border);
+}
+.blank {
+    border: var(--bolder-border--bold-border);
+}
+
 /* Cost Preview */
 div.cost-preview div.point.basic {
     max-width: 24px;
@@ -98,3 +109,5 @@ div.point-chance .point.energy {
     height: var(--point-base-height);
     margin: var(--point-base-margin);
 }
+
+/* Cd Charges */

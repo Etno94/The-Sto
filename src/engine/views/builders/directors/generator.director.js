@@ -78,4 +78,31 @@ export default class GeneratorDirector {
             .finish();
     }
 
+    /**
+     * @returns {HTMLDivElement}
+     */
+    static createCdChargesWrapper() {
+        return new ElBuilder('div')
+            .addClass(DataManager.getCdChargesWrapClasses().layer_0)
+            .addDataSet(DataManager.getDataSetAttrs().type, DataManager.getDataSetTypes().cdCharges)
+            .appendChild(
+                new ElBuilder('div')
+                .addClass(DataManager.getCdChargesWrapClasses().layer_1)
+                .finish()
+            )
+            .appendChild(
+                new ElBuilder('div')
+                .addClass(DataManager.getCdChargesWrapClasses().layer_1)
+                .addClass(DataManager.getLifeCycleClasses().hidden)
+                .finish()
+            )
+            .appendChild(
+                new ElBuilder('div')
+                .addClass(DataManager.getCdChargesWrapClasses().layer_1)
+                .addClass(DataManager.getLifeCycleClasses().hidden)
+                .finish()
+            )
+            .finish();
+    }
+
 }

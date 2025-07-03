@@ -1,6 +1,13 @@
 /** @type {string[]} */
 export const WRAPPER_CLASSES = ['wrapper'];
 
+/** @type {LifeCycle_Props} */
+export const LIFE_CYCLE_CLASSES = {
+    hidden: ['hidden'],
+    hint: ['hint'],
+    blank: ['blank']
+};
+
 /** @type {GeneratorStatus_Wrap} */
 export const GENERATOR_STATUS_WRAP_CLASSES = {
     layer_0: ['generator-status']
@@ -13,6 +20,12 @@ export const POINT_CHANCE_WRAP_CLASSES = {
         shadowPoint: ['half-opacity', 'pos-abs'],
         hiddenPoint: ['d-none']
     }
+}
+
+/** @type {Generator_CdCharges_Wrap} */
+export const GENERATOR_CD_CHARGES_WRAP_CLASSES = {
+    layer_0: ['cd-charges-wrap'],
+    layer_1: ['cd-charge']
 }
 
 /** @type {string[]} */

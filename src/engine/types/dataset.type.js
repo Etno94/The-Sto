@@ -19,6 +19,8 @@
  * @property { string } costPreview
  * @property { string } wrap
  * @property { string } generatorStatus => DataSetGeneratorStatus
+ * @property { string } cdCharges
+ * @property { string } pulseCells
  * @property { string } animationElement
  */
 

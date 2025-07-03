@@ -12,6 +12,8 @@ export const DATA_SET_TYPES = {
     generator: 'generator',
     costPreview: 'cost-preview',
     generatorStatus: 'generator-status',
+    cdCharges: 'cd-charges',
+    pulseCells: 'pulse-cells',
     animationElement: 'animation-element'
 }
 
