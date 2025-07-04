@@ -68,7 +68,44 @@ export const COOLDOWN_GENERATOR = {
             [POINT_TYPES.point]: 1
         },
         totalSteps: 6
-    }
+    },
+    elementsUnlock: [
+        {name: 'cdCharge#1'},
+        {
+            name: 'cdCharge#2',
+            unlockRequires: {
+                hint: {
+                    [POINT_TYPES.solid_point]: 4
+                },
+                build: {
+                    [POINT_TYPES.solid_point]: 6
+                }
+            },
+            buildRequires: {
+                step: {
+                    [POINT_TYPES.solid_point]: 3
+                },
+                totalSteps: 5
+            }
+        },
+        {
+            name: 'cdCharge#3',
+            unlockRequires: {
+                hint: {
+                    [POINT_TYPES.energy_point]: 1
+                },
+                build: {
+                    [POINT_TYPES.energy_point]: 4
+                }
+            },
+            buildRequires: {
+                step: {
+                    [POINT_TYPES.energy_point]: 1
+                },
+                totalSteps: 8
+            }
+        },
+    ]
 }
 
 /**
@@ -106,7 +143,44 @@ export const PULSE_GENERATOR = {
             [POINT_TYPES.solid_point]: 2
         },
         totalSteps: 3
-    }
+    },
+    elementsUnlock: [
+        {name: 'pulseCell#1'},
+        {
+            name: 'pulseCell#2',
+            unlockRequires: {
+                hint: {
+                    [POINT_TYPES.energy_point]: 6
+                },
+                build: {
+                    [POINT_TYPES.energy_point]: 8
+                }
+            },
+            buildRequires: {
+                step: {
+                    [POINT_TYPES.energy_point]: 2
+                },
+                totalSteps: 10
+            }
+        },
+        {
+            name: 'pulseCell#3',
+            unlockRequires: {
+                hint: {
+                    [POINT_TYPES.energy_point]: 10
+                },
+                build: {
+                    [POINT_TYPES.energy_point]: 12
+                }
+            },
+            buildRequires: {
+                step: {
+                    [POINT_TYPES.energy_point]: 8
+                },
+                totalSteps: 8
+            }
+        },
+    ]
 }
 
 /**
@@ -123,4 +197,47 @@ export const GENERATORS = [
  */
 export const BUILD_GENERATOR = {
     defaultStepProgress: 1
+}
+
+/**
+ * @type { GeneratorElementsData }
+ */
+export const GENERATOR_ELEMENTS_DATA = {
+    cdCharges: [
+        {
+            name: 'cdCharge#1',
+            baseCd: (currentCd) => currentCd
+        },
+        {
+            name: 'cdCharge#2',
+            baseCd: (currentCd) => currentCd * 2
+        },
+        {
+            name: 'cdCharge#3',
+            baseCd: (currentCd) => currentCd * 4
+        }
+    ],
+    pulseCells: [
+        {
+            name: 'pulseCell#1',
+            loadCell: {
+                type: POINT_TYPES.point,
+                total: 50
+            }
+        },
+        {
+            name: 'pulseCell#2',
+            loadCell: {
+                type: POINT_TYPES.solid_point,
+                total: 30
+            }
+        },
+        {
+            name: 'pulseCell#3',
+            loadCell: {
+                type: POINT_TYPES.energy_point,
+                total: 10
+            }
+        }
+    ]
 }

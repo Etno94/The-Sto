@@ -1,6 +1,5 @@
 Activo:
 - (logic) implementar sistema de CD en cargas del generadores
-- (UI, life cycle) mostrar cd charges / pulse cells cuando el generador esta construido
 
 Tareas:
 
@@ -8,6 +7,18 @@ Tareas:
     - (UI) Plasmar cargas del Charge
     - (logica) Programar mecanica. (quizas en Generator Manager?)
 - (CSS) desacoplar elementos de generadores del id, plasmar estilos a traves de clases
+- (jsconfig) actualizar los paths, configurando el jsconfig:
+    {
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+        "@engine/*": ["src/engine/*"],
+        "@utils/*": ["src/engine/utils/*"]
+        }
+        // ...other options
+    },
+    "include": ["src", "types"]
+    }
 
 Nice to have:
 

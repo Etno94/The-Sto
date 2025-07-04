@@ -9,6 +9,7 @@
  * @property {number} [remainingCD=0]
  * @property {number} currentMultiplier
  * @property {SaveGeneratorPoints[]} generatesPoints
+ * @property {string[]} [unlockedElements]
  */
 
 /**

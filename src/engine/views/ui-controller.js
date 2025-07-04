@@ -30,6 +30,8 @@ class UIController {
     #pointTypes;
     /** @type { DataGeneratorRegistry } */
     #dataGeneratorRegistry;
+    /** @type { DataGeneratorId } */
+    #generatorIds;
 
     // Elements
     /** @type {HTMLElement} */
@@ -60,6 +62,7 @@ class UIController {
         this.#dataset.attr = DataManager.getDataSetAttrs();
         this.#pointTypes = DataManager.getPointTypesData();
         this.#dataGeneratorRegistry = DataManager.getDataGeneratorRegistry();
+        this.#generatorIds = DataManager.getGeneratorIds();
     }
 
     #setElements() {
@@ -397,6 +400,26 @@ class UIController {
     }
 
     // #endregion Generators
+
+    // #region Generator Elements
+
+    /**
+     * @param {string} generatorName 
+     */
+    showGeneratorElementsOnBuild(generatorName) {
+        Asserts.string(generatorName);
+
+        const category = ({
+            [this.#generatorIds.CLICK]: null,
+            [this.#generatorIds.COOLDOWN]: this.#dataGeneratorRegistry.category.cdCharges,
+            [this.#generatorIds.PULSE]: this.#dataGeneratorRegistry.category.pulseCells,
+        })[generatorName];
+
+        const categoryMap = category ? UIRegService.getElementsFromGenerator(generatorName, category) : null;
+        console.log(categoryMap);
+    }
+
+    // #endregion Generator Elements
 
     // #region Generator Status
 

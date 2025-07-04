@@ -105,12 +105,22 @@ class UIRegistryService {
     }
 
     /**
-   * @param {string} generator 
-   * @returns {Node[]}
-   */
+     * @param {string} generator 
+     * @returns {Node[]}
+     */
     getPointChancesFromGenerator(generatorName) {
         Asserts.string(generatorName);
         return GenUIReg.getPointChancesFromGenerator(generatorName);
+    }
+
+    /**
+     * @param {string} generator 
+     * @returns {Node[]}
+     */
+    getElementsFromGenerator(generatorName, category) {
+        Asserts.string(generatorName);
+        Asserts.string(category);
+        return GenUIReg.getAllFrom(generatorName, category);
     }
 
     // #endregion Generator UI Registry

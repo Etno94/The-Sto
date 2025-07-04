@@ -40,7 +40,8 @@ export const FRESH_SAVE = {
             timesUsed: 0,
             remainingCD: 0,
             currentMultiplier: COOLDOWN_GENERATOR.generates.baseMultiplier,
-            generatesPoints: ToSavePoints(COOLDOWN_GENERATOR.generates.points)
+            generatesPoints: ToSavePoints(COOLDOWN_GENERATOR.generates.points),
+            unlockedElements: []
         },
         {
             name: GENERATOR_IDS.PULSE,
@@ -50,7 +51,8 @@ export const FRESH_SAVE = {
             built: false,
             timesUsed: 0,
             currentMultiplier: PULSE_GENERATOR.generates.baseMultiplier,
-            generatesPoints: ToSavePoints(PULSE_GENERATOR.generates.points)
+            generatesPoints: ToSavePoints(PULSE_GENERATOR.generates.points),
+            unlockedElements: []
         },
     ]
 }

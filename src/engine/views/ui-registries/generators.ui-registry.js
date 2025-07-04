@@ -72,6 +72,7 @@ class GeneratorsUIRegistry {
    * Returns all items for a given generator and category.
    * @param {string} generator
    * @param {string} category
+   * @returns {Map}
    */
   getAllFrom(generator, category) {
 

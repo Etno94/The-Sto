@@ -23,6 +23,7 @@
  * @property {GeneratorCooldownData} [cooldown]
  * @property {UnlockRequires} [unlockRequires]
  * @property {BuildRequires} [buildRequires]
+ * @property {GeneratorElementsUnlockData[]} [elementsUnlock]
  */
 
 // What generates and stats
@@ -66,4 +67,29 @@
  * @property {Function} cooldownIncrement
  */
 
+/**
+ * @typedef {Object} GeneratorElementsUnlockData
+ * @property {string} name
+ * @property {UnlockRequires} unlockRequires
+ * @property {BuildRequires} buildRequires
+ */
 
+
+// Generator Elements
+/**
+ * @typedef {Object} GeneratorElementsData
+ * @property {GeneratorElementsCDChargesData[]} cdCharges
+ * @property {GeneratorElementsPulseCellsData[]} pulseCells
+ */
+
+/**
+ * @typedef {Object} GeneratorElementsCDChargesData
+ * @property {string} name
+ * @property {Function} baseCd
+ */
+
+/**
+ * @typedef {Object} GeneratorElementsPulseCellsData
+ * @property {string} name
+ * @property {{type: string, total: number}} loadCell
+ */

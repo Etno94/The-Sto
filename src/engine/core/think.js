@@ -117,6 +117,7 @@ function buildGenerator(generatorName) {
     UIControl.showWrappedGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorName));
     UIControl.hideBuild(generatorElement);
     UIControl.removeCostPreview(generatorElement);
+    UIControl.showGeneratorElementsOnBuild(generatorName);
     setGeneratorStatus(generatorName);
   }
 }

@@ -138,6 +138,14 @@ div.cd-charges-wrap .cd-charge {
     height: 16px;
     border-radius: 50%;
     background-color: rgb(var(--cd-gen-bg-color));
+    transition: opacity var(--opacity);
+}
+#cooldownGenerator.hint ~ div.cd-charges-wrap .cd-charge:first-child,
+#cooldownGenerator.blank ~ div.cd-charges-wrap .cd-charge:first-child {
+    opacity: 0;
+}
+#cooldownGenerator ~ div.cd-charges-wrap .cd-charge:first-child {
+    opacity: 1;
 }
 
 /* Pulse Cells*/
@@ -165,4 +173,12 @@ div.pulse-cells-wrap .pulse-cell {
         rgb(var(--pulse-gen-bg-color), 0.25) 100%);
     border: 2px rgb(var(--pulse-gen-bg-color)) solid;
     cursor: pointer;
+}
+
+#pulseGenerator.hint ~ div.pulse-cells-wrap .pulse-cell:first-child,
+#pulseGenerator.blank ~ div.pulse-cells-wrap .pulse-cell:first-child {
+    opacity: 0;
+}
+#pulseGenerator ~ div.pulse-cells-wrap .pulse-cell:first-child {
+    opacity: 1;
 }
