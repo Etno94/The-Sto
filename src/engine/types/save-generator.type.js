@@ -9,7 +9,7 @@
  * @property {number} [remainingCD=0]
  * @property {number} currentMultiplier
  * @property {SaveGeneratorPoints[]} generatesPoints
- * @property {string[]} [unlockedElements]
+ * @property {SaveGeneratorElements[]} [elements]
  */
 
 /**
@@ -17,4 +17,13 @@
  * @property {string} type
  * @property {number} currentChance
  * @property {number} [guaranteedChanceTries=0]
+ */
+
+/**
+ * @typedef {Object} SaveGeneratorElements
+ * @property {string} name
+ * @property {boolean} hinted
+ * @property {boolean} built
+ * @property {number} [remainingCD]
+ * @property {number} [cellLoad]
  */

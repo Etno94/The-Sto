@@ -218,6 +218,22 @@ class GeneratorManager {
         return Utils.deepCopy(this.#whatBuildRequires(generatorName))?.totalSteps || null;
     }
 
+    /**
+     * @param {string} generatorName 
+     * @returns {GeneratorElementsUnlockData[]}
+     */
+    whatElements(generatorName) {
+        return this.#getGeneratorData(generatorName)?.elementsUnlock || [];
+    }
+
+    /**
+     * @param {string} generatorName 
+     * @returns {string[]}
+     */
+    whatElementNames(generatorName) {
+        return this.whatElements(generatorName).map(element => element.name) || [];
+    }
+
     // #endregion Get Generator Data
 
     // #region Get Proxy Save

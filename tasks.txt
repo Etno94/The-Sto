@@ -1,4 +1,5 @@
 Activo:
+- (logic) mapear data de generator elements
 - (logic) implementar sistema de CD en cargas del generadores
 
 Tareas:

@@ -1,6 +1,6 @@
 import { BUS_EVENTS } from '../../data/bus-events.data.js';
 import { POINT_PROPS, POINT_TYPES, POINT_CLASSES } from '../../data/points.data.js';
-import { GENERATOR_IDS, GENERATORS, GENERATOR_CLASSES, BUILD_GENERATOR } from '../../data/generators.data.js';
+import { GENERATOR_IDS, GENERATORS, GENERATOR_CLASSES, BUILD_GENERATOR, GENERATOR_ELEMENTS_DATA } from '../../data/generators.data.js';
 import { STORAGE_UPGRADES } from '../../data/storage.data.js';
 import { CSS_VARS } from "../../data/css-vars.data.js";
 import { ANIMATIONS } from "../../data/animations.data.js";
@@ -202,6 +202,11 @@ export default class DataManager {
     /** @returns { Generator_PulseCells_Wrap } */
     static getPulseCellsWrapClasses() {
         return Utils.deepCopy(GENERATOR_PULSE_CELLS_WRAP_CLASSES);
+    }
+
+    /** @returns { GeneratorElementsData } */
+    static getGeneratorElementsData() {
+        return Utils.deepCopy(GENERATOR_ELEMENTS_DATA);
     }
 
     // #endregion Elements

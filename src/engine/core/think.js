@@ -118,7 +118,7 @@ function buildGenerator(generatorName) {
     UIControl.hideBuild(generatorElement);
     UIControl.removeCostPreview(generatorElement);
     UIControl.showGeneratorElementsOnBuild(generatorName);
-    setGeneratorStatus(generatorName);
+    setGeneratorElements(generatorName);
   }
 }
 
@@ -216,12 +216,12 @@ function setBuiltGeneratorStatus() {
   if (!Validators.isNonEmptyArray(builtGeneratorNames)) return;
 
   builtGeneratorNames.forEach(generatorName => {
-    setGeneratorStatus(generatorName);
+    setGeneratorElements(generatorName);
   });
 }
 
 /** @param {string} generatorName */
-function setGeneratorStatus(generatorName) {
+function setGeneratorElements(generatorName) {
   Asserts.string(generatorName);
   const generatesPoints = generatorM.getGeneratorPoints(generatorName);
   UIControl.updateGeneratorStatusElements(generatorName, generatesPoints);

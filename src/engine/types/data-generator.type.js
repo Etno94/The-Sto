@@ -76,6 +76,17 @@
 
 
 // Generator Elements
+
+/**
+ * @typedef {Object} GeneratorElementNamesData
+ * @property {string} cdCharge1
+ * @property {string} cdCharge2
+ * @property {string} cdCharge3
+ * @property {string} pulseCell1
+ * @property {string} pulseCell2
+ * @property {string} pulseCell3
+ */
+
 /**
  * @typedef {Object} GeneratorElementsData
  * @property {GeneratorElementsCDChargesData[]} cdCharges
