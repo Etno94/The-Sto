@@ -8,6 +8,7 @@
 
 /**
  * @typedef { Object } GeneratorBusEvents
+ * @property { string } built
  * @property { string } onClick
  * @property { string } onCD
  * @property { string } updateCD

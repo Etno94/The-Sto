@@ -119,6 +119,7 @@ function buildGenerator(generatorName) {
     UIControl.removeCostPreview(generatorElement);
     UIControl.showGeneratorElementsOnBuild(generatorName);
     setGeneratorElements(generatorName);
+    EventBus.emit(Events.generator.built, generatorName);
   }
 }
 
@@ -225,6 +226,10 @@ function setGeneratorElements(generatorName) {
   Asserts.string(generatorName);
   const generatesPoints = generatorM.getGeneratorPoints(generatorName);
   UIControl.updateGeneratorStatusElements(generatorName, generatesPoints);
+}
+
+function checkGeneratorElements() {
+
 }
 
 // #endregion Render

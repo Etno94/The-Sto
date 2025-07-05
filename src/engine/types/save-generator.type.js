@@ -9,7 +9,7 @@
  * @property {number} [remainingCD=0]
  * @property {number} currentMultiplier
  * @property {SaveGeneratorPoints[]} generatesPoints
- * @property {SaveGeneratorElements[]} [elements]
+ * @property {SaveGeneratorElement[]} [elements]
  */
 
 /**
@@ -20,7 +20,7 @@
  */
 
 /**
- * @typedef {Object} SaveGeneratorElements
+ * @typedef {Object} SaveGeneratorElement
  * @property {string} name
  * @property {boolean} hinted
  * @property {boolean} built
