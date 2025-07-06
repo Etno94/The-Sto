@@ -1,5 +1,5 @@
 Activo:
-- (logic) check unlock => build generator elements
+- (logic) life cycle => pulse cells
 - (logic) implementar sistema de CD en cargas del generadores
 
 Tareas:
