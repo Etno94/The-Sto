@@ -100,13 +100,6 @@ export default class Render {
         return GeneratorDirector.createCostPreview();
     }
 
-    /**
-     * @returns {HTMLDivElement}
-     */
-    static renderCdChargesWrapper() {
-        return GeneratorDirector.createCdChargesWrapper();
-    }
-
     // #endregion UI Elements
 
     // #region Animation Elements

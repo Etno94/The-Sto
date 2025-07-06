@@ -9,6 +9,11 @@
     border: var(--bolder-border--bold-border);
 }
 
+*.hint,
+*.blank {
+    background-color: unset !important;
+}
+
 /* Cd Display */
 *.on-cd::before {
     content: '';
@@ -128,17 +133,28 @@ div.cd-charges-wrap {
     height: var(--cd-gen-height);
     left: 0;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     justify-content: center;
     gap: 8px;
 }
 
 div.cd-charges-wrap .cd-charge {
+    --charge-hover-transform: scale(1.3);
+    --charge-active-transform: scale(1.2);
+
     width: 16px;
     height: 16px;
     border-radius: 50%;
     background-color: rgb(var(--cd-gen-bg-color));
-    transition: opacity var(--opacity);
+    cursor: pointer;
+    transition: opacity var(--opacity), transform var(--transform);
+}
+div.cd-charges-wrap .cd-charge:hover {
+    transform: var(--charge-hover-transform);
+}
+
+div.cd-charges-wrap .cd-charge:active {
+    transform: var(--charge-active-transform);
 }
 #cooldownGenerator.hint ~ div.cd-charges-wrap .cd-charge:first-child,
 #cooldownGenerator.blank ~ div.cd-charges-wrap .cd-charge:first-child {

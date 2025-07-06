@@ -101,7 +101,23 @@ function checkGeneratorElementsUnlocks () {
   checkGeneratorElements(
     generatorM.getLockedGeneratorElementNames(), 
     generatorM.whatElementUnlockRequiresHint.bind(generatorM), 
-    generatorM.setElementHinted.bind(generatorM)
+    generatorM.setElementHinted.bind(generatorM),
+    UIControl.showElementHint.bind(UIControl)
+  );
+  checkGeneratorElements(
+    generatorM.getHintedGeneratorElementNames(), 
+    generatorM.whatElementUnlockRequiresBuild.bind(generatorM), 
+    generatorM.setElementCanBuild.bind(generatorM),
+    UIControl.showElementCanBuild.bind(UIControl),
+    UIControl.showElementHint.bind(UIControl)
+  );
+  const zeroCostPointSet = new PointCollection().collection;
+  checkGeneratorElements(
+    generatorM.getCanBuildGeneratorElementNames(), 
+    (elementName) => zeroCostPointSet, 
+    generatorM.setElementCanBuild.bind(generatorM),
+    UIControl.showElementCanBuild.bind(UIControl),
+    UIControl.showElementHint.bind(UIControl)
   );
 }
 
@@ -109,16 +125,23 @@ function checkGeneratorElementsUnlocks () {
  * @param {string[]} elementNames 
  * @param {Function} callbackRequires 
  * @param {Function} callbackSet 
+ * @param {Function} callbackRender 
+ * @param {Function} [fallbackRender] 
  */
-function checkGeneratorElements(elementNames, callbackRequires, callbackSet) {
+function checkGeneratorElements(elementNames, callbackRequires, callbackSet, callbackRender, fallbackRender) {
   Asserts.stringArray(elementNames);
   Asserts.function(callbackRequires);
   Asserts.function(callbackSet);
+  Asserts.function(callbackRender);
+  if (Validators.isNotNullNorUndefined(fallbackRender)) Asserts.function(fallbackRender);
 
   elementNames.forEach(elementName => {
     const pointSet = callbackRequires(elementName);
     if (!pointSet) return;
-    if (pointM.hasEnoughPoints(pointSet)) callbackSet(elementName);
+    if (pointM.hasEnoughPoints(pointSet)) {
+      callbackSet(elementName);
+      callbackRender(elementName);
+    } else if (fallbackRender) fallbackRender(elementName);
   });
 }
 

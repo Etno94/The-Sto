@@ -77,8 +77,15 @@ class GeneratorManager {
                 }
                 if (Array.isArray(generator.elements)) {
                     for (const element of generator.elements) {
-                        if (!this.#saveGeneratorElementNames.includes(element.name)) {
-                            this.#saveGeneratorElementNames.push(element.name);
+                        if (element.built && !element.canBuild) element.built = false;
+                        if (element.canBuild && !element.hinted) element.canBuild = false;
+                        if (element.remainingCD) {
+                            if (generator.remainingCD < 0) {
+                                generator.remainingCD = 0;
+                                return;
+                            }
+                            // TODO: integrate cd charges to cd system
+                            // this.#needToCheckCooldowns = true;
                         }
                     }
                 }
@@ -276,6 +283,30 @@ class GeneratorManager {
         return this.#whatElementUnlockRequires(elementName)?.build || null;
     }
 
+    /**
+     * @param {string} elementName
+     * @returns {BuildRequires | null}
+     */
+    #whatElementBuildRequires(elementName) {
+        return this.#whatElementsUnlock(elementName)?.buildRequires || null;
+    }
+
+    /**
+     * @param {string} elementName
+     * @returns {PointSet | null}
+     */
+    whatElementBuildRequiresStep(elementName) {
+        return this.#whatElementBuildRequires(elementName)?.step || null;
+    }
+
+    /**
+     * @param {string} elementName
+     * @returns {Number | null}
+     */
+    whatElementBuildRequiresStep(elementName) {
+        return this.#whatElementBuildRequires(elementName)?.totalSteps || null;
+    }
+
     // #endregion Get Generator Data
 
     // #region Get Proxy Save
@@ -381,6 +412,24 @@ class GeneratorManager {
     /** @returns {string[]} */
     getLockedGeneratorElementNames() {
         return this.#getProxySaveGeneratorElementsByCriteria(element => !element.hinted && !element.canBuild && !element.built)
+            .map(element => element.name);
+    }
+
+    /** @returns {string[]} */
+    getHintedGeneratorElementNames() {
+        return this.#getProxySaveGeneratorElementsByCriteria(element => element.hinted && !element.canBuild && !element.built)
+            .map(element => element.name);
+    }
+
+    /** @returns {string[]} */
+    getCanBuildGeneratorElementNames() {
+        return this.#getProxySaveGeneratorElementsByCriteria(element => element.hinted && element.canBuild && !element.built)
+            .map(element => element.name);
+    }
+
+    /** @returns {string[]} */
+    getBuiltGeneratorElementNames() {
+        return this.#getProxySaveGeneratorElementsByCriteria(element => element.hinted && element.canBuild && element.built)
             .map(element => element.name);
     }
 

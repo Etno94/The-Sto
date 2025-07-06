@@ -419,6 +419,45 @@ class UIController {
         console.log(categoryMap);
     }
 
+    /** 
+     * @param {string} elementName 
+     * @returns {HTMLElement}
+    */
+    getGeneratorElementDOMElement(elementName) {
+        Asserts.string(elementName);
+
+        const elementDOMElement = document.getElementById(elementName);
+        Asserts.notNullOrUndefined(elementDOMElement);
+
+        return elementDOMElement;
+    }
+
+    /** @param {string} elementName */
+    showElementHint(elementName) {
+        Asserts.string(elementName);
+
+        const elementDOMEl = this.getGeneratorElementDOMElement(elementName);
+
+        const hiddenClasses = DataManager.getLifeCycleClasses().hidden;
+        UIHelper.removeClass(elementDOMEl, hiddenClasses);
+        const hintClasses = DataManager.getLifeCycleClasses().hint;
+        UIHelper.addClass(elementDOMEl, hintClasses);
+    }
+
+    /** @param {string} elementName */
+    showElementCanBuild(elementName) {
+        Asserts.string(elementName);
+
+        const elementDOMEl = this.getGeneratorElementDOMElement(elementName);
+
+        const hiddenClasses = DataManager.getLifeCycleClasses().hidden;
+        UIHelper.removeClass(elementDOMEl, hiddenClasses);
+        const hintClasses = DataManager.getLifeCycleClasses().hint;
+        UIHelper.removeClass(elementDOMEl, hintClasses);
+        const canBuildClasses = DataManager.getLifeCycleClasses().blank;
+        UIHelper.addClass(elementDOMEl, canBuildClasses);
+    }
+
     // #endregion Generator Elements
 
     // #region Generator Status
