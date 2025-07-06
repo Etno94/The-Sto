@@ -1,4 +1,4 @@
-import { GENERATOR_IDS, CLICK_GENERATOR, COOLDOWN_GENERATOR, PULSE_GENERATOR } from './generators.data.js';
+import { GENERATOR_IDS, GENERATOR_ELEMENT_NAMES,  CLICK_GENERATOR, COOLDOWN_GENERATOR, PULSE_GENERATOR } from './generators.data.js';
 import { POINT_TYPES, FRESH_POINTS } from './points.data.js';
 import { STORAGE_UPGRADES} from './storage.data.js';
 
@@ -13,7 +13,7 @@ export const FRESH_SAVE = {
         accumulator: 0
     },
     settings: {
-        version: '0.1.0'
+        version: '0.0.1'
     },
     points: FRESH_POINTS,
     points_order: [],
@@ -41,7 +41,31 @@ export const FRESH_SAVE = {
             remainingCD: 0,
             currentMultiplier: COOLDOWN_GENERATOR.generates.baseMultiplier,
             generatesPoints: ToSavePoints(COOLDOWN_GENERATOR.generates.points),
-            elements: []
+            elements: [
+                {
+                    name: GENERATOR_ELEMENT_NAMES.cdCharge1,
+                    hinted: true,
+                    canBuild: true,
+                    built: true,
+                    remainingCD: 0
+                },
+                {
+                    name: GENERATOR_ELEMENT_NAMES.cdCharge2,
+                    hinted: false,
+                    canBuild: false,
+                    progress: 0,
+                    built: false,
+                    remainingCD: 0
+                },
+                {
+                    name: GENERATOR_ELEMENT_NAMES.cdCharge3,
+                    hinted: false,
+                    canBuild: false,
+                    progress: 0,
+                    built: false,
+                    remainingCD: 0
+                }
+            ]
         },
         {
             name: GENERATOR_IDS.PULSE,
@@ -53,7 +77,31 @@ export const FRESH_SAVE = {
             remainingCD: 0,
             currentMultiplier: PULSE_GENERATOR.generates.baseMultiplier,
             generatesPoints: ToSavePoints(PULSE_GENERATOR.generates.points),
-            elements: []
+            elements: [
+                {
+                    name: GENERATOR_ELEMENT_NAMES.pulseCell1,
+                    hinted: true,
+                    canBuild: true,
+                    built: true,
+                    cellLoad: 0
+                },
+                {
+                    name: GENERATOR_ELEMENT_NAMES.pulseCell2,
+                    hinted: false,
+                    canBuild: false,
+                    progress: 0,
+                    built: false,
+                    cellLoad: 0
+                },
+                {
+                    name: GENERATOR_ELEMENT_NAMES.pulseCell3,
+                    hinted: false,
+                    canBuild: false,
+                    progress: 0,
+                    built: false,
+                    cellLoad: 0
+                }
+            ]
         },
     ]
 }

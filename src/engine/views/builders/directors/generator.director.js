@@ -87,17 +87,20 @@ export default class GeneratorDirector {
             .addDataSet(DataManager.getDataSetAttrs().type, DataManager.getDataSetTypes().cdCharges)
             .appendChild(
                 new ElBuilder('div')
+                .addAttribute('id', DataManager.getGeneratorElementNames().cdCharge1)
                 .addClass(DataManager.getCdChargesWrapClasses().layer_1)
                 .finish()
             )
             .appendChild(
                 new ElBuilder('div')
+                .addAttribute('id', DataManager.getGeneratorElementNames().cdCharge2)
                 .addClass(DataManager.getCdChargesWrapClasses().layer_1)
                 .addClass(DataManager.getLifeCycleClasses().hidden)
                 .finish()
             )
             .appendChild(
                 new ElBuilder('div')
+                .addAttribute('id', DataManager.getGeneratorElementNames().cdCharge3)
                 .addClass(DataManager.getCdChargesWrapClasses().layer_1)
                 .addClass(DataManager.getLifeCycleClasses().hidden)
                 .finish()
@@ -114,17 +117,20 @@ export default class GeneratorDirector {
             .addDataSet(DataManager.getDataSetAttrs().type, DataManager.getDataSetTypes().pulseCells)
             .appendChild(
                 new ElBuilder('div')
+                .addAttribute('id', DataManager.getGeneratorElementNames().pulseCell1)
                 .addClass(DataManager.getPulseCellsWrapClasses().layer_1)
                 .finish()
             )
             .appendChild(
                 new ElBuilder('div')
+                .addAttribute('id', DataManager.getGeneratorElementNames().pulseCell2)
                 .addClass(DataManager.getPulseCellsWrapClasses().layer_1)
                 .addClass(DataManager.getLifeCycleClasses().hidden)
                 .finish()
             )
             .appendChild(
                 new ElBuilder('div')
+                .addAttribute('id', DataManager.getGeneratorElementNames().pulseCell3)
                 .addClass(DataManager.getPulseCellsWrapClasses().layer_1)
                 .addClass(DataManager.getLifeCycleClasses().hidden)
                 .finish()

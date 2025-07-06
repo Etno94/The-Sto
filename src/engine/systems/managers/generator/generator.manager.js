@@ -22,6 +22,9 @@ class GeneratorManager {
     /** @type {GeneratorElementNamesData} */
     #generatorElementNames;
 
+    /** @type {string[]} */
+    #saveGeneratorElementNames = [];
+
 
     constructor () {
         this.#setOrderedGenerators();
@@ -41,7 +44,7 @@ class GeneratorManager {
     }
 
     #setBusEvents() {
-        EventBus.on(Events.generator.built, (generatorName) => this.setElementsOnBuilt(generatorName));
+        EventBus.on(Events.generator.built, (generatorName) => {});
         EventBus.on(Events.generator.onCD, (generatorName, baseCooldown) => this.setRemainingCD(generatorName, baseCooldown));
         EventBus.on(Events.generator.updateCD, (generatorName, remainingCD) => this.setRemainingCD(generatorName, remainingCD));
         EventBus.on(Events.generator.onUse, (generatorName) => this.setGeneratorUses(generatorName));
@@ -72,6 +75,13 @@ class GeneratorManager {
                     }
                     this.#needToCheckCooldowns = true;
                 }
+                if (Array.isArray(generator.elements)) {
+                    for (const element of generator.elements) {
+                        if (!this.#saveGeneratorElementNames.includes(element.name)) {
+                            this.#saveGeneratorElementNames.push(element.name);
+                        }
+                    }
+                }
             }
         );
     }
@@ -98,7 +108,7 @@ class GeneratorManager {
     }
 
     /**
-     * @return {Array}
+     * @return {DataGenerator[]}
      */
     #getAllGeneratorsData() {
         return DataManager.getAllGeneratorsData();
@@ -109,6 +119,7 @@ class GeneratorManager {
      * @return { DataGenerator | null }
      */
     #getGeneratorData(generatorName) {
+        Asserts.string(generatorName);
         return DataManager.getGeneratorData(generatorName);
     }
 
@@ -226,20 +237,43 @@ class GeneratorManager {
         return Utils.deepCopy(this.#whatBuildRequires(generatorName))?.totalSteps || null;
     }
 
+    // Elements Unlock Data
+
     /**
-     * @param {string} generatorName 
-     * @returns {GeneratorElementsUnlockData[]}
+     * @param {string} elementName
+     * @returns {GeneratorElementsUnlockData | null}
      */
-    whatElements(generatorName) {
-        return this.#getGeneratorData(generatorName)?.elementsUnlock || [];
+    #whatElementsUnlock(elementName) {
+        Asserts.string(elementName);
+        const generator = this.#getAllGeneratorsData()?.find(generator =>
+            generator?.elementsUnlock?.some(element => element.name === elementName)
+        );
+        if (!generator) return null;
+        return generator.elementsUnlock.find(element => element.name === elementName) || null;
     }
 
     /**
-     * @param {string} generatorName 
-     * @returns {string[]}
+     * @param {string} elementName
+     * @returns {UnlockRequires | null}
      */
-    whatElementNames(generatorName) {
-        return this.whatElements(generatorName).map(element => element.name) || [];
+    #whatElementUnlockRequires(elementName) {
+        return this.#whatElementsUnlock(elementName)?.unlockRequires || null;
+    }
+
+    /**
+     * @param {string} elementName
+     * @returns {PointSet | null}
+     */
+    whatElementUnlockRequiresHint(elementName) {
+        return this.#whatElementUnlockRequires(elementName)?.hint || null;
+    }
+
+    /**
+     * @param {string} elementName
+     * @returns {PointSet | null}
+     */
+    whatElementUnlockRequiresBuild(elementName) {
+        return this.#whatElementUnlockRequires(elementName)?.build || null;
     }
 
     // #endregion Get Generator Data
@@ -301,6 +335,76 @@ class GeneratorManager {
             .map(gen => gen.name) || null;
     }
 
+    // Generator Elements
+
+    /**
+     * @param {function(SaveGeneratorElement): boolean} callback 
+     * @returns {SaveGeneratorElement[]}
+     */
+    #getProxySaveGeneratorElementsByCriteria(callback) {
+        Asserts.function(callback);
+
+        const generators = this.#getProxySaveGeneratorByCriteria(
+            (generator) =>
+                generator.hinted &&
+                generator.canBuild &&
+                generator.built &&
+                Array.isArray(generator.elements) &&
+                generator.elements.length
+        ) || [];
+
+        return generators.flatMap(gen => gen.elements.filter(callback));
+    }
+
+    /**
+     * @param {function(SaveGeneratorElement): boolean} callback 
+     * @returns {SaveGeneratorElement | null}
+     */
+    #findProxySaveGeneratorElementByCriteria(callback) {
+        Asserts.function(callback);
+
+        const generators = this.#getProxySaveGeneratorByCriteria(
+            (generator) =>
+                generator.hinted &&
+                generator.canBuild &&
+                generator.built &&
+                Array.isArray(generator.elements) &&
+                generator.elements.length
+        ) || [];
+
+        const generator = generators.find(gen => gen.elements.find(callback));
+        if (!generator) return null;
+
+        return generator.elements.find(callback) || null;
+    }
+
+    /** @returns {string[]} */
+    getLockedGeneratorElementNames() {
+        return this.#getProxySaveGeneratorElementsByCriteria(element => !element.hinted && !element.canBuild && !element.built)
+            .map(element => element.name);
+    }
+
+    /**
+     * @param {string} generatorName
+     * @returns {SaveGeneratorElement[]}
+     */
+    getGeneratorElements(generatorName) {
+        const elements = this.#getProxySaveGeneratorByName(generatorName)?.elements;
+        return Array.isArray(elements) ? elements : [];
+    }
+
+    /**
+     * 
+     * @param {string} elementName 
+     * @returns {SaveGeneratorElement}
+     */
+    getGeneratorElement(elementName) {
+        Asserts.string(elementName);
+        return this.#findProxySaveGeneratorElementByCriteria(
+            (element) => element.name === elementName
+        );
+    }
+
     // Generator Status
 
     /**
@@ -344,14 +448,7 @@ class GeneratorManager {
         return this.#getProxySaveGeneratorByName(generatorName)?.generatesPoints || [];
     }
 
-    /**
-     * @param {string} generatorName
-     * @returns {SaveGeneratorElement[]}
-     */
-    getGeneratorElements(generatorName) {
-        const elements = this.#getProxySaveGeneratorByName(generatorName)?.elements;
-        return Array.isArray(elements) ? elements : [];
-    }
+    
 
     // Unlock Flow
 
@@ -400,7 +497,9 @@ class GeneratorManager {
      * @returns {any}
      */
     #setProp(generatorName, prop, value) {
-        if (!Validators.isString(generatorName)) return false;
+        Asserts.string(generatorName);
+        Asserts.string(prop);
+        Asserts.notNullOrUndefined(value);
         this.#getProxySaveGeneratorByName(generatorName)[prop] = value;
         return this.#getProxySaveGeneratorByName(generatorName)[prop];
     }
@@ -501,31 +600,41 @@ class GeneratorManager {
     }
 
     /**
-     * @param {string} generatorName 
+     * @param {string} elementName 
+     * @param {string} prop 
+     * @param {any} value
+     * @returns {any}
      */
-    setElementsOnBuilt(generatorName) {
-        Asserts.string(generatorName);
+    setElement(elementName, prop, value) {
+        Asserts.string(elementName);
+        Asserts.string(prop);
+        Asserts.notNullOrUndefined(value);
 
-        const elementMap = ({
-            [this.#generatorIds.CLICK]: null,
-            [this.#generatorIds.COOLDOWN]: this.#generatorElementNames.cdCharge1,
-            [this.#generatorIds.PULSE]: this.#generatorElementNames.pulseCell1,
-        })[generatorName];
-        const newElementName = elementMap || null;
-        if (!newElementName) return;
+        this.getGeneratorElement(elementName)[prop] = value;
+        return this.getGeneratorElement(elementName)[prop];
+    }
 
-        let generatorElements = this.getGeneratorElements(generatorName);
-        if (!generatorElements) generatorElements = this.#setProp(generatorName, 'elements', []);
-        if (!generatorElements.some(element => element.name === newElementName)) {
-            /** @type {SaveGeneratorElement} */
-            const newSaveGeneratorElement = {
-                name: newElementName,
-                hinted: true,
-                built: true
-            }
-            const newGeneratorElements = [...generatorElements, newSaveGeneratorElement];
-            this.#setProp(generatorName, 'elements', newGeneratorElements);
-        }
+    /** @param {string} elementName */
+    setElementHinted(elementName) {
+        Asserts.string(elementName);
+        this.setElement(elementName, 'hinted', true);
+    }
+
+    /** @param {string} elementName */
+    setElementCanBuild(elementName) {
+        Asserts.string(elementName);
+        this.setElement(elementName, 'canBuild', true);
+    }
+
+    /** @param {string} elementName */
+    setElementBuilt(elementName) {
+        Asserts.string(elementName);
+        this.setElement(elementName, 'built', true);
+    }
+
+    /** @returns {string[]} */
+    get saveGeneratorElementNames() {
+        return this.#saveGeneratorElementNames;
     }
 
     // #endregion Manage Proxy Save

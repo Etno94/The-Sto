@@ -19,6 +19,7 @@ import {Asserts, Validators} from "../utils/utils.index.js";
 function checkUnlocks() {
   checkGeneratorUnlocks();
   checkStorageUpgraderUnlock();
+  checkGeneratorElementsUnlocks();
 }
 
 // Burner Unlock
@@ -93,6 +94,31 @@ function checkBuiltGenerators(generatorNames) {
     let generatorElement = UIControl.getGeneratorElement(generatorName);
     UIControl.showWrappedGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorName));
     InputControl.addEventListener(generatorElement, "click", generatorOnClick, generatorName);
+  });
+}
+
+function checkGeneratorElementsUnlocks () {
+  checkGeneratorElements(
+    generatorM.getLockedGeneratorElementNames(), 
+    generatorM.whatElementUnlockRequiresHint.bind(generatorM), 
+    generatorM.setElementHinted.bind(generatorM)
+  );
+}
+
+/**
+ * @param {string[]} elementNames 
+ * @param {Function} callbackRequires 
+ * @param {Function} callbackSet 
+ */
+function checkGeneratorElements(elementNames, callbackRequires, callbackSet) {
+  Asserts.stringArray(elementNames);
+  Asserts.function(callbackRequires);
+  Asserts.function(callbackSet);
+
+  elementNames.forEach(elementName => {
+    const pointSet = callbackRequires(elementName);
+    if (!pointSet) return;
+    if (pointM.hasEnoughPoints(pointSet)) callbackSet(elementName);
   });
 }
 
@@ -228,9 +254,6 @@ function setGeneratorElements(generatorName) {
   UIControl.updateGeneratorStatusElements(generatorName, generatesPoints);
 }
 
-function checkGeneratorElements() {
-
-}
 
 // #endregion Render
 
@@ -245,7 +268,7 @@ function startGame() {
   }
   registerBusEvents();
   generatorM.setNewGeneratorManager();
-  storageM.setCurrentStorage(Global.proxy.storage.maxStorageUpgradeCurrentLevel);
+  storageM.setCurrentStorage(Global?.proxy?.storage?.maxStorageUpgradeCurrentLevel);
 
   // Initial render for already unlocked generators
   checkUnlocks();
@@ -267,8 +290,6 @@ function startGame() {
 }
 
 function registerBusEvents() {
-  EventBus.on(Events.points.add, (message) => console.log(`[think] ${Events.points.add}`, message));
-  EventBus.on(Events.points.substract, (message) => console.log(`[think] ${Events.points.substract}`, message));
   EventBus.on(Events.storageUpgrade.onClick, () => upgradeMaxStorage())
 }
 
