@@ -6,6 +6,7 @@
  * @property { UIBusEvents } ui
  */
 
+// Generator
 /**
  * @typedef { Object } GeneratorBusEvents
  * @property { string } built
@@ -17,11 +18,12 @@
  * @property { GeneratorElementsBusEvents } elements
  */
 
+// Generator Elements
 /**
  * @typedef { Object } GeneratorElementsBusEvents
  * @property { GeneratorStatusItemsBusEvents } statusItems
- * @property { string } cdCharges
- * @property { string } pulseCells
+ * @property { GeneratorCDChargesBusEvents } cdCharges
+ * @property { GeneratorPulseCellsBusEvents } pulseCells
  */
 
 /**
@@ -37,6 +39,20 @@
  */
 
 /**
+ * @typedef { Object } GeneratorCDChargesBusEvents
+ * @property { string } build
+ * @property { string } built
+ */
+
+/**
+ * @typedef { Object } GeneratorPulseCellsBusEvents
+ * @property { string } build
+ * @property { string } built
+ * @property { string } load
+ */
+
+// Points
+/**
  * @typedef { Object } PointsBusEvents
  * @property { string } add
  * @property { string } substract
@@ -45,6 +61,7 @@
  * @property { string } overcap
  */
 
+// Storage
 /**
  * @typedef {Object} StorageUpgradeBusEvents
  * @property {string} unlocked
@@ -53,6 +70,7 @@
  * @property {string} onUpgrade
  */
 
+// UI
 /**
  * @typedef { Object } UIBusEvents
  * @property { string } render

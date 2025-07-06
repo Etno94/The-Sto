@@ -447,7 +447,7 @@ class GeneratorManager {
      * @param {string} elementName 
      * @returns {SaveGeneratorElement}
      */
-    getGeneratorElement(elementName) {
+    #getGeneratorElement(elementName) {
         Asserts.string(elementName);
         return this.#findProxySaveGeneratorElementByCriteria(
             (element) => element.name === elementName
@@ -497,8 +497,6 @@ class GeneratorManager {
         return this.#getProxySaveGeneratorByName(generatorName)?.generatesPoints || [];
     }
 
-    
-
     // Unlock Flow
 
     /**
@@ -508,6 +506,7 @@ class GeneratorManager {
      */
     #isProp(generatorName, prop) {
         if (!Validators.isString(generatorName)) return false;
+        if (!Validators.isString(prop)) return false;
         return this.#getProxySaveGeneratorByName(generatorName)[prop] ?? false;
     }
 
@@ -533,6 +532,52 @@ class GeneratorManager {
      */
     isBuilt(generatorName) {
         return this.#isProp(generatorName, 'built');
+    }
+
+    /**
+     * @param {string} elementName 
+     * @param {string} prop 
+     */
+    #isElementProp(elementName, prop) {
+        Asserts.string(elementName);
+        Asserts.string(prop);
+        return this.#getGeneratorElement(elementName)[prop] ?? false;
+    }
+
+    /**
+     * @param {string} elementName 
+     * @returns {boolean}
+     */
+    isElementHinted(elementName) {
+        Asserts.string(elementName);
+        return this.#isElementProp(elementName, 'hinted');
+    }
+
+    /**
+     * @param {string} elementName 
+     * @returns {boolean}
+     */
+    isElementCanBuild(elementName) {
+        Asserts.string(elementName);
+        return this.#isElementProp(elementName, 'canBuild');
+    }
+
+    /**
+     * @param {string} elementName 
+     * @returns {boolean}
+     */
+    isElementBuilt(elementName) {
+        Asserts.string(elementName);
+        return this.#isElementProp(elementName, 'built');
+    }
+
+    /**
+     * @param {string} elementName 
+     * @returns {boolean}
+     */
+    whatElementProgress(elementName) {
+        Asserts.string(elementName);
+        return this.#isElementProp(elementName, 'progress');
     }
 
     // #endregion Get Proxy Save
@@ -659,8 +704,8 @@ class GeneratorManager {
         Asserts.string(prop);
         Asserts.notNullOrUndefined(value);
 
-        this.getGeneratorElement(elementName)[prop] = value;
-        return this.getGeneratorElement(elementName)[prop];
+        this.#getGeneratorElement(elementName)[prop] = value;
+        return this.#getGeneratorElement(elementName)[prop];
     }
 
     /** @param {string} elementName */
@@ -679,6 +724,28 @@ class GeneratorManager {
     setElementBuilt(elementName) {
         Asserts.string(elementName);
         this.setElement(elementName, 'built', true);
+    }
+
+    /**
+     * @param {string} elementName
+     * @param {number} progress 
+     */
+    buildElementProgress(elementName, progress) {
+        Asserts.string(elementName);
+        Asserts.number(progress);
+        if (progress === 0) return;
+
+        this.#getGeneratorElement(elementName).progress += progress;
+        return this.#getGeneratorElement(elementName).progress;
+    }
+
+    /**
+     * @param {string} elementName 
+     * @returns {boolean}
+     */
+    isBuildElementProgressComplete(elementName) {
+        Asserts.string(elementName);
+        return this.#getGeneratorElement(elementName).progress >= this.whatElementBuildRequiresTotalSteps(elementName);
     }
 
     /** @returns {string[]} */

@@ -17,8 +17,15 @@ export const BUS_EVENTS = {
                     updated: 'generator: point chance updated'
                 }
             },
-            cdCharges: 'generator: cooldown charges updated',
-            pulseCells: 'generator: pulse cells  updated'
+            cdCharges: {
+                build: 'generator: cd charge build',
+                built: 'generator: cd charge built'
+            },
+            pulseCells: {
+                build: 'generator: pulse cell build',
+                built: 'generator: pulse cell built',
+                load: 'generator: pulse cell load'
+            }
         },
     },
     points: {

@@ -54,8 +54,6 @@ export default class Utils {
         });
     }
 
-
-
     /**
      * @param {number} baseValue 
      * @param {number} refValue
@@ -66,6 +64,13 @@ export default class Utils {
         Asserts.number(refValue);
         
         return refValue / baseValue;
+    }
+
+    static getPercent(baseValue, refValue) {
+        Asserts.number(baseValue);
+        Asserts.number(refValue);
+
+        return (refValue / baseValue) * 100;
     }
 
     /**

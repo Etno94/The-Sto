@@ -3,7 +3,7 @@
  * @property {string} pointChancePercent
  * @property {string} cdGeneratorOnCdDg
  * @property {string} storagePointsPerRow
- * @property {string} pointChancePercent
+ * @property {string} buildProgressPercent
  * 
  * @property {string} width
  * @property {string} height

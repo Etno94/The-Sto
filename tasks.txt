@@ -1,5 +1,5 @@
 Activo:
-- (logic) check unlock => generator elements
+- (logic) check unlock => build generator elements
 - (logic) implementar sistema de CD en cargas del generadores
 
 Tareas:

@@ -86,6 +86,7 @@ class UIController {
         EventBus.on(Events.generator.elements.statusItems.pointChance.updated, 
             (generatorName, pointChances) => this.updateGeneratorStatusElements(generatorName, pointChances)
         );
+        EventBus.on(Events.generator.elements.cdCharges.build, (elementName, progress) => this.updateElementBuildProgress(elementName, progress));
 
         // UI Elements
         EventBus.on(Events.ui.render, (isRendering) => {});
@@ -466,6 +467,37 @@ class UIController {
         UIHelper.addClass(elementDOMEl, canBuildClasses);
 
         return elementDOMEl;
+    }
+
+    /** 
+     * @param {string} elementName 
+     * @returns {HTMLElement}
+     * */
+    showElementBuilt(elementName) {
+        Asserts.string(elementName);
+
+        const elementDOMEl = this.getGeneratorElementDOMElement(elementName);
+
+        const hiddenClasses = DataManager.getLifeCycleClasses().hidden;
+        UIHelper.removeClass(elementDOMEl, hiddenClasses);
+        const hintClasses = DataManager.getLifeCycleClasses().hint;
+        UIHelper.removeClass(elementDOMEl, hintClasses);
+        const canBuildClasses = DataManager.getLifeCycleClasses().blank;
+        UIHelper.removeClass(elementDOMEl, canBuildClasses);
+
+        return elementDOMEl;
+    }
+
+    /**
+     * 
+     * @param {String} elementName 
+     * @param {Number} progress 
+     */
+    updateElementBuildProgress(elementName, progress) {
+        Asserts.string(elementName);
+        Asserts.number(progress);
+        const domElement = this.getGeneratorElementDOMElement(elementName);
+        UIHelper.setProperty(domElement, this.#cssVars.buildProgressPercent, `${progress}%`);
     }
 
     // #endregion Generator Elements

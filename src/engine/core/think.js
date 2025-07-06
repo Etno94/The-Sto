@@ -12,7 +12,7 @@ import {DataManager, pointM, generatorM, storageM} from "../systems/managers-ind
 
 import { UIControl } from "../views/ui-controller.js";
 
-import {Asserts, Validators} from "../utils/utils.index.js";
+import {Asserts, Utils, Validators} from "../utils/utils.index.js";
 
 // #region Unlocks
 
@@ -113,6 +113,7 @@ function checkGeneratorElementsUnlocks () {
     UIControl.showElementHint.bind(UIControl)
   );
   checkGeneratorElementsCanBuild(generatorM.getCanBuildGeneratorElementNames());
+  checkGeneratorElementsBuilt(generatorM.getBuiltGeneratorElementNames());
 }
 
 /**
@@ -149,7 +150,18 @@ function checkGeneratorElementsCanBuild(elementNames) {
     const domElement = UIControl.showElementCanBuild(elementName);
     const buildStep = generatorM.whatElementBuildRequiresStep(elementName);
     UIControl.renderCostPreview(domElement, buildStep);
-    // TODO: add event listener
+    InputControl.addEventListener(domElement, "click", generatorElementOnClick, elementName);
+  });
+}
+
+/**
+ * @param {string[]} elementNames 
+ */
+function checkGeneratorElementsBuilt(elementNames) {
+  Asserts.stringArray(elementNames);
+
+  elementNames.forEach(elementName => {
+    UIControl.showElementBuilt(elementName);
   });
 }
 
@@ -180,6 +192,26 @@ function buildGenerator(generatorName) {
   }
 }
 
+/** @param { string } elementName */
+function buildGeneratorElement(elementName) {
+  Asserts.string(elementName);
+  if (generatorM.isElementBuilt(elementName) || !generatorM.isElementCanBuild(elementName)) return;
+
+  const buildStep = generatorM.whatElementBuildRequiresStep(elementName);
+  if (!buildStep || !pointM.hasEnoughPoints(buildStep)) return;
+
+  EventBus.emit(Events.points.substract, buildStep);
+
+  const currentProgress = generatorM.buildElementProgress(elementName, DataManager.getDefaultStepProgress());
+  const totalProgress = generatorM.whatElementBuildRequiresTotalSteps(elementName);
+  const percentProgress = Utils.getPercent(totalProgress, currentProgress);
+  EventBus.emit(Events.generator.elements.cdCharges.build, elementName, percentProgress);
+
+  if (generatorM.isBuildElementProgressComplete(elementName)) {
+    generatorM.setElementBuilt(elementName);
+  }
+}
+
 // #endregion Build
 
 // #region Generator Actions
@@ -207,6 +239,22 @@ function generatorOnClick(generatorName) {
 function builtGeneratorOnClick (generatorName) {
   Asserts.string(generatorName);
   generatorF.run(generatorName);
+}
+
+/** @param {string} */
+function generatorElementOnClick(elementName) {
+  Asserts.string(elementName);
+
+  if (generatorM.isElementBuilt(elementName)) {
+    return;
+  }
+  if (generatorM.isElementCanBuild(elementName)) {
+    buildGeneratorElement(elementName);
+    return;
+  }
+  if (generatorM.isElementHinted(elementName)) {
+    return;
+  }
 }
 
 // #endregion Generator Actions

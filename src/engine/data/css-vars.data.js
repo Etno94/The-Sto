@@ -3,7 +3,7 @@ export const CSS_VARS = {
     pointChancePercent: '--point-chance-percent',
     cdGeneratorOnCdDg: '--cooldownGenerator-oncd-dg',
     storagePointsPerRow: '--storage-points-per-row',
-    pointChancePercent: '--point-chance-percent',
+    buildProgressPercent: '--progress',
 
     width: '--width',
     height: '--height',
