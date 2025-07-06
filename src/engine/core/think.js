@@ -97,6 +97,7 @@ function checkBuiltGenerators(generatorNames) {
   });
 }
 
+// Generator Elements Unlock
 function checkGeneratorElementsUnlocks () {
   checkGeneratorElements(
     generatorM.getLockedGeneratorElementNames(), 
@@ -111,14 +112,7 @@ function checkGeneratorElementsUnlocks () {
     UIControl.showElementCanBuild.bind(UIControl),
     UIControl.showElementHint.bind(UIControl)
   );
-  const zeroCostPointSet = new PointCollection().collection;
-  checkGeneratorElements(
-    generatorM.getCanBuildGeneratorElementNames(), 
-    (elementName) => zeroCostPointSet, 
-    generatorM.setElementCanBuild.bind(generatorM),
-    UIControl.showElementCanBuild.bind(UIControl),
-    UIControl.showElementHint.bind(UIControl)
-  );
+  checkGeneratorElementsCanBuild(generatorM.getCanBuildGeneratorElementNames());
 }
 
 /**
@@ -142,6 +136,20 @@ function checkGeneratorElements(elementNames, callbackRequires, callbackSet, cal
       callbackSet(elementName);
       callbackRender(elementName);
     } else if (fallbackRender) fallbackRender(elementName);
+  });
+}
+
+/**
+ * @param {string[]} elementNames 
+ */
+function checkGeneratorElementsCanBuild(elementNames) {
+  Asserts.stringArray(elementNames);
+
+  elementNames.forEach(elementName => {
+    const domElement = UIControl.showElementCanBuild(elementName);
+    const buildStep = generatorM.whatElementBuildRequiresStep(elementName);
+    UIControl.renderCostPreview(domElement, buildStep);
+    // TODO: add event listener
   });
 }
 

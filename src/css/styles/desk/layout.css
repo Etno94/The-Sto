@@ -26,6 +26,8 @@
     --point-base-width: var(--point-base-unit);
     --point-base-height: var(--point-base-unit);
     --point-base-margin: calc((var(--point-max-unit) - var(--point-base-unit)) / 2);
+
+    --building-opacity-color: 0.4;
 }
 
 #container {

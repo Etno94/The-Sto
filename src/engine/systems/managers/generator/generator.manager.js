@@ -303,7 +303,7 @@ class GeneratorManager {
      * @param {string} elementName
      * @returns {Number | null}
      */
-    whatElementBuildRequiresStep(elementName) {
+    whatElementBuildRequiresTotalSteps(elementName) {
         return this.#whatElementBuildRequires(elementName)?.totalSteps || null;
     }
 

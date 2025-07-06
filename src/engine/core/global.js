@@ -4,12 +4,27 @@ import {EventBus} from './event-bus.js';
 
  function createGlobal() {
 
+    /**
+     * Mode 1 = development
+     * Mode 2 = testing
+     * Mode 3 = production
+     */
     const mode = 1;
     const freshSave = FRESH_SAVE;
     const testSave = TEST_SAVES[0];
-    const saveProxy = new SaveProxy(mode === 1 ? freshSave : testSave);
+    const saves = {
+        1: freshSave,
+        2: testSave,
+        3: freshSave
+    }
+    const saveProxy = new SaveProxy(saves[mode]);
     const proxy = saveProxy.proxy;
     const eventBus = EventBus;
+
+    if (mode === 3)
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+        });
 
     return {
         mode,

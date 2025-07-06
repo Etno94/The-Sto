@@ -107,9 +107,11 @@
 #cooldownGenerator.cell:active {
     background-color: rgb(var(--cd-gen-bg-color), var(--active-gen-opacity-color));
 }
-#cooldownGenerator.cell.hint,
-#cooldownGenerator.cell.blank {
+#cooldownGenerator.cell.hint {
     background-color: unset;
+}
+#cooldownGenerator.cell.blank {
+    --bg-color: rgb(var(--cd-gen-bg-color), var(--building-opacity-color));
 }
 
 /* Pulse */
@@ -122,10 +124,7 @@
     transform: rotate(45deg);
     background-color: rgb(var(--pulse-gen-bg-color));
     position: relative;
-    border-top-left-radius: 16px;
-    border-bottom-right-radius: 16px;
-    border-top-right-radius: 24px;
-    border-bottom-left-radius: 24px;
+    border-radius: 16px 24px 16px 24px;
 }
 #pulseGenerator.cell:active {
     background-color: rgb(var(--pulse-gen-bg-color), var(--active-gen-opacity-color));
@@ -134,10 +133,14 @@
 #pulseGenerator.cell:hover {
     transform: var(--cell-hover-transform) var(--pulseGenerator-transform-rotate);
 }
-#pulseGenerator.cell.hint,
-#pulseGenerator.cell.blank {
+#pulseGenerator.cell.hint {
     background-color: unset;
 }
+#pulseGenerator.cell.blank {
+    --bg-color: rgb(var(--pulse-gen-bg-color), var(--building-opacity-color));
+    --direction: -45deg;
+}
+
 #pulseGenerator.cell.on-cd::before {
     transform: rotate(-45deg);
     width: 140%;

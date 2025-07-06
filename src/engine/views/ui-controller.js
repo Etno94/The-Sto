@@ -432,7 +432,10 @@ class UIController {
         return elementDOMElement;
     }
 
-    /** @param {string} elementName */
+    /** 
+     * @param {string} elementName 
+     * @returns {HTMLElement}
+     * */
     showElementHint(elementName) {
         Asserts.string(elementName);
 
@@ -442,9 +445,14 @@ class UIController {
         UIHelper.removeClass(elementDOMEl, hiddenClasses);
         const hintClasses = DataManager.getLifeCycleClasses().hint;
         UIHelper.addClass(elementDOMEl, hintClasses);
+
+        return elementDOMEl;
     }
 
-    /** @param {string} elementName */
+    /** 
+     * @param {string} elementName 
+     * @returns {HTMLElement}
+     * */
     showElementCanBuild(elementName) {
         Asserts.string(elementName);
 
@@ -456,6 +464,8 @@ class UIController {
         UIHelper.removeClass(elementDOMEl, hintClasses);
         const canBuildClasses = DataManager.getLifeCycleClasses().blank;
         UIHelper.addClass(elementDOMEl, canBuildClasses);
+
+        return elementDOMEl;
     }
 
     // #endregion Generator Elements

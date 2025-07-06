@@ -185,9 +185,9 @@ export const PULSE_GENERATOR = {
             },
             buildRequires: {
                 step: {
-                    [POINT_TYPES.energy_point]: 8
+                    [POINT_TYPES.energy_point]: 4
                 },
-                totalSteps: 8
+                totalSteps: 16
             }
         },
     ]
