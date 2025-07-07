@@ -81,6 +81,13 @@ function checkCanBeBuiltGenerators(generatorNames) {
     UIControl.showBuild(generatorElement);
     UIControl.showWrappedGeneratorElement(generatorElement, generatorM.getOrderedGeneratorIndex(generatorName));
 
+    setBuildProgress(
+      generatorName, 
+      generatorM.whatProgress.bind(generatorM),
+      generatorM.whatBuildTotalStepsRequires.bind(generatorM),
+      Events.generator.build
+    );
+
     UIControl.renderCostPreview(generatorElement, generatorM.whatBuildStepRequires(generatorName));
     InputControl.addEventListener(generatorElement, "click", generatorOnClick, generatorName);
   });
@@ -147,9 +154,17 @@ function checkGeneratorElementsCanBuild(elementNames) {
   Asserts.stringArray(elementNames);
 
   elementNames.forEach(elementName => {
+    setBuildProgress(
+      elementName, 
+      generatorM.whatElementProgress.bind(generatorM),
+      generatorM.whatElementBuildRequiresTotalSteps.bind(generatorM),
+      Events.generator.elements.cdCharges.build
+    );
+
     const domElement = UIControl.showElementCanBuild(elementName);
     const buildStep = generatorM.whatElementBuildRequiresStep(elementName);
     UIControl.renderCostPreview(domElement, buildStep);
+    
     InputControl.addEventListener(domElement, "click", generatorElementOnClick, elementName);
   });
 }
@@ -176,9 +191,19 @@ function buildGenerator(generatorName) {
 
   const buildStep = generatorM.whatBuildStepRequires(generatorName);
   if (!pointM.hasEnoughPoints(buildStep)) return;
+
   EventBus.emit(Events.points.substract, buildStep);
 
-  generatorM.buildProgress(generatorName, DataManager.getDefaultStepProgress());
+  // const currentProgress = generatorM.buildProgress(generatorName, DataManager.getDefaultStepProgress());
+  // const totalProgress = generatorM.whatBuildTotalStepsRequires(elementName);
+  // const percentProgress = Utils.getPercent(totalProgress, currentProgress);
+  // EventBus.emit(Events.generator.build, generatorName, percentProgress);
+  setBuildProgress(
+    generatorName, 
+    generatorM.buildProgress.bind(generatorM),
+    generatorM.whatBuildTotalStepsRequires.bind(generatorM),
+    Events.generator.build
+  );
 
   if (generatorM.isBuildProgressComplete(generatorName)) {
     generatorM.setBuilt(generatorName);
@@ -202,13 +227,21 @@ function buildGeneratorElement(elementName) {
 
   EventBus.emit(Events.points.substract, buildStep);
 
-  const currentProgress = generatorM.buildElementProgress(elementName, DataManager.getDefaultStepProgress());
-  const totalProgress = generatorM.whatElementBuildRequiresTotalSteps(elementName);
-  const percentProgress = Utils.getPercent(totalProgress, currentProgress);
-  EventBus.emit(Events.generator.elements.cdCharges.build, elementName, percentProgress);
+  // const currentProgress = generatorM.buildElementProgress(elementName, DataManager.getDefaultStepProgress());
+  // const totalProgress = generatorM.whatElementBuildRequiresTotalSteps(elementName);
+  // const percentProgress = Utils.getPercent(totalProgress, currentProgress);
+  // EventBus.emit(Events.generator.elements.cdCharges.build, elementName, percentProgress);
+  setBuildProgress(
+    elementName, 
+    generatorM.buildElementProgress.bind(generatorM),
+    generatorM.whatElementBuildRequiresTotalSteps.bind(generatorM),
+    Events.generator.elements.cdCharges.build
+  );
 
   if (generatorM.isBuildElementProgressComplete(elementName)) {
     generatorM.setElementBuilt(elementName);
+    const domElement = UIControl.getGeneratorElementDOMElement(elementName);
+    UIControl.removeCostPreview(domElement);
   }
 }
 
@@ -220,8 +253,6 @@ function buildGeneratorElement(elementName) {
 function generatorOnClick(generatorName) {
   Asserts.string(generatorName);
   if (!generatorM.isValidGenerator(generatorName)) return;
-
-  EventBus.emit(Events.generator.onClick, generatorName);
 
   if (generatorM.isBuilt(generatorName)) {
     builtGeneratorOnClick(generatorName);
@@ -333,6 +364,23 @@ function setGeneratorElements(generatorName) {
   UIControl.updateGeneratorStatusElements(generatorName, generatesPoints);
 }
 
+/**
+ * @param {String} name 
+ * @param {Function} buildProgressCallback 
+ * @param {Function} totalProgressCallback 
+ * @param {String} eventToEmit 
+ */
+function setBuildProgress(name, buildProgressCallback, totalProgressCallback, eventToEmit) {
+  Asserts.string(name);
+  Asserts.function(buildProgressCallback);
+  Asserts.function(totalProgressCallback);
+  Asserts.string(eventToEmit);
+
+  const currentProgress = buildProgressCallback(name, DataManager.getDefaultStepProgress());
+  const totalProgress = totalProgressCallback(name);
+  const percentProgress = Utils.getPercent(totalProgress, currentProgress);
+  EventBus.emit(eventToEmit, name, percentProgress);
+}
 
 // #endregion Render
 

@@ -44,7 +44,6 @@ class GeneratorManager {
     }
 
     #setBusEvents() {
-        EventBus.on(Events.generator.built, (generatorName) => {});
         EventBus.on(Events.generator.onCD, (generatorName, baseCooldown) => this.setRemainingCD(generatorName, baseCooldown));
         EventBus.on(Events.generator.updateCD, (generatorName, remainingCD) => this.setRemainingCD(generatorName, remainingCD));
         EventBus.on(Events.generator.onUse, (generatorName) => this.setGeneratorUses(generatorName));
@@ -535,6 +534,15 @@ class GeneratorManager {
     }
 
     /**
+     * @param {string} generatorName 
+     * @returns {boolean}
+     */
+    whatProgress(generatorName) {
+        Asserts.string(generatorName);
+        return this.#isProp(generatorName, 'progress');
+    }
+
+    /**
      * @param {string} elementName 
      * @param {string} prop 
      */
@@ -625,12 +633,14 @@ class GeneratorManager {
     /**
      * @param {string} generatorName
      * @param {number} progress 
+     * @returns {Number}
      */
     buildProgress(generatorName, progress) {
         if (!Validators.isString(generatorName) || !Validators.isNumber(progress)) return;
         if (progress === 0) return;
 
         this.#getProxySaveGeneratorByName(generatorName).progress += progress;
+        return this.#getProxySaveGeneratorByName(generatorName).progress;
     }
 
     /**

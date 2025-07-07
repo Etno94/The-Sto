@@ -3,6 +3,7 @@
  */
 export const BUS_EVENTS = {
     generator: {
+        build: 'generator: build',
         built: 'generator: built',
         onClick: 'generator: onclick',
         onCD: 'generator: on Cooldown',

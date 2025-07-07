@@ -77,7 +77,7 @@ class UIController {
         EventBus.on(Events.points.overcap, () => this.shakePointsContainer());
 
         // Generators
-        EventBus.on(Events.generator.onClick, (generatorName) => {});
+        EventBus.on(Events.generator.build, (generatorName, percentProgress) => this.updateGeneratorBuildProgress(generatorName, percentProgress));
         EventBus.on(Events.generator.onCD, (generatorName) => this.setGeneratorOnCD(generatorName));
         EventBus.on(Events.generator.updateCD, (generatorName, remainingCD, baseCooldown) => {
             this.updateGeneratorRemainingCD(generatorName, remainingCD, baseCooldown);
@@ -342,6 +342,17 @@ class UIController {
             UIHelper.removeClass(generatorElement, canBuildClasses);
     }
 
+    /**
+     * @param {String} generatorName 
+     * @param {Number} progress 
+     */
+    updateGeneratorBuildProgress(generatorName, progress) {
+        Asserts.string(generatorName);
+        Asserts.number(progress);
+        const domElement = this.getGeneratorElement(generatorName);
+        UIHelper.setProperty(domElement, this.#cssVars.buildProgressPercent, `${progress}%`);
+    }
+
     /** @param { boolean } isDisabled */
     manageLockGenerators(isDisabled = false) {
         Asserts.boolean(isDisabled);
@@ -489,7 +500,6 @@ class UIController {
     }
 
     /**
-     * 
      * @param {String} elementName 
      * @param {Number} progress 
      */
