@@ -1,7 +1,7 @@
 /** @type {CssVarsData} */
 export const CSS_VARS = {
     pointChancePercent: '--point-chance-percent',
-    cdGeneratorOnCdDg: '--cooldownGenerator-oncd-dg',
+    onCdDg: '--oncd-dg',
     storagePointsPerRow: '--storage-points-per-row',
     buildProgressPercent: '--progress',
 

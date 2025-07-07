@@ -8,6 +8,11 @@ export const LIFE_CYCLE_CLASSES = {
     blank: ['blank']
 };
 
+/** @type {Status_Classes} */
+export const STATUS_CLASSES = {
+    onCd: ['on-cd']
+}
+
 /** @type {GeneratorStatus_Wrap} */
 export const GENERATOR_STATUS_WRAP_CLASSES = {
     layer_0: ['generator-status']

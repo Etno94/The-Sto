@@ -6,6 +6,11 @@
  */
 
 /**
+ * @typedef {Object} Status_Classes
+ * @property {string[]} onCd
+ */
+
+/**
  * @typedef {Object} GeneratorStatus_Wrap
  * @property {string[]} layer_0
  */

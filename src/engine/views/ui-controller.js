@@ -9,7 +9,7 @@ import {GenUIReg} from "./ui-registries/generators.ui-registry.js";
 import {UIRegService} from "./ui-registries/ui-registry.service.js";
 
 import DataManager from "../systems/managers/data.manager.js";
-import {Asserts, Utils, Errors} from "../utils/utils.index.js";
+import {Asserts, Utils, Errors, Validators} from "../utils/utils.index.js";
 // import Asserts from "../utils/asserts.js";
 // import Utils from "../utils/utils.js";
 import PointCollection from "../systems/point.collection.js";
@@ -33,6 +33,10 @@ class UIController {
     /** @type { DataGeneratorId } */
     #generatorIds;
 
+    // Bindings
+    /** @type {Function} */
+    #disableGeneratorFn;
+
     // Elements
     /** @type {HTMLElement} */
     #generatorsContainer;
@@ -49,6 +53,7 @@ class UIController {
     constructor() {
         this.#setData();
         this.#setElements();
+        this.#setBindings();
         this.#setEventBus();
     }
 
@@ -72,16 +77,20 @@ class UIController {
         this.#storageUpgrade = document.getElementById("storage-upgrade");
     }
 
+    #setBindings() {
+        this.#disableGeneratorFn = this.disableGenerator.bind(this);
+    }
+
     #setEventBus() {
         // Points
         EventBus.on(Events.points.overcap, () => this.shakePointsContainer());
 
         // Generators
         EventBus.on(Events.generator.build, (generatorName, percentProgress) => this.updateGeneratorBuildProgress(generatorName, percentProgress));
-        EventBus.on(Events.generator.onCD, (generatorName) => this.setGeneratorOnCD(generatorName));
-        EventBus.on(Events.generator.updateCD, (generatorName, _, degs) => this.updateGeneratorRemainingCD(generatorName, degs));
-        EventBus.on(Events.generator.ready, (generatorName) => this.setGeneratorOffCD(generatorName));
-        EventBus.on(Events.generator.elements.statusItems.pointChance.updated, 
+        EventBus.on(Events.generator.onCD, (generatorName) => this.setOnCD(generatorName, this.#disableGeneratorFn));
+        EventBus.on(Events.generator.updateCD, (generatorName, _, degs) => this.updateRemainingCD(generatorName, degs));
+        EventBus.on(Events.generator.ready, (generatorName) => this.setOffCD(generatorName, this.#disableGeneratorFn, false));
+        EventBus.on(Events.generator.elements.statusItems.pointChance.updated,
             (generatorName, pointChances) => this.updateGeneratorStatusElements(generatorName, pointChances)
         );
         EventBus.on(Events.generator.elements.cdCharges.build, (elementName, progress) => this.updateElementBuildProgress(elementName, progress));
@@ -359,51 +368,17 @@ class UIController {
         const generatorElements = Array.from(this.#generatorsContainer.children);
         generatorElements.forEach(gen => gen.disabled = isDisabled);
     }
-
-    /** 
-     * @param {string} generatorName
+    
+    /**
+     * @param {string} generatorName 
+     * @param {boolean} isDisabled 
      */
-    setGeneratorOnCD(generatorName) {
+    disableGenerator(generatorName, isDisabled = true) {
         Asserts.string(generatorName);
+        Asserts.boolean(isDisabled);
 
         const generatorElement = this.getGeneratorElement(generatorName);
-        const onCDClasses = DataManager.getGeneratorClasses().onCd;
-        const dataSetStatus = DataManager.getDataSetAttrs().status;
-        const statusCooldown = DataManager.getDataSetStatus().cooldown;
-
-        if (generatorElement.disabled && 
-            UIHelper.containsClasses(onCDClasses) &&
-            UIHelper.isDataSetValue(generatorElement, dataSetStatus, statusCooldown)) return;
-
-        UIHelper.addClass(generatorElement, onCDClasses);
-        UIHelper.addDataSet(generatorElement, dataSetStatus, statusCooldown);
-        generatorElement.disabled = true;
-    }
-
-    /** @param {string} generatorName */
-    setGeneratorOffCD(generatorName) {
-        Asserts.string(generatorName);
-
-        const generatorElement = this.getGeneratorElement(generatorName);
-        Utils.deferFrame(() => UIHelper.removeClass(generatorElement, DataManager.getGeneratorClasses().onCd));
-
-        const dataSetStatus = DataManager.getDataSetAttrs().status;
-        const statusCooldown = DataManager.getDataSetStatus().cooldown;
-        if (UIHelper.isDataSetValue(generatorElement, dataSetStatus, statusCooldown))
-            Utils.deferFrame(() => UIHelper.removeDataSet(generatorElement, dataSetStatus));
-        generatorElement.disabled = false;
-    }
-
-    /** 
-     * @param {string} generatorName
-     * @param {number} degs
-     */
-    updateGeneratorRemainingCD(generatorName, degs) {
-        Asserts.string(generatorName);
-        Asserts.number(degs);
-
-        const generatorElement = this.getGeneratorElement(generatorName);
-        Utils.deferFrame(() => UIHelper.setProperty(generatorElement, this.#cssVars.cdGeneratorOnCdDg, `${degs}deg`));
+        generatorElement.disabled = isDisabled;
     }
 
     // #endregion Generators
@@ -508,6 +483,60 @@ class UIController {
     // #endregion Generator Elements
 
     // #region Generator Status
+
+    /** 
+     * @param {string} entityName
+     * @param {function} callback
+     */
+    setOnCD(entityName, callback, ...args) {
+        Asserts.string(entityName);
+        if (Validators.isNotNullNorUndefined(callback)) Asserts.function(callback);
+
+        const entityElement = document.getElementById(entityName);
+        Asserts.notNullOrUndefined(entityElement);
+        const onCDClasses = DataManager.getStatusClasses().onCd;
+        const dataSetStatus = DataManager.getDataSetAttrs().status;
+        const statusCooldown = DataManager.getDataSetStatus().cooldown;
+
+        if (entityElement.disabled && 
+            UIHelper.containsClasses(onCDClasses) &&
+            UIHelper.isDataSetValue(entityElement, dataSetStatus, statusCooldown)) return;
+
+        UIHelper.addClass(entityElement, onCDClasses);
+        UIHelper.addDataSet(entityElement, dataSetStatus, statusCooldown);
+
+        if (callback) callback(entityName, ...args);
+    }
+
+    /** 
+     * @param {string} entityName 
+     * @param {function} callback
+     * */
+    setOffCD(entityName, callback, ...args) {
+        Asserts.string(entityName);
+        if (Validators.isNotNullNorUndefined(callback)) Asserts.function(callback);
+
+        const entityElement = this.getGeneratorElement(entityName);
+        Utils.deferFrame(() => UIHelper.removeClass(entityElement, DataManager.getStatusClasses().onCd));
+
+        const dataSetStatus = DataManager.getDataSetAttrs().status;
+        const statusCooldown = DataManager.getDataSetStatus().cooldown;
+        if (UIHelper.isDataSetValue(entityElement, dataSetStatus, statusCooldown))
+            Utils.deferFrame(() => UIHelper.removeDataSet(entityElement, dataSetStatus));
+        if (callback) callback(entityName, ...args);
+    }
+
+    /** 
+     * @param {string} entityName
+     * @param {number} degs
+     */
+    updateRemainingCD(entityName, degs) {
+        Asserts.string(entityName);
+        Asserts.number(degs);
+
+        const entityElement = this.getGeneratorElement(entityName);
+        Utils.deferFrame(() => UIHelper.setProperty(entityElement, this.#cssVars.onCdDg, `${degs}deg`));
+    }
 
     /**
      * @param {string} generatorName 

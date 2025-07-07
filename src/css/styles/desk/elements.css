@@ -20,7 +20,7 @@
 *.on-cd::before {
     content: '';
     position: absolute;
-    background: conic-gradient(transparent var(--cooldownGenerator-oncd-dg, 0deg), #00000050 0deg);
+    background: conic-gradient(transparent var(--oncd-dg, 0deg), #00000050 0deg);
     border-radius: inherit;
     width: inherit;
     height: inherit;

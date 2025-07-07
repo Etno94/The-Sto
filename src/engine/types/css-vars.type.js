@@ -1,7 +1,7 @@
 /**
  * @typedef {Object} CssVarsData
  * @property {string} pointChancePercent
- * @property {string} cdGeneratorOnCdDg
+ * @property {string} onCdDg
  * @property {string} storagePointsPerRow
  * @property {string} buildProgressPercent
  * 
