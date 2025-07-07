@@ -79,9 +79,7 @@ class UIController {
         // Generators
         EventBus.on(Events.generator.build, (generatorName, percentProgress) => this.updateGeneratorBuildProgress(generatorName, percentProgress));
         EventBus.on(Events.generator.onCD, (generatorName) => this.setGeneratorOnCD(generatorName));
-        EventBus.on(Events.generator.updateCD, (generatorName, remainingCD, baseCooldown) => {
-            this.updateGeneratorRemainingCD(generatorName, remainingCD, baseCooldown);
-        });
+        EventBus.on(Events.generator.updateCD, (generatorName, _, degs) => this.updateGeneratorRemainingCD(generatorName, degs));
         EventBus.on(Events.generator.ready, (generatorName) => this.setGeneratorOffCD(generatorName));
         EventBus.on(Events.generator.elements.statusItems.pointChance.updated, 
             (generatorName, pointChances) => this.updateGeneratorStatusElements(generatorName, pointChances)
@@ -398,16 +396,13 @@ class UIController {
 
     /** 
      * @param {string} generatorName
-     * @param {number} remainingCD
-     * @param {number} baseCooldown
+     * @param {number} degs
      */
-    updateGeneratorRemainingCD(generatorName, remainingCD, baseCooldown) {
+    updateGeneratorRemainingCD(generatorName, degs) {
         Asserts.string(generatorName);
-        Asserts.number(remainingCD);
-        Asserts.number(baseCooldown);
+        Asserts.number(degs);
 
         const generatorElement = this.getGeneratorElement(generatorName);
-        const degs = Utils.getReversedDeg(Utils.getDegPercent(baseCooldown, remainingCD));
         Utils.deferFrame(() => UIHelper.setProperty(generatorElement, this.#cssVars.cdGeneratorOnCdDg, `${degs}deg`));
     }
 

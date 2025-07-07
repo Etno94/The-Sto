@@ -106,12 +106,14 @@ function checkBuiltGenerators(generatorNames) {
 
 // Generator Elements Unlock
 function checkGeneratorElementsUnlocks () {
+  // Locked Elements
   checkGeneratorElements(
     generatorM.getLockedGeneratorElementNames(), 
     generatorM.whatElementUnlockRequiresHint.bind(generatorM), 
     generatorM.setElementHinted.bind(generatorM),
     UIControl.showElementHint.bind(UIControl)
   );
+  // Hinted Elements
   checkGeneratorElements(
     generatorM.getHintedGeneratorElementNames(), 
     generatorM.whatElementUnlockRequiresBuild.bind(generatorM), 
@@ -119,7 +121,9 @@ function checkGeneratorElementsUnlocks () {
     UIControl.showElementCanBuild.bind(UIControl),
     UIControl.showElementHint.bind(UIControl)
   );
+  // Can Build Elements
   checkGeneratorElementsCanBuild(generatorM.getCanBuildGeneratorElementNames());
+  // Built Elements
   checkGeneratorElementsBuilt(generatorM.getBuiltGeneratorElementNames());
 }
 
@@ -330,8 +334,9 @@ function updateGeneratorsCooldown(interval = 0, initialSet = false) {
   generatorsOnCD.forEach(generatorName => {
     const updatedRemainingCD = generatorM.getGeneratorRemainingCD(generatorName) - interval;
     const baseCooldown = generatorM.whatBaseCoolDown(generatorName);
+    const degs = Utils.getReversedDeg(Utils.getDegPercent(baseCooldown, updatedRemainingCD));
     if (initialSet) EventBus.emit(Events.generator.onCD, generatorName, updatedRemainingCD);
-    EventBus.emit(Events.generator.updateCD, generatorName, updatedRemainingCD, baseCooldown);
+    EventBus.emit(Events.generator.updateCD, generatorName, updatedRemainingCD, degs);
   });
 }
 
