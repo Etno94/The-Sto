@@ -193,11 +193,7 @@ function buildGenerator(generatorName) {
   if (!pointM.hasEnoughPoints(buildStep)) return;
 
   EventBus.emit(Events.points.substract, buildStep);
-
-  // const currentProgress = generatorM.buildProgress(generatorName, DataManager.getDefaultStepProgress());
-  // const totalProgress = generatorM.whatBuildTotalStepsRequires(elementName);
-  // const percentProgress = Utils.getPercent(totalProgress, currentProgress);
-  // EventBus.emit(Events.generator.build, generatorName, percentProgress);
+  
   setBuildProgress(
     generatorName, 
     generatorM.buildProgress.bind(generatorM),
@@ -227,10 +223,6 @@ function buildGeneratorElement(elementName) {
 
   EventBus.emit(Events.points.substract, buildStep);
 
-  // const currentProgress = generatorM.buildElementProgress(elementName, DataManager.getDefaultStepProgress());
-  // const totalProgress = generatorM.whatElementBuildRequiresTotalSteps(elementName);
-  // const percentProgress = Utils.getPercent(totalProgress, currentProgress);
-  // EventBus.emit(Events.generator.elements.cdCharges.build, elementName, percentProgress);
   setBuildProgress(
     elementName, 
     generatorM.buildElementProgress.bind(generatorM),

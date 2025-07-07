@@ -3,17 +3,17 @@
     display: none;
 }
 .hint {
-    border: var(--bolder-border--light-border);
+    border: var(--bolder-border--light-border) !important;
 }
 .blank {
     --bg-color: unset;
     --direction: to top;
-    border: var(--bolder-border--bold-border);
+    border: var(--bolder-border--bold-border) !important;
     background: linear-gradient(var(--direction), var(--bg-color) 0%, var(--bg-color) var(--progress), transparent var(--progress), transparent 100%) !important;
 }
 
 *.hint {
-    background-color: unset !important;
+    background: unset !important;
 }
 
 /* Cd Display */
@@ -200,12 +200,15 @@ div.pulse-cells-wrap {
     top: -8px;
     left: -16px;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     justify-content: center;
 }
 
 div.pulse-cells-wrap .pulse-cell {
     --pulse-cell-load: 0%;
+
+    --cell-width: 16px;
+    --cell-height: 48px;
 
     width: 16px;
     height: 48px;
@@ -238,7 +241,7 @@ div.pulse-cells-wrap .pulse-cell div.cost-preview {
 
     position: absolute;
     left: -32px;
-    transform: translateY(-50%) translateY(calc(var(--charge-height) / 2));
+    transform: translateY(-50%) translateY(calc(var(--cell-height) / 2));
     pointer-events: none;
     opacity: 0;
     transition: opacity var(--opacity);

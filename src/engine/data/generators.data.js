@@ -36,8 +36,8 @@ export const CLICK_GENERATOR = {
             {
                 type: POINT_TYPES.point,
                 baseChance: 180,
-                updateChanceOnSuccess: 0.2,
-                updateChanceOnFail: -1,
+                updateChanceOnSuccess: -0.2,
+                updateChanceOnFail: 1,
                 startingGuaranteedChanceTries: 3
             }
         ]
@@ -160,10 +160,10 @@ export const PULSE_GENERATOR = {
             name: GENERATOR_ELEMENT_NAMES.pulseCell2,
             unlockRequires: {
                 hint: {
-                    [POINT_TYPES.energy_point]: 6
+                    [POINT_TYPES.energy_point]: 3
                 },
                 build: {
-                    [POINT_TYPES.energy_point]: 8
+                    [POINT_TYPES.energy_point]: 6
                 }
             },
             buildRequires: {
