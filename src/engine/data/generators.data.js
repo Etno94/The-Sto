@@ -216,15 +216,21 @@ export const GENERATOR_ELEMENTS_DATA = {
     cdCharges: [
         {
             name: GENERATOR_ELEMENT_NAMES.cdCharge1,
-            baseCd: (currentCd) => currentCd
+            baseCd: 2000,
+            increment: (currentCd) => currentCd * 1.05,
+            maxCd: 1000 * 60 * 2
         },
         {
             name: GENERATOR_ELEMENT_NAMES.cdCharge2,
-            baseCd: (currentCd) => currentCd * 2
+            baseCd: 3000,
+            increment: (currentCd) => currentCd * 1.04,
+            maxCd: 1000 * 60 * 4
         },
         {
             name: GENERATOR_ELEMENT_NAMES.cdCharge3,
-            baseCd: (currentCd) => currentCd * 4
+            baseCd: 4000,
+            increment: (currentCd) => currentCd * 1.03,
+            maxCd: 1000 * 60 * 8
         }
     ],
     pulseCells: [

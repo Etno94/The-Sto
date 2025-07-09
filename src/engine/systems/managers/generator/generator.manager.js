@@ -16,11 +16,13 @@ class GeneratorManager {
     #orderedGenerators = [];
 
     /** @type {boolean} */
-    #needToCheckCooldowns = false;
+    // #needToCheckCooldowns = false;
     /** @type {DataGeneratorId} */
     #generatorIds;
     /** @type {GeneratorElementNamesData} */
     #generatorElementNames;
+    /** @type {GeneratorElementsData} */
+    #generatorElementsData;
 
     /** @type {string[]} */
     #saveGeneratorElementNames = [];
@@ -41,14 +43,20 @@ class GeneratorManager {
     #setData() {
         this.#generatorIds = DataManager.getGeneratorIds();
         this.#generatorElementNames = DataManager.getGeneratorElementNames();
+        this.#generatorElementsData = DataManager.getGeneratorElementsData();
     }
 
     #setBusEvents() {
-        EventBus.on(Events.generator.onCD, (generatorName, baseCooldown) => this.setRemainingCD(generatorName, baseCooldown));
-        EventBus.on(Events.generator.updateCD, (generatorName, remainingCD) => this.setRemainingCD(generatorName, remainingCD));
+        EventBus.on(Events.generator.onCD, (generatorName, baseCooldown) => this.setGeneratorRemainingCD(generatorName, baseCooldown));
+        EventBus.on(Events.generator.updateCD, (generatorName, remainingCD) => this.setGeneratorRemainingCD(generatorName, remainingCD));
         EventBus.on(Events.generator.onUse, (generatorName) => this.setGeneratorUses(generatorName));
+
+        
+
         EventBus.on(Events.generator.elements.statusItems.pointChance.onUpdate, 
             (generatorName, pointSetGenerated) => this.updateGeneratorPointChance(generatorName, pointSetGenerated));
+        EventBus.on(Events.generator.elements.cdCharges.onCd, (elementName, baseCooldown) => this.setElementRemainingCd(elementName, baseCooldown));
+        EventBus.on(Events.generator.elements.cdCharges.updateCd, (elementName, remainingCD) => this.setElementRemainingCd(elementName, remainingCD));
     }
 
     setNewGeneratorManager() {
@@ -72,7 +80,7 @@ class GeneratorManager {
                         generator.remainingCD = 0;
                         return;
                     }
-                    this.#needToCheckCooldowns = true;
+                    // this.#needToCheckCooldowns = true;
                 }
                 if (Array.isArray(generator.elements)) {
                     for (const element of generator.elements) {
@@ -83,7 +91,6 @@ class GeneratorManager {
                                 generator.remainingCD = 0;
                                 return;
                             }
-                            // TODO: integrate cd charges to cd system
                             // this.#needToCheckCooldowns = true;
                         }
                     }
@@ -306,6 +313,48 @@ class GeneratorManager {
         return this.#whatElementBuildRequires(elementName)?.totalSteps || null;
     }
 
+    // Elements Use Data
+
+    /** @returns {GeneratorElementsCDChargesData[]} */
+    getCdChargesData() {
+        return this.#generatorElementsData.cdCharges;
+    }
+
+    /** @returns {GeneratorElementsPulseCellsData[]} */
+    getPulseCellsData() {
+        return this.#generatorElementsData.pulseCells;
+    }
+
+    /**
+     * @param {string} name
+     *  @returns {GeneratorElementsCDChargesData} */
+    getCdChargeData(name) {
+        return this.getCdChargesData().find(charge => charge.name === name);
+    }
+
+    /** 
+     * @param {string} name
+     * @returns {GeneratorElementsPulseCellsData} */
+    getPulseCellData(name) {
+        return this.getPulseCellsData().find(cell => cell.name === name);
+    }
+
+    /**
+     * @param {string} name 
+     * @returns {Number}
+     */
+    whatChargeBaseCD(name) {
+        return this.getCdChargeData(name).baseCd || null;
+    }
+
+    /**
+     * @param {string} name 
+     * @returns {{type: string, total: number}}
+     */
+    whatCellLoad(name) {
+        return this.getPulseCellData(name).loadCell || null;
+    }
+
     // #endregion Get Generator Data
 
     // #region Get Proxy Save
@@ -496,6 +545,14 @@ class GeneratorManager {
         return this.#getProxySaveGeneratorByName(generatorName)?.generatesPoints || [];
     }
 
+    /** @returns {SaveGeneratorElement[]} */
+    getElementsRemainingCd() {
+        return this.#getProxySaveGeneratorElementsByCriteria(
+            /** @param {SaveGeneratorElement} */
+            element => element.remainingCD
+        )
+    }
+
     // Unlock Flow
 
     /**
@@ -656,24 +713,24 @@ class GeneratorManager {
      * @param {string} generatorName 
      * @param {number} remainingCD
      */
-    setRemainingCD(generatorName, remainingCD) {
+    setGeneratorRemainingCD(generatorName, remainingCD) {
         Asserts.string(generatorName);
         Asserts.number(remainingCD);
 
         if (!remainingCD || remainingCD < 0) remainingCD = 0;
         this.#setProp(generatorName, 'remainingCD', remainingCD);
-        this.#needToCheckCooldowns = remainingCD > 0 || this.#needToCheckCooldowns;
+        // this.#needToCheckCooldowns = remainingCD > 0 || this.#needToCheckCooldowns;
         if (!remainingCD) EventBus.emit(Events.generator.ready, generatorName);
     }
     
     get needToCheckCooldowns() {
-        return this.#needToCheckCooldowns;
+        // return this.#needToCheckCooldowns;
     }
 
     /** @param {boolean} value */
     set needToCheckCooldowns(value) {
         Asserts.boolean(value);
-        this.#needToCheckCooldowns = value;
+        // this.#needToCheckCooldowns = value;
     }
 
     /** @param {string} generatorName */
@@ -756,6 +813,16 @@ class GeneratorManager {
     isBuildElementProgressComplete(elementName) {
         Asserts.string(elementName);
         return this.#getGeneratorElement(elementName).progress >= this.whatElementBuildRequiresTotalSteps(elementName);
+    }
+
+    setElementRemainingCd(elementName, remainingCD) {
+        Asserts.string(elementName);
+        Asserts.number(remainingCD);
+
+        if (!remainingCD || remainingCD < 0) remainingCD = 0;
+        this.setElement(elementName, 'remainingCD', remainingCD);
+        // this.#needToCheckCooldowns = remainingCD > 0 || this.#needToCheckCooldowns;
+        if (!remainingCD) EventBus.emit(Events.generator.elements.cdCharges.ready, elementName);
     }
 
     /** @returns {string[]} */

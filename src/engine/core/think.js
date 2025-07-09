@@ -307,6 +307,7 @@ function upgradeMaxStorage() {
 function renderGeneralUpdatedStatus(interval) {
   setStoragePoints();
   updateGeneratorsCooldown(interval);
+  updateElementsCooldown(interval);
   updateStorageUpgradeCostPreview();
 }
 
@@ -323,11 +324,11 @@ function setStoragePoints() {
  */
 function updateGeneratorsCooldown(interval = 0, initialSet = false) {
   Asserts.number(interval);
-  if (!generatorM.needToCheckCooldowns) return;
+  // if (!generatorM.needToCheckCooldowns) return;
 
   const generatorsOnCD = generatorM.getGeneratorsOnCooldownNames();
   if (!Validators.isNonEmptyArray(generatorsOnCD)) {
-    generatorM.needToCheckCooldowns = false;
+    // generatorM.needToCheckCooldowns = false;
     return;
   }
 
@@ -337,6 +338,29 @@ function updateGeneratorsCooldown(interval = 0, initialSet = false) {
     const degs = Utils.getReversedDeg(Utils.getDegPercent(baseCooldown, updatedRemainingCD));
     if (initialSet) EventBus.emit(Events.generator.onCD, generatorName, updatedRemainingCD);
     EventBus.emit(Events.generator.updateCD, generatorName, updatedRemainingCD, degs);
+  });
+}
+
+/** 
+ * @param {number} [interval]
+ * @param {boolean} [initialSet]
+ */
+function updateElementsCooldown(interval = 0, initialSet = false) {
+  Asserts.number(interval);
+  // if (!generatorM.needToCheckCooldowns) return;
+
+  const elementsOnCD = generatorM.getElementsRemainingCd();
+  if (!Validators.isNonEmptyArray(elementsOnCD)) {
+    // generatorM.needToCheckCooldowns = false;
+    return;
+  }
+
+  elementsOnCD.forEach(element => {
+    const updatedRemainingCD = element.remainingCD - interval;
+    const baseCooldown = generatorM.whatChargeBaseCD(element.name);
+    const degs = Utils.getReversedDeg(Utils.getDegPercent(baseCooldown, updatedRemainingCD));
+    if (initialSet) EventBus.emit(Events.generator.elements.cdCharges.onCd, element.name, updatedRemainingCD);
+    EventBus.emit(Events.generator.elements.cdCharges.updateCd, element.name, updatedRemainingCD, degs);
   });
 }
 
@@ -397,6 +421,7 @@ function startGame() {
   // Initial render for already unlocked generators
   checkUnlocks();
   updateGeneratorsCooldown(0, true);
+  updateElementsCooldown(0, true);
   setBuiltGeneratorStatus();
 
   Global.saveProxy.subscribe((updatedSave) => {

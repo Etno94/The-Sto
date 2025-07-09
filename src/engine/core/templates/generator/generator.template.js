@@ -12,6 +12,7 @@ export default class BaseGenerator {
     pointsToGenerate;
     /** @type {PointCollection} */
     consumeCollection;
+    
     /** @type {number} */
     baseCooldown;
 
@@ -24,7 +25,6 @@ export default class BaseGenerator {
     this.generatorName = generatorName;
     this.pointsToGenerate = generatorM.getGeneratorPoints(generatorName);
     this.consumeCollection = new PointCollection(generatorM.whatConsumes(generatorName));
-    this.baseCooldown = generatorM.whatBaseCoolDown(generatorName);
   }
 
   run() {
@@ -97,11 +97,7 @@ export default class BaseGenerator {
   /** @param {PointCollection} generated */
   emitStatus(generated) {
     Asserts.object(generated);
-    
     EventBus.emit(Events.generator.onUse, this.generatorName);
-    if (this.baseCooldown) {
-      EventBus.emit(Events.generator.onCD, this.generatorName, this.baseCooldown);
-    }
   }
 
   /** @param {PointCollection} generated */

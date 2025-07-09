@@ -43,6 +43,9 @@
  * @typedef { Object } GeneratorCDChargesBusEvents
  * @property { string } build
  * @property { string } built
+ * @property { string } onCd
+ * @property { string } updateCd
+ * @property { string } ready
  */
 
 /**

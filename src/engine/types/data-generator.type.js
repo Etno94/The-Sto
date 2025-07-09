@@ -96,7 +96,8 @@
 /**
  * @typedef {Object} GeneratorElementsCDChargesData
  * @property {string} name
- * @property {Function} baseCd
+ * @property {Number} baseCd
+ * @property {Function} increment
  */
 
 /**

@@ -20,7 +20,10 @@ export const BUS_EVENTS = {
             },
             cdCharges: {
                 build: 'generator: cd charge build',
-                built: 'generator: cd charge built'
+                built: 'generator: cd charge built',
+                onCd: 'generator: cd charge built onCd',
+                updateCd: 'generator: cd charge built update Cd',
+                ready: 'generator: cd charge built ready'
             },
             pulseCells: {
                 build: 'generator: pulse cell build',

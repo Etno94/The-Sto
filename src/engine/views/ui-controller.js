@@ -90,10 +90,15 @@ class UIController {
         EventBus.on(Events.generator.onCD, (generatorName) => this.setOnCD(generatorName, this.#disableGeneratorFn));
         EventBus.on(Events.generator.updateCD, (generatorName, _, degs) => this.updateRemainingCD(generatorName, degs));
         EventBus.on(Events.generator.ready, (generatorName) => this.setOffCD(generatorName, this.#disableGeneratorFn, false));
+
+        // Generator Elements
         EventBus.on(Events.generator.elements.statusItems.pointChance.updated,
             (generatorName, pointChances) => this.updateGeneratorStatusElements(generatorName, pointChances)
         );
         EventBus.on(Events.generator.elements.cdCharges.build, (elementName, progress) => this.updateElementBuildProgress(elementName, progress));
+        EventBus.on(Events.generator.elements.cdCharges.onCd, (elementName) => this.setOnCD(elementName));
+        EventBus.on(Events.generator.elements.cdCharges.updateCd, (elementName, _, degs) => this.updateRemainingCD(elementName, degs));
+        EventBus.on(Events.generator.elements.cdCharges.ready, (elementName) => this.setOffCD(elementName));
 
         // UI Elements
         EventBus.on(Events.ui.render, (isRendering) => {});
@@ -398,7 +403,6 @@ class UIController {
         })[generatorName];
 
         const categoryMap = category ? UIRegService.getElementsFromGenerator(generatorName, category) : null;
-        console.log(categoryMap);
     }
 
     /** 
@@ -516,7 +520,7 @@ class UIController {
         Asserts.string(entityName);
         if (Validators.isNotNullNorUndefined(callback)) Asserts.function(callback);
 
-        const entityElement = this.getGeneratorElement(entityName);
+        const entityElement = document.getElementById(entityName);
         Utils.deferFrame(() => UIHelper.removeClass(entityElement, DataManager.getStatusClasses().onCd));
 
         const dataSetStatus = DataManager.getDataSetAttrs().status;
@@ -534,7 +538,7 @@ class UIController {
         Asserts.string(entityName);
         Asserts.number(degs);
 
-        const entityElement = this.getGeneratorElement(entityName);
+        const entityElement = document.getElementById(entityName);
         Utils.deferFrame(() => UIHelper.setProperty(entityElement, this.#cssVars.onCdDg, `${degs}deg`));
     }
 
@@ -581,7 +585,6 @@ class UIController {
                     UIHelper.setProperty(point, this.#cssVars.pointChancePercent, '0%');
                     UIHelper.addClass(point, DataManager.getPointChanceWrapClasses().layer_1.hiddenPoint);
                 }
-                console.log(point);
             });
 
             /** @type {SaveGeneratorPoints[]} */
