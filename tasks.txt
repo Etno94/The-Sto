@@ -1,6 +1,6 @@
 Activo:
-- (logic) life cycle => pulse cells
-- (logic) implementar sistema de CD en cargas del generadores
+- (logic) tomar dinamicamente disponibilidad de cd charges
+- (logic UI) representar en cd gen el cd de la carga mas cercana a terminar
 
 Tareas:
 
