@@ -18,9 +18,11 @@ input,select{vertical-align:middle}
 button{border: unset}
 
 /* Reset */
-
 html, body {
     height: 100%;
+}
+body {
+    overflow: hidden;
 }
 
 * {
