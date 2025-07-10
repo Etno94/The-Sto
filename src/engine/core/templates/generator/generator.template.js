@@ -94,9 +94,7 @@ export default class BaseGenerator {
     if (generated.total) EventBus.emit(Events.points.add, generated.collection);
   }
 
-  /** @param {PointCollection} generated */
-  emitStatus(generated) {
-    Asserts.object(generated);
+  emitStatus() {
     EventBus.emit(Events.generator.onUse, this.generatorName);
   }
 

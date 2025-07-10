@@ -213,7 +213,7 @@ function buildGenerator(generatorName) {
     UIControl.removeCostPreview(generatorElement);
     UIControl.showGeneratorElementsOnBuild(generatorName);
     setGeneratorElements(generatorName);
-    EventBus.emit(Events.generator.built, generatorName);
+    // EventBus.emit(Events.generator.built, generatorName);
   }
 }
 

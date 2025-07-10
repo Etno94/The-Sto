@@ -10,15 +10,13 @@ export default class PulseGenerator extends BaseGenerator {
     this.baseCooldown = generatorM.whatBaseCoolDown(generatorName);
   }
 
-  /** @param {PointCollection} generated */
-  emitStatus(generated) {
-    super.emitStatus(generated);
-    if (this.baseCooldown) {
-      EventBus.emit(Events.generator.onCD, this.generatorName, this.baseCooldown);
-    }
+  emitStatus() {
+    super.emitStatus();
+    if (!this.baseCooldown) return;
+
+    EventBus.emit(Events.generator.onCD, this.generatorName, this.baseCooldown);
   }
 
   afterGenerate(generated) {
-    console.log(`[Pulse] Generated ${generated.total} points`);
   }
 }

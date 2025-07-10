@@ -551,6 +551,38 @@ class GeneratorManager {
         )
     }
 
+    /** @returns {SaveGeneratorElement[]} */
+    getCDCharges() {
+        const {cdCharge1, cdCharge2, cdCharge3} = this.#generatorElementNames;
+        const cdChargesIds = [cdCharge1, cdCharge2, cdCharge3];
+
+        return this.#getProxySaveGeneratorElementsByCriteria(
+            /** @param {SaveGeneratorElement} */
+            element => cdChargesIds.some(name => name === element.name) 
+        )
+    }
+
+    /** @returns {SaveGeneratorElement[]} */
+    getPulseCells() {
+        const {pulseCell1, pulseCell2, pulseCell3} = this.#generatorElementNames;
+        const pulseCellIds = [pulseCell1, pulseCell2, pulseCell3];
+
+        return this.#getProxySaveGeneratorElementsByCriteria(
+            /** @param {SaveGeneratorElement} */
+            element => pulseCellIds.some(name => name === element.name) 
+        )
+    }
+
+    /** @returns {SaveGeneratorElement[]} */
+    getBuiltCDCharges() {
+        return this.getCDCharges().filter(charge => charge.hinted && charge.canBuild && charge.built);
+    }
+
+    /** @returns {SaveGeneratorElement[]} */
+    getBuiltPulseCells() {
+        return this.getPulseCells().filter(charge => charge.hinted && charge.canBuild && charge.built);
+    }
+
     // Unlock Flow
 
     /**

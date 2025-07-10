@@ -219,6 +219,16 @@ export default class DataManager {
         return Utils.deepCopy(GENERATOR_ELEMENTS_DATA);
     }
 
+    /** @returns { GeneratorElementsCDChargesData[] } */
+    static getCDCargesData() {
+        return Utils.arrCopy(GENERATOR_ELEMENTS_DATA.cdCharges);
+    }
+
+    /** @returns { GeneratorElementsPulseCellsData[] } */
+    static getPulseCellsData() {
+        return Utils.arrCopy(GENERATOR_ELEMENTS_DATA.pulseCells);
+    }
+
     // #endregion Elements
 
     // #region UI Registries

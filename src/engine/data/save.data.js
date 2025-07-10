@@ -1,4 +1,4 @@
-import { GENERATOR_IDS, GENERATOR_ELEMENT_NAMES,  CLICK_GENERATOR, COOLDOWN_GENERATOR, PULSE_GENERATOR } from './generators.data.js';
+import { GENERATOR_IDS, GENERATOR_ELEMENT_NAMES,  CLICK_GENERATOR, COOLDOWN_GENERATOR, PULSE_GENERATOR, GENERATOR_ELEMENTS_DATA } from './generators.data.js';
 import { POINT_TYPES, FRESH_POINTS } from './points.data.js';
 import { STORAGE_UPGRADES} from './storage.data.js';
 
@@ -48,6 +48,7 @@ export const FRESH_SAVE = {
                     canBuild: true,
                     built: true,
                     timesUsed: 0,
+                    currentBaseCD: GENERATOR_ELEMENTS_DATA.cdCharges.find(charge => charge.name === GENERATOR_ELEMENT_NAMES.cdCharge1).baseCd,
                     remainingCD: 0
                 },
                 {
@@ -57,6 +58,7 @@ export const FRESH_SAVE = {
                     progress: 0,
                     built: false,
                     timesUsed: 0,
+                    currentBaseCD: GENERATOR_ELEMENTS_DATA.cdCharges.find(charge => charge.name === GENERATOR_ELEMENT_NAMES.cdCharge2).baseCd,
                     remainingCD: 0
                 },
                 {
@@ -66,6 +68,7 @@ export const FRESH_SAVE = {
                     progress: 0,
                     built: false,
                     timesUsed: 0,
+                    currentBaseCD: GENERATOR_ELEMENTS_DATA.cdCharges.find(charge => charge.name === GENERATOR_ELEMENT_NAMES.cdCharge3).baseCd,
                     remainingCD: 0
                 }
             ]
