@@ -11,6 +11,7 @@ export const BUS_EVENTS = {
         ready: 'generator: ready to use',
         onUse: 'generator: used',
         elements: {
+            onUse: 'generator: element on use',
             statusItems: {
                 pointChance: {
                     created: 'generator: point chance created',

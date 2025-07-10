@@ -47,6 +47,7 @@ export const FRESH_SAVE = {
                     hinted: true,
                     canBuild: true,
                     built: true,
+                    timesUsed: 0,
                     remainingCD: 0
                 },
                 {
@@ -55,6 +56,7 @@ export const FRESH_SAVE = {
                     canBuild: false,
                     progress: 0,
                     built: false,
+                    timesUsed: 0,
                     remainingCD: 0
                 },
                 {
@@ -63,6 +65,7 @@ export const FRESH_SAVE = {
                     canBuild: false,
                     progress: 0,
                     built: false,
+                    timesUsed: 0,
                     remainingCD: 0
                 }
             ]
@@ -83,6 +86,7 @@ export const FRESH_SAVE = {
                     hinted: true,
                     canBuild: true,
                     built: true,
+                    timesUsed: 0,
                     cellLoad: 0
                 },
                 {
@@ -91,6 +95,7 @@ export const FRESH_SAVE = {
                     canBuild: false,
                     progress: 0,
                     built: false,
+                    timesUsed: 0,
                     cellLoad: 0
                 },
                 {
@@ -99,6 +104,7 @@ export const FRESH_SAVE = {
                     canBuild: false,
                     progress: 0,
                     built: false,
+                    timesUsed: 0,
                     cellLoad: 0
                 }
             ]

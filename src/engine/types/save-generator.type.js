@@ -26,6 +26,7 @@
  * @property {boolean} canBuild
  * @property {number} [progress=0]
  * @property {boolean} built
+ * @property {number} timesUsed
  * @property {number} [remainingCD]
  * @property {number} [cellLoad]
  */

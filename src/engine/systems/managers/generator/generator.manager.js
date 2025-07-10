@@ -51,12 +51,11 @@ class GeneratorManager {
         EventBus.on(Events.generator.updateCD, (generatorName, remainingCD) => this.setGeneratorRemainingCD(generatorName, remainingCD));
         EventBus.on(Events.generator.onUse, (generatorName) => this.setGeneratorUses(generatorName));
 
-        
-
         EventBus.on(Events.generator.elements.statusItems.pointChance.onUpdate, 
             (generatorName, pointSetGenerated) => this.updateGeneratorPointChance(generatorName, pointSetGenerated));
         EventBus.on(Events.generator.elements.cdCharges.onCd, (elementName, baseCooldown) => this.setElementRemainingCd(elementName, baseCooldown));
         EventBus.on(Events.generator.elements.cdCharges.updateCd, (elementName, remainingCD) => this.setElementRemainingCd(elementName, remainingCD));
+        EventBus.on(Events.generator.elements.onUse, (elementName) => this.setElementUses(elementName));
     }
 
     setNewGeneratorManager() {
@@ -451,10 +450,9 @@ class GeneratorManager {
                 generator.elements.length
         ) || [];
 
-        const generator = generators.find(gen => gen.elements.find(callback));
-        if (!generator) return null;
+        const element = generators.flatMap(gen => gen.elements).find(callback);
 
-        return generator.elements.find(callback) || null;
+        return element || null;
     }
 
     /** @returns {string[]} */
@@ -638,11 +636,20 @@ class GeneratorManager {
 
     /**
      * @param {string} elementName 
-     * @returns {boolean}
+     * @returns {Number}
      */
     whatElementProgress(elementName) {
         Asserts.string(elementName);
         return this.#isElementProp(elementName, 'progress');
+    }
+
+    /**
+     * @param {string} elementName 
+     * @returns {Number}
+     */
+    whatElementUses(elementName) {
+        Asserts.string(elementName);
+        return this.#isElementProp(elementName, 'timesUsed');
     }
 
     // #endregion Get Proxy Save
@@ -813,6 +820,15 @@ class GeneratorManager {
     isBuildElementProgressComplete(elementName) {
         Asserts.string(elementName);
         return this.#getGeneratorElement(elementName).progress >= this.whatElementBuildRequiresTotalSteps(elementName);
+    }
+
+    /** @param {string} elementName */
+    setElementUses(elementName) {
+        Asserts.string(elementName);
+        const elementUses = this.whatElementUses(elementName);
+        Asserts.number(elementUses);
+        const newUses = elementUses + 1;
+        this.setElement(elementName, 'timesUsed', newUses);
     }
 
     setElementRemainingCd(elementName, remainingCD) {

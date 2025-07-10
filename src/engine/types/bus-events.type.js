@@ -25,6 +25,7 @@
  * @property { GeneratorStatusItemsBusEvents } statusItems
  * @property { GeneratorCDChargesBusEvents } cdCharges
  * @property { GeneratorPulseCellsBusEvents } pulseCells
+ * @property { string } onUse
  */
 
 /**

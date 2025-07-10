@@ -20,6 +20,7 @@ export default class CDGenerator extends BaseGenerator {
 
     EventBus.emit(Events.generator.onCD, this.generatorName, this.baseCooldown);
     EventBus.emit(Events.generator.elements.cdCharges.onCd, this.cdChargesIds[0], this.baseCooldown);
+    EventBus.emit(Events.generator.elements.onUse, this.cdChargesIds[0]);
   }
 
   afterGenerate(generated) {
