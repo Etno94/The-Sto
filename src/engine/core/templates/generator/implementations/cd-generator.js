@@ -7,25 +7,26 @@ export default class CDGenerator extends BaseGenerator {
   /** @param {string} generatorName */
   constructor(generatorName) {
     super(generatorName);
-    this.baseCooldown = generatorM.whatBaseCoolDown(generatorName);
 
     this.cdChargesData = DataManager.getCDCargesData();
     this.cdCharges = [...generatorM.getBuiltCDCharges()];
   }
 
+  // Emit Status
+
   emitStatus() {
-    super.emitStatus();
-    if (!this.baseCooldown) return;
+    const chargeToUse = this.checkClosestChargeToFinish();
+    if (!this.isChargeReadyToUse(chargeToUse)) return;
 
-    EventBus.emit(Events.generator.onCD, this.generatorName, this.baseCooldown);
+    EventBus.emit(Events.generator.onUse, this.generatorName);
+    EventBus.emit(Events.generator.onCD, this.generatorName, chargeToUse.currentBaseCD);
 
-    const chargeToUse = this.checkChargeToUse();
     EventBus.emit(Events.generator.elements.cdCharges.onCd, chargeToUse.name, chargeToUse.currentBaseCD);
     EventBus.emit(Events.generator.elements.onUse, chargeToUse.name);
   }
 
   /** @returns {SaveGeneratorElement} */
-  checkChargeToUse() {
+  checkClosestChargeToFinish() {
     /** @type {SaveGeneratorElement} */
     let closestToFinish = null;
 
@@ -40,5 +41,18 @@ export default class CDGenerator extends BaseGenerator {
     });
 
     return closestToFinish;
+  }
+
+  /**
+   * @param {SaveGeneratorElement} charge 
+   * @returns {boolean}
+   */
+  isChargeReadyToUse(charge) {
+    return charge.remainingCD === 0;
+  }
+
+  // After Generate
+
+  afterGenerate() {
   }
 }
