@@ -386,6 +386,14 @@ class UIController {
         generatorElement.disabled = isDisabled;
     }
 
+    /**
+     * @param {HTMLElement} element 
+     * @returns {Boolean}
+     */
+    isDisabled(element) {
+        return element.disabled;
+    }
+
     // #endregion Generators
 
     // #region Generator Elements
