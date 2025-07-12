@@ -1,25 +1,12 @@
 Activo:
-- (logic) tomar dinamicamente disponibilidad de cd charges
-- (logic UI) representar en cd gen el cd de la carga mas cercana a terminar
+
+- (content / UI) implementar mecanica de Pulse Generator
+    - (UI) Plasmar cargas del Charge
+    - (logica) Programar mecanica.
 
 Tareas:
 
-- (content / UI) implementar mecanica de Charge Generator
-    - (UI) Plasmar cargas del Charge
-    - (logica) Programar mecanica. (quizas en Generator Manager?)
 - (CSS) desacoplar elementos de generadores del id, plasmar estilos a traves de clases
-- (jsconfig) actualizar los paths, configurando el jsconfig:
-    {
-    "compilerOptions": {
-        "baseUrl": ".",
-        "paths": {
-        "@engine/*": ["src/engine/*"],
-        "@utils/*": ["src/engine/utils/*"]
-        }
-        // ...other options
-    },
-    "include": ["src", "types"]
-    }
 
 Nice to have:
 
