@@ -4,6 +4,8 @@ import { pointM, generatorM, storageM } from "../../../systems/managers-index.js
 import PointCollection from "../../../systems/point.collection.js";
 
 import {Asserts, Utils, SaveGeneratesToPointSet} from "../../../utils//utils.index.js";
+
+import { UIControl } from "../../../views/ui-controller.js";
 export default class BaseGenerator {
 
     /** @type {string} */
@@ -28,6 +30,7 @@ export default class BaseGenerator {
   }
 
   run() {
+    if (this.isGeneratorDisabled()) return;
     if (!this.canConsume() || !this.canGenerate()) return;
 
     this.consume();
@@ -36,6 +39,11 @@ export default class BaseGenerator {
     this.applyGenerated(generatedPoints);
     this.emitStatus(generatedPoints);
     this.afterGenerate(generatedPoints);
+  }
+
+  /** @returns {Boolean} */
+  isGeneratorDisabled() {
+    return UIControl.isDisabled(UIControl.getGeneratorElement(this.generatorName));
   }
 
   /** @returns {Boolean} */

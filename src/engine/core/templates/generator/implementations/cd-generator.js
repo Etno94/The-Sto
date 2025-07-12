@@ -1,7 +1,6 @@
 import BaseGenerator from "../generator.template.js";
 import {EventBus, Events} from "../../../event-bus.js";
 import { generatorM, DataManager } from "../../../../systems/managers-index.js"
-import { UIControl } from "../../../../views/ui-controller.js";
 
 export default class CDGenerator extends BaseGenerator {
 
@@ -11,17 +10,14 @@ export default class CDGenerator extends BaseGenerator {
 
     this.cdChargesData = DataManager.getCDCargesData();
     this.cdCharges = [...generatorM.getBuiltCDCharges()];
+    this.chargesReady = this.getChargesReady();
   }
 
-  // Can Generate
+  // Run
 
-  /** @returns {Boolean} */
-  canGenerate() {
-    const parentResult = super.canGenerate();
-    this.chargesReady = this.getChargesReady();
-    const isGeneratorDisabled = UIControl.isDisabled(UIControl.getGeneratorElement(this.generatorName));
-
-    return parentResult && this.chargesReady.length && !isGeneratorDisabled;
+  run() {
+    if (!this.chargesReady.length) return;
+    super.run();
   }
 
   // Emit Status
