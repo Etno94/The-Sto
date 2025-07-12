@@ -47,11 +47,7 @@ export default class CDGenerator extends BaseGenerator {
 
   /** @returns {SaveGeneratorElement[]} */
   getChargesReady() {
-    const chargesReady = this.cdCharges.filter(
-      /** @param {SaveGeneratorElement} charge */
-      charge => charge.remainingCD === 0);
-
-    return chargesReady;
+    return this.cdCharges.filter(charge => charge.remainingCD === 0);
   }
 
   /** 
@@ -59,11 +55,13 @@ export default class CDGenerator extends BaseGenerator {
    * @returns {SaveGeneratorElement | null} 
    * */
   getLowestBaseCDCharge(charges) {
-    const lowertBaseCDCharge = charges.reduce((prev, current) => {
+    if (!charges.length) return null;
+
+    const lowestBaseCDCharge = charges.reduce((prev, current) => {
       return current.currentBaseCD < prev.currentBaseCD ? current : prev;
     },charges[0]);
 
-    return lowertBaseCDCharge || null;
+    return lowestBaseCDCharge || null;
   }
 
   /** @returns {SaveGeneratorElement} */
