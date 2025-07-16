@@ -6,6 +6,7 @@ import DataManager from "./data.manager.js";
 import PointCollection from '../point.collection.js';
 
 import Utils from "../../utils/utils.js";
+import {Asserts} from "../../utils/utils.index.js";
 
 class PointManager {
 
@@ -22,6 +23,7 @@ class PointManager {
     #setBusEvents() {
         EventBus.on(Events.points.add, (points) => this.#addPoints(points));
         EventBus.on(Events.points.substract, (points) => this.#substractPoints(points));
+        EventBus.on(Events.points.substractByType, (type, limit) => this.substractAllPointsByType(type, limit));
         EventBus.on(Events.points.burnAll, () => this.#burnPoints());
     }
 
@@ -55,6 +57,28 @@ class PointManager {
     #burnPoints() {
         Global.proxy.points = new PointCollection().collection; // fresh PointSet
         Global.proxy.points_order = [];
+    }
+
+    /**
+     * @param {string} type 
+     * @param {Number} [limit]
+     * @returns {Number}
+     */
+    substractAllPointsByType(type, limit = 0) {
+        Asserts.string(type);
+
+        const points = Global.proxy.points;
+        if (!(type in points)) return;
+
+        let amount = points[type] ?? 0;
+        if (amount <= 0) return;
+
+        if (!limit || limit < 0) limit = points[type];
+        if (amount > limit) amount = limit;
+
+        points[type] -= amount;
+
+        return amount;
     }
 
     // #endregion Manage

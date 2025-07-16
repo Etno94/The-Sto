@@ -61,6 +61,8 @@
  * @typedef { Object } PointsBusEvents
  * @property { string } add
  * @property { string } substract
+ * @property { string } substractByType
+ * @property { string } substractedByType
  * @property { string } balance
  * @property { string } burnAll
  * @property { string } overcap

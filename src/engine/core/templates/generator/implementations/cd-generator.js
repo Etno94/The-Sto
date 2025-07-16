@@ -8,7 +8,6 @@ export default class CDGenerator extends BaseGenerator {
   constructor(generatorName) {
     super(generatorName);
 
-    this.cdChargesData = DataManager.getCDCargesData();
     this.cdCharges = [...generatorM.getBuiltCDCharges()];
     this.chargesReady = this.getChargesReady();
   }

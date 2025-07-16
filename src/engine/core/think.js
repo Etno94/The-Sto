@@ -3,7 +3,7 @@ import GameSave from "./save.js";
 import { EventBus, Events } from "./event-bus.js";
 import GameLoop from "./game-loop.js";
 
-import {generatorF} from "./templates/templates.index.js";
+import {generatorF, genElementF} from "./templates/templates.index.js";
 
 import PointCollection from "../systems/point.collection.js";
 import InputControl from "../systems/input.controller.js";
@@ -180,7 +180,8 @@ function checkGeneratorElementsBuilt(elementNames) {
   Asserts.stringArray(elementNames);
 
   elementNames.forEach(elementName => {
-    UIControl.showElementBuilt(elementName);
+    const domElement = UIControl.showElementBuilt(elementName);
+    InputControl.addEventListener(domElement, "click", generatorElementOnClick, elementName);
   });
 }
 
@@ -251,7 +252,7 @@ function generatorOnClick(generatorName) {
   if (!generatorM.isValidGenerator(generatorName)) return;
 
   if (generatorM.isBuilt(generatorName)) {
-    builtGeneratorOnClick(generatorName);
+    generatorF.run(generatorName);
     return;
   }
   if (generatorM.isBuildable(generatorName)) {
@@ -262,17 +263,12 @@ function generatorOnClick(generatorName) {
     console.log("You see a new thing...");
 }
 
-/** @param { string } generatorName */
-function builtGeneratorOnClick (generatorName) {
-  Asserts.string(generatorName);
-  generatorF.run(generatorName);
-}
-
 /** @param {string} */
 function generatorElementOnClick(elementName) {
   Asserts.string(elementName);
 
   if (generatorM.isElementBuilt(elementName)) {
+    genElementF.run(elementName);
     return;
   }
   if (generatorM.isElementCanBuild(elementName)) {
@@ -385,6 +381,12 @@ function setGeneratorElements(generatorName) {
   UIControl.updateGeneratorStatusElements(generatorName, generatesPoints);
 }
 
+function renderGeneratorElements() {
+  const elementNames = generatorM.getBuiltGeneratorElementNames();
+  Asserts.stringArray(elementNames);
+  elementNames.forEach(name => genElementF.render(name));
+}
+
 /**
  * @param {String} name 
  * @param {Function} buildProgressCallback 
@@ -419,10 +421,7 @@ function startGame() {
   storageM.setCurrentStorage(Global?.proxy?.storage?.maxStorageUpgradeCurrentLevel);
 
   // Initial render for already unlocked generators
-  checkUnlocks();
-  updateGeneratorsCooldown(0, true);
-  updateElementsCooldown(0, true);
-  setBuiltGeneratorStatus();
+  initialRender();
 
   Global.saveProxy.subscribe((updatedSave) => {
     GameSave.save(updatedSave);
@@ -440,6 +439,14 @@ function startGame() {
 
 function registerBusEvents() {
   EventBus.on(Events.storageUpgrade.onClick, () => upgradeMaxStorage())
+}
+
+function initialRender() {
+  checkUnlocks();
+  updateGeneratorsCooldown(0, true);
+  updateElementsCooldown(0, true);
+  setBuiltGeneratorStatus();
+  renderGeneratorElements();
 }
 
 startGame();

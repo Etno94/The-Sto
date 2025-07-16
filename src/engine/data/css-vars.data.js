@@ -4,6 +4,7 @@ export const CSS_VARS = {
     onCdDg: '--oncd-dg',
     storagePointsPerRow: '--storage-points-per-row',
     buildProgressPercent: '--progress',
+    pulseCellLoad: '--pulse-cell-load',
 
     width: '--width',
     height: '--height',

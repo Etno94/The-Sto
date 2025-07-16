@@ -47,14 +47,21 @@ class GeneratorManager {
     }
 
     #setBusEvents() {
+        // Generators
         EventBus.on(Events.generator.onCD, (generatorName, baseCooldown) => this.setGeneratorRemainingCD(generatorName, baseCooldown));
         EventBus.on(Events.generator.updateCD, (generatorName, remainingCD) => this.setGeneratorRemainingCD(generatorName, remainingCD));
         EventBus.on(Events.generator.onUse, (generatorName) => this.setGeneratorUses(generatorName));
 
+        // Generators Elements
+
+        // Point Chances
         EventBus.on(Events.generator.elements.statusItems.pointChance.onUpdate, 
             (generatorName, pointSetGenerated) => this.updateGeneratorPointChance(generatorName, pointSetGenerated));
+
+        // CD Charges
         EventBus.on(Events.generator.elements.cdCharges.onCd, (elementName, baseCooldown) => this.setElementRemainingCd(elementName, baseCooldown));
         EventBus.on(Events.generator.elements.cdCharges.updateCd, (elementName, remainingCD) => this.setElementRemainingCd(elementName, remainingCD));
+
         EventBus.on(Events.generator.elements.onUse, (elementName) => this.setElementUses(elementName));
     }
 
@@ -583,6 +590,15 @@ class GeneratorManager {
         return this.getPulseCells().filter(charge => charge.hinted && charge.canBuild && charge.built);
     }
 
+    /**
+     * @param {string} cellName 
+     * @returns {SaveGeneratorElement}
+     */
+    getBuiltPulseCell(cellName) {
+        Asserts.string(cellName);
+        return this.getBuiltPulseCells().find(cell => cell.name === cellName) || null;
+    }
+
     // Unlock Flow
 
     /**
@@ -682,6 +698,15 @@ class GeneratorManager {
     whatElementUses(elementName) {
         Asserts.string(elementName);
         return this.#isElementProp(elementName, 'timesUsed');
+    }
+
+    /**
+     * @param {string} elementName 
+     * @returns {Number}
+     */
+    whatElementCellLoad(elementName) {
+        Asserts.string(elementName);
+        return this.#isElementProp(elementName, 'cellLoad');
     }
 
     // #endregion Get Proxy Save
@@ -863,6 +888,10 @@ class GeneratorManager {
         this.setElement(elementName, 'timesUsed', newUses);
     }
 
+    /**
+     * @param {String} elementName 
+     * @param {Number} remainingCD 
+     */
     setElementRemainingCd(elementName, remainingCD) {
         Asserts.string(elementName);
         Asserts.number(remainingCD);
@@ -871,6 +900,21 @@ class GeneratorManager {
         this.setElement(elementName, 'remainingCD', remainingCD);
         // this.#needToCheckCooldowns = remainingCD > 0 || this.#needToCheckCooldowns;
         if (!remainingCD) EventBus.emit(Events.generator.elements.cdCharges.ready, elementName);
+    }
+
+    /**
+     * @param {String} elementName 
+     * @param {Number} load 
+     */
+    setElementLoad(elementName, load) {
+        Asserts.string(elementName);
+        Asserts.number(load);
+
+        const elementLoad = this.whatElementCellLoad(elementName);
+        Asserts.number(elementLoad);
+        const newLoad = elementLoad + load;
+        this.setElement(elementName, 'cellLoad', newLoad);
+        console.log(`new load: ${newLoad}`);
     }
 
     /** @returns {string[]} */

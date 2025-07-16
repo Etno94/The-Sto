@@ -99,6 +99,7 @@ class UIController {
         EventBus.on(Events.generator.elements.cdCharges.onCd, (elementName) => this.setOnCD(elementName));
         EventBus.on(Events.generator.elements.cdCharges.updateCd, (elementName, _, degs) => this.updateRemainingCD(elementName, degs));
         EventBus.on(Events.generator.elements.cdCharges.ready, (elementName) => this.setOffCD(elementName));
+        EventBus.on(Events.generator.elements.pulseCells.load, (elementName, newLoad) => this.updatePulseCellLoad(elementName, newLoad))
 
         // UI Elements
         EventBus.on(Events.ui.render, (isRendering) => {});
@@ -490,6 +491,18 @@ class UIController {
         Asserts.number(progress);
         const domElement = this.getGeneratorElementDOMElement(elementName);
         UIHelper.setProperty(domElement, this.#cssVars.buildProgressPercent, `${progress}%`);
+    }
+
+    /**
+     * @param {String} elementName 
+     * @param {Number} newLoadPercent 
+     */
+    updatePulseCellLoad(elementName, newLoadPercent) {
+        Asserts.string(elementName);
+        Asserts.number(newLoadPercent);
+
+        const domElement = this.getGeneratorElementDOMElement(elementName);
+        UIHelper.setProperty(domElement, this.#cssVars.pulseCellLoad, `${newLoadPercent}%`);
     }
 
     // #endregion Generator Elements
