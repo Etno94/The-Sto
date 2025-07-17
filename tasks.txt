@@ -1,7 +1,6 @@
 Activo:
 
 - (content / UI) implementar mecanica de Pulse Generator
-    - (UI UX) mostrar coste de carga de pulse cell con cost-preview
     - (logica) Programar mecanica.
 
 Tareas:

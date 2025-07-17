@@ -709,6 +709,17 @@ class GeneratorManager {
         return this.#isElementProp(elementName, 'cellLoad');
     }
 
+    /**
+     * @param {String} elementName 
+     * @returns {String | null}
+     */
+    doesNeedLoadCostPreview(elementName) {
+        const {pulseCell1, pulseCell2, pulseCell3} = this.#generatorElementNames;
+        const pulseCellIds = [pulseCell1, pulseCell2, pulseCell3];
+        const needsCostPreview = pulseCellIds.some(id => id === elementName);
+        return needsCostPreview ? this.getPulseCellData(elementName)?.loadCell?.type : null;
+    }
+
     // #endregion Get Proxy Save
 
     // #region Manage Proxy Save

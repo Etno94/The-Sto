@@ -239,6 +239,8 @@ function buildGeneratorElement(elementName) {
     generatorM.setElementBuilt(elementName);
     const domElement = UIControl.getGeneratorElementDOMElement(elementName);
     UIControl.removeCostPreview(domElement);
+    const loadCostPreviewType = generatorM.doesNeedLoadCostPreview(elementName);
+    if (loadCostPreviewType) showLoadCostPreview(loadCostPreviewType, domElement );
   }
 }
 
@@ -384,7 +386,14 @@ function setGeneratorElements(generatorName) {
 function renderGeneratorElements() {
   const elementNames = generatorM.getBuiltGeneratorElementNames();
   Asserts.stringArray(elementNames);
-  elementNames.forEach(name => genElementF.render(name));
+  elementNames.forEach(name => {
+    genElementF.render(name);
+    const loadCostPreviewType = generatorM.doesNeedLoadCostPreview(name);
+    if (loadCostPreviewType) {
+      const domElement = UIControl.getGeneratorElementDOMElement(name);
+      showLoadCostPreview(loadCostPreviewType, domElement);
+    }
+  });
 }
 
 /**
@@ -403,6 +412,20 @@ function setBuildProgress(name, buildProgressCallback, totalProgressCallback, ev
   const totalProgress = totalProgressCallback(name);
   const percentProgress = Utils.getPercent(totalProgress, currentProgress);
   EventBus.emit(eventToEmit, name, percentProgress);
+}
+
+/**
+ * @param {String} type 
+ * @param {HTMLElement} domElement
+ */
+function showLoadCostPreview(type, domElement) {
+  Asserts.string(type);
+  Asserts.htmlElement(domElement);
+
+  /** @type {PointSet} */
+  const loadCost = {[type]: 1};
+
+  UIControl.renderCostPreview(domElement, loadCost);
 }
 
 // #endregion Render
