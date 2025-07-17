@@ -10,7 +10,8 @@ export const LIFE_CYCLE_CLASSES = {
 
 /** @type {Status_Classes} */
 export const STATUS_CLASSES = {
-    onCd: ['on-cd']
+    onCd: ['on-cd'],
+    loaded: ['loaded']
 }
 
 /** @type {GeneratorStatus_Wrap} */

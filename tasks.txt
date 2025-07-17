@@ -1,7 +1,18 @@
 Activo:
 
 - (content / UI) implementar mecanica de Pulse Generator
-    - (logica) Programar mecanica.
+    - chequear pulse cells con loaded = true
+    - generar secuencia disponible (deben ir en orden)
+    - si al menos la primer pulse cell esta loaded, el generador se puede usar
+    - al usar, se descargan las pulse cells en estado loaded, desde la ultima a la primera, respetando disponibilidad
+    (si la 2da celula no esta loaded, la 3ra no se descargara por mas que esté en loaded)
+    - la descarga se actualiza en cada frame (cada 14ms) tomando la duracion de descarga desde Data
+        - en generator manager se va actualizando el attr de cellLoad
+        - tiene que verse reflejado en el feedback visual, UIController
+    - Mientras el generador esta activo, descargandose y generando puntos, tanto el generador como las celulas estan .disabled
+    (para evitar interaccion indeseada)
+    - Una vez que la ultima celula disponible en loaded es descargada, todas las celulas pasan a estar .enabled
+    - se puede dar feedback visual de que solo las celulas encadenadas seran usadas en los pulsos
 
 Tareas:
 

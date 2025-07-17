@@ -8,6 +8,7 @@
 /**
  * @typedef {Object} Status_Classes
  * @property {string[]} onCd
+ * @property {string[]} loaded
  */
 
 /**

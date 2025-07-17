@@ -503,6 +503,10 @@ class UIController {
 
         const domElement = this.getGeneratorElementDOMElement(elementName);
         UIHelper.setProperty(domElement, this.#cssVars.pulseCellLoad, `${newLoadPercent}%`);
+
+        if (newLoadPercent >= 100) {
+            UIHelper.addClass(domElement, DataManager.getStatusClasses().loaded)
+        }
     }
 
     // #endregion Generator Elements
