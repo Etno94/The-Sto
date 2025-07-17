@@ -710,6 +710,17 @@ class GeneratorManager {
     }
 
     /**
+     * @param {string} elementName 
+     * @returns {Boolean}
+     */
+    isElementLoaded(elementName) {
+        Asserts.string(elementName);
+        const cellLoad = this.#isElementProp(elementName, 'cellLoad');
+        const loadTotal = this.getPulseCellData(elementName)?.loadCell?.total;
+        return cellLoad >= loadTotal;
+    }
+
+    /**
      * @param {String} elementName 
      * @returns {String | null}
      */
@@ -925,7 +936,15 @@ class GeneratorManager {
         Asserts.number(elementLoad);
         const newLoad = elementLoad + load;
         this.setElement(elementName, 'cellLoad', newLoad);
-        console.log(`new load: ${newLoad}`);
+
+        if (this.isElementLoaded(elementName)) this.setElementLoaded(elementName);
+    }
+
+    /** @param {String} elementName */
+    setElementLoaded(elementName) {
+        Asserts.string(elementName);
+
+        this.setElement(elementName, 'loaded', true);
     }
 
     /** @returns {string[]} */

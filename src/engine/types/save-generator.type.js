@@ -30,4 +30,5 @@
  * @property {number} [currentBaseCD]
  * @property {number} [remainingCD]
  * @property {number} [cellLoad]
+ * @property {Boolean} [loaded]
  */
