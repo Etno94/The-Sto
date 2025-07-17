@@ -54,7 +54,6 @@ class UIRegistryService {
         Asserts.htmlElement(generatorWrapElement);
         const buttomElement = generatorWrapElement.querySelector(`button`);
         if (!buttomElement) return;
-        console.log(`${buttomElement.id} registered`);
     }
 
     /**

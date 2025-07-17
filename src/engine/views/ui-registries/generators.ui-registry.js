@@ -29,12 +29,10 @@ class GeneratorsUIRegistry {
     const categoryMap = genMap.get(category);
     if (categoryMap.has(itemId)) console.warn(`Overwriting element for ${generator} > ${category} > ${itemId}`);
     categoryMap.set(itemId, element);
-    console.log(`Generator registry - itemId: ${itemId}`);
 
     if (itemId.startsWith(this.dataGeneratorRegistry.itemPrefixes.pointChance)) {
       const key = `${generator}:${itemId}`;
       this._pointChances.set(key, element);
-      console.log(`Generator registry - key: ${key}`);
     }
   }
 
