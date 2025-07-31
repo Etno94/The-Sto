@@ -8,6 +8,8 @@ export const BUS_EVENTS = {
         onClick: 'generator: onclick',
         onCD: 'generator: on Cooldown',
         updateCD: 'generator: update Cooldown',
+        onDischarge: 'generator: on Discharge',
+        discharged: 'generator: discharged',
         ready: 'generator: ready to use',
         onUse: 'generator: used',
         elements: {

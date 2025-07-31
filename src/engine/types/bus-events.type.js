@@ -14,6 +14,8 @@
  * @property { string } onClick
  * @property { string } onCD
  * @property { string } updateCD
+ * @property { string } onDischarge
+ * @property { string } discharged
  * @property { string } ready
  * @property { string } onUse
  * @property { GeneratorElementsBusEvents } elements

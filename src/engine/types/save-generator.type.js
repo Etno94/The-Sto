@@ -7,6 +7,7 @@
  * @property {boolean} built
  * @property {number} timesUsed
  * @property {number} [remainingCD=0]
+ * @property {boolean} [discharging]
  * @property {number} currentMultiplier
  * @property {SaveGeneratorPoints[]} generatesPoints
  * @property {SaveGeneratorElement[]} [elements]

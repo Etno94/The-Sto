@@ -81,6 +81,7 @@ export const FRESH_SAVE = {
             built: false,
             timesUsed: 0,
             remainingCD: 0,
+            discharging: false,
             currentMultiplier: PULSE_GENERATOR.generates.baseMultiplier,
             generatesPoints: ToSavePoints(PULSE_GENERATOR.generates.points),
             elements: [

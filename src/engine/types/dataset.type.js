@@ -28,6 +28,7 @@
  * @typedef DataSetStatus
  * @property {string} remove
  * @property {string} cooldown
+ * @property {string} discharge
  */
 
 /**

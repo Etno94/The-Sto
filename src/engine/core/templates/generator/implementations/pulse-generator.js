@@ -15,8 +15,6 @@ export default class PulseGenerator extends BaseGenerator {
     if (!this.baseCooldown) return;
 
     EventBus.emit(Events.generator.onCD, this.generatorName, this.baseCooldown);
-  }
-
-  afterGenerate(generated) {
+    EventBus.emit(Events.generator.onDischarge, this.generatorName, this.baseCooldown);
   }
 }

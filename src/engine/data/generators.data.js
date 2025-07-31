@@ -132,12 +132,8 @@ export const PULSE_GENERATOR = {
             }
         ]
     },
-    consumes: {
-        [POINT_TYPES.point]: 2,
-        [POINT_TYPES.solid_point]: 2
-    },
     cooldown: {
-        baseCooldown: 2000,
+        baseCooldown: 3 * 1000,
         cooldownIncrement: (cooldown) => cooldown * 1.05
     },
     unlockRequires: {
@@ -152,7 +148,7 @@ export const PULSE_GENERATOR = {
         step: {
             [POINT_TYPES.solid_point]: 2
         },
-        totalSteps: 3
+        totalSteps: 1
     },
     elementsUnlock: [
         {name: GENERATOR_ELEMENT_NAMES.pulseCell1},
@@ -160,34 +156,34 @@ export const PULSE_GENERATOR = {
             name: GENERATOR_ELEMENT_NAMES.pulseCell2,
             unlockRequires: {
                 hint: {
-                    [POINT_TYPES.energy_point]: 3
+                    [POINT_TYPES.energy_point]: 1
                 },
                 build: {
-                    [POINT_TYPES.energy_point]: 6
+                    [POINT_TYPES.energy_point]: 1
                 }
             },
             buildRequires: {
                 step: {
                     [POINT_TYPES.energy_point]: 2
                 },
-                totalSteps: 10
+                totalSteps: 1
             }
         },
         {
             name: GENERATOR_ELEMENT_NAMES.pulseCell3,
             unlockRequires: {
                 hint: {
-                    [POINT_TYPES.energy_point]: 10
+                    [POINT_TYPES.energy_point]: 1
                 },
                 build: {
-                    [POINT_TYPES.energy_point]: 12
+                    [POINT_TYPES.energy_point]: 1
                 }
             },
             buildRequires: {
                 step: {
                     [POINT_TYPES.energy_point]: 4
                 },
-                totalSteps: 16
+                totalSteps: 1
             }
         },
     ]
@@ -239,21 +235,24 @@ export const GENERATOR_ELEMENTS_DATA = {
             loadCell: {
                 type: POINT_TYPES.point,
                 total: 50
-            }
+            },
+            unitDischargedPerSec: 25
         },
         {
             name: GENERATOR_ELEMENT_NAMES.pulseCell2,
             loadCell: {
                 type: POINT_TYPES.solid_point,
                 total: 30
-            }
+            },
+            unitDischargedPerSec: 10
         },
         {
             name: GENERATOR_ELEMENT_NAMES.pulseCell3,
             loadCell: {
                 type: POINT_TYPES.energy_point,
                 total: 10
-            }
+            },
+            unitDischargedPerSec: 2
         }
     ]
 }
