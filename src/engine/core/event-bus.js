@@ -41,7 +41,6 @@ class MainEventBus {
   emit(event, ...args) {
     Asserts.string(event);
     Asserts.notNullOrUndefined(this.#events[event]);
-    // if (!Validators.isNotNullNorUndefined(this.#events[event])) return;
 
     for (const listener of this.#events[event]) {
       listener(...args);

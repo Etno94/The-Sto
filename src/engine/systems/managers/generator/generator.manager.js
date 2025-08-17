@@ -15,8 +15,6 @@ class GeneratorManager {
     /** @type {string[]} */
     #orderedGenerators = [];
 
-    /** @type {boolean} */
-    // #needToCheckCooldowns = false;
     /** @type {DataGeneratorId} */
     #generatorIds;
     /** @type {GeneratorElementNamesData} */
@@ -87,7 +85,6 @@ class GeneratorManager {
                         generator.remainingCD = 0;
                         return;
                     }
-                    // this.#needToCheckCooldowns = true;
                 }
                 if (Array.isArray(generator.elements)) {
                     for (const element of generator.elements) {
@@ -98,7 +95,6 @@ class GeneratorManager {
                                 generator.remainingCD = 0;
                                 return;
                             }
-                            // this.#needToCheckCooldowns = true;
                         }
                     }
                 }
@@ -806,7 +802,6 @@ class GeneratorManager {
 
         if (!remainingCD || remainingCD < 0) remainingCD = 0;
         this.#setProp(generatorName, 'remainingCD', remainingCD);
-        // this.#needToCheckCooldowns = remainingCD > 0 || this.#needToCheckCooldowns;
         if (!remainingCD) EventBus.emit(Events.generator.ready, generatorName);
     }
     
@@ -817,7 +812,6 @@ class GeneratorManager {
     /** @param {boolean} value */
     set needToCheckCooldowns(value) {
         Asserts.boolean(value);
-        // this.#needToCheckCooldowns = value;
     }
 
     /** @param {string} generatorName */
@@ -927,7 +921,6 @@ class GeneratorManager {
 
         if (!remainingCD || remainingCD < 0) remainingCD = 0;
         this.setElement(elementName, 'remainingCD', remainingCD);
-        // this.#needToCheckCooldowns = remainingCD > 0 || this.#needToCheckCooldowns;
         if (!remainingCD) EventBus.emit(Events.generator.elements.cdCharges.ready, elementName);
     }
 

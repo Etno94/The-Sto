@@ -214,7 +214,6 @@ function buildGenerator(generatorName) {
     UIControl.removeCostPreview(generatorElement);
     UIControl.showGeneratorElementsOnBuild(generatorName);
     setGeneratorElements(generatorName);
-    // EventBus.emit(Events.generator.built, generatorName);
   }
 }
 
@@ -322,11 +321,9 @@ function setStoragePoints() {
  */
 function updateGeneratorsCooldown(interval = 0, initialSet = false) {
   Asserts.number(interval);
-  // if (!generatorM.needToCheckCooldowns) return;
 
   const generatorsOnCD = generatorM.getGeneratorsOnCooldownNames();
   if (!Validators.isNonEmptyArray(generatorsOnCD)) {
-    // generatorM.needToCheckCooldowns = false;
     return;
   }
 
@@ -345,11 +342,9 @@ function updateGeneratorsCooldown(interval = 0, initialSet = false) {
  */
 function updateElementsCooldown(interval = 0, initialSet = false) {
   Asserts.number(interval);
-  // if (!generatorM.needToCheckCooldowns) return;
 
   const elementsOnCD = generatorM.getElementsRemainingCd();
   if (!Validators.isNonEmptyArray(elementsOnCD)) {
-    // generatorM.needToCheckCooldowns = false;
     return;
   }
 
