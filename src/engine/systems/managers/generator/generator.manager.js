@@ -51,7 +51,7 @@ class GeneratorManager {
         EventBus.on(Events.generator.onCD, (generatorName, baseCooldown) => this.setGeneratorRemainingCD(generatorName, baseCooldown));
         EventBus.on(Events.generator.updateCD, (generatorName, remainingCD) => this.setGeneratorRemainingCD(generatorName, remainingCD));
         EventBus.on(Events.generator.onUse, (generatorName) => this.setGeneratorUses(generatorName));
-        EventBus.on(Events.generator.onDischarge, (generatorName) => this.setGeneratorUses(generatorName));
+        EventBus.on(Events.generator.onDischarge, (generatorName) => this.setGeneratorOnDischarge(generatorName));
 
         // Generators Elements
 
@@ -820,8 +820,10 @@ class GeneratorManager {
         // this.#needToCheckCooldowns = value;
     }
 
-    setGeneratorOnDischarge() {
-        
+    /** @param {string} generatorName */
+    setGeneratorOnDischarge(generatorName) {
+        Asserts.string(generatorName);
+        this.#setProp(generatorName, 'isDischarging', true);
     }
 
     /** @param {string} generatorName */
