@@ -358,12 +358,18 @@ function updateElementsCooldown(interval = 0, initialSet = false) {
   });
 }
 
-function checkPulseGeneratorCells() {
+/** 
+ * @param {number} [interval]
+ * @param {boolean} [initialSet]
+ */
+function checkPulseGeneratorCells(interval = 0, initialSet = false) {
   if (!generatorM.isBuilt(DataManager.getGeneratorIds().PULSE)) return;
 
   const loadedCells = generatorM.getLoadedPulseCells();
   const doesHaveLoadedCells = Validators.isNonEmptyArray(loadedCells);
-  UIControl.disableGenerator(DataManager.getGeneratorIds().PULSE, !doesHaveLoadedCells);
+  const isDischarging = generatorM.isDischarging(DataManager.getGeneratorIds().PULSE);
+
+  UIControl.disableGenerator(DataManager.getGeneratorIds().PULSE, !doesHaveLoadedCells || isDischarging);
 }
 
 function updateStorageUpgradeCostPreview() {
@@ -472,6 +478,7 @@ function initialRender() {
   checkUnlocks();
   updateGeneratorsCooldown(0, true);
   updateElementsCooldown(0, true);
+  checkPulseGeneratorCells(0, true);  
   setBuiltGeneratorStatus();
   renderGeneratorElements();
 }

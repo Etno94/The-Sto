@@ -648,6 +648,15 @@ class GeneratorManager {
     }
 
     /**
+     * @param {string} generatorName 
+     * @returns {boolean}
+     */
+    isDischarging(generatorName) {
+        Asserts.string(generatorName);
+        return this.#isProp(generatorName, 'discharging');
+    }
+
+    /**
      * @param {string} elementName 
      * @param {string} prop 
      */
