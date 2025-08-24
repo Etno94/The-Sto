@@ -362,12 +362,8 @@ function checkPulseGeneratorCells() {
   if (!generatorM.isBuilt(DataManager.getGeneratorIds().PULSE)) return;
 
   const loadedCells = generatorM.getLoadedPulseCells();
-  if (!Validators.isNonEmptyArray(loadedCells)) {
-    UIControl.disableGenerator(DataManager.getGeneratorIds().PULSE);
-    return;
-  }
-  UIControl.disableGenerator(DataManager.getGeneratorIds().PULSE, false);
-
+  const doesHaveLoadedCells = Validators.isNonEmptyArray(loadedCells);
+  UIControl.disableGenerator(DataManager.getGeneratorIds().PULSE, !doesHaveLoadedCells);
 }
 
 function updateStorageUpgradeCostPreview() {
