@@ -596,6 +596,11 @@ class GeneratorManager {
         return this.getBuiltPulseCells().find(cell => cell.name === cellName) || null;
     }
 
+    /** @returns {SaveGeneratorElement[]} */
+    getLoadedPulseCells() {
+        return this.getPulseCells().filter(charge => charge.hinted && charge.canBuild && charge.built && charge.loaded);
+    }
+
     // Unlock Flow
 
     /**

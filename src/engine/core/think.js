@@ -306,6 +306,7 @@ function renderGeneralUpdatedStatus(interval) {
   updateGeneratorsCooldown(interval);
   updateElementsCooldown(interval);
   updateStorageUpgradeCostPreview();
+  checkPulseGeneratorCells();
 }
 
 function setStoragePoints() {
@@ -355,6 +356,18 @@ function updateElementsCooldown(interval = 0, initialSet = false) {
     if (initialSet) EventBus.emit(Events.generator.elements.cdCharges.onCd, element.name, updatedRemainingCD);
     EventBus.emit(Events.generator.elements.cdCharges.updateCd, element.name, updatedRemainingCD, degs);
   });
+}
+
+function checkPulseGeneratorCells() {
+  if (!generatorM.isBuilt(DataManager.getGeneratorIds().PULSE)) return;
+
+  const loadedCells = generatorM.getLoadedPulseCells();
+  if (!Validators.isNonEmptyArray(loadedCells)) {
+    UIControl.disableGenerator(DataManager.getGeneratorIds().PULSE);
+    return;
+  }
+  UIControl.disableGenerator(DataManager.getGeneratorIds().PULSE, false);
+
 }
 
 function updateStorageUpgradeCostPreview() {

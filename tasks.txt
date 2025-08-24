@@ -1,5 +1,9 @@
 Activo:
 
+1) Necesito implementar la condicion para que Pulse Generator sea clickeable solo cuando hay, por lo menos, una celda cargada (isLoaded)
+Actualmente setea su estado a isDischarging al clickearse.
+Las Celdas pasan a estado isLoaded cuando estan cargadas al 100%
+
 - (content / UI) implementar mecanica de Pulse Generator
     - chequear pulse cells con loaded = true
     - generar secuencia disponible (deben ir en orden)
