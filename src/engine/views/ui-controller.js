@@ -90,6 +90,8 @@ class UIController {
         EventBus.on(Events.generator.onCD, (generatorName) => this.setOnCD(generatorName, this.#disableGeneratorFn));
         EventBus.on(Events.generator.updateCD, (generatorName, _, degs) => this.updateRemainingCD(generatorName, degs));
         EventBus.on(Events.generator.ready, (generatorName) => this.setOffCD(generatorName, this.#disableGeneratorFn, false));
+        EventBus.on(Events.generator.onDischarge, (generatorName) => this.disableGenerator(generatorName));
+        EventBus.on(Events.generator.discharged, (generatorName) => this.disableGenerator(generatorName, false));
 
         // Generator Elements
         EventBus.on(Events.generator.elements.statusItems.pointChance.updated,

@@ -835,6 +835,12 @@ class GeneratorManager {
     }
 
     /** @param {string} generatorName */
+    setGeneratorRemainingCellsCharge(generatorName) {
+        Asserts.string(generatorName);
+
+    }
+
+    /** @param {string} generatorName */
     setGeneratorUses(generatorName) {
         Asserts.string(generatorName);
         const generatorTimesUsed = this.getGeneratorTimesUsed(generatorName);
