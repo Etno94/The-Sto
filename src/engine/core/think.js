@@ -445,6 +445,7 @@ function showLoadCostPreview(type, domElement) {
 // SetUp
 
 function startGame() {
+
   const save = GameSave.load();
   if(save && typeof save === 'object') {
     Object.assign(Global.proxy, save);
@@ -486,3 +487,4 @@ function initialRender() {
 startGame();
 
 // #endregion SetUp
+
