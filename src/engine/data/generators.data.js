@@ -35,7 +35,7 @@ export const CLICK_GENERATOR = {
         points: [
             {
                 type: POINT_TYPES.point,
-                baseChance: 180,
+                baseChance: 80,
                 updateChanceOnSuccess: -0.2,
                 updateChanceOnFail: 1,
                 startingGuaranteedChanceTries: 3
@@ -148,7 +148,7 @@ export const PULSE_GENERATOR = {
         step: {
             [POINT_TYPES.solid_point]: 2
         },
-        totalSteps: 1
+        totalSteps: 3
     },
     elementsUnlock: [
         {name: GENERATOR_ELEMENT_NAMES.pulseCell1},
@@ -164,26 +164,26 @@ export const PULSE_GENERATOR = {
             },
             buildRequires: {
                 step: {
-                    [POINT_TYPES.energy_point]: 1 // 2
+                    [POINT_TYPES.energy_point]: 2
                 },
-                totalSteps: 1
+                totalSteps: 3
             }
         },
         {
             name: GENERATOR_ELEMENT_NAMES.pulseCell3,
             unlockRequires: {
                 hint: {
-                    [POINT_TYPES.energy_point]: 1
+                    [POINT_TYPES.energy_point]: 8
                 },
                 build: {
-                    [POINT_TYPES.energy_point]: 1
+                    [POINT_TYPES.energy_point]: 10
                 }
             },
             buildRequires: {
                 step: {
-                    [POINT_TYPES.energy_point]: 1 // 4
+                    [POINT_TYPES.energy_point]: 5
                 },
-                totalSteps: 1
+                totalSteps: 3
             }
         },
     ]
