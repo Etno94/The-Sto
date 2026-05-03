@@ -31,5 +31,11 @@
  * @property {number} [currentBaseCD]
  * @property {number} [remainingCD]
  * @property {number} [cellLoad]
- * @property {Boolean} [loaded]
+ * @property {CellStatus} [cellStatus]
+ * @property {number} [remainingLoad]
+ * @property {number} [untilNextPulse]
+ */
+
+/**
+ * @typedef {'loading' | 'loaded' | 'discharging'} CellStatus 
  */

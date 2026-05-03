@@ -92,7 +92,9 @@ export const FRESH_SAVE = {
                     built: true,
                     timesUsed: 0,
                     cellLoad: 0,
-                    loaded: false
+                    cellStatus: 'loading',
+                    remainingLoad: 0,
+                    untilNextPulse: 0
                 },
                 {
                     name: GENERATOR_ELEMENT_NAMES.pulseCell2,
@@ -102,7 +104,9 @@ export const FRESH_SAVE = {
                     built: false,
                     timesUsed: 0,
                     cellLoad: 0,
-                    loaded: false
+                    cellStatus: 'loading',
+                    remainingLoad: 0,
+                    untilNextPulse: 0
                 },
                 {
                     name: GENERATOR_ELEMENT_NAMES.pulseCell3,
@@ -112,7 +116,9 @@ export const FRESH_SAVE = {
                     built: false,
                     timesUsed: 0,
                     cellLoad: 0,
-                    loaded: false
+                    cellStatus: 'loading',
+                    remainingLoad: 0,
+                    untilNextPulse: 0
                 }
             ]
         },

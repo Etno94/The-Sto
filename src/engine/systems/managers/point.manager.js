@@ -66,19 +66,24 @@ class PointManager {
      */
     substractAllPointsByType(type, limit = 0) {
         Asserts.string(type);
+        Asserts.number(limit);
+
+        if (limit == 0) return 0;
 
         const points = Global.proxy.points;
-        if (!(type in points)) return;
+        if (!(type in points)) return 0;
 
-        let amount = points[type] ?? 0;
-        if (amount <= 0) return;
+        let currentAmount = points[type] ?? 0;
+        if (currentAmount <= 0) return 0;
 
-        if (!limit || limit < 0) limit = points[type];
-        if (amount > limit) amount = limit;
+        let amountToSubstract = currentAmount;
 
-        points[type] -= amount;
+        if (limit < 0) limit = currentAmount;
+        if (currentAmount > limit) amountToSubstract = limit;
 
-        return amount;
+        points[type] -= amountToSubstract;
+
+        return amountToSubstract;
     }
 
     // #endregion Manage

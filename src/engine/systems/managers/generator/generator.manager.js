@@ -50,6 +50,7 @@ class GeneratorManager {
         EventBus.on(Events.generator.updateCD, (generatorName, remainingCD) => this.setGeneratorRemainingCD(generatorName, remainingCD));
         EventBus.on(Events.generator.onUse, (generatorName) => this.setGeneratorUses(generatorName));
         EventBus.on(Events.generator.onDischarge, (generatorName) => this.setGeneratorOnDischarge(generatorName));
+        EventBus.on(Events.generator.discharged, (generatorName) => this.setGeneratorOnDischarge(generatorName, false));
 
         // Generators Elements
 
@@ -556,6 +557,14 @@ class GeneratorManager {
     }
 
     /** @returns {SaveGeneratorElement[]} */
+    getElementsRemainingLoad() {
+        return this.#getProxySaveGeneratorElementsByCriteria(
+            /** @param {SaveGeneratorElement} */
+            element => element.remainingLoad
+        )
+    }
+
+    /** @returns {SaveGeneratorElement[]} */
     getCDCharges() {
         const {cdCharge1, cdCharge2, cdCharge3} = this.#generatorElementNames;
         const cdChargesIds = [cdCharge1, cdCharge2, cdCharge3];
@@ -598,7 +607,7 @@ class GeneratorManager {
 
     /** @returns {SaveGeneratorElement[]} */
     getLoadedPulseCells() {
-        return this.getPulseCells().filter(charge => charge.hinted && charge.canBuild && charge.built && charge.loaded);
+        return this.getPulseCells().filter(charge => charge.hinted && charge.canBuild && charge.built && charge.cellStatus === 'loaded');
     }
 
     // Unlock Flow
@@ -653,7 +662,7 @@ class GeneratorManager {
      */
     isDischarging(generatorName) {
         Asserts.string(generatorName);
-        return this.#isProp(generatorName, 'discharging');
+        return this.#isProp(generatorName, 'isDischarging');
     }
 
     /**
@@ -829,9 +838,9 @@ class GeneratorManager {
     }
 
     /** @param {string} generatorName */
-    setGeneratorOnDischarge(generatorName) {
+    setGeneratorOnDischarge(generatorName, isDischarging = true) {
         Asserts.string(generatorName);
-        this.#setProp(generatorName, 'isDischarging', true);
+        this.#setProp(generatorName, 'isDischarging', isDischarging);
     }
 
     /** @param {string} generatorName */

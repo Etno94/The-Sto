@@ -12,6 +12,9 @@ export default class PulseCell extends BaseGeneratorElement {
     /** @type {SaveGeneratorElement} */
     #pulseCellSave;
 
+    /** @type {number} */
+    #remainingLoad = 0;
+
     constructor(elementName) {
         super(elementName);
         this.#pulseCellData = generatorM.getPulseCellData(elementName);
@@ -24,10 +27,13 @@ export default class PulseCell extends BaseGeneratorElement {
             return;
         }
 
-        const remainingLoad = this.getRemainingPointsToBeLoad();
-        if (remainingLoad <= 0) return;
+        const currentRemainingLoad = this.getRemainingPointsToBeLoad();
+        Asserts.number(currentRemainingLoad);
+        this.#remainingLoad = currentRemainingLoad;
 
-        this.loadCell(remainingLoad);
+        if (this.isPulseCellLoaded()) return;
+
+        this.loadCell();
         this.render();
     }
 
@@ -36,14 +42,17 @@ export default class PulseCell extends BaseGeneratorElement {
         return this.#pulseCellData.loadCell.total - this.#pulseCellSave.cellLoad
     }
 
-    /** @param {Number} amount */
-    loadCell(amount) {
-        Asserts.number(amount);
+    /** @returns {boolean} */
+    isPulseCellLoaded() {
+        return this.#pulseCellSave.cellStatus === 'loaded' && this.#remainingLoad <= 0;
+    }
 
-        const load = pointM.substractAllPointsByType(this.#pulseCellData.loadCell.type, amount);
-        if (!load || load <= 0) return;
+    loadCell() {
+        const loadToAdd = pointM.substractAllPointsByType(this.#pulseCellData.loadCell.type, this.#remainingLoad);
+        Asserts.number(loadToAdd);
+        if (!loadToAdd || loadToAdd <= 0) return;
 
-        generatorM.setElementLoad(this.elementName, load);
+        generatorM.setElementLoad(this.elementName, loadToAdd);
     }
 
     render() {

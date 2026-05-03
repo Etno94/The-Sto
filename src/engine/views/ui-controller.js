@@ -507,7 +507,9 @@ class UIController {
         UIHelper.setProperty(domElement, this.#cssVars.pulseCellLoad, `${newLoadPercent}%`);
 
         if (newLoadPercent >= 100) {
-            UIHelper.addClass(domElement, DataManager.getStatusClasses().loaded)
+            UIHelper.addClass(domElement, DataManager.getStatusClasses().loaded);
+        } else {
+            UIHelper.removeClass(domElement, DataManager.getStatusClasses().loaded);
         }
     }
 
