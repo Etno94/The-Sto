@@ -352,11 +352,21 @@ class GeneratorManager {
     }
 
     /**
-     * @param {string} name 
+     * @param {string} elementName 
      * @returns {{type: string, total: number}}
      */
-    whatCellLoad(name) {
-        return this.getPulseCellData(name).loadCell || null;
+    whatCellLoad(elementName) {
+        Asserts.string(elementName);
+        return this.getPulseCellData(elementName).loadCell || null;
+    }
+
+    /**
+     * @param {string} elementName 
+     * @returns {Number}
+     */
+    whatCellTotalLoad(elementName) {
+        Asserts.string(elementName);
+        return this.getPulseCellData(elementName).loadCell.total || null;
     }
 
     // #endregion Get Generator Data
@@ -729,6 +739,8 @@ class GeneratorManager {
         return this.#isElementProp(elementName, 'cellLoad');
     }
 
+    
+
     /**
      * @param {string} elementName 
      * @returns {Boolean}
@@ -957,23 +969,44 @@ class GeneratorManager {
      * @param {String} elementName 
      * @param {Number} load 
      */
-    setElementLoad(elementName, load) {
+    addElementCellLoad(elementName, load) {
         Asserts.string(elementName);
         Asserts.number(load);
 
         const elementLoad = this.whatElementCellLoad(elementName);
         Asserts.number(elementLoad);
-        const newLoad = elementLoad + load;
-        this.setElement(elementName, 'cellLoad', newLoad);
+        const newCurrentLoad = elementLoad + load;
 
-        if (this.isElementLoaded(elementName)) this.setElementLoaded(elementName);
+        const cellTotalLoad = this.whatCellTotalLoad(elementName);
+        Asserts.number(cellTotalLoad);
+
+        this.setElement(elementName, 'cellLoad', Math.min(newCurrentLoad, cellTotalLoad));
+
+        if (this.isElementLoaded(elementName)) this.setElementAsLoaded(elementName);
     }
 
     /** @param {String} elementName */
-    setElementLoaded(elementName) {
+    setElementAsLoading(elementName) {
         Asserts.string(elementName);
+        this.setElement(elementName, 'cellStatus', 'loading');
+    }
 
-        this.setElement(elementName, 'loaded', true);
+    /** @param {String} elementName */
+    setElementAsLoaded(elementName) {
+        Asserts.string(elementName);
+        this.setElement(elementName, 'cellStatus', 'loaded');
+    }
+
+    /** @param {String} elementName */
+    setElementAsDischarging(elementName) {
+        Asserts.string(elementName);
+        this.setElement(elementName, 'cellStatus', 'discharging');
+    }
+
+    /** @param {String} elementName */
+    setElementAsDischarged(elementName) {
+        Asserts.string(elementName);
+        this.setElement(elementName, 'cellStatus', 'discharged');
     }
 
     /** @returns {string[]} */

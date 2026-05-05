@@ -37,5 +37,5 @@
  */
 
 /**
- * @typedef {'loading' | 'loaded' | 'discharging'} CellStatus 
+ * @typedef {'loading' | 'loaded' | 'discharging' | 'discharged'} CellStatus 
  */

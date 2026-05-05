@@ -1,14 +1,12 @@
 Activo:
 
 1) Ver como chequear frame a frame el status update de cada cell cargada en estado Discharge.
-(necesitamos replicar el comportamiendo de cooldown pero para discharge)
 
 - (content / UI) implementar mecanica de Pulse Generator
     - chequear pulse cells con loaded = true
     - generar secuencia disponible (deben ir en orden)
     - si al menos la primer pulse cell esta loaded, el generador se puede usar
     - al usar, se descargan las pulse cells en estado loaded, desde la ultima a la primera, respetando disponibilidad
-    (si la 2da celula no esta loaded, la 3ra no se descargara por mas que esté en loaded)
     - la descarga se actualiza en cada frame (cada 14ms) tomando la duracion de descarga desde Data
         - en generator manager se va actualizando el attr de cellLoad
         - tiene que verse reflejado en el feedback visual, UIController
