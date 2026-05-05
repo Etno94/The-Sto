@@ -365,7 +365,8 @@ function updateElementsCooldown(interval = 0, initialSet = false) {
 function checkPulseGeneratorCells(interval = 0, initialSet = false) {
   if (!generatorM.isBuilt(DataManager.getGeneratorIds().PULSE)) return;
 
-  const loadedCells = generatorM.getLoadedPulseCells();
+  const loadedCells = generatorM.getPulseCellsByStatus('loaded');
+  const dischargingCells = generatorM.getPulseCellsByStatus('discharging');
   const doesHaveLoadedCells = Validators.isNonEmptyArray(loadedCells);
   const isDischarging = generatorM.isDischarging(DataManager.getGeneratorIds().PULSE);
 
