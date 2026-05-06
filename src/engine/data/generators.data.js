@@ -236,7 +236,7 @@ export const GENERATOR_ELEMENTS_DATA = {
                 type: POINT_TYPES.point,
                 total: 10
             },
-            millisecondsToDischarge: 1000,
+            dischargeInterval: 1000,
             pulseInterval: 1000
         },
         {
@@ -245,7 +245,7 @@ export const GENERATOR_ELEMENTS_DATA = {
                 type: POINT_TYPES.solid_point,
                 total: 5
             },
-            millisecondsToDischarge: 2000,
+            dischargeInterval: 2000,
             pulseInterval: 1000
         },
         {
@@ -254,7 +254,7 @@ export const GENERATOR_ELEMENTS_DATA = {
                 type: POINT_TYPES.energy_point,
                 total: 2
             },
-            millisecondsToDischarge: 3000,
+            dischargeInterval: 3000,
             pulseInterval: 1000
         }
     ]

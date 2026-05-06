@@ -104,6 +104,6 @@
  * @typedef {Object} GeneratorElementsPulseCellsData
  * @property {string} name
  * @property {{type: string, total: number}} loadCell
- * @property {Number} millisecondsToDischarge
+ * @property {Number} dischargeInterval
  * @property {Number} pulseInterval
  */

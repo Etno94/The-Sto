@@ -616,7 +616,7 @@ class GeneratorManager {
     }
 
     /** 
-     * @param {string} status 
+     * @param {CellStatus} status 
      * @returns {SaveGeneratorElement[]} */
     getPulseCellsByStatus(status) {
         Asserts.string(status);
@@ -855,13 +855,12 @@ class GeneratorManager {
     /** @param {string} generatorName */
     setGeneratorOnDischarge(generatorName, isDischarging = true) {
         Asserts.string(generatorName);
+        
         this.#setProp(generatorName, 'isDischarging', isDischarging);
-    }
 
-    /** @param {string} generatorName */
-    setGeneratorRemainingCellsCharge(generatorName) {
-        Asserts.string(generatorName);
-
+        this.getPulseCellsByStatus('loaded').forEach(
+            /**@type {SaveGeneratorElement} */
+            pulseCell => this.setCellElementStatus(pulseCell.name, 'discharging'))
     }
 
     /** @param {string} generatorName */
@@ -985,31 +984,16 @@ class GeneratorManager {
 
         this.setElement(elementName, 'cellLoad', Math.min(newCurrentLoad, cellTotalLoad));
 
-        if (this.isElementLoaded(elementName)) this.setElementAsLoaded(elementName);
+        if (this.isElementLoaded(elementName)) this.setCellElementStatus(elementName, 'loaded');
     }
 
-    /** @param {String} elementName */
-    setElementAsLoading(elementName) {
+    /**
+     * @param {CellStatus} status 
+     * @param {String} elementName */
+    setCellElementStatus(elementName, status) {
         Asserts.string(elementName);
-        this.setElement(elementName, 'cellStatus', 'loading');
-    }
-
-    /** @param {String} elementName */
-    setElementAsLoaded(elementName) {
-        Asserts.string(elementName);
-        this.setElement(elementName, 'cellStatus', 'loaded');
-    }
-
-    /** @param {String} elementName */
-    setElementAsDischarging(elementName) {
-        Asserts.string(elementName);
-        this.setElement(elementName, 'cellStatus', 'discharging');
-    }
-
-    /** @param {String} elementName */
-    setElementAsDischarged(elementName) {
-        Asserts.string(elementName);
-        this.setElement(elementName, 'cellStatus', 'discharged');
+        Asserts.string(status);
+        this.setElement(elementName, 'cellStatus', status);
     }
 
     /** @returns {string[]} */

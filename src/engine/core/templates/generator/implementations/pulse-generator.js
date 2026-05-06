@@ -8,11 +8,16 @@ export default class PulseGenerator extends BaseGenerator {
   constructor(generatorName) {
     super(generatorName);
     this.baseCooldown = generatorM.whatBaseCoolDown(generatorName);
+    this.isDischarging = generatorM.isDischarging(generatorName);
   }
 
   run() {
     const remainingCd = generatorM.getGeneratorRemainingCD(DataManager.getGeneratorIds().PULSE);
-    if (remainingCd) return;
+    const loadedCells = generatorM.getPulseCellsByStatus('loaded');
+
+    if (this.isDischarging || 
+        !loadedCells || !loadedCells.length || 
+        remainingCd) return;
     super.run();
   }
 
