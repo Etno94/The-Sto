@@ -1,4 +1,5 @@
 Activo:
+Current) Revisar generator manager linea 1009, no es exactamente el load que nos interesa.
 
 1) Ver como chequear frame a frame el status update de cada cell cargada en estado Discharge.
 

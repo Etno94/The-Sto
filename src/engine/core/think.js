@@ -306,7 +306,7 @@ function renderGeneralUpdatedStatus(interval) {
   updateGeneratorsCooldown(interval);
   updateElementsCooldown(interval);
   updateStorageUpgradeCostPreview();
-  checkPulseGeneratorCells();
+  checkPulseGeneratorCells(interval);
 }
 
 function setStoragePoints() {
@@ -365,12 +365,15 @@ function updateElementsCooldown(interval = 0, initialSet = false) {
 function checkPulseGeneratorCells(interval = 0, initialSet = false) {
   if (!generatorM.isBuilt(DataManager.getGeneratorIds().PULSE)) return;
 
-  const loadedCells = generatorM.getPulseCellsByStatus('loaded');
-  const dischargingCells = generatorM.getPulseCellsByStatus('discharging');
-  const doesHaveLoadedCells = Validators.isNonEmptyArray(loadedCells);
   const isDischarging = generatorM.isDischarging(DataManager.getGeneratorIds().PULSE);
+  const loadedCells = generatorM.getPulseCellsByStatus('loaded');
+  const hasLoadedCells = Validators.isNonEmptyArray(loadedCells);
+  UIControl.disableGenerator(DataManager.getGeneratorIds().PULSE, !hasLoadedCells || isDischarging);
 
-  UIControl.disableGenerator(DataManager.getGeneratorIds().PULSE, !doesHaveLoadedCells || isDischarging);
+  const dischargingCells = generatorM.getPulseCellsByStatus('discharging');
+  dischargingCells.forEach(cell => {
+    generatorM.substractElementCellLoad(cell.name, interval);
+  });
 }
 
 function updateStorageUpgradeCostPreview() {

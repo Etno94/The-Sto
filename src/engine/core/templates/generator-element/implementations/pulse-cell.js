@@ -27,7 +27,6 @@ export default class PulseCell extends BaseGeneratorElement {
             Errors.logError(`pulse cell data not found`);
             return;
         }
-
         if (this.isPulseCellLoaded()) return;
 
         this.loadCell();

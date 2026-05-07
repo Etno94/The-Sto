@@ -77,7 +77,7 @@ export const COOLDOWN_GENERATOR = {
         step: {
             [POINT_TYPES.point]: 1
         },
-        totalSteps: 6
+        totalSteps: 1
     },
     elementsUnlock: [
         {name: GENERATOR_ELEMENT_NAMES.cdCharge1},
@@ -141,14 +141,14 @@ export const PULSE_GENERATOR = {
             [POINT_TYPES.solid_point]: 1
         },
         build: {
-            [POINT_TYPES.solid_point]: 2
+            [POINT_TYPES.solid_point]: 1
         }
     },
     buildRequires: {
         step: {
-            [POINT_TYPES.solid_point]: 2
+            [POINT_TYPES.solid_point]: 1
         },
-        totalSteps: 3
+        totalSteps: 1
     },
     elementsUnlock: [
         {name: GENERATOR_ELEMENT_NAMES.pulseCell1},

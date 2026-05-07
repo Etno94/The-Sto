@@ -364,9 +364,18 @@ class GeneratorManager {
      * @param {string} elementName 
      * @returns {Number}
      */
-    whatCellTotalLoad(elementName) {
+    whatCellDischargeInterval(elementName) {
         Asserts.string(elementName);
-        return this.getPulseCellData(elementName).loadCell.total || null;
+        return this.getPulseCellData(elementName).dischargeInterval || null;
+    }
+
+    /**
+     * @param {string} elementName 
+     * @returns {Number}
+     */
+    whatCellPulseInterval(elementName) {
+        Asserts.string(elementName);
+        return this.getPulseCellData(elementName).pulseInterval || null;
     }
 
     // #endregion Get Generator Data
@@ -848,10 +857,21 @@ class GeneratorManager {
         Asserts.string(generatorName);
         
         this.#setProp(generatorName, 'isDischarging', isDischarging);
+        this.setGeneratorLoadedCellsOnDischarge();
+    }
+
+    setGeneratorLoadedCellsOnDischarge() {
 
         this.getPulseCellsByStatus('loaded').forEach(
             /**@type {SaveGeneratorElement} */
-            pulseCell => this.setCellElementStatus(pulseCell.name, 'discharging'))
+            pulseCell => {
+                this.setCellElementStatus(pulseCell.name, 'discharging');
+                const newRemainingLoad = this.whatCellDischargeInterval(pulseCell.name);
+                this.setElement(pulseCell.name, 'remainingLoad', newRemainingLoad);
+                const newPulseInterval = this.whatCellPulseInterval(pulseCell.name);
+                this.setElement(pulseCell.name, 'untilNextPulse', newPulseInterval);
+            }
+        );
     }
 
     /** @param {string} generatorName */
@@ -970,12 +990,29 @@ class GeneratorManager {
         Asserts.number(elementLoad);
         const newCurrentLoad = elementLoad + load;
 
-        const cellTotalLoad = this.whatCellTotalLoad(elementName);
+        const cellTotalLoad = this.whatCellLoad(elementName).total;
         Asserts.number(cellTotalLoad);
 
         this.setElement(elementName, 'cellLoad', Math.min(newCurrentLoad, cellTotalLoad));
 
         if (this.isElementLoaded(elementName)) this.setCellElementStatus(elementName, 'loaded');
+    }
+
+    /**
+     * @param {String} elementName 
+     * @param {Number} load 
+     */
+    substractElementCellLoad(elementName, load) {
+        Asserts.string(elementName);
+        Asserts.number(load);
+
+        const elementLoad = this.whatElementCellLoad(elementName);
+        Asserts.number(elementLoad);
+        const minCellLoad = 0;
+        const newCurrentLoad = Math.max(elementLoad - load, minCellLoad);
+
+        this.setElement(elementName, 'cellLoad', newCurrentLoad);
+        if (newCurrentLoad == 0) this.setCellElementStatus(elementName, 'discharged');
     }
 
     /**
