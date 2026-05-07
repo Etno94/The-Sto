@@ -842,15 +842,6 @@ class GeneratorManager {
         this.#setProp(generatorName, 'remainingCD', remainingCD);
         if (!remainingCD) EventBus.emit(Events.generator.ready, generatorName);
     }
-    
-    get needToCheckCooldowns() {
-        // return this.#needToCheckCooldowns;
-    }
-
-    /** @param {boolean} value */
-    set needToCheckCooldowns(value) {
-        Asserts.boolean(value);
-    }
 
     /** @param {string} generatorName */
     setGeneratorOnDischarge(generatorName, isDischarging = true) {
