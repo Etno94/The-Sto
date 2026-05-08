@@ -1030,6 +1030,11 @@ class GeneratorManager {
 
         this.setElement(elementName, 'remainingLoad', newRemainingLoad);
         console.log('new current load:' + newRemainingLoad);
+
+        const totalLoad = this.whatCellDischargeInterval(elementName);
+        const percentLoad = Utils.getPercent(totalLoad, newRemainingLoad);
+        EventBus.emit(Events.generator.elements.pulseCells.load, elementName, percentLoad);
+
         if (newRemainingLoad == 0) this.setCellElementStatus(elementName, 'discharged');
     }
 

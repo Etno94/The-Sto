@@ -7,6 +7,7 @@ import {generatorF, genElementF} from "./templates/templates.index.js";
 
 import PointCollection from "../systems/point.collection.js";
 import InputControl from "../systems/input.controller.js";
+import {JoystickSupport} from "./joystick.support.js";
 
 import {DataManager, pointM, generatorM, storageM} from "../systems/managers-index.js";
 
@@ -483,7 +484,7 @@ function startGame() {
   new GameLoop()
     .setGameUpdates([
       () => checkUnlocks(),
-      (interval) => renderGeneralUpdatedStatus(interval)
+      (interval) => renderGeneralUpdatedStatus(interval),
     ])
     .start();
 }
