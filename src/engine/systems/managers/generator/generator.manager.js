@@ -873,22 +873,33 @@ class GeneratorManager {
         Asserts.string(generatorName);
         
         this.#setProp(generatorName, 'isDischarging', isDischarging);
-        if (isDischarging) this.setGeneratorLoadedCellsOnDischarge();
+        this.setGeneratorLoadedCellsOnDischarge(isDischarging);
     }
 
-    setGeneratorLoadedCellsOnDischarge() {
+    /** @param {boolean} isDischarging */
+    setGeneratorLoadedCellsOnDischarge(isDischarging) {
 
-        this.getPulseCellsByStatus('loaded').forEach(
-            /**@type {SaveGeneratorElement} */
-            pulseCell => {
-                this.setCellElementStatus(pulseCell.name, 'discharging');
-                this.setElement(pulseCell.name, 'cellLoad', 0);
-                const newRemainingLoad = this.whatCellDischargeInterval(pulseCell.name);
-                this.setElement(pulseCell.name, 'remainingLoad', newRemainingLoad);
-                const newPulseInterval = this.whatCellPulseInterval(pulseCell.name);
-                this.setElement(pulseCell.name, 'untilNextPulse', newPulseInterval);
-            }
-        );
+        if (isDischarging) {
+            this.getPulseCellsByStatus('loaded').forEach(
+                /**@type {SaveGeneratorElement} */
+                pulseCell => {
+                    this.setCellElementStatus(pulseCell.name, 'discharging');
+                    this.setElement(pulseCell.name, 'cellLoad', 0);
+                    const newRemainingLoad = this.whatCellDischargeInterval(pulseCell.name);
+                    this.setElement(pulseCell.name, 'remainingLoad', newRemainingLoad);
+                    const newPulseInterval = this.whatCellPulseInterval(pulseCell.name);
+                    this.setElement(pulseCell.name, 'untilNextPulse', newPulseInterval);
+                }
+            );
+        } else {
+            this.getPulseCellsByStatus('discharged').forEach(
+                /**@type {SaveGeneratorElement} */
+                pulseCell => {
+                    this.setCellElementStatus(pulseCell.name, 'loading');
+                }
+            );
+        }
+        
     }
 
     /** @param {string} generatorName */
@@ -1019,7 +1030,7 @@ class GeneratorManager {
      * @param {String} elementName 
      * @param {Number} load 
      */
-    substractElementCellLoad(elementName, load) {
+    subtractElementCellLoad(elementName, load) {
         Asserts.string(elementName);
         Asserts.number(load);
 

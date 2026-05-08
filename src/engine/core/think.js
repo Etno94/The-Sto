@@ -7,7 +7,6 @@ import {generatorF, genElementF} from "./templates/templates.index.js";
 
 import PointCollection from "../systems/point.collection.js";
 import InputControl from "../systems/input.controller.js";
-import {JoystickSupport} from "./joystick.support.js";
 
 import {DataManager, pointM, generatorM, storageM} from "../systems/managers-index.js";
 
@@ -369,24 +368,30 @@ function checkPulseGeneratorCells(interval = 0, initialSet = false) {
 
   const isDischarging = generatorM.isDischarging(pulseGeneratorId);
 
+  // Get cell statuses
   const loadedCells = generatorM.getPulseCellsByStatus('loaded');
   const hasLoadedCells = Validators.isNonEmptyArray(loadedCells);
 
   const dischargingCells = generatorM.getPulseCellsByStatus('discharging');
-  const hasdischargingCells = Validators.isNonEmptyArray(dischargingCells);
+  const hasDischargingCells = Validators.isNonEmptyArray(dischargingCells);
 
   const dischargedCells = generatorM.getPulseCellsByStatus('discharged');
-  const amountbuiltPulseCells = generatorM.getBuiltPulseCells().length;
+  const builtPulseCellsCount = generatorM.getBuiltPulseCells().length;
 
-  const allBuiltCellsAreDischarged = dischargedCells.length === amountbuiltPulseCells;
-  if (allBuiltCellsAreDischarged) EventBus.emit(Events.generator.discharged, pulseGeneratorId);
+  // Check if all built cells are discharged
+  const allBuiltCellsAreDischarged = dischargedCells.length === builtPulseCellsCount;
+  if (allBuiltCellsAreDischarged) {
+    EventBus.emit(Events.generator.discharged, pulseGeneratorId);
+  }
 
-  const disableGeneratorIf = !hasLoadedCells || hasdischargingCells || isDischarging;
-  UIControl.disableGenerator(pulseGeneratorId, disableGeneratorIf);
+  // Disable generator if no loaded cells, has discharging cells, or is discharging
+  const shouldDisableGenerator = !hasLoadedCells || hasDischargingCells || isDischarging;
+  UIControl.disableGenerator(pulseGeneratorId, shouldDisableGenerator);
 
-  if (interval == 0) return;
+  // Update discharging cells if interval > 0
+  if (interval === 0) return;
   dischargingCells.forEach(cell => {
-    generatorM.substractElementCellLoad(cell.name, interval);
+    generatorM.subtractElementCellLoad(cell.name, interval);
   });
 }
 
