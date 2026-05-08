@@ -21,6 +21,8 @@ class GeneratorManager {
     #generatorElementNames;
     /** @type {GeneratorElementsData} */
     #generatorElementsData;
+    /** @type {Generator_PulseCells_Status_Strings} */
+    #pulseCellStatusStrings;
 
     /** @type {string[]} */
     #saveGeneratorElementNames = [];
@@ -42,6 +44,7 @@ class GeneratorManager {
         this.#generatorIds = DataManager.getGeneratorIds();
         this.#generatorElementNames = DataManager.getGeneratorElementNames();
         this.#generatorElementsData = DataManager.getGeneratorElementsData();
+        this.#pulseCellStatusStrings = DataManager.getPulseCellStatusStringsData();
     }
 
     #setBusEvents() {
@@ -880,10 +883,10 @@ class GeneratorManager {
     setGeneratorLoadedCellsOnDischarge(isDischarging) {
 
         if (isDischarging) {
-            this.getPulseCellsByStatus('loaded').forEach(
+            this.getPulseCellsByStatus(this.#pulseCellStatusStrings.LOADED).forEach(
                 /**@type {SaveGeneratorElement} */
                 pulseCell => {
-                    this.setCellElementStatus(pulseCell.name, 'discharging');
+                    this.setCellElementStatus(pulseCell.name, this.#pulseCellStatusStrings.DISCHARGING);
                     this.setElement(pulseCell.name, 'cellLoad', 0);
                     const newRemainingLoad = this.whatCellDischargeInterval(pulseCell.name);
                     this.setElement(pulseCell.name, 'remainingLoad', newRemainingLoad);
@@ -892,10 +895,10 @@ class GeneratorManager {
                 }
             );
         } else {
-            this.getPulseCellsByStatus('discharged').forEach(
+            this.getPulseCellsByStatus(this.#pulseCellStatusStrings.DISCHARGED).forEach(
                 /**@type {SaveGeneratorElement} */
                 pulseCell => {
-                    this.setCellElementStatus(pulseCell.name, 'loading');
+                    this.setCellElementStatus(pulseCell.name, this.#pulseCellStatusStrings.LOADING);
                 }
             );
         }
@@ -1023,7 +1026,7 @@ class GeneratorManager {
 
         this.setElement(elementName, 'cellLoad', Math.min(newCurrentLoad, cellTotalLoad));
 
-        if (this.isElementLoaded(elementName)) this.setCellElementStatus(elementName, 'loaded');
+        if (this.isElementLoaded(elementName)) this.setCellElementStatus(elementName, this.#pulseCellStatusStrings.LOADED);
     }
 
     /**
@@ -1046,7 +1049,7 @@ class GeneratorManager {
         const percentLoad = Utils.getPercent(totalLoad, newRemainingLoad);
         EventBus.emit(Events.generator.elements.pulseCells.load, elementName, percentLoad);
 
-        if (newRemainingLoad == 0) this.setCellElementStatus(elementName, 'discharged');
+        if (newRemainingLoad == 0) this.setCellElementStatus(elementName, this.#pulseCellStatusStrings.DISCHARGED);
     }
 
     /**

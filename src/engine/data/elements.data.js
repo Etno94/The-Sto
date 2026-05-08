@@ -42,3 +42,11 @@ export const GENERATOR_PULSE_CELLS_WRAP_CLASSES = {
 
 /** @type {string[]} */
 export const COST_PREVIEW_CLASSES = ['cost-preview'];
+
+/** @type {Generator_PulseCells_Status_Strings} */
+export const ELEMENT_PULSE_CELL_STATUSES = {
+    LOADING: 'loading',
+    LOADED: 'loaded',
+    DISCHARGING: 'discharging',
+    DISCHARGED: 'discharged'
+};

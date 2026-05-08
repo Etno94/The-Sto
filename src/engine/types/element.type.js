@@ -39,3 +39,11 @@
  * @property {string[]} layer_0
  * @property {string[]} layer_1
  */
+
+/**
+ * @typedef {Object} Generator_PulseCells_Status_Strings
+ * @property {string} LOADING
+ * @property {string} LOADED
+ * @property {string} DISCHARGING
+ * @property {string} DISCHARGED
+ */

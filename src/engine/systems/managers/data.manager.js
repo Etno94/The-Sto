@@ -229,6 +229,11 @@ export default class DataManager {
         return Utils.arrCopy(GENERATOR_ELEMENTS_DATA.pulseCells);
     }
 
+    /** @returns { Generator_PulseCells_Status_Strings } */
+    static getPulseCellStatusStringsData() {
+        return Utils.deepCopy(ELEMENT_PULSE_CELL_STATUSES);
+    }
+
     // #endregion Elements
 
     // #region UI Registries
