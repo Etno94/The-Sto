@@ -32,8 +32,8 @@
  * @property {number} [remainingCD]
  * @property {number} [cellLoad]
  * @property {CellStatus} [cellStatus]
- * @property {number} [remainingLoad]
- * @property {number} [untilNextPulse]
+ * @property {number} [remainingLoad] // Interval: timer left for this cell to be used, discharged.
+ * @property {number} [untilNextPulse] // Interval: timer left for this cell to generate a pulse.
  */
 
 /**

@@ -366,11 +366,23 @@ function checkPulseGeneratorCells(interval = 0, initialSet = false) {
   if (!generatorM.isBuilt(DataManager.getGeneratorIds().PULSE)) return;
 
   const isDischarging = generatorM.isDischarging(DataManager.getGeneratorIds().PULSE);
+
   const loadedCells = generatorM.getPulseCellsByStatus('loaded');
   const hasLoadedCells = Validators.isNonEmptyArray(loadedCells);
-  UIControl.disableGenerator(DataManager.getGeneratorIds().PULSE, !hasLoadedCells || isDischarging);
 
   const dischargingCells = generatorM.getPulseCellsByStatus('discharging');
+  const hasdischargingCells = Validators.isNonEmptyArray(dischargingCells);
+
+  const dischargedCells = generatorM.getPulseCellsByStatus('discharged');
+  const amountbuiltPulseCells = generatorM.getBuiltPulseCells().length;
+
+  const allBuiltCellsAreDischarged = dischargedCells.length === amountbuiltPulseCells;
+  if (allBuiltCellsAreDischarged) EventBus.emit(Events.generator.discharged);
+
+  const disableGeneratorIf = !hasLoadedCells || hasdischargingCells || isDischarging;
+  UIControl.disableGenerator(DataManager.getGeneratorIds().PULSE, disableGeneratorIf);
+
+  if (interval == 0) return;
   dischargingCells.forEach(cell => {
     generatorM.substractElementCellLoad(cell.name, interval);
   });

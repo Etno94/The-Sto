@@ -751,7 +751,23 @@ class GeneratorManager {
         return this.#isElementProp(elementName, 'cellLoad');
     }
 
-    
+    /**
+     * @param {string} elementName 
+     * @returns {Number}
+     */
+    whatElementCellRemainingLoad(elementName) {
+        Asserts.string(elementName);
+        return this.#isElementProp(elementName, 'remainingLoad');
+    }
+
+    /**
+     * @param {string} elementName 
+     * @returns {Number}
+     */
+    whatElementCellNextPulse(elementName) {
+        Asserts.string(elementName);
+        return this.#isElementProp(elementName, 'untilNextPulse');
+    }
 
     /**
      * @param {string} elementName 
@@ -857,7 +873,7 @@ class GeneratorManager {
         Asserts.string(generatorName);
         
         this.#setProp(generatorName, 'isDischarging', isDischarging);
-        this.setGeneratorLoadedCellsOnDischarge();
+        if (isDischarging) this.setGeneratorLoadedCellsOnDischarge();
     }
 
     setGeneratorLoadedCellsOnDischarge() {
@@ -866,6 +882,7 @@ class GeneratorManager {
             /**@type {SaveGeneratorElement} */
             pulseCell => {
                 this.setCellElementStatus(pulseCell.name, 'discharging');
+                this.setElement(pulseCell.name, 'cellLoad', 0);
                 const newRemainingLoad = this.whatCellDischargeInterval(pulseCell.name);
                 this.setElement(pulseCell.name, 'remainingLoad', newRemainingLoad);
                 const newPulseInterval = this.whatCellPulseInterval(pulseCell.name);
@@ -1006,13 +1023,14 @@ class GeneratorManager {
         Asserts.string(elementName);
         Asserts.number(load);
 
-        const elementLoad = this.whatElementCellLoad(elementName);
-        Asserts.number(elementLoad);
-        const minCellLoad = 0;
-        const newCurrentLoad = Math.max(elementLoad - load, minCellLoad);
+        const elementRemainingLoad = this.whatElementCellRemainingLoad(elementName);
+        Asserts.number(elementRemainingLoad);
+        const minCellRemainingLoad = 0;
+        const newRemainingLoad = Math.max(elementRemainingLoad - load, minCellRemainingLoad);
 
-        this.setElement(elementName, 'cellLoad', newCurrentLoad);
-        if (newCurrentLoad == 0) this.setCellElementStatus(elementName, 'discharged');
+        this.setElement(elementName, 'remainingLoad', newRemainingLoad);
+        console.log('new current load:' + newRemainingLoad);
+        if (newRemainingLoad == 0) this.setCellElementStatus(elementName, 'discharged');
     }
 
     /**
