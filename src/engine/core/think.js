@@ -363,9 +363,10 @@ function updateElementsCooldown(interval = 0, initialSet = false) {
  * @param {boolean} [initialSet]
  */
 function checkPulseGeneratorCells(interval = 0, initialSet = false) {
-  if (!generatorM.isBuilt(DataManager.getGeneratorIds().PULSE)) return;
+  const pulseGeneratorId = DataManager.getGeneratorIds().PULSE;
+  if (!generatorM.isBuilt(pulseGeneratorId)) return;
 
-  const isDischarging = generatorM.isDischarging(DataManager.getGeneratorIds().PULSE);
+  const isDischarging = generatorM.isDischarging(pulseGeneratorId);
 
   const loadedCells = generatorM.getPulseCellsByStatus('loaded');
   const hasLoadedCells = Validators.isNonEmptyArray(loadedCells);
@@ -377,10 +378,10 @@ function checkPulseGeneratorCells(interval = 0, initialSet = false) {
   const amountbuiltPulseCells = generatorM.getBuiltPulseCells().length;
 
   const allBuiltCellsAreDischarged = dischargedCells.length === amountbuiltPulseCells;
-  if (allBuiltCellsAreDischarged) EventBus.emit(Events.generator.discharged);
+  if (allBuiltCellsAreDischarged) EventBus.emit(Events.generator.discharged, pulseGeneratorId);
 
   const disableGeneratorIf = !hasLoadedCells || hasdischargingCells || isDischarging;
-  UIControl.disableGenerator(DataManager.getGeneratorIds().PULSE, disableGeneratorIf);
+  UIControl.disableGenerator(pulseGeneratorId, disableGeneratorIf);
 
   if (interval == 0) return;
   dischargingCells.forEach(cell => {
