@@ -14,6 +14,9 @@ import { UIControl } from "../views/ui-controller.js";
 
 import {Asserts, Utils, Validators} from "../utils/utils.index.js";
 
+/** @type {Generator_PulseCells_Status_Strings} */
+pulseCellStatusStrings = DataManager.getPulseCellStatusStringsData();
+
 // #region Unlocks
 
 function checkUnlocks() {
@@ -369,13 +372,13 @@ function checkPulseGeneratorCells(interval = 0, initialSet = false) {
   const isDischarging = generatorM.isDischarging(pulseGeneratorId);
 
   // Get cell statuses
-  const loadedCells = generatorM.getPulseCellsByStatus('loaded');
+  const loadedCells = generatorM.getPulseCellsByStatus(this.pulseCellStatusStrings.LOADED);
   const hasLoadedCells = Validators.isNonEmptyArray(loadedCells);
 
-  const dischargingCells = generatorM.getPulseCellsByStatus('discharging');
+  const dischargingCells = generatorM.getPulseCellsByStatus(this.pulseCellStatusStrings.DISCHARGING);
   const hasDischargingCells = Validators.isNonEmptyArray(dischargingCells);
 
-  const dischargedCells = generatorM.getPulseCellsByStatus('discharged');
+  const dischargedCells = generatorM.getPulseCellsByStatus(this.pulseCellStatusStrings.DISCHARGED);
   const builtPulseCellsCount = generatorM.getBuiltPulseCells().length;
 
   // Check if all built cells are discharged
