@@ -56,6 +56,7 @@
  * @property { string } build
  * @property { string } built
  * @property { string } load
+ * @property { string } pulse
  */
 
 // Points

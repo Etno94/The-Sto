@@ -31,7 +31,8 @@ export const BUS_EVENTS = {
             pulseCells: {
                 build: 'generator: pulse cell build',
                 built: 'generator: pulse cell built',
-                load: 'generator: pulse cell load'
+                load: 'generator: pulse cell load',
+                pulse: 'generator: pulse cell pulse'
             }
         },
     },

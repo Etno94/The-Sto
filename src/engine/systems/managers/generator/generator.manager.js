@@ -65,6 +65,10 @@ class GeneratorManager {
         EventBus.on(Events.generator.elements.cdCharges.onCd, (elementName, baseCooldown) => this.setElementRemainingCd(elementName, baseCooldown));
         EventBus.on(Events.generator.elements.cdCharges.updateCd, (elementName, remainingCD) => this.setElementRemainingCd(elementName, remainingCD));
 
+        // Pulse Cells
+        EventBus.on(Events.generator.elements.pulseCells.pulse, (elementName) => this.pulseCellsOnPulse(elementName));
+        
+
         EventBus.on(Events.generator.elements.onUse, (elementName) => this.setElementUses(elementName));
     }
 
@@ -1060,7 +1064,14 @@ class GeneratorManager {
         EventBus.emit(Events.generator.elements.pulseCells.load, elementName, percentLoad);
 
         if (newRemainingLoad == 0) this.setCellElementStatus(elementName, this.#pulseCellStatusStrings.DISCHARGED);
-        if (newNextPulse == 0) EventBus.emit(Eve)
+        if (newNextPulse == 0) EventBus.emit(BusEvents.generator.elements.pulseCells.pulse, elementName);
+    }
+
+    /** 
+     * @param {String} elementName */
+    pulseCellsOnPulse(elementName) {
+        Asserts.string(elementName);
+
     }
 
     /**
