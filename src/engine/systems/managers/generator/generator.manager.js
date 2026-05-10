@@ -1064,7 +1064,9 @@ class GeneratorManager {
         EventBus.emit(Events.generator.elements.pulseCells.load, elementName, percentLoad);
 
         if (newRemainingLoad == 0) this.setCellElementStatus(elementName, this.#pulseCellStatusStrings.DISCHARGED);
-        if (newNextPulse == 0) EventBus.emit(BusEvents.generator.elements.pulseCells.pulse, elementName);
+        if (newNextPulse == 0) {
+            EventBus.emit(BusEvents.generator.elements.pulseCells.pulse, elementName);
+        }
     }
 
     /** 
