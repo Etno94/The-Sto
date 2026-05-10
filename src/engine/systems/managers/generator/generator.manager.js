@@ -66,7 +66,6 @@ class GeneratorManager {
         EventBus.on(Events.generator.elements.cdCharges.updateCd, (elementName, remainingCD) => this.setElementRemainingCd(elementName, remainingCD));
 
         // Pulse Cells
-        EventBus.on(Events.generator.elements.pulseCells.pulse, (elementName) => this.pulseCellsOnPulse(elementName));
         
 
         EventBus.on(Events.generator.elements.onUse, (elementName) => this.setElementUses(elementName));
@@ -1035,18 +1034,18 @@ class GeneratorManager {
 
     /**
      * @param {String} elementName 
-     * @param {Number} load 
+     * @param {Number} interval 
      */
-    subtractElementCellLoad(elementName, load) {
+    updateElementCellInterval(elementName, interval) {
         Asserts.string(elementName);
-        Asserts.number(load);
+        Asserts.number(interval);
 
         const minInterval = 0;
 
         // Remaining Load
         const elementRemainingLoad = this.whatElementCellRemainingLoad(elementName);
         Asserts.number(elementRemainingLoad);
-        const newRemainingLoad = Math.max(elementRemainingLoad - load, minInterval);
+        const newRemainingLoad = Math.max(elementRemainingLoad - interval, minInterval);
 
         this.setElement(elementName, 'remainingLoad', newRemainingLoad);
         console.log('new current load:' + newRemainingLoad);
@@ -1054,7 +1053,7 @@ class GeneratorManager {
         // Next Pulse
         const elementNextPulse = this.whatElementCellNextPulse(elementName);
         Asserts.number(elementNextPulse);
-        const newNextPulse = Math.max(elementNextPulse - load, minInterval);
+        const newNextPulse = Math.max(elementNextPulse - interval, minInterval);
 
         this.setElement(elementName, 'untilNextPulse', newNextPulse);
         console.log('new next pulse:' + newNextPulse);
@@ -1067,13 +1066,6 @@ class GeneratorManager {
         if (newNextPulse == 0) {
             EventBus.emit(BusEvents.generator.elements.pulseCells.pulse, elementName);
         }
-    }
-
-    /** 
-     * @param {String} elementName */
-    pulseCellsOnPulse(elementName) {
-        Asserts.string(elementName);
-
     }
 
     /**

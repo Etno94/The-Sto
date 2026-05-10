@@ -396,7 +396,7 @@ function checkPulseGeneratorCells(interval = 0, initialSet = false) {
   // Update discharging cells if interval > 0
   if (interval === 0) return;
   dischargingCells.forEach(cell => {
-    generatorM.subtractElementCellLoad(cell.name, interval);
+    generatorM.updateElementCellInterval(cell.name, interval);
   });
 }
 
