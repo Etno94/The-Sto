@@ -128,7 +128,8 @@ export const PULSE_GENERATOR = {
         points: [
             {
                 type: POINT_TYPES.energy_point,
-                baseChance: 100
+                baseChance: 65,
+                updateChanceOnFail: 50,
             }
         ]
     },

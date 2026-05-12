@@ -1050,6 +1050,12 @@ class GeneratorManager {
         this.setElement(elementName, 'remainingLoad', newRemainingLoad);
         console.log('new current load:' + newRemainingLoad);
 
+        const totalLoad = this.whatCellDischargeInterval(elementName);
+        const percentLoad = Utils.getPercent(totalLoad, newRemainingLoad);
+        EventBus.emit(Events.generator.elements.pulseCells.load, elementName, percentLoad);
+
+        if (newRemainingLoad == 0) this.setCellElementStatus(elementName, this.#pulseCellStatusStrings.DISCHARGED);
+
         // Next Pulse
         const elementNextPulse = this.whatElementCellNextPulse(elementName);
         Asserts.number(elementNextPulse);
@@ -1058,13 +1064,8 @@ class GeneratorManager {
         this.setElement(elementName, 'untilNextPulse', newNextPulse);
         console.log('new next pulse:' + newNextPulse);
 
-        const totalLoad = this.whatCellDischargeInterval(elementName);
-        const percentLoad = Utils.getPercent(totalLoad, newRemainingLoad);
-        EventBus.emit(Events.generator.elements.pulseCells.load, elementName, percentLoad);
-
-        if (newRemainingLoad == 0) this.setCellElementStatus(elementName, this.#pulseCellStatusStrings.DISCHARGED);
         if (newNextPulse == 0) {
-            EventBus.emit(BusEvents.generator.elements.pulseCells.pulse, elementName);
+            EventBus.emit(Events.generator.elements.pulseCells.pulse, elementName);
         }
     }
 

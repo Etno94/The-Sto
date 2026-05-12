@@ -18,7 +18,8 @@ export default class PulseGenerator extends BaseGenerator {
     if (this.isDischarging || 
         !loadedCells || !loadedCells.length || 
         remainingCd) return;
-    super.run();
+
+    this.emitStatus();
   }
 
   emitStatus() {
@@ -28,4 +29,5 @@ export default class PulseGenerator extends BaseGenerator {
     EventBus.emit(Events.generator.onCD, this.generatorName, this.baseCooldown);
     EventBus.emit(Events.generator.onDischarge, this.generatorName, this.baseCooldown);
   }
+
 }

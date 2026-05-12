@@ -109,6 +109,6 @@ export default class BaseGenerator {
   /** @param {PointCollection} generated */
   afterGenerate(generated) {
     Asserts.object(generated);
-    // Hook for subclasses like CooldownGenerator, PulseGenerator
   }
+
 }

@@ -283,6 +283,14 @@ function generatorElementOnClick(elementName) {
   }
 }
 
+/** @param {string} */
+function generatorElementOnTrigger(elementName) {
+  Asserts.string(elementName);
+  if (!generatorM.isElementBuilt(elementName)) return;
+
+  genElementF.trigger(elementName);
+}
+
 // #endregion Generator Actions
 
 // #region Storage Upgrade
@@ -500,7 +508,8 @@ function startGame() {
 }
 
 function registerBusEvents() {
-  EventBus.on(Events.storageUpgrade.onClick, () => upgradeMaxStorage())
+  EventBus.on(Events.storageUpgrade.onClick, () => upgradeMaxStorage());
+  EventBus.on(Events.generator.elements.pulseCells.pulse, (elementName) => generatorElementOnTrigger(elementName));
 }
 
 function initialRender() {

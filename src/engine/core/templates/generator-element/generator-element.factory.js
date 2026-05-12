@@ -29,11 +29,23 @@ class GeneratorElementFactory {
         new elementClass(elementName).run();
     }
 
+    /** @param {string} elementName */
     render(elementName) {
         /** @type {BaseGeneratorElement} */
         const elementClass = this.#elementRegistry[elementName];
         if (!elementClass) return;
         new elementClass(elementName).render();
+    }
+
+    /** 
+     * @param {string} elementName 
+     * @param  {...any} args - the arguments needed for the specific generator element functionality
+    */
+    trigger(elementName, ...args) {
+        /** @type {BaseGeneratorElement} */
+        const elementClass = this.#elementRegistry[elementName];
+        if (!elementClass) return;
+        new elementClass(elementName).trigger(...args);
     }
 }
 export const genElementF = new GeneratorElementFactory();

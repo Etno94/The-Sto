@@ -13,7 +13,12 @@ export default class BaseGeneratorElement {
         this.elementName = elementName;
     }
 
-    run() {}
+    /** @param {...any} args */
+    run(...args) {}
 
-    render() {}
+    /** @param {...any} args */
+    render(...args) {}
+
+    /** @param {...any} args */
+    trigger(...args) {}
 }
