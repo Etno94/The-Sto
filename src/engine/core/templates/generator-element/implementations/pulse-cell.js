@@ -11,6 +11,8 @@ export default class PulseCell extends BaseGeneratorElement {
 
     /** @type {SaveGeneratorElement} */
     #pulseCellSave;
+    /** @type {SaveGeneratorPoints[]} */
+    pointsToGenerate;
 
     /** @type {number} */
     #remainingLoad = 0;
