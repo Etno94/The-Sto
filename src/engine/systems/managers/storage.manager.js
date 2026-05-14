@@ -52,7 +52,7 @@ class StorageManager {
      * @param { Number } consumeTotal
      * @returns {Number}
      */
-    storageSpaceLeft(currentTotal, consumeTotal) {
+    storageSpaceLeft(currentTotal, consumeTotal = 0) {
         Asserts.number(currentTotal);
         Asserts.number(consumeTotal);
         return this.#currentMaxStorage - currentTotal + consumeTotal;

@@ -1,7 +1,7 @@
 import BaseGeneratorElement from "../generator-element.template.js";
 
 import { EventBus, Events } from "../../../event-bus.js";
-import { pointM, generatorM } from "../../../../systems/managers-index.js";
+import { pointM, generatorM, DataManager } from "../../../../systems/managers-index.js";
 import {Asserts, Errors, Utils} from "../../../../utils/utils.index.js";
 
 export default class PulseCell extends BaseGeneratorElement {
@@ -65,7 +65,7 @@ export default class PulseCell extends BaseGeneratorElement {
     }
 
     emitPulse() {
-        console.log('pulse emitted');
+        EventBus.emit(Events.generator.onTrigger, DataManager.getGeneratorIds().PULSE);
     }
 
 }

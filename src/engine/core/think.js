@@ -284,6 +284,14 @@ function generatorElementOnClick(elementName) {
 }
 
 /** @param {string} */
+function generatorOnTrigger(generatorName) {
+  Asserts.string(generatorName);
+  if (!generatorM.isBuilt(generatorName)) return;
+
+  generatorF.trigger(generatorName);
+}
+
+/** @param {string} */
 function generatorElementOnTrigger(elementName) {
   Asserts.string(elementName);
   if (!generatorM.isElementBuilt(elementName)) return;
@@ -510,6 +518,7 @@ function startGame() {
 function registerBusEvents() {
   EventBus.on(Events.storageUpgrade.onClick, () => upgradeMaxStorage());
   EventBus.on(Events.generator.elements.pulseCells.pulse, (elementName) => generatorElementOnTrigger(elementName));
+  EventBus.on(Events.generator.onTrigger, (generatorName) => generatorOnTrigger(generatorName));
 }
 
 function initialRender() {

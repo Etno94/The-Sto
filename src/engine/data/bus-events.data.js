@@ -12,6 +12,7 @@ export const BUS_EVENTS = {
         discharged: 'generator: discharged',
         ready: 'generator: ready to use',
         onUse: 'generator: used',
+        onTrigger: 'generator: on trigger',
         elements: {
             onUse: 'generator: element on use',
             statusItems: {

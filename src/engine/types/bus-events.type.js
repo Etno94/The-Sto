@@ -18,6 +18,7 @@
  * @property { string } discharged
  * @property { string } ready
  * @property { string } onUse
+ * @property { string } onTrigger
  * @property { GeneratorElementsBusEvents } elements
  */
 
