@@ -34,11 +34,7 @@ export default class BaseGenerator {
     if (!this.canConsume() || !this.canGenerate()) return;
 
     this.consume();
-    const generatedPoints = this.rollGeneration();
-
-    this.applyGenerated(generatedPoints);
-    this.emitStatus(generatedPoints);
-    this.afterGenerate(generatedPoints);
+    this.manageGeneratePoints();
   }
 
   /** @returns {Boolean} */
@@ -78,6 +74,14 @@ export default class BaseGenerator {
       EventBus.emit(Events.points.substract, this.consumeCollection.collection);
   }
 
+  manageGeneratePoints() {
+    const generatedPoints = this.rollGeneration();
+
+    this.applyGenerated(generatedPoints);
+    this.emitStatus(generatedPoints);
+    this.afterGenerate(generatedPoints);
+  }
+
   /** @returns {PointCollection} */
   rollGeneration() {
     let spaceLeft = storageM.storageSpaceLeft(pointM.getCurrentTotalPoints(), this.consumeCollection.total);
@@ -109,6 +113,10 @@ export default class BaseGenerator {
   /** @param {PointCollection} generated */
   afterGenerate(generated) {
     Asserts.object(generated);
+  }
+
+  trigger() {
+
   }
 
 }

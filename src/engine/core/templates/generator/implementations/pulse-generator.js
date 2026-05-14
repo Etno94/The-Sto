@@ -30,4 +30,8 @@ export default class PulseGenerator extends BaseGenerator {
     EventBus.emit(Events.generator.onDischarge, this.generatorName, this.baseCooldown);
   }
 
+  trigger() {
+    
+  }
+
 }

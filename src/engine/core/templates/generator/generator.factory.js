@@ -20,12 +20,24 @@ class GeneratorFactory {
         }
     }
 
+    #getGeneratorClass(generatorName) {
+        const GeneratorClass = this.#generatorRegistry[generatorName];
+        if (!GeneratorClass) Errors.throwError(`Wrong generator name: ${generatorName}`);
+        return GeneratorClass;
+    }
+
     /** @param {string} generatorName */
     run(generatorName) {
         /** @type {BaseGenerator} */
-        const GeneratorClass = this.#generatorRegistry[generatorName];
-        if (!GeneratorClass) Errors.throwError(`Wrong generator name: ${generatorName}`);
+        const GeneratorClass = this.#getGeneratorClass(generatorName);
         new GeneratorClass(generatorName).run();
+    }
+
+    /** @param {string} generatorName */
+    trigger(generatorName) {
+        /** @type {BaseGenerator} */
+        const GeneratorClass = this.#getGeneratorClass(generatorName);
+        new GeneratorClass(generatorName).trigger();
     }
 }
 
