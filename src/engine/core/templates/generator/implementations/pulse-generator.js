@@ -37,6 +37,18 @@ export default class PulseGenerator extends BaseGenerator {
   generatePointsOnPulse() {
     const generatedPoints = super.rollGeneration();
     super.applyGenerated(generatedPoints);
+    this.afterGenerate(generatedPoints);
+  }
+
+  /** @param {PointCollection} generated */
+  afterGenerate(generated) {
+    super.afterGenerate(generated);
+    
+    EventBus.emit(
+      Events.generator.elements.statusItems.pointChance.onUpdate,
+      this.generatorName,
+      generated.collection
+    );
   }
 
 }
