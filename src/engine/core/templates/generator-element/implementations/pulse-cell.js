@@ -67,6 +67,7 @@ export default class PulseCell extends BaseGeneratorElement {
     }
 
     emitPulse() {
+        console.log('Emitting pulse from', this.elementName);
         EventBus.emit(Events.generator.onTrigger, DataManager.getGeneratorIds().PULSE);
     }
 

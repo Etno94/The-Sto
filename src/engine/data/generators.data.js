@@ -129,7 +129,7 @@ export const PULSE_GENERATOR = {
             {
                 type: POINT_TYPES.energy_point,
                 baseChance: 65,
-                updateChanceOnFail: 50,
+                updateChanceOnFail: 80,
             }
         ]
     },
@@ -165,26 +165,26 @@ export const PULSE_GENERATOR = {
             },
             buildRequires: {
                 step: {
-                    [POINT_TYPES.energy_point]: 2
+                    [POINT_TYPES.energy_point]: 1
                 },
-                totalSteps: 3
+                totalSteps: 1
             }
         },
         {
             name: GENERATOR_ELEMENT_NAMES.pulseCell3,
             unlockRequires: {
                 hint: {
-                    [POINT_TYPES.energy_point]: 8
+                    [POINT_TYPES.energy_point]: 1
                 },
                 build: {
-                    [POINT_TYPES.energy_point]: 10
+                    [POINT_TYPES.energy_point]: 1
                 }
             },
             buildRequires: {
                 step: {
-                    [POINT_TYPES.energy_point]: 5
+                    [POINT_TYPES.energy_point]: 1
                 },
-                totalSteps: 3
+                totalSteps: 1
             }
         },
     ]
@@ -235,7 +235,7 @@ export const GENERATOR_ELEMENTS_DATA = {
             name: GENERATOR_ELEMENT_NAMES.pulseCell1,
             loadCell: {
                 type: POINT_TYPES.point,
-                total: 10
+                total: 1
             },
             dischargeInterval: 1000,
             pulseInterval: 1000
@@ -244,7 +244,7 @@ export const GENERATOR_ELEMENTS_DATA = {
             name: GENERATOR_ELEMENT_NAMES.pulseCell2,
             loadCell: {
                 type: POINT_TYPES.solid_point,
-                total: 5
+                total: 1
             },
             dischargeInterval: 2000,
             pulseInterval: 1000

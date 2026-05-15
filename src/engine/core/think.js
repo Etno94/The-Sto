@@ -396,12 +396,8 @@ function checkPulseGeneratorCells(interval = 0, initialSet = false) {
   const dischargingCells = generatorM.getPulseCellsByStatus(pulseCellStatusStrings.DISCHARGING);
   const hasDischargingCells = Validators.isNonEmptyArray(dischargingCells);
 
-  const dischargedCells = generatorM.getPulseCellsByStatus(pulseCellStatusStrings.DISCHARGED);
-  const builtPulseCellsCount = generatorM.getBuiltPulseCells().length;
-
-  // Check if all built cells are discharged
-  const allBuiltCellsAreDischarged = dischargedCells.length === builtPulseCellsCount;
-  if (allBuiltCellsAreDischarged) {
+  // Check if generator should be set to discharged
+  if (!dischargingCells.length) {
     EventBus.emit(Events.generator.discharged, pulseGeneratorId);
   }
 

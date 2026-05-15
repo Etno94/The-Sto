@@ -1058,12 +1058,15 @@ class GeneratorManager {
         // Next Pulse
         const elementNextPulse = this.whatElementCellNextPulse(elementName);
         Asserts.number(elementNextPulse);
-        const newNextPulse = Math.max(elementNextPulse - interval, minInterval);
+        const calculatedNextPulse = elementNextPulse - interval;
 
-        this.setElement(elementName, 'untilNextPulse', newNextPulse);
-
-        if (newNextPulse == 0) {
+        if (calculatedNextPulse <= 0) {
+            const pulseDelta = -calculatedNextPulse;
             EventBus.emit(Events.generator.elements.pulseCells.pulse, elementName);
+            // Reset timer for next pulse cycle, adjusted by overshoot delta
+            this.setElement(elementName, 'untilNextPulse', this.whatCellPulseInterval(elementName) - pulseDelta);
+        } else {
+            this.setElement(elementName, 'untilNextPulse', calculatedNextPulse);
         }
     }
 
