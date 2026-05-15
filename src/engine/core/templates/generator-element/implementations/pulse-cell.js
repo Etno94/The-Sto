@@ -17,8 +17,12 @@ export default class PulseCell extends BaseGeneratorElement {
     /** @type {number} */
     #remainingLoad = 0;
 
+    /** @type {Generator_PulseCells_Status_Strings} */
+    #pulseCellStatusStrings;
+
     constructor(elementName) {
         super(elementName);
+        this.#pulseCellStatusStrings = DataManager.getPulseCellStatusStringsData();
         this.#pulseCellData = generatorM.getPulseCellData(elementName);
         this.#pulseCellSave = generatorM.getBuiltPulseCell(elementName);
         this.#remainingLoad = Math.max(0, this.#pulseCellData.loadCell.total - this.#pulseCellSave.cellLoad);
@@ -35,11 +39,9 @@ export default class PulseCell extends BaseGeneratorElement {
         this.render();
     }
 
-    
-
     /** @returns {boolean} */
     isPulseCellLoaded() {
-        return this.#pulseCellSave.cellStatus === 'loaded' && this.#remainingLoad <= 0;
+        return this.#pulseCellSave.cellStatus === this.#pulseCellStatusStrings.LOADED && this.#remainingLoad <= 0;
     }
 
     loadCell() {
