@@ -31,7 +31,8 @@ export default class PulseGenerator extends BaseGenerator {
   }
 
   trigger() {
-    this.generatePointsOnPulse();
+    if (super.canGenerate())
+      this.generatePointsOnPulse();
   }
 
   generatePointsOnPulse() {
