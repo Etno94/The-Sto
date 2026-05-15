@@ -14,9 +14,6 @@ export default class PulseCell extends BaseGeneratorElement {
     /** @type {SaveGeneratorPoints[]} */
     pointsToGenerate;
 
-    /** @type {number} */
-    #remainingLoad = 0;
-
     /** @type {Generator_PulseCells_Status_Strings} */
     #pulseCellStatusStrings;
 
@@ -25,7 +22,6 @@ export default class PulseCell extends BaseGeneratorElement {
         this.#pulseCellStatusStrings = DataManager.getPulseCellStatusStringsData();
         this.#pulseCellData = generatorM.getPulseCellData(elementName);
         this.#pulseCellSave = generatorM.getBuiltPulseCell(elementName);
-        this.#remainingLoad = Math.max(0, this.#pulseCellData.loadCell.total - this.#pulseCellSave.cellLoad);
     }
 
     run() {
@@ -34,18 +30,33 @@ export default class PulseCell extends BaseGeneratorElement {
             return;
         }
         if (this.isPulseCellLoaded()) return;
-
-        this.loadCell();
+        if (this.isLoading()) this.loadCell();
         this.render();
     }
 
     /** @returns {boolean} */
     isPulseCellLoaded() {
-        return this.#pulseCellSave.cellStatus === this.#pulseCellStatusStrings.LOADED && this.#remainingLoad <= 0;
+        const cellStatus = this.#pulseCellSave.cellStatus;
+        const currentLoad = generatorM.whatElementCellLoad(this.elementName);
+        return cellStatus === this.#pulseCellStatusStrings.LOADED && currentLoad >= this.#pulseCellData.loadCell.total;
+    }
+
+    /** @returns {boolean} */
+    isLoading() {
+        const status = this.#pulseCellSave.cellStatus;
+        return status === this.#pulseCellStatusStrings.LOADING;
+    }
+
+    /** @returns {boolean} */
+    isDischargingOrDischarged() {
+        const status = this.#pulseCellSave.cellStatus;
+        return status === this.#pulseCellStatusStrings.DISCHARGING || status === this.#pulseCellStatusStrings.DISCHARGED;
     }
 
     loadCell() {
-        const loadToAdd = pointM.substractAllPointsByType(this.#pulseCellData.loadCell.type, this.#remainingLoad);
+        const currentLoad = generatorM.whatElementCellLoad(this.elementName);
+        const remainingLoad = Math.max(0, this.#pulseCellData.loadCell.total - currentLoad);
+        const loadToAdd = pointM.substractAllPointsByType(this.#pulseCellData.loadCell.type, remainingLoad);
         Asserts.number(loadToAdd);
         if (!loadToAdd || loadToAdd <= 0) return;
 
@@ -53,13 +64,24 @@ export default class PulseCell extends BaseGeneratorElement {
     }
 
     render() {
+        const percentLoad = this.getPulseCellRenderPercent();
+        EventBus.emit(Events.generator.elements.pulseCells.load, this.elementName, percentLoad);
+    }
+
+    /** @returns {number} */
+    getPulseCellRenderPercent() {
+        const status = this.#pulseCellSave.cellStatus;
+        if (status === this.#pulseCellStatusStrings.DISCHARGING) {
+            const remainingLoad = generatorM.whatElementCellRemainingLoad(this.elementName);
+            Asserts.number(remainingLoad);
+            const totalDischarge = generatorM.whatCellDischargeInterval(this.elementName);
+            Asserts.number(totalDischarge);
+            return Utils.getPercent(totalDischarge, remainingLoad);
+        }
+
         const currentLoad = generatorM.whatElementCellLoad(this.elementName);
         Asserts.number(currentLoad);
-
-        const totalLoad = this.#pulseCellData.loadCell.total;
-        const percentLoad = Utils.getPercent(totalLoad, currentLoad);
-
-        EventBus.emit(Events.generator.elements.pulseCells.load, this.elementName, percentLoad)
+        return Utils.getPercent(this.#pulseCellData.loadCell.total, currentLoad);
     }
 
     trigger() {
