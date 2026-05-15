@@ -393,7 +393,8 @@ function checkPulseGeneratorCells(interval = 0, initialSet = false) {
   const loadedCells = generatorM.getPulseCellsByStatus(pulseCellStatusStrings.LOADED);
   const hasLoadedCells = Validators.isNonEmptyArray(loadedCells);
 
-  const dischargingCells = generatorM.getPulseCellsByStatus(pulseCellStatusStrings.DISCHARGING);
+  const dischargingCells = generatorM.getPulseCellsByStatus(pulseCellStatusStrings.DISCHARGING)?.slice().reverse() || [];
+
   const hasDischargingCells = Validators.isNonEmptyArray(dischargingCells);
 
   // Check if generator should be set to discharged
@@ -407,9 +408,10 @@ function checkPulseGeneratorCells(interval = 0, initialSet = false) {
 
   // Update discharging cells if interval > 0
   if (interval === 0) return;
-  dischargingCells.forEach(cell => {
-    generatorM.updateElementCellInterval(cell.name, interval);
-  });
+  const cellToDischarge = dischargingCells[0];
+  if (cellToDischarge) {
+    generatorM.updateElementCellInterval(cellToDischarge.name, interval);
+  }
 }
 
 function updateStorageUpgradeCostPreview() {
