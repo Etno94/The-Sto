@@ -902,6 +902,8 @@ class GeneratorManager {
                 /**@type {SaveGeneratorElement} */
                 pulseCell => {
                     this.setCellElementStatus(pulseCell.name, this.#pulseCellStatusStrings.LOADING);
+                    this.setElement(pulseCell.name, 'remainingLoad', 0);
+                    this.setElement(pulseCell.name, 'untilNextPulse', 0);
                 }
             );
         }
