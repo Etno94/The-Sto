@@ -5,13 +5,10 @@ import Render from "./render.factory.js";
 import Animate from "./helpers/animate.js";
 import UIHelper from "./helpers/ui-helper.js";
 import { RenderQ } from "./helpers/render-queue.js";
-import {GenUIReg} from "./ui-registries/generators.ui-registry.js";
 import {UIRegService} from "./ui-registries/ui-registry.service.js";
 
 import DataManager from "../systems/managers/data.manager.js";
 import {Asserts, Utils, Errors, Validators} from "../utils/utils.index.js";
-// import Asserts from "../utils/asserts.js";
-// import Utils from "../utils/utils.js";
 import PointCollection from "../systems/point.collection.js";
 
 class UIController {
@@ -51,6 +48,10 @@ class UIController {
     #pointState = new WeakMap();
     
     constructor() {
+        
+    }
+
+    initializeUIController() {
         this.#setData();
         this.#setElements();
         this.#setBindings();

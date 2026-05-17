@@ -108,6 +108,11 @@ export default class DataManager {
         return Utils.deepCopy(STORAGE_UPGRADES.baseMaxStorage);
     }
 
+    /** @returns {number} */
+    static getBaseMaxStorageUpgradeLevel() {
+        return Utils.deepCopy(STORAGE_UPGRADES.baseMaxStorageUpgradeLevel);
+    }
+
     /**
      * @param {number} currentMaxStorageLevel 
      * @returns {MaxStorageUpgradeInterval}

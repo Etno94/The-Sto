@@ -18,19 +18,18 @@ class StorageManager {
     /**
      * @param { number } currentUpgradeLevel 
      */
-    constructor(currentUpgradeLevel) {
-        if (currentUpgradeLevel) this.setCurrentStorage(currentUpgradeLevel);
+    constructor() {
         this.#setBusEvents();
+    }
+
+    #setBusEvents() {
+        EventBus.on(Events.storageUpgrade.upgrade, () => this.#upgradeMaxStorage());
     }
 
     /** @param { number } currentUpgradeLevel */
     setCurrentStorage(currentUpgradeLevel) {
         Asserts.number(currentUpgradeLevel);
         this.#updateMaxStorage(currentUpgradeLevel);
-    }
-
-    #setBusEvents() {
-        EventBus.on(Events.storageUpgrade.upgrade, () => this.#upgradeMaxStorage());
     }
 
     /** @returns {boolean} */

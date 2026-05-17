@@ -3,18 +3,14 @@ import GameSave from "./save.js";
 import { EventBus, Events } from "./event-bus.js";
 import GameLoop from "./game-loop.js";
 
+import { UIControl } from "../views/ui-controller.js";
+import {DataManager, pointM, generatorM, storageM} from "../systems/managers-index.js";
 import {generatorF, genElementF} from "./templates/templates.index.js";
 
 import PointCollection from "../systems/point.collection.js";
 import InputControl from "../systems/input.controller.js";
 
-import {DataManager, pointM, generatorM, storageM} from "../systems/managers-index.js";
-
-import { UIControl } from "../views/ui-controller.js";
-
 import {Asserts, Utils, Validators} from "../utils/utils.index.js";
-
-
 
 // #region Unlocks
 
@@ -489,13 +485,15 @@ function showLoadCostPreview(type, domElement) {
 function startGame() {
 
   const save = GameSave.load();
-  if(save && typeof save === 'object') {
+  if (save && typeof save === 'object') {
     Object.assign(Global.proxy, save);
   }
-  registerBusEvents();
-  generatorM.setNewGeneratorManager();
-  storageM.setCurrentStorage(Global?.proxy?.storage?.maxStorageUpgradeCurrentLevel);
 
+  registerBusEvents();
+  UIControl.initializeUIController();
+  generatorM.setNewGeneratorManager();
+  setStorage();
+  
   // Initial render for already unlocked generators
   initialRender();
 
@@ -517,6 +515,21 @@ function registerBusEvents() {
   EventBus.on(Events.storageUpgrade.onClick, () => upgradeMaxStorage());
   EventBus.on(Events.generator.elements.pulseCells.pulse, (elementName) => generatorElementOnTrigger(elementName));
   EventBus.on(Events.generator.onTrigger, (generatorName) => generatorOnTrigger(generatorName));
+}
+
+function setStorage() {
+  const savedUpgradeLevel = Number(Global?.proxy?.storage?.maxStorageUpgradeCurrentLevel);
+  const isValidSavedUpgradeLevel = Number.isInteger(savedUpgradeLevel) && savedUpgradeLevel >= 1;
+
+  if (!isValidSavedUpgradeLevel) {
+    console.warn(
+      'Invalid saved storage upgrade level detected; using base level instead.',
+      Global?.proxy?.storage?.maxStorageUpgradeCurrentLevel
+    );
+    storageM.setCurrentStorage(DataManager.getBaseMaxStorageUpgradeLevel());
+  } else {
+    storageM.setCurrentStorage(savedUpgradeLevel);
+  }
 }
 
 function initialRender() {

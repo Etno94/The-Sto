@@ -2,7 +2,15 @@ export default class GameSave {
 
     /** @returns {SaveType | null} */
     static load() {
-        return JSON.parse(localStorage.getItem("save")) || null;
+        const rawSave = localStorage.getItem('save');
+        if (!rawSave) return null;
+
+        try {
+            return JSON.parse(rawSave);
+        } catch (error) {
+            console.error('Failed to parse saved game data:', rawSave, error);
+            return null;
+        }
     }
     
     static save(save) {
