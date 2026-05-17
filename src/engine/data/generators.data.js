@@ -67,17 +67,17 @@ export const COOLDOWN_GENERATOR = {
     },
     unlockRequires: {
         hint: {
-            [POINT_TYPES.point]: 2
+            [POINT_TYPES.point]: 4
         },
         build: {
-            [POINT_TYPES.point]: 3
+            [POINT_TYPES.point]: 5
         }
     },
     buildRequires: {
         step: {
-            [POINT_TYPES.point]: 1
+            [POINT_TYPES.point]: 6
         },
-        totalSteps: 1
+        totalSteps: 5
     },
     elementsUnlock: [
         {name: GENERATOR_ELEMENT_NAMES.cdCharge1},
@@ -95,7 +95,7 @@ export const COOLDOWN_GENERATOR = {
                 step: {
                     [POINT_TYPES.solid_point]: 3
                 },
-                totalSteps: 5
+                totalSteps: 3
             }
         },
         {
@@ -110,9 +110,9 @@ export const COOLDOWN_GENERATOR = {
             },
             buildRequires: {
                 step: {
-                    [POINT_TYPES.energy_point]: 1
+                    [POINT_TYPES.energy_point]: 3
                 },
-                totalSteps: 8
+                totalSteps: 3
             }
         },
     ]
@@ -147,9 +147,9 @@ export const PULSE_GENERATOR = {
     },
     buildRequires: {
         step: {
-            [POINT_TYPES.solid_point]: 1
+            [POINT_TYPES.solid_point]: 8
         },
-        totalSteps: 1
+        totalSteps: 5
     },
     elementsUnlock: [
         {name: GENERATOR_ELEMENT_NAMES.pulseCell1},
@@ -157,34 +157,34 @@ export const PULSE_GENERATOR = {
             name: GENERATOR_ELEMENT_NAMES.pulseCell2,
             unlockRequires: {
                 hint: {
-                    [POINT_TYPES.energy_point]: 1
+                    [POINT_TYPES.energy_point]: 4
                 },
                 build: {
-                    [POINT_TYPES.energy_point]: 1
+                    [POINT_TYPES.energy_point]: 6
                 }
             },
             buildRequires: {
                 step: {
-                    [POINT_TYPES.energy_point]: 1
+                    [POINT_TYPES.energy_point]: 3
                 },
-                totalSteps: 1
+                totalSteps: 3
             }
         },
         {
             name: GENERATOR_ELEMENT_NAMES.pulseCell3,
             unlockRequires: {
                 hint: {
-                    [POINT_TYPES.energy_point]: 1
+                    [POINT_TYPES.energy_point]: 8
                 },
                 build: {
-                    [POINT_TYPES.energy_point]: 1
+                    [POINT_TYPES.energy_point]: 10
                 }
             },
             buildRequires: {
                 step: {
-                    [POINT_TYPES.energy_point]: 1
+                    [POINT_TYPES.energy_point]: 5
                 },
-                totalSteps: 1
+                totalSteps: 5
             }
         },
     ]
@@ -214,19 +214,19 @@ export const GENERATOR_ELEMENTS_DATA = {
         {
             name: GENERATOR_ELEMENT_NAMES.cdCharge1,
             baseCd: 2000,
-            increment: (currentCd) => currentCd * 1.05,
+            increment: (currentCd) => currentCd * 1.1,
             maxCd: 1000 * 60 * 2
         },
         {
             name: GENERATOR_ELEMENT_NAMES.cdCharge2,
             baseCd: 3000,
-            increment: (currentCd) => currentCd * 1.04,
+            increment: (currentCd) => currentCd * 1.5,
             maxCd: 1000 * 60 * 4
         },
         {
             name: GENERATOR_ELEMENT_NAMES.cdCharge3,
             baseCd: 4000,
-            increment: (currentCd) => currentCd * 1.03,
+            increment: (currentCd) => currentCd * 1.02,
             maxCd: 1000 * 60 * 8
         }
     ],
@@ -235,7 +235,7 @@ export const GENERATOR_ELEMENTS_DATA = {
             name: GENERATOR_ELEMENT_NAMES.pulseCell1,
             loadCell: {
                 type: POINT_TYPES.point,
-                total: 1
+                total: 10
             },
             dischargeInterval: 1000,
             pulseInterval: 1000
@@ -244,7 +244,7 @@ export const GENERATOR_ELEMENTS_DATA = {
             name: GENERATOR_ELEMENT_NAMES.pulseCell2,
             loadCell: {
                 type: POINT_TYPES.solid_point,
-                total: 1
+                total: 6
             },
             dischargeInterval: 2000,
             pulseInterval: 1000

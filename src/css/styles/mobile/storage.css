@@ -1,7 +1,8 @@
 @media (max-width: 768px) {
   #storage #storage-upgrade ~ .cost-preview {
-    width: 60px;
-    right: 8px;
+    position: relative;
+    width: 140px;
+    right: 4px;
   }
 
   #storage #points {
