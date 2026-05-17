@@ -115,10 +115,11 @@ export default class DataManager {
 
     /**
      * @param {number} currentMaxStorageLevel 
-     * @returns {MaxStorageUpgradeInterval}
+     * @returns {MaxStorageUpgradeInterval | null}
      */
     static getCurrentIntervalUpgradeCost(currentMaxStorageLevel) {
-        return Utils.deepCopy(STORAGE_UPGRADES.getCurrentIntervalUpgradeCost(currentMaxStorageLevel));
+        const currentIntervalUpgradeCost = STORAGE_UPGRADES.getCurrentIntervalUpgradeCost(currentMaxStorageLevel);
+        return currentIntervalUpgradeCost ? Utils.deepCopy(currentIntervalUpgradeCost) : null;
     }
 
     /**

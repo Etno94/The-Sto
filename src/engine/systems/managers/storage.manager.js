@@ -57,10 +57,10 @@ class StorageManager {
         return this.#currentMaxStorage - currentTotal + consumeTotal;
     }
 
-    /** @returns {PointSet} */
+    /** @returns {PointSet | null} */
     getCurrentUpgradeCost() {
         const currentInterval = DataManager.getCurrentIntervalUpgradeCost(this.#currentUpgradeLevel);
-        return {[currentInterval.step]: currentInterval.costFormula(this.#currentUpgradeLevel)};
+        return currentInterval ? {[currentInterval.step]: currentInterval.costFormula(this.#currentUpgradeLevel)} : null;
     }
 
     /** @param { number } currentUpgradeLevel */

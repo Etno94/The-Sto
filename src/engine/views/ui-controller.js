@@ -700,9 +700,8 @@ class UIController {
         const costPreviewElement = Render.renderCostPreview();
         for (const [key, value] of Object.entries(cost)) {
             let amount = value;
-            while (amount) {
-                costPreviewElement.appendChild(UIControl.renderPoint(key));
-                amount--;
+            for (let i = 0; i < Math.max(0, Math.floor(amount)); i++) {
+                costPreviewElement.appendChild(UIControl.renderPoint(key)); 
             }
         }
         if (UIHelper.isElementTransformed(generatorElement)) {

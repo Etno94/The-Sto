@@ -300,12 +300,14 @@ function generatorElementOnTrigger(elementName) {
 // #region Storage Upgrade
 
 function upgradeMaxStorage() {
-  const currentCost = new PointCollection(storageM.getCurrentUpgradeCost()).collection;
-  console.log(currentCost);
+  const currentCost = storageM.getCurrentUpgradeCost();
+  if (!currentCost) return;
+  const currentCostCollection = new PointCollection(currentCost).collection;
+  console.log(currentCostCollection);
 
-  if (pointM.hasEnoughPoints(currentCost)) {
+  if (pointM.hasEnoughPoints(currentCostCollection)) {
     UIControl.removeCostPreview(storageM.upgradeStorageWrapperElement);
-    EventBus.emit(Events.points.substract, currentCost);
+    EventBus.emit(Events.points.substract, currentCostCollection);
     EventBus.emit(Events.storageUpgrade.upgrade);
   }
 }
@@ -411,8 +413,10 @@ function checkPulseGeneratorCells(interval = 0, initialSet = false) {
 }
 
 function updateStorageUpgradeCostPreview() {
-  const currentCost = new PointCollection(storageM.getCurrentUpgradeCost()).collection;
-  UIControl.renderCostPreview(storageM.upgradeStorageWrapperElement, currentCost);
+  const currentCost = storageM.getCurrentUpgradeCost();
+  if (!currentCost) return;
+  const currentCostCollection = new PointCollection(currentCost).collection;
+  UIControl.renderCostPreview(storageM.upgradeStorageWrapperElement, currentCostCollection);
 }
 
 function setBuiltGeneratorStatus() {
@@ -493,7 +497,7 @@ function startGame() {
   UIControl.initializeUIController();
   generatorM.setNewGeneratorManager();
   setStorage();
-  
+
   // Initial render for already unlocked generators
   initialRender();
 

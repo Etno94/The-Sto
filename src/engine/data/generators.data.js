@@ -59,7 +59,7 @@ export const COOLDOWN_GENERATOR = {
         ]
     },
     consumes: {
-        [POINT_TYPES.point]: 2
+        [POINT_TYPES.point]: 3
     },
     cooldown: {
         baseCooldown: 2000,
