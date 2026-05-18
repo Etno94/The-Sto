@@ -139,10 +139,10 @@ export const PULSE_GENERATOR = {
     },
     unlockRequires: {
         hint: {
-            [POINT_TYPES.solid_point]: 1
+            [POINT_TYPES.solid_point]: 5
         },
         build: {
-            [POINT_TYPES.solid_point]: 1
+            [POINT_TYPES.solid_point]: 7
         }
     },
     buildRequires: {
