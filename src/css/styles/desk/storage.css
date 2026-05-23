@@ -13,6 +13,7 @@
 #storage .wrap {
     width: 100px;
     height: auto;
+    margin-bottom: 24px;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -1,7 +1,8 @@
 @media (max-width: 768px) {
 
   #storage #dump-wrap {
-    
+    width: 48px;
+    margin-bottom: 0;
   }
 
   #storage #dump {
