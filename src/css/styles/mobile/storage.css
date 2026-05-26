@@ -3,6 +3,8 @@
   #storage #dump-wrap {
     width: 48px;
     margin-bottom: 0;
+    position: relative;
+    bottom: 48px;
   }
 
   #storage #dump {
