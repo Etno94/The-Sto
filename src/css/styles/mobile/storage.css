@@ -1,10 +1,10 @@
 @media (max-width: 768px) {
 
   #storage #dump-wrap {
-    width: 48px;
+    width: 32px;
     margin-bottom: 0;
     position: relative;
-    bottom: 48px;
+    bottom: 0;
   }
 
   #storage #dump {
