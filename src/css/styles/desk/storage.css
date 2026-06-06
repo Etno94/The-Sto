@@ -21,6 +21,11 @@
     flex-direction: column-reverse;
 }
 
+#storage #storage-upgrade-wrap {
+    margin-right: 12px;
+}
+
+
 #storage #dump {
     width: 48px;
     height: 48px;

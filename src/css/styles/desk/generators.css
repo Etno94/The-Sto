@@ -11,7 +11,9 @@
     flex: 1 1 auto;
     justify-content: center;
     align-items: center;
+    align-content: center;
     gap: 64px;
+    flex-wrap: wrap;
 }
 
 #central #generators-container .wrapper {

@@ -1,0 +1,16 @@
+@media (max-width: 768px) {
+
+    :root {
+        --cell-gen-width: 96px;
+        --cell-gen-height: 96px;
+        --cd-gen-width: 72px;
+        --cd-gen-height: 120px;
+        --pulse-gen-width: 84px;
+        --pulse-gen-height: 84px;
+
+        --point-base-unit: 16px;
+        --point-max-unit: 20px;
+    }
+
+}
+

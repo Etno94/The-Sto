@@ -1,6 +1,4 @@
 :root {
-    --rows: 6;
-    --columns: 6;
 
     --cell-gen-width: 128px;
     --cell-gen-height: 128px;
